@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<dsc><% get_version_dsc(); %></dsc>
+<ip_mode><% get_ppp_mode(); %></ip_mode>
+<mtu><% get_wan_mtu_nv(); %></mtu>
+<rm_sw><% get_rmnet_up_down(); %></rm_sw>
+<adb><% checke_adbd_sta(); %></adb>
+<diag><% checke_usb_diag_sta(); %></diag>
+<sd_st><% get_sdst(); %></sd_st>
+<sd_mode><% get_sd_mode(); %></sd_mode>
+<log_st><% get_log_to_sdcard(); %></log_st>
+<tr_acs>
+<acssw><% get_disable_cwmpc(); %></acssw>
+<acsurl><% get_cwmpc_acsurl(); %></acsurl>
+<acs_username><% get_cwmpc_username(); %></acs_username>
+<acs_password><% get_cwmpc_userpassword(); %></acs_password>
+<periodic_inform><% get_enable_cwmpc_periodic_inform(); %></periodic_inform>
+<informinterval><% get_cwmpc_periodic_informinterval(); %></informinterval>
+<request_username><% get_cwmpc_request_username(); %></request_username>
+<request_userpassword><% get_cwmpc_request_userpassword(); %></request_userpassword>
+</tr_acs>
+</setting>

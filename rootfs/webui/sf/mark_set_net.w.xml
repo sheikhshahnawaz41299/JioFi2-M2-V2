@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net>
+<lang>2</lang>
+<dsc><% get_version_dsc(); %></dsc>
+<lpm><% is_lpm_mode(); %></lpm>
+<dial_mode><% get_dial_mode(); %></dial_mode>
+<mode><% get_modem_network_mode(); %></mode>
+<ip_mode><% get_ppp_mode(); %></ip_mode>
+<netstatus><% get_network_status(); %></netstatus>
+<apn_active><% get_apn_list_acitve(); %></apn_active>
+<apn>
+<apn_name><% get_apn_list_name("0"); %></apn_name>
+<user><% get_apn_list_user("0"); %></user>
+<pwd><% get_apn_list_password("0"); %></pwd>
+<apn_apn><% get_apn_list_apn("0"); %></apn_apn>
+<number><% get_apn_list_number("0"); %></number>
+</apn>
+<apn>
+<apn_name><% get_apn_list_name("1"); %></apn_name>
+<user><% get_apn_list_user("1"); %></user>
+<pwd><% get_apn_list_password("1"); %></pwd>
+<apn_apn><% get_apn_list_apn("1"); %></apn_apn>
+<number><% get_apn_list_number("1"); %></number>
+</apn>
+<apn>
+<apn_name><% get_apn_list_name("2"); %></apn_name>
+<user><% get_apn_list_user("2"); %></user>
+<pwd><% get_apn_list_password("2"); %></pwd>
+<apn_apn><% get_apn_list_apn("2"); %></apn_apn>
+<number><% get_apn_list_number("2"); %></number>
+</apn>
+<dns_mode><% get_wan_dns_mode(); %></dns_mode>
+<dns1><% get_wan_dns1(); %></dns1>
+<dns2><% get_wan_dns2(); %></dns2>
+<upnp><% get_upnpEnabled(); %></upnp>
+<ping><% get_pingWanAccess(); %></ping>
+<wan_access><% get_webWanAccess(); %></wan_access>
+</net>

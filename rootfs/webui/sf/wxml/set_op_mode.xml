@@ -1,0 +1,4 @@
+<op>
+<mode>set_router_op_mode(mode)</mode>
+<commit>set_router_op_mode_commit()</commit>
+</op>

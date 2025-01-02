@@ -1,0 +1,91 @@
+/**
+ * 
+ * @Radio.css
+ * @author xinxuzhang 
+ * @create 15-06-17
+**/
+
+input[type=radio] {
+	position: absolute;
+	clip: rect(0,0,0,0); /* IE8+ */
+	*left: -1999px;
+}
+
+.ui_radio {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border: 1px solid rgba(80, 182, 191, 1);  /* IE7-IE8 ignore this */
+	border-radius: 20px;
+	background-color: #50b6bf;
+	box-sizing: border-box;
+	vertical-align: -.5ex;
+	*vertical-align: 0;
+	-webkit-transition: border-color .2s;
+    transition: border-color .2s;
+	overflow: hidden;
+	_margin-left: -20px;
+}
+
+:not(:disabled) + .ui_radio:hover {
+	border-color: #30c6bf;
+}
+
+.ui_radio::before {
+	content: '';
+	display: block;
+	width: 8px;
+	height: 8px;
+	margin: 5px auto 0;
+	border-radius: 8px;
+	background-color: #fff;
+	visibility: hidden;
+}
+
+:checked + .ui_radio::before {
+	visibility: visible;
+	-webkit-animation: bounceIn .2s;
+	animation: bounceIn .2s;
+}
+
+:disabled + .ui_radio,
+.ui_radio.disabled {
+	/* 与设计师沟通，这里边框色值提高，否则不怎么好的显示器和背景色混在一起都看不出来 */
+	border-color: #ababaf;
+	opacity: .38;
+}
+
+/* error */
+.error.ui_radio {
+	border-color: #f4615c;
+}
+
+/*IE7, IE8 使用图片作UI*/
+@media \0screen\,screen\9 {
+	.ui_radio {
+		background: url(./img/radio.png) no-repeat;
+	}
+	.ui_radio:hover {
+		background-position: 0 -20px;
+	}
+	[checked] + .ui_radio {
+		background-position: 0 -40px;
+	}
+	[defaultChecked] + .ui_radio {
+		background-position: 0 -40px;
+	}
+	[checked] + .ui_radio:hover,
+	[checked][disabled] + .ui_radio {
+		/* disabled态使用高亮边框 */
+		background-position: 0 -40px;
+	}
+	[defaultChecked] + .ui_radio:hover,
+	[defaultChecked][disabled] + .ui_radio {
+		/* disabled态使用高亮边框 */
+		background-position: 0 -40px;
+	}
+	[disabled] + .ui_radio {
+		background-position: 0 -20px;
+		filter: alpha(opacity=38);
+	}
+}

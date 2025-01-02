@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="telephone=no" name="format-detection" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>MF800 Web Admin</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<script type="text/javascript">
+if(window==top) location.href="index.htm";
+<!-- 
+document.oncontextmenu=function(e){return false;} 
+// -->
+document.onmousedown=function(e){
+var e=e||window.event;
+if(e.button&2)
+{
+document.oncontextmenu=function(e){return false;}
+return false;
+}	
+}
+
+var xmlpost;
+function $(id){return document.getElementById(id);}
+function x_v(tag){return xmlpost.responseXML.getElementsByTagName(tag)[0].childNodes[0].nodeValue;}
+
+function createXMLHttpRequest()
+{
+if(window.ActiveXObject)
+{
+xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+else if (window.XMLHttpRequest)
+{
+xmlHttp = new XMLHttpRequest();
+}
+}
+
+function startRequest(xmlurl)
+{
+createXMLHttpRequest();
+xmlHttp.onreadystatechange = handleStateChange;
+xmlHttp.open("GET", xmlurl, true);
+xmlHttp.setRequestHeader("If-Modified-Since","0");
+xmlHttp.send(null);
+}
+
+function handleStateChange()
+{
+if(xmlHttp.readyState == 4)
+{
+if(xmlHttp.status == 200)
+{
+GetHandler();
+}
+}
+}
+
+</script>
+</head>
+<body>
+<div id="container">
+<div id="navi"><li><a class="navi" href="home.html">Home</a></li><li><a class="navi" href="connection.html">Connection</a></li><li><a class="sel">SMS</a></li><li><a class="navi" href="setting.html">Setting</a></li><li><a class="navi" href="statistics.html">Statistics</a></li><li><a class="navi" href="about.html">About</a></li></div>
+<div id="mainContent">
+<div id="sidebar">
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu"><a class="side" href="sms_box.html" >Inbox</a></div>
+<div id="sidemenu"><a class="side" href="sms_box.html?href=1" >Outbox</a></div>
+<div id="sidemenu"><a class="side" href="setting_sms.html" >Setting</a></div>
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu_df78a">MF800</div>
+</div>
+<div id="content">
+
+<h2 class="title">View Message</h2>
+<hr size=1 style="color:#C0C0C0">
+<script type="text/javascript">
+var para_str; 
+var ref_type;
+var page_num;
+var sms_row;
+var net_mode;
+
+
+function ajax_post(form_data)
+{
+if (window.XMLHttpRequest){
+xmlpost=new XMLHttpRequest();
+}
+else{
+xmlpost=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlpost.onreadystatechange=function()
+{
+if (xmlpost.readyState==4 && xmlpost.status==200){
+GetHandler();
+}
+}
+xmlpost.open("POST","/wxml/sms_show.xml",true);
+xmlpost.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlpost.send(form_data);
+}
+
+
+window.onload =function()
+{
+//sms_show.html?###href=1&page=12&no=2###&type=1
+var href=window.location.href;
+var peek=href.indexOf('?');
+para_str = href.substring(peek);
+
+if(peek>-1) para_str = href.substring(peek);
+else para_str = '';
+peek = para_str.search(/no=/i);
+if(peek>-1) sms_row = parseInt(para_str.substring(peek+3));
+else sms_row = 0;
+peek = para_str.search(/href=/i);
+if(peek>-1) ref_type = parseInt(para_str.substr(peek+5,1));
+else ref_type = 0;
+peek = para_str.search(/page=/i);
+if(peek>-1) page_num = parseInt(para_str.substring(peek+5));
+else page_num = 0;
+
+para_str = '?href='+ref_type+'&page='+page_num+'&no='+sms_row;
+if(ref_type==1) $("view_type").innerHTML = "To:&nbsp;";
+var xmlurl = '/wxml/sms_show.xml'+ para_str;
+//startRequest(xmlurl);
+ajax_post('href='+ ref_type +'&page='+page_num+'&no='+sms_row);
+}
+
+function GetHandler()
+{
+var content = x_v('body');
+//content= content.replace(new RegExp("\n", "g"), "<br>");
+content = content.replace(/\r\n|\n/g,"<br \\>");
+$('src').innerHTML = x_v('src'); 
+$('time').innerHTML = x_v('time');
+$('sms_text').innerHTML =content ;
+net_mode = x_v('net');
+}
+
+function return_page()
+{
+  var peek=para_str.search(/&no=/);
+  var para = para_str.substr(0,peek);
+  peek = para.search(/ref=2/);
+  var url = 'sms_box.html'+para;
+  window.location = url;
+}
+
+function send_handle(type)
+{
+if(net_mode=='2') 
+{
+alert("EVDO only can not send sms,please select 1X/EVDO Hybrid mode in net setting");	
+return;
+}	
+window.location = 'sms_send.html'+para_str+'&type='+type;
+}
+
+</script>
+<div style="margin-top:5px;margin-left:15px">
+<button id="btn_return" class="button_return"  onclick="return_page()"><span><em>Back</em></span></button>
+</div>
+<table border=1 >
+<tr><td width=40%><b id="view_type">From:</b><span id="src"></span></td><td width=60% id="time"></td></tr>
+<tr><td colspan="2"><b>Content</b></td></tr>
+<tr><td colspan="2" style="word-wrap:break-word; word-break:break-all" >
+<!--<textarea style="height:340px;width:500px;font-family:dinregular,Arial,Sans-serif;font-size:20px;background:#ffffff;resize:none;readonly:true;" id='sms_text'></textarea>-->
+<div style="height:340px;width:500px;" id='sms_text'></div>
+</td></tr>
+<tr><td colspan="2" align=center>&nbsp;&nbsp;<button id="RepSMS" name="RepSMS" class="button" onclick="send_handle(1)"/><span><em>Reply</em></span></button>&nbsp;&nbsp;<button id="FwdSMS" name="FwdSMS" class="button" onclick="send_handle(2)"/><span><em>Forward</em></span></button>
+</td></tr></table>
+</div></div>
+<div id="footer">Copyright &copy; 2014 We-wins Inc. All Rights Reserved.</div>
+</div></body></html>

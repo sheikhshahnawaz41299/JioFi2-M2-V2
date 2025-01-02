@@ -1,0 +1,44 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >	
+<head>
+<title>Connection Mode</title> -->
+<script>
+if(top.location.pathname!="/index.htm") top.location.href="./index.htm";
+$(document).ready(function() {
+	show_menu(seed);
+});
+function load_mark(){
+	var dsc="<% get_version_dsc(); %>";
+if(dsc&0x02){
+		$("#DNSAddress").val("http://jiofi.local.html");
+	}
+	else{
+		$("#DNSAddress").val("http://jiodongle.local.html");
+	}
+}
+</script>
+
+<!-- </head> -->
+<body style="margin:0;padding:0;border:0;">
+    <table class="table_main" align="left">
+    	<tr>
+			<td>	
+				<h3 class="main_menu">Connection URL</h3>
+			</td>
+		</tr>
+        <tr>
+            <td class="_td" style="padding-left: 50px;">
+				</br>
+				    <h4 class="small_menu" style="color:#515151; margin:0;">Connection</h4>
+					<table style="width:90%;">
+						<tr id="tr_dns_address">
+                            <td width="37%" class="head_top">DNS Address</td>
+                            <td width="63%" class="tail_top">
+                                <input id="DNSAddress" maxlength="64" size="32" type="text" onchange="" readonly="readonly" unselectable="on" value="http://jiofi.local.html"/>
+                            </td>
+						</tr>
+					</table>
+			    </td>
+			</tr>
+		</table>
+	</body>
+<!-- </html> -->

@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<diag>
+<close_diag><% close_diag_for_test(); %></close_diag>
+</diag>

@@ -1,0 +1,582 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>WiFi</title>-->
+<script>
+	if(top.location.pathname != "/index.htm") top.location.href = "./index.htm";
+	$(document).ready(function() {
+
+	});
+
+	/*
+	<?xml version="1.0" encoding="UTF-8"?>
+	<setting>
+	<lang>2</lang>
+	<dsc>5</dsc>
+	<wifi>
+	<ssid>MobileRouter</ssid>
+	<bgn>11</bgn>
+	<wmm>1</wmm>
+	<ch>0</ch>
+	<enc_type>4,3</enc_type>
+	<key>12345678</key>
+	<brd>1</brd>
+	<bgn>11</bgn>
+	<ind>1</ind>
+	<mode>0</mode>
+	<max>31</max>
+	</wifi>
+	<retval>0</retval>
+	</setting>
+	*/
+
+	
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "set_wifi.html") {
+
+function load_setting() {
+		$.ajax({
+			url: "mark_set_wifi.w.xml",
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			success: function(data, status) {
+				var ssid = $(data).find("ssid").text();
+				var ch = parseInt($(data).find("ch").text());
+				var enc_type = $(data).find("enc_type").text().split(',');
+				if(enc_type[0] == 0) {
+					$('#tr_wpa_encryption_type').hide();
+					$('#tr_wep_security_key').hide();
+					$('#tr_wpa_security_key').hide();
+				} else if(enc_type[0] == 1) {
+					$('#tr_wpa_encryption_type').hide();
+					$('#tr_wpa_security_key').show();
+					$('#tr_wep_security_key').hide();
+				} else {
+					$('#tr_wpa_encryption_type').show();
+					$('#tr_wpa_security_key').show();
+					$('#tr_wep_security_key').hide();
+				}
+
+				var wmm = parseInt($(data).find("wmm").text());
+				var power = $(data).find("power").text()
+				var key = $(data).find("key").text();
+				var bgn = parseInt($(data).find("bgn").text());
+				var ind = parseInt($(data).find("ind").text());
+				var brd = parseInt($(data).find("brd").text());
+				var mode = parseInt($(data).find("mode").text());
+				var max = parseInt($(data).find("max").text());
+
+				$("#input_ssid").val(ssid);
+				$("#select_wifi_mode").val(bgn);
+				$("#select_wmm_mode").val(wmm);
+				$("#select_tx_power").val(power);
+				$("#select_wifi_security").val(enc_type[0]);
+				$("#select_wpa_encryption_type").val(enc_type[1]);
+				$("#input_wpa_security_key").val(key);
+				$("#tr_wep_security_key_1").val(key);
+
+				if(ch == 0) {
+					$("#select_channel_mode").val(0);
+					$("#tr_channel_select").hide();
+				} else {
+					$("#select_channel_mode").val(1);
+					$("#select_channel_select").val(ch);
+					$("#tr_channel_select").show();
+				}
+
+				document.getElementById("tr_ssid_broadcast").style.visibility="visible";					
+				document.getElementById("tr_wifi_onoff").style.visibility="visible";	
+				document.getElementById("wifi_btn_tr").style.visibility="visible";	
+
+				$("#select_ssid_broadcast").val(brd == 0 ? 'Disable' : 'Enable');
+				$("#select_wifi_onoff").val(ind == 0 ? 'Disable' : 'Enable');
+				reload_compnets(seed);
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+function checkcharwidth(str) {
+		var cArr = str.match(/[^\x00-\xff]/ig);
+		return(cArr == null ? false : true);
+	}
+
+	function checkSpecChar(str) {
+		var ptn=/[&()"'<>`]/im;
+		return ptn.test(str);
+	}
+
+$("#input_default_apn_refresh").die().live('click', function() {
+	load_setting();
+})
+
+
+	$("#submit_wifi").die().live('click', function() {
+		$("#errHint").html('&nbsp;');
+		var ssid = $('#input_ssid').val();
+		if(ssid.length < 4) {
+			$("#errHint").html("SSID too short");
+			$('#input_ssid').focus();
+			return;
+		}
+		if(checkcharwidth(ssid)) {
+			$("#errHint").html('SSID must be ASCII character');
+			$('#input_ssid').focus();
+			return;
+		}
+		if(checkSpecChar(ssid)) {
+			$("#errHint").html('SSID can not contains: & ( ) " \' < > `');
+			$('#input_ssid').focus();
+			return;
+		}
+
+
+
+		var ch_mode = parseInt($('#select_channel_mode').val());
+		var ch = 0;
+		if(ch_mode > 0) {
+			ch = parseInt($('#select_channel_select').val());
+		}
+
+		var enc_type = $('#select_wifi_security').val();
+		var bgn = parseInt($('#select_wifi_mode').val());
+		var wmm = parseInt($('#select_wmm_mode').val());
+		var power = $('#select_tx_power').val()
+		var wpa_option = parseInt($('#select_wpa_encryption_type').val());
+
+		var key = $('#input_wpa_security_key').val();
+
+		if(checkcharwidth(key)) {
+			$("#errHint").html('Wi-Fi key must be ASCII character');
+			$('#input_wpa_security_key').focus();
+			return;
+		}
+
+		if(checkSpecChar(key)) {
+			$("#errHint").html('Wi-Fi key can not contains: & ( ) " \' < > `');
+			$('#input_wpa_security_key').focus();
+			return;
+		}
+
+		var brd = $('#select_ssid_broadcast').val() == 'Enable' ? 1 : 0;
+		var sw = $('#select_wifi_onoff').val() == 'Enable' ? 1 : 0;
+		// var max = $('select[name=max]').val();
+		// var save = $('select[name=save]').val();
+
+		if(enc_type == 1) {
+			if(key.length != 5 && key.length != 13) {
+				$("#errHint").html('KEY WEP length must be 5 or 13');
+				$('#input_wpa_security_key').focus();
+				return;
+			}
+		} else if(enc_type > 1) {
+			if(key.length < 8) {
+				$("#errHint").html('KEY too short(Minimum 8 characters).');
+				$('#input_wpa_security_key').focus();
+				return;
+			}
+			if(key.length > 32) {
+				$("#errHint").html('KEY too Long(Maximum 32 characters).');
+				$('#input_wpa_security_key').focus();
+				return;
+			}
+			if(bgn&0x08 && wpa_option==1){
+				$("#errHint").html('802.11Mode N not support Encryption Type of TKIP.');
+				return;
+			}
+		}
+		// if(!confirm('The Wi-Fi module will be restart, it will cause the Wi-Fi disconnection.')) {
+		// 	return false;
+		// }
+
+		confirm('The Wi-Fi module will be restart, it will cause the Wi-Fi disconnection.',function(){
+			show_tips(seed,"Waiting...");
+
+			var post_data = "ssid=" + esc(ssid) + "&ch=" + ch + "&enc_type=" + enc_type + "&wpa=" + wpa_option + "&bgn=" + bgn + "&wmm=" + wmm + "&power=" + power + "&key=" + esc(key) + "&brd=" + brd + "&sw=" + sw + "&restart=1";
+			//  ajax_post("/wxml/setting_wifi.xml",post_data);
+			//  return true;
+
+			$("#errHint").html('&nbsp;');
+			var headers = {};
+			headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+			$.ajax({
+				url: "/wxml/setting_wifi.xml",
+				type: "Post",
+				headers: headers,
+				timeout: 12000,
+				cache: false,
+				datatype: "xml",
+				data: post_data,
+				success: function(data, status) {
+					var new_token = $(data).find("token").text();
+					if(new_token == "-1") {
+						top.location.reload(true);
+						return false;
+					}
+					$("#csrf_token2").val(new_token);
+					var ssid = parseInt($(data).find("ssid").text());
+					var ch = parseInt($(data).find("ch").text());
+					var enc_type = parseInt($(data).find("enc_type").text());
+					var key = parseInt($(data).find("key").text());
+					var brd = parseInt($(data).find("brd").text());
+					var bgn = parseInt($(data).find("bgn").text());
+					var sw = parseInt($(data).find("sw").text());
+					hide_tips(seed);
+					if(ssid && ch && enc_type && key && brd && bgn && sw) $("#errHint").html('Setting Apply Success!');
+					else $("#errHint").html('Setting Apply Fail!');
+					load_setting();
+					setTimeout(function() {
+						$("#errHint").html('&nbsp;');
+					}, 5000);
+				},
+				error: function(x, t, m) {
+					if(t === "timeout") {
+						top.location.reload(true);
+					}
+					top.location.reload(true);
+				}
+			})
+		},function(){
+
+		});
+
+
+
+
+	});
+
+
+$("#select_wifi_security,#select_channel_mode,#select_sleep_mode,#select_wps_mode").die().live("change", function(){
+	showtables();
+})
+
+
+	function showtables() {
+		// WPS setting show
+		// if ($("#select_wps_mode").val() == "PINCode")
+		//     $("#tr_wps_key").show();
+		// else
+		//     $("#tr_wps_key").hide();
+
+		// wifi security show
+		// alert("???" + $("#select_wifi_security").val() );
+
+		if($("#select_wifi_security").val() == "0") {
+			// $("#tr_wep_security_key").hide();
+			$("#tr_wpa_security_key").hide();
+			$("#tr_wpa_encryption_type").hide();
+			// $("#tr_wep_default_key").hide();
+			// $("#tr_wep_key_type").hide();
+			// $("#tr_wep_key_length").hide();
+
+		} else if($("#select_wifi_security").val() == "1") {
+			// $("#tr_wep_security_key").show();
+			// $("#tr_wep_default_key").show();
+			// $("#tr_wep_key_type").show();
+			// $("#tr_wep_key_length").show();
+			$("#tr_wpa_security_key").show();
+			$("#tr_wpa_encryption_type").hide();
+		} else {
+			// $("#tr_wep_security_key").hide();
+			$("#tr_wpa_security_key").show();
+			$("#tr_wpa_encryption_type").show();
+			$("#select_wpa_encryption_type").val(3);
+			reload_compnets(seed);
+
+			// $("#tr_wep_default_key").hide();
+			// $("#tr_wep_key_type").hide();
+			// $("#tr_wep_key_length").hide();
+		}
+
+		// channel mode show
+		if($("#select_channel_mode").val() == "1")
+			$("#tr_channel_select").show();
+		else
+			$("#tr_channel_select").hide();
+
+		// sleep mode show
+		if($("#select_sleep_mode").val() == "1")
+			$("#tr_sleep_mode_timer").show();
+		else
+			$("#tr_sleep_mode_timer").hide();
+
+		// wps mode show
+		// if ($("#select_wps_onoff").val() == "1"){
+		//     $("#table_wps").show();
+		// }
+		// else{
+		//     $("#table_wps").hide();
+		// }
+	}
+
+
+
+
+			load_setting();
+		}
+	}
+
+	
+
+	
+</script>
+<!-- </head> -->
+
+<body style="margin:0;padding:0;border:0;">
+	<table id="table_main" class="table_main" style="min-height: 575px;">
+		<tr>
+			<td>
+				<h3 class="main_menu">Wi-Fi Settings</h3></td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px;">
+				</br>
+				<h4 style="color:#515151; margin:0;">Wi-Fi Settings</h4>
+				<table style="width:90%;">
+					<tr id="tr_ssid" class="tr_ssid">
+						<td width="37%" class="head_top">SSID</td>
+						<td width="63%" class="tail_top">
+							<input type="text" oncut="" oncopy="" onpaste="" name="input_ssid" id="input_ssid" MaxLength="32"/>
+						</td>
+					</tr>
+					<tr id="tr_wifi_mode" class="tr_wifi_mode">
+						<td width="37%" class="head_top">802.11 Mode</td>
+						<td width="63%" class="tail_top">
+							<select name="select_wifi_mode" id="select_wifi_mode" style="font-size: 12px;">
+								<option selected value="1">2.4 GHz (B)</option>
+								<option value="2">2.4 GHz (G)</option>
+								<option value="8">2.4 GHz (N)</option>
+								<option value="3">2.4 GHz (B+G)</option>
+								<option value="10">2.4 GHz (G+N)</option>
+								<option value="11">2.4 GHz (B+G+N)</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="tr_wmm_mode" class="tr_wmm_mode">
+						<td width="37%" class="head_top">WMM</td>
+						<td width="63%" class="tail_top">
+							<select name="select_wmm_mode" id="select_wmm_mode" style="font-size: 12px;">
+								<option value="1">Enable</option>
+								<option value="0" selected="selected">Disable</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr id="tr_tx_power" class="tr_tx_power">
+						<td width="37%" class="head_top">Tx Power</td>
+						<td width="63%" class="tail_top">
+							<select name="select_tx_power" id="select_tx_power" onchange="" style="font-size: 12px;">
+								<option value="100" selected="selected">HIGH</option>
+								<option value="75">MID</option>
+								<option value="50">LOW</option>
+							</select>
+						</td>
+					</tr>
+					<!-- //##zzang.11.17 In webcm gui v1.4, beacon menu is removed
+						<tr id="tr_beacon_int" class = "tr_beacon_int">
+                            <td width="37%" class="head_top">BEACON</td>
+                            <td width="63%" class="tail_top">
+                                <input type="text" oncut="" oncopy="" onpaste="" name="input_beacon_int" id="input_beacon_int"  MaxLength="3" style="font-size: 12px;" />	ms(Range 20~999)
+                            </td>
+						</tr>
+-->
+					<tr id="tr_wifi_security" class="tr_wifi_security">
+						<td width="37%" class="head_top">Wireless Security</td>
+						<td width="63%" class="tail_top">
+							<select name="select_wifi_security" id="select_wifi_security"  style="font-size: 12px;">
+								<option selected value="0">Disabled</option>
+								<!-- <option value="1">WEP</option> -->
+								<option value="2">WPA-PSK</option>
+								<option value="3">WPA2-PSK</option>
+								<option value="4">WPA-PSK/WPA2-PSK</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="tr_wpa_encryption_type" class="tr_wpa_encryption_type">
+						<td width="37%" class="head_top">Wireless Encryption Type</td>
+						<td width="63%" class="tail_top">
+							<select name="select_wpa_encryption_type" id="select_wpa_encryption_type"  style="font-size: 12px;">
+								<option value="1">TKIP</option>
+								<option value="2">AES</option>
+								<option selected value="3">AES+TKIP</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="tr_wpa_security_key" class="tr_wpa_security_key">
+						<td width="37%" class="head_top">Security Key</td>
+						<td width="63%" class="tail_top">
+							<input type="text" oncut="" oncopy="" onpaste="" name="input_wpa_security_key" id="input_wpa_security_key" MaxLength="32" />
+						</td>
+					</tr>
+					<tr id="tr_wep_security_key" class="tr_wep_security_key" style="display:none;">
+						<td width="37%" class="head_top">WEP Key</td>
+						<td width="63%" class="tail_top">
+							<input type="text" oncut="" oncopy="" onpaste="" name="tr_wep_security_key_1" id="tr_wep_security_key_1" MaxLength="13" style="font-size: 12px;" />
+							<!-- <input type="text" oncut="" oncopy="" onpaste="" name="tr_wep_security_key_1" id="tr_wep_security_key_2"  MaxLength="13" style="font-size: 12px;" />
+                                <input type="text" oncut="" oncopy="" onpaste="" name="tr_wep_security_key_1" id="tr_wep_security_key_3"  MaxLength="13" style="font-size: 12px;" />
+                                <input type="text" oncut="" oncopy="" onpaste="" name="tr_wep_security_key_1" id="tr_wep_security_key_4"  MaxLength="13" style="font-size: 12px;" /> -->
+						</td>
+					</tr>
+					<!-- <tr id="tr_wep_key_type" class = "tr_wep_key_type">
+                            <td width="37%" class="head_top">WEP INPUT</td>
+                            <td width="63%" class="tail_top">
+                                <select name="select_wep_key_type" id="select_wep_key_type"  style="font-size: 12px;">
+                                    <option value="HEX" selected="selected">HEX</option>
+                                    <option value="ASCII">ASCII</option>
+                                </select>
+                            </td>
+						</tr>
+						<tr id="tr_wep_key_length" class = "tr_wep_key_length">
+                            <td width="37%" class="head_top">WEP KEY TYPE</td>
+                            <td width="63%" class="tail_top">
+                                <select name="select_wep_key_length" id="select_wep_key_length"  style="font-size: 12px;">
+                                    <option value="64Bit" selected="selected">64Bit</option>
+                                    <option value="128Bit">128Bit</option>
+                                </select>
+                            </td>
+						</tr>
+						<tr id="tr_wep_default_key" class = "tr_wep_default_key">
+                            <td width="37%" class="head_top">wep_current_key</td>
+                            <td width="63%" class="tail_top">
+                                <select name="select_wep_default_key" id="select_wep_default_key" onchange="" style="font-size: 12px;">
+                                    <option value="0" selected="selected">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </td>
+						</tr> -->
+					<tr id="tr_channel_mode" class="tr_channel_mode">
+						<td width="37%" class="head_top">Channel Mode</td>
+						<td width="63%" class="tail_top">
+							<select name="select_channel_mode" id="select_channel_mode"  style="font-size: 12px;">
+								<option value="0">Automatic</option>
+								<option value="1" selected="selected">Manual</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="tr_channel_select" class="tr_channel_select" style="display: none;">
+						<td width="37%" class="head_top">Channel Selection</td>
+						<td width="63%" class="tail_top">
+							<select name="select_channel_select" id="select_channel_select" onchange="" style="font-size: 12px;">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11" selected="selected">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="tr_sleep_mode" class="tr_sleep_mode" style="display:none">
+						<td width="37%" class="head_top">Sleep Mode</td>
+						<td width="63%" class="tail_top">
+							<select name="select_sleep_mode" id="select_sleep_mode"  style="font-size: 12px;">
+								<option value="Enable">Enable</option>
+								<option value="Disable" selected="selected">Disable</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="tr_sleep_mode_timer" class="tr_sleep_mode_timer" style="display:none">
+						<td width="37%" class="head_top">Sleep Mode Timer</td>
+						<td width="63%" class="tail_top">
+							<select name="select_sleep_mode_timer" id="select_sleep_mode_timer" onchange="" style="font-size: 12px;">
+								<option value="10">10</option>
+								<option value="20">20</option>
+								<option value="30" selected="selected">30</option>
+								<option value="60">60</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="tr_ssid_broadcast" class="tr_ssid_broadcast" style="visibility: hidden;">
+						<td width="37%" class="head_top">SSID Broadcast</td>
+						<td width="63%" class="tail_top">
+							<select name="select_ssid_broadcast" id="select_ssid_broadcast" onchange="" style="font-size: 12px;">
+								<option value="Enable">Enable</option>
+								<option value="Disable" selected="selected">Disable</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="tr_wifi_onoff" class="tr_wifi_onoff" style="visibility: hidden;">
+						<td width="37%" class="head_top">Wi-Fi Module</td>
+						<td width="63%" class="tail_top">
+							<select name="select_wifi_onoff" id="select_wifi_onoff" onchange="" style="font-size: 12px;">
+								<option value="Enable">Enable</option>
+								<option value="Disable" selected="selected">Disable</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="tr_wps_onoff" class="tr_wps_onoff" style="display:none">
+						<td width="37%" class="head_top">WPS on/off</td>
+						<td width="63%" class="tail_top">
+							<select name="select_wps_onoff" id="select_wps_onoff" onchange="" style="font-size: 12px;">
+								<option value="Enable">Enable</option>
+								<option value="Disable" selected="selected">Disable</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="3" id="errHint" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;color:red;">&nbsp;</td>
+
+					</tr>
+
+					<tr style="visibility: hidden;" id="wifi_btn_tr">
+						<td colspan="3" align="right" height="47px">
+							<button class="btn-Green" id="submit_wifi"><span><em>Apply</em></span></button>
+							<button class="btn-Green" oncut="return false" oncopy="return false" onpaste="return false"  id="input_default_apn_refresh"  ><span><em>Update</em></span></button>
+						</td>
+					</tr>
+				</table>
+
+				<table id="table_wps" class="table_wps" align="left" style="border: 0px;width:650px;display:none;">
+					<tr>
+						<td>
+							</br>
+							<h4 style="color:#515151; margin:0;">WPS Settings</h4>
+							<table style="width:90%;">
+								<tr id="tr_wps_mode" class="tr_wps_mode">
+									<td width="37%" class="head_top">WPS</td>
+									<td width="63%" class="tail_top">
+										<select name="select_wps_mode" id="select_wps_mode"  style="font-size: 12px;">
+											<option value="PushButton" selected="selected">PushButton</option>
+											<option value="PINCode">PINCode</option>
+											<option value="Disable">Disconnect</option>
+										</select>
+									</td>
+								</tr>
+								<tr id="tr_wps_key" class="tr_wps_key">
+									<td width="37%" class="head_top">WPS_PIN</td>
+									<td width="63%" class="tail_top">
+										Please enter your wps pin : <input type="text" oncut="" oncopy="" onpaste="" name="input_wps_key" id="input_wps_key" MaxLength="8" style="font-size: 12px;" />
+									</td>
+								</tr>
+								<tr id="tr_wps_connect" class="tr_wps_connect">
+									<td colspan="3" align="right">
+										<input type="button" oncut="return false" oncopy="return false" onpaste="return false" value="WPS Connect" id="WPS_start" onClick="OnConnect()">
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+</body>
+<!-- </html> -->

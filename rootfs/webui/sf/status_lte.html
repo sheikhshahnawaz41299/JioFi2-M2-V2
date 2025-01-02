@@ -1,0 +1,275 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>LTE Status</title> -->
+<script>
+	if(top.location.pathname != "/index.htm" && top.location.pathname != "/") top.location.href = "./index.htm";
+	$(document).ready(function() {
+
+	});
+var pop_lock_net = 0;
+
+function load_mark(url) {
+	if(interval_timer) clearInterval(interval_timer);
+	if(url == "status_lte.html") {
+		pop_lock_net = 0;
+
+	function hide_lte_status() {
+		$("#input_connection_time").val("");
+		$("#input_operating_mode").val("");
+		$("#input_operation_band").val("");
+		$("#input_bandwidth").val("");
+		$("#input_EARFCN").val("");
+		$("#input_active_cell_id").val("");
+		$("#input_PLMN").val("");
+		$("#input_APN_in_use").val("");
+		$("#input_global_physical_cell_id").val("");
+		$("#input_ECGI").val("");
+		$("#input_RSRP").val("");
+		$("#inpur_RSRQ").val("");
+
+		$("#input_SINR").val("");
+	}
+
+
+	function show_lte_status(st_lte) {
+		if(st_lte.hlpmn == 0 && (st_lte.attach == 1 || st_lte.attach == 2)) {
+			st_lte.attach = 4;
+			if(pop_lock_net == 0) {
+				pop_lock_net = 1;
+				alert("Network Locked! Please Insert Valid JIO SIM Card!");
+			}
+		}
+		if(isNaN(st_lte.attach)) st_lte.attach=0;
+		$("#input_connected_status").val(conn_st[st_lte.attach]);
+		if(st_lte.attach > 4) {
+			$("#input_connected_status").css('color', "red");
+			$('#unlock_uim').show();
+		} else {
+			$("#input_connected_status").css('color', "black");
+			$('#unlock_uim').hide();
+		}
+		if(st_lte.attach != 1) {
+			hide_lte_status();
+			return;
+		}
+
+		var freq_info = st_lte.freq_info.split(",");
+		var cell_info = st_lte.cell_info.split(",");
+		var rssi_info = st_lte.rssi_info.split(",");
+		// if (st_lte.attach==0)
+		// {
+		$("#input_connection_time").val(st_lte.time);
+		$("#input_operating_mode").val(freq_info[7]);
+		$("#input_operation_band").val('Band' + freq_info[6]);
+		$("#input_bandwidth").val(freq_info[4]);
+		$("#input_EARFCN").val(freq_info[5]);
+		$("#input_active_cell_id").val(cell_info[2]);
+		$("#input_PLMN").val(cell_info[0]);
+		$("#input_APN_in_use").val(st_lte.apn);
+		$("#input_global_physical_cell_id").val(cell_info[1]);
+
+		$("#input_ECGI").val(cell_info[3]);
+		$("#input_RSRP").val(rssi_info[0]);
+		$("#inpur_RSRQ").val(rssi_info[1]);
+		$("#input_SINR").val(rssi_info[2]);
+
+		// }
+		// else
+		// {
+
+		// }
+	}	
+
+
+		function load_lte_status() {
+		$.ajax({
+			url: '/st_lte.w.xml',
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: null,
+			success: function(data, status) {
+				var cspn = $(data).find("cspn").text();
+				var pin = parseInt($(data).find("pin").text());
+				var puk = parseInt($(data).find("puk").text());
+				if(pin > 1) {
+					if(pin == 2) {
+						st_lte.attach = 5;
+					}
+					if(pin == 3) {
+						if(puk > 0) st_lte.attach = 6;
+						else st_lte.attach = 7;
+					}
+					if(pin == 4) {
+						st_lte.attach = 3;
+					}
+				}
+				if(cspn == -1 || cspn == 'Please Insert Card') st_lte.attach = 3;
+				else if(pin == 0 || pin == 1 || isNaN(pin)) {
+					st_lte.attach = parseInt($(data).find("attach").text());
+				}
+
+				// st_lte.attach=parseInt($(data).find("attach").text());
+				st_lte.time = $(data).find("time").text();
+				st_lte.freq_info = $(data).find("freq_info").text();
+				st_lte.cell_info = $(data).find("cell_info").text();
+				st_lte.apn = $(data).find("apn").text();
+				st_lte.rssi_info = $(data).find("rssi_info").text();
+				st_lte.hlpmn = parseInt($(data).find("hplmn").text());
+				show_lte_status(st_lte);
+			},
+			error: function(x, t, m) {
+				hide_lte_status();
+			}
+		});
+	}
+
+
+		load_lte_status();
+		interval_timer = setInterval(load_lte_status, refresh_time * 1000);
+	}
+}
+
+
+
+	var conn_st = ["Unknown", "Attached", "Detached", "No SIM", "Invalid SIM", "PIN Lock", "PIN Block", "PUK Block"];
+
+	var st_lte = {
+		attach: null,
+		time: null,
+		freq_info: null,
+		cell_info: null,
+		apn: null,
+		rssi_info: null,
+		hlpmn: null
+	}
+
+	
+
+	$('#unlock_uim').die().live('click', function() {
+		load_page('set_lte.html');
+	});
+
+
+
+	
+
+
+
+	
+</script>
+<!-- 	</head> -->
+<!-- 	<body style="margin:0;padding:0;border:0;font-family:Meiryo, Tahoma, Sans-serif;"> -->
+<table class="table_main" align="left">
+	<tr>
+		<td>	
+			<h3 class="main_menu">LTE Status</h3>
+		</td>
+	</tr>
+	<tr>
+		<td class="_td" style="padding-left: 50px;">
+			<br />
+			<h4 id="sub_basic_info" class="small_menu">Basic Information</h4>
+			<table  style="width:90%;">
+				<tr id="Connected_status">
+					<td class="head_top">Connected Status</td>
+					<td class="tail_top" height="47px">
+						<input id="input_connected_status" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on"/>
+						<button id="unlock_uim" class="btn-Green-small" style="display:none;"><span><em>Unlock</em></span></button>
+					</td>
+				</tr>
+				<tr id="Connection_time">
+					<td class="head_top">Connection Time</td>
+					<td class="tail_top">
+						<input id="input_connection_time" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on"/>
+					</td>
+				</tr>
+
+			</table>
+			</br>
+			<h4 id="sub_network_info" class="small_menu" style="color:#515151; margin:0;">Network Information</h4>
+			<table id="T_network_info" style="width:90%;">
+				<tr id="Operating_mode">
+					<td class="head_top">Operating Mode</td>
+					<td class="tail_top">
+						<input id="input_operating_mode" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+				<tr id="Operation_band">
+					<td class="head_top">Operation Band</td>
+					<td class="tail_top">
+						<input id="input_operation_band" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on"/>
+					</td>
+				</tr>
+				<tr id="Bandwidth">
+					<td class="head_top">Bandwidth</td>
+					<td class="tail_top">
+						<input id="input_bandwidth" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on"/>
+					</td>
+				</tr>
+				<tr id="Earfcn">
+					<td class="head_top">EARFCN</td>
+					<td class="tail_top">
+						<input id="input_EARFCN" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+				<tr id="Active_cell_id">
+					<td class="head_top">Physical Cell ID</td>
+					<td class="tail_top">
+						<input id="input_active_cell_id" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+				<tr id="Plmn">
+					<td class="head_top">PLMN</td>
+					<td class="tail_top">
+						<input id="input_PLMN" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+				<tr id="Apn_in_use">
+					<td class="head_top">APN In Use</td>
+					<td class="tail_top">
+						<input id="input_APN_in_use" maxlength="64" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+				<tr id="Global_physical_cell_id">
+					<td class="head_top">Global Cell ID</td>
+					<td class="tail_top">
+						<input id="input_global_physical_cell_id" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+
+				<tr id="ECGI">
+					<td class="head_top">ECGI</td>
+					<td class="tail_top">
+						<input id="input_ECGI" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+				<tr id="Rsrp">
+					<td class="head_top">RSRP</td>
+					<td class="tail_top">
+						<input id="input_RSRP" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+				<tr id="Rsrq">
+					<td class="head_top">RSRQ</td>
+					<td class="tail_top">
+						<input id="inpur_RSRQ" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+
+				<tr id="Sinr">
+					<td class="head_top">SINR</td>
+					<td class="tail_top">
+						<input id="input_SINR" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" />
+					</td>
+				</tr>
+
+			</table>
+			</br>
+
+		</td>
+	</tr>
+</table>
+<!-- 	</body>
+</html> -->

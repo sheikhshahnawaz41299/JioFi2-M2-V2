@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<port_filter>
+<enable>set_port_filter_enable(mode)</enable>
+<port0>set_port_filter_item(0,from0,to0)</port0>
+<port1>set_port_filter_item(1,from1,to1)</port1>
+<port2>set_port_filter_item(2,from2,to2)</port2>
+<port3>set_port_filter_item(3,from3,to3)</port3>
+<port4>set_port_filter_item(4,from4,to4)</port4>
+<port5>set_port_filter_item(5,from5,to5)</port5>
+<port6>set_port_filter_item(6,from6,to6)</port6>
+<port7>set_port_filter_item(7,from7,to7)</port7>
+<port8>set_port_filter_item(8,from8,to8)</port8>
+<port9>set_port_filter_item(9,from9,to9)</port9>
+<commit>firewall_commit()</commit>
+</port_filter>

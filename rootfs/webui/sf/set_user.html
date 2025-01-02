@@ -1,0 +1,399 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>User Management</title>-->
+<script>
+	if(top.location.pathname != "/index.htm") top.location.href = "./index.htm";
+	var SUPER_USER_ID = "administrator";
+	var OPERATOR_USER_ID = "operator";
+	var END_USER_ID = "admin";
+	var END_USER_ID_READ = "admin";
+
+	$(document).ready(function() {
+
+	});
+
+	
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "set_user.html") {
+
+var xp_norndisdrv = <% get_xp_norndisdrv(); %>;
+//	var xp_norndisdrv=1;
+	var login_username, login_pwd;
+	var token_used;
+	function load_setting() {
+		$.ajax({
+			url: "mark_set_sys.w.xml",
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			success: function(data, status) {
+				login_username = $(data).find("login_username").text();
+				login_pwd = $(data).find("login_pwd").text();
+				var refresh = $(data).find("refresh").text();
+				var timeout = $(data).find("login_timeout").text();
+				login_timeout=timeout;
+				$("#login_user").val(login_username);
+				$("#Text_REFRESH_TIME_OUT").val(refresh);
+				$("#Text_TIME_OUT").val(timeout);
+				reload_compnets(seed);
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+function checkcharwidth(str) {
+		var cArr = str.match(/[^\x00-\xff]/ig);
+		return(cArr == null ? false : true);
+	}
+
+	$("#btn_update_login").die().live('click', function() {
+
+		$("#errHint1").html('&nbsp;');
+		if($('#login_pwd_new').val() != $('#login_pwd_new_confirm').val()) {
+			$("#errHint1").html("The passwords do not match!");
+			$('#login_pwd_new_confirm').focus();
+			return false;
+		}
+
+		if($('#login_pwd').val() != login_pwd) {
+			$("#errHint1").html("Please input correct password!");
+			$('#login_pwd').focus();
+			return false;
+		}
+
+		var pwd = $('#login_pwd_new').val();
+
+		if($('#login_user').val() != login_username) {
+			login_username = $('#login_user').val();
+		}
+
+		if(checkcharwidth(login_username)) {
+			$("#errHint1").html('Username must be ASCII character');
+			$('#login_user').focus();
+			return false;
+		}
+
+		if(checkcharwidth(pwd)) {
+			$("#errHint1").html('Password must be ASCII character');
+			$('#login_pwd_new').focus();
+			return false;
+		}
+
+		if($('#login_user').val().length < 5) {
+			$('#login_user').focus();
+			$("#errHint1").html("Username too short");
+			return false;
+		}
+
+		if(pwd.length < 5) {
+			$('#login_pwd_new').focus();
+			$("#errHint1").html("Password too short");
+			return false;
+		}
+
+		var post_data = 'username=' + esc(login_username) + '&password=' + esc(pwd);
+
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: "/wxml/set_sys.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: post_data,
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				var ret0 = parseInt($(data).find("user").text());
+				var ret1 = parseInt($(data).find("pwd").text());
+
+				if(ret0 && ret1) {
+					alert('Setting Apply Success!');
+					var headers = {};
+					headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+					$.ajax({
+						url: "/wxml/login_exit.xml",
+						type: "Post",
+						headers: headers,
+						timeout: 8000,
+						cache: false,
+						datatype: "xml",
+						data: {
+							logout: '1'
+						},
+						success: function(data, status) {
+							var new_token = $(data).find("token").text();
+							if(new_token == "-1") {
+								top.location.reload(true);
+								return false;
+							}
+							$("#csrf_token2").val(new_token);
+						},
+						error: function(x, t, m) {
+							if(t === "timeout") {
+
+							}
+						}
+					})
+				} else $("#errHint1").html('Setting Apply Fail!');
+				load_setting();
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+
+	});
+
+//	function UpdateTimeout()
+$("#BTN_UpdateTime").click(function(){
+		var timeout = $("#Text_TIME_OUT").val();
+		//var refresh_timeout_update = $("#Text_REFRESH_TIME_OUT").val() * 60;
+		var refresh = $("#Text_REFRESH_TIME_OUT").val();
+
+		if(timeout < 3 || timeout > 60) {
+			$("#errHint2").html('Please input number in Range [3,60]!');
+			$("#Text_TIME_OUT").focus();
+			return false;
+		}
+		if(refresh < 10 || refresh > 300) {
+			$("#errHint2").html('Please input number in Range [10,300]!');
+			$("#Text_REFRESH_TIME_OUT").focus();
+			return false;
+		}
+
+		var post_data = 'refresh=' + esc(refresh) + '&timeout=' + esc(timeout);
+
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: "/wxml/set_sys.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: post_data,
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				var ret0 = parseInt($(data).find("refresh").text());
+				var ret1 = parseInt($(data).find("timeout").text());
+
+				if(ret0 && ret1) {
+					$("#errHint2").html('Setting Apply Success!');
+				} else $("#errHint2").html('Setting Apply Fail!');
+				load_setting();
+				setTimeout(function() {
+					$("#errHint2").html('&nbsp;');
+				}, 5000);
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+
+	})
+
+//	function Restore_Setting() {
+$("#BTN_Restore_Setting").click(function(){
+
+		confirm("All the device setting will be reset to factory default setting, Do you want to continue?",function(){
+			var headers = {};
+			headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+			$.ajax({
+				url: "/wxml/set_restore.xml",
+				type: "Post",
+				headers: headers,
+				timeout: 25000,
+				cache: false,
+				datatype: "xml",
+				data: {
+					restore: 1
+				},
+				success: function(data, status) {
+					var new_token = $(data).find("token").text();
+					if(new_token == "-1") {
+						top.location.reload(true);
+						return false;
+					}
+					$("#csrf_token2").val(new_token);
+					alert('Setting Apply Success!');
+
+				},
+				error: function(x, t, m) {
+					if(t === "timeout") {
+						alert('Setting Apply Fail!');
+					}
+				}
+			})
+
+			return false;
+		},function(){
+			
+		})
+
+	})
+
+	function download_driver() {
+		var iframe;
+		iframe = document.getElementById("iframe_backup");
+		iframe.src = 'Setup.exe?dl=1';
+	}
+
+
+
+
+
+			if(parseInt(xp_norndisdrv) == 1) {
+				$("#div_dl_drv").show();
+			}
+			load_setting();
+		}
+	}
+
+	
+
+
+
+</script>
+<!-- </head> -->
+
+<body style="margin:0;padding:0;border:0;">
+	<table class="table_main" align="left" width=100%>
+		<tr>
+			<td>
+				<h3 class="main_menu">User Management</h3></td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px;">
+				</br>
+				<h4 class="small_menu" align="left" style="color:#515151; margin:0;">Account Management</h4>
+				<table style="width:90%;">
+					<tr id="Super_username">
+						<td width="37%" class="head_top">Username</td>
+						<td width="63%" class="tail_top">
+							<input id="login_user" maxlength="20" size="20" type="text" style="margin-top: 0;" />
+						</td>
+					</tr>
+					<tr id="Super_passwd">
+						<td width="37%" class="head_top">Password</td>
+						<td width="63%" class="tail_top">
+							<input id="login_pwd" maxlength="20" size="20" type="password" style="margin-top: 0;" />
+						</td>
+					</tr>
+					<tr id="New_super_passwd">
+						<td width="37%" class="head_top">New Password</td>
+						<td width="63%" class="tail_top">
+							<input id="login_pwd_new" maxlength="20" size="20" type="password" style="" />
+						</td>
+					</tr>
+					<tr id="Confirm_new_suer_passwd">
+						<td width="37%" class="head_top">Confirm Password</td>
+						<td width="63%" class="tail_top">
+							<input id="login_pwd_new_confirm" maxlength="20" size="20" type="password" style="" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3" id="errHint1" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;color:red;height:18px;">&nbsp;</td>
+					</tr>
+
+					<tr id="User_Pwd_Update">
+						<td align="right" colspan="3" height="47px">
+							<button id="btn_update_login" class="btn-Green"><span><em>Apply</em></span></button>
+						</td>
+					</tr>
+				</table>
+				</br>
+				<h4 class="small_menu" align="left" style="color:#515151; margin:0;">Language Setting</h4>
+				<table style="width:90%;">
+					<tr id="Conf_language">
+						<td width="37%" class="head_top">Language</td>
+						<td width="63%" class="tail_top">
+							<select name="select_conf_language" id="select_conf_language" onchange="">
+								<option vlaue="English" selected="selected">English</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				</br>
+				<h4 class="small_menu" align="left" style="color:#515151; margin:0;">Device Setting</h4>
+				<table style="width:90%;">
+					<tr id='Session_timeout'>
+						<td width="37%" class="head_top"> Management Session Timeout </td>
+						<td width="63%" class="tail_top">
+							<input id="Text_TIME_OUT" maxlength="4" size="10" type="number" min="3" max="60" />MIN
+							<!-- onchange="ValidateTimeout()"  -->
+						</td>
+					</tr>
+
+					<tr id='Refresh_timeout'>
+						<td width="37%" class="head_top"> GUI Refresh Time </td>
+						<td width="63%" class="tail_top">
+							<input id="Text_REFRESH_TIME_OUT" maxlength="4" size="10" type="number" min="10" max="300"/>SEC
+							<!-- onchange="ValidateTimeout()" -->
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3" id="errHint2" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;color:red;height:18px;">&nbsp;</td>
+					</tr>
+					<tr id='Conf_timeout_btn'>
+						<td colspan="3" align="right" height="47px">
+							<button class="btn-Green" style="width:190px;float: right;padding-left:20px;" id="BTN_UpdateTime"><span><em>Update Timeout</em></span></button>
+						</td>
+					</tr>
+				</table>
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">Restore Default Settings</h4>
+				<table style="width:90%;">
+					<tr id="Restore_setting">
+						<td align="right" height="47px">
+
+							<button class="btn-Green" style="width:190px;float: right;padding-left:20px;" id="BTN_Restore_Setting"><span><em>Restore Settings</em></span></button>
+						</td>
+					</tr>
+				</table>
+				<div id="div_dl_drv" style="display:none;">
+					<h4 class="small_menu" style="color:#515151; margin:0;">Driver Download</h4>
+					<iframe name="iframe_drv" id="iframe_drv" style="display:none"> </iframe>
+					<!--<form name="form2" id="form2" method="post" enctype="multipart/form-data" action="upload">-->
+					<table id="T_drv_dl" style="width:90%;">
+						<tr>
+							<td width="37%" class="head_top">Driver</td>
+							<td width="63%" class="tail_top">
+								<button class="btn-Green" id="btn_dl_drv" name="btn_dl_drv" onclick="download_driver()"><span><em>Download</em></span></button>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<iframe name="iframe_backup" id="iframe_backup" style="display:none"> </iframe>
+			</td>
+		</tr>
+	</table>
+	</td>
+	</tr>
+	</table>
+	<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+</body>
+<!-- </html> -->

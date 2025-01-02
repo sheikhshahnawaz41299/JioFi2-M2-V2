@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wds>
+<del_all>set_wifi_wds_list_del_all(all)</del_all>
+<no5>set_wifi_wds_list_del(page*5+no5)</no5>
+<no4>set_wifi_wds_list_del(page*5+no4)</no4>
+<no3>set_wifi_wds_list_del(page*5+no3)</no3>
+<no2>set_wifi_wds_list_del(page*5+no2)</no2>
+<no1>set_wifi_wds_list_del(page*5+no1)</no1>
+</wds>

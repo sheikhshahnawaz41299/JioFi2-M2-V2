@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmz>
+<dmz_enable>set_dmz_enable(dmz_enable)</dmz_enable>
+<dmz_ip>set_dmz_ip(dmz_ip)</dmz_ip>
+<commit>firewall_commit()</commit>
+</dmz>

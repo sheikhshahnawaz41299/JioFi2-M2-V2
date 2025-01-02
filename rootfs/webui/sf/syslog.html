@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="telephone=no" name="format-detection" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>MF800 Web Admin</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<script type="text/javascript" src="until.js" charset="utf-8"></script>
+<script type="text/javascript">
+if(window==top) location.href="index.htm";
+<!-- 
+document.oncontextmenu=function(e){return false;} 
+// -->
+document.onmousedown=function(e){
+var e=e||window.event;
+if(e.button&2)
+{
+document.oncontextmenu=function(e){return false;}
+return false;
+}	
+}
+</script>
+<style type="text/css">
+textarea{}
+</style>
+
+</head>
+<body>
+<div id="container">
+<div id="navi"><li><a class="sel" href="home.html">Home</a></li><li><a class="navi" href="connection.html">Connection</a></li><li><a class="navi">SMS</a></li><li><a class="navi" href="setting.html">Setting</a></li><li><a class="navi" href="statistics.html">Statistics</a></li><li><a class="navi" href="about.html">About</a></li></div>
+<div id="mainContent">
+<div id="sidebar">
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu"><a class="side">Basic Status</a></div>
+<div id="sidemenu"><a class="side" href="setting.html" >Quick Setting</a></div>
+<div id="sidemenu"><a class="side" href="console.html">Console</a></div>
+<div id="sidemenu"><a class="sidesel" href="syslog.html">Log</a></div>
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu_df78a">MF800</div>
+</div>
+<div id="content">
+<h2 class="title">Log</h2>
+<hr size=1 style="color:#C0C0C0">
+<script type="text/javascript">
+function enableTextField (field) {
+  if (document.all || document.getElementById)
+    field.disabled = false;
+  else {
+    field.onfocus = field.oldOnFocus;
+  }
+}
+
+function disableTextField (field) {
+  if (document.all || document.getElementById)
+    field.disabled = true;
+  else {
+    field.oldOnFocus = field.onfocus;
+    field.onfocus = skip;
+  }
+}
+
+function updateStateSys(){
+if($('syslogEnabled').checked){
+disableTextField($('wlanlogEnabled'));
+disableTextField($('doslogEnabled'));
+}
+else {
+enableTextField($('wlanlogEnabled'));
+enableTextField($('doslogEnabled'));
+}
+}
+
+function updateState(obj){
+if(obj.id=='logEnabled'){
+	if($('logEnabled').checked){
+	enableTextField($('syslogEnabled'));
+	enableTextField($('wlanlogEnabled'));
+	enableTextField($('doslogEnabled'));
+	updateStateSys();
+	}
+	else {
+	disableTextField($('syslogEnabled'));
+	disableTextField($('wlanlogEnabled'));
+	disableTextField($('doslogEnabled'));
+	}	
+}
+else if(obj.id=='syslogEnabled'){
+	updateStateSys();
+}
+
+if($('logEnabled').checked) tmp_log_enable |= 1;
+else tmp_log_enable &= ~1;
+
+if($('syslogEnabled').checked) tmp_log_enable |= 2;
+else tmp_log_enable &= ~2;
+if($('wlanlogEnabled').checked) tmp_log_enable |= 4;
+else tmp_log_enable &= ~4;
+if($('doslogEnabled').checked) tmp_log_enable |= 8;
+else tmp_log_enable &= ~8;
+flag1=0;
+var parelog = "enable="+tmp_log_enable+"&logflag="+flag1;
+if(tmp_log_enable!=logEnabled){
+  ajax_post('/wxml/set_log.xml',parelog);
+ }
+}
+
+window.onload =function(){
+startRequest('mark_log.w.xml');
+timer = window.setInterval("startRequest('mark_log.w.xml')",1000);
+}
+
+var fresh_flag = 1;
+function refresh_log(){
+  fresh_flag = 1;
+  
+}
+
+var logEnabled,tmp_log_enable;
+function GetHandler(){
+logEnabled = x_v('enable');
+tmp_log_enable = logEnabled;
+if(logEnabled & 1) 
+$('logEnabled').checked = 1;
+else
+$('logEnabled').checked = 0;
+
+if((logEnabled>>1) & 1)
+$('syslogEnabled').checked = 1;
+else
+$('syslogEnabled').checked = 0;
+
+if((logEnabled>>2) & 1)
+$('wlanlogEnabled').checked = 1;
+else
+$('wlanlogEnabled').checked = 0;
+
+if((logEnabled>>3) & 1)
+$('doslogEnabled').checked = 1;
+else
+$('doslogEnabled').checked = 0;
+updateState($('logEnabled'));
+    if(fresh_flag == 1)
+	{
+	    fresh_flag=0;
+		var content7= x_v('line7');
+		
+		if(content7!='0'){
+			$('display_area').value += content7;
+			$('display_area').scrollTop = $('display_area').scrollHeight;
+		}
+		var content6= x_v('line6');
+		
+		if(content6!='0'){
+			$('display_area').value += content6;
+			$('display_area').scrollTop = $('display_area').scrollHeight;
+		}
+		var content5= x_v('line5');
+		
+		if(content5!='0'){
+			$('display_area').value += content5;
+			$('display_area').scrollTop = $('display_area').scrollHeight;
+		}
+		var content4= x_v('line4');
+		
+		if(content4!='0'){
+			$('display_area').value += content4;
+			$('display_area').scrollTop = $('display_area').scrollHeight;
+		}
+		var content3= x_v('line3');
+		
+		if(content3!='0'){
+			$('display_area').value += content3;
+			$('display_area').scrollTop = $('display_area').scrollHeight;
+		}
+		var content2= x_v('line2');
+	
+		if(content2!='0'){
+			$('display_area').value += content2;
+			$('display_area').scrollTop = $('display_area').scrollHeight;
+		}
+		var content1= x_v('line1');
+		
+		if(content1!='0'){
+			$('display_area').value += content1;
+			$('display_area').scrollTop = $('display_area').scrollHeight;
+		}
+		var content0= x_v('line0');
+		if(content0!='0'){
+			$('display_area').value += content0;
+			$('display_area').scrollTop = $('display_area').scrollHeight;
+		}
+	}
+}
+
+function clear_log(){
+ $('display_area').value="";
+}
+
+function start_log(){
+var logenble  = x_v('enable');
+ flag1 = 1;
+var parelog = "enable="+logenble+"&logflag="+flag1;
+	ajax_post('/wxml/set_log.xml',parelog);
+}
+
+function PostHandler(url){
+startRequest('mark_log.w.xml');
+}
+
+</script>
+
+<div style="margin-left:20px;font-size:12px;">
+<div><input type="checkbox" id="logEnabled" value="ON" onClick="updateState(this)">&nbsp;&nbsp;Enable Log</div>
+<div>
+<input type="checkbox" id="syslogEnabled" value="ON" onClick="updateState(this)">system all
+<input type="checkbox" id="wlanlogEnabled" value="ON" onClick="updateState(this)">wireless
+<input type="checkbox" id="doslogEnabled"  value="ON" onClick="updateState(this)">DoS
+</div> 
+
+<td width=30 valign="top"><button class="button" onclick= "start_log()"><span><em>Apply</em></span></button></td>
+
+<textarea id="display_area" style="resize:none;width:630px;height:260px;">
+</textarea>
+<td width=30 valign="top"><button class="button" onclick= "clear_log()"><span><em>Clear</em></span></button>
+   <button class="button"  onclick= "refresh_log()"><span><em>Refresh</em></span></button>
+</td>
+
+</div>
+</div></div>
+<div id="footer">Copyright &copy; 2014 We-wins Inc. All Rights Reserved.</div>
+</div></body></html>

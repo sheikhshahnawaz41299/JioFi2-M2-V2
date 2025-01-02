@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<title>
+<login>2</login>
+<lang><% get_lang(); %></lang>
+<dsc><% get_version_dsc(); %></dsc>     
+<wifi><% get_wifi_ind(); %></wifi>
+<batt><% get_battery_ind(); %></batt>
+<batt_p><% get_batt_percent(); %></batt_p>
+<fota>99</fota>
+</title>

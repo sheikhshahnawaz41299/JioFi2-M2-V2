@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ip_filter>
+<dsc><% get_version_dsc(); %></dsc>
+<enable><% get_ip_filter_enable(); %></enable>
+<ip><% get_ip_filter_item("0"); %></ip>
+<ip><% get_ip_filter_item("1"); %></ip>
+<ip><% get_ip_filter_item("2"); %></ip>
+<ip><% get_ip_filter_item("3"); %></ip>
+<ip><% get_ip_filter_item("4"); %></ip>
+<ip><% get_ip_filter_item("5"); %></ip>
+<ip><% get_ip_filter_item("6"); %></ip>
+<ip><% get_ip_filter_item("7"); %></ip>
+<ip><% get_ip_filter_item("8"); %></ip>
+<ip><% get_ip_filter_item("9"); %></ip>
+</ip_filter>

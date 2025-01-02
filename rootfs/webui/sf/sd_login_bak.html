@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="favicon.ico" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" />  
+<link href="favicon.ico" mce_href="favicon.ico" rel="icon" type="image/x-icon" />  
+<link href="favicon.ico" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>Storage Login</title>
+<script type="text/javascript" src="md5.js" charset="utf-8"></script>
+<script type="text/javascript" src="until.js" charset="utf-8"></script>
+<script type="text/javascript">
+var rand;
+function GetHandler(url){
+var lang=x_v('lang');
+rand=x_v('rand');
+setSelectOption('lang',lang);
+}
+
+function RandHandler(){
+rand = x_vp('value');
+var lang=x_vp('lang');
+setSelectOption('sel_lang',lang);
+}
+
+function LangHandler(){
+  location.reload(true);
+}
+
+function PostHandler(url){
+//if(url=='rlogin.xml') GetHandler();
+if(url=='/wxml/rlogin.xml'){
+	var result = parseInt(x_vp('check'));
+	if(result==0 || result ==2 || result ==4) $('Name').focus();
+	else $('password').focus();
+	if(result==4) {
+	startRequest('mark_lang.w.xml');
+	$('error_info').innerHTML="login timeout,please retry";
+	}
+	else if(result==5) $('error_info').innerHTML="hacking detected";
+	else if(result==0) $('error_info').innerHTML="username & password error";
+	else if(result==1) $('error_info').innerHTML="password error";
+	else if(result==2) $('error_info').innerHTML="username error";
+	else if(result==3) location.href="sdcard.html";
+}
+if(url=='rand.xml') RandHandler();
+if(url=='set_lang.xml') LangHandler();
+}
+
+function form_check1(){
+if(submited==0) form_check();
+}
+var submited=0;
+function form_check()
+{
+if(submited) return;
+$('error_info').innerHTML="";	
+if(!$("Name").value) { $('error_info').innerHTML="Please input username!"; return false;}
+if(!$("password").value) { $('error_info').innerHTML="Please input password!"; return false;}
+var postdata = "Name="+esc($("Name").value)+"&password="+esc(hex_md5($("password").value))+'&rand='+esc(rand);
+submited=1;
+ajax_post('/wxml/rlogin.xml',postdata);
+}
+document.onkeypress=key_capture; 
+window.onload=function(){
+startRequest('mark_lang.w.xml');
+$('Name').focus();
+//ajax_post('rand.xml','rand');
+}
+
+function key_capture(e){
+var e=e||event;
+if(e.keyCode==13) form_check();
+}
+
+function choose_language(obj){
+  var sel=obj.options[obj.selectedIndex].value;
+  var data='lang='+sel;
+  ajax_post('set_lang.xml',data);
+}
+</script>
+<style type="text/css">
+@font-face {
+font-family: 'dinregular';
+src: url('/img/dinreg.eot');
+src: url('/img/dinreg.eot?#iefix') format('embedded-opentype'),
+url('/img/dinreg.woff') format('woff'),
+url('/img/dinreg.ttf') format('truetype'),
+url('/img/dinreg.svg#dinregular') format('svg');
+font-weight: normal;
+font-style: normal;
+}	
+#container{background:#FFFFFF;position:absolute;top:50%;left:50%;margin:-200px 0 0 -310px;width:600px;height:350px;font-family:dinregular,Arial,sans-serif;}
+.bg_left{width:30px;height:370px;background:url(/img/login1.gif) no-repeat left 0;}
+.bg_content{width:512px;height:370px;background:url(/img/login1.gif) repeat-x 0px -370px;color:white;}
+.bg_right{width:31px;height:370px;background:url(/img/login1.gif) no-repeat 0px -740px; }
+li{list-style-type:none;float:left;}
+.title{text-align:center;width:420px;line-height:48px;color:white;font-size:24px;display: inline-block;}
+.title{_zoom:1;*display:inline;}
+.language{line-height:48px;margin-top:30px;margin-right:5px;float:right;color:black;display: none;}
+.username{line-height:48px;color:black;margin-left:58px;margin-top:90px;font-size:20px;}
+.password{line-height:48px;color:black;margin-left:58px;margin-top:10px;font-size:20px;}
+.inputstyle{margin-left:20px;width: 250px;height:35px;font-size:24px;vertical-align:middle;border: 2px solid #dedede;font-family:dinregular,Arial,sans-serif;-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius:5px;}
+.login_btn{margin-top:10px;margin-left:340px;}
+a.sel_lang{text-decoration:none;}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<div id="container">
+<li class="bg_left"></li>
+<li class="bg_content">
+<div>
+<img src="/img/iosicon.png" style="width:40px;margin-top:10px;"><div class="title">WiFi Disk Login</div>
+</div>
+<div class="language" ><label style="display:inline-block;width:75px;">Language</label>
+<select id="sel_lang" name="sel_lang" style="width:100px;font-family:dinregular,Arial,Sans-serif;" onChange="choose_language(this)">
+	<option value="0" >English</option>
+	<option value="1" >Indonesian</option>
+</select></div>
+<div class="username"><label style="display:inline-block;width:100px;">Username</label><input type="text" name="Name" id="Name" maxlength="32" class="inputstyle" value="sdcard"/></div>
+<div class="password"><label style="display:inline-block;width:100px;">Password</label><input type="password" name="password" id="password" maxlength="32" class="inputstyle" value="sdcard"/></div>
+<div><label style="color:red;margin-left:10px;font-size:14px;margin-left:170px;" id="error_info"></label>&nbsp;</div>
+<div class="login_btn"><input type="image" src="/img/login_btn.gif" alt="login" title="login" style="outline:none;" onclick="form_check1()"/></div>
+</li>
+<li class="bg_right"></li>
+</div>
+<noscript><div id="container" style="color:black;font-size:20px;text-align:center;line-height:350px;"><b>Your browser disable Javascript,please enable it!</b></div></noscript>
+</body>
+</html>

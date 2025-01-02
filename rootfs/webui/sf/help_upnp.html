@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Document</title>
+		<style type="text/css">
+			* {
+				padding: 0px;
+				margin: 0px;
+			}
+			body{
+				padding: 16px 0;
+				font-size: 14px;
+				font-family: helvetica_neuelight, Meiryo, Tahoma, Sans-serif;
+				text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+				text-rendering: optimizeLegibility !important;
+				-webkit-font-smoothing: antialiased !important;
+				-webkit-font-smoothing: antialiased;
+			    -moz-osx-font-smoothing: grayscale;
+				filter: progid: DXImageTransform.Microsoft.AlphaImageLoader(enabled=false) !important;
+			}
+			.wrap {
+				width: 960px;
+				margin: 0 auto;
+				line-height: 24px;
+			}
+			
+			ol,
+			ul,
+			li {
+				list-style-position: outside;
+				list-style: none;
+			}
+			
+			blockquote {
+				border-left: 4px solid #DDD;
+				padding: 0 15px;
+				color: #777;
+				margin-left: 20px;
+			}
+			@font-face {
+			    font-family: helvetica_neuelight;
+			    src: url(/img/helvetica-lt.eot);
+			    src: url(/img/helvetica-lt.eot?#iefix) format("embedded-opentype"),url(/img/helvetica-lt.woff2) format("woff2"),url(img/helvetica-lt.woff) format("woff"),url(/img/helvetica-lt.ttf) format("truetype"),url(/img/helvetica-lt.svg#helvetica_neuelight) format("svg");
+			    font-weight: 400;
+			    font-style: normal
+			}
+			.img_padding{padding: 12px 0;}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrap">
+			<div style="padding-left: 15px;">
+				<ul>
+					<li style="list-style: disc;">
+						<h3 style="font-size: 18px;">Setting the UPnP</h3></li>
+				</ul>
+			</div>
+			<p>The Universal Plug and Play (UPnP) service realizes intelligent connection between two UPnP devices using port forwarding. UPnP devices can obtain IP addresses automatically and access the Internet dynamically.</p>
+			<br />
+
+			<p><strong>Procedure</strong></p>
+			<div style="padding-left: 20px;">
+				<ol>
+					<li>1. Choose Setting > Gaming & Apps> UPnP.</li>
+					<li>2. Select:
+						<ul>
+							<li style="padding-left: 20px;">Enable: to enable the UPnP service.</li>
+							<li style="padding-left: 20px;">Disable: to disable the UPnP service.</li>
+						</ul>
+					</li>
+					<li>Click APPLY button.</li>
+				</ol>
+			</div>
+			<br />
+
+			<p><strong>Post requisites</strong></p>
+			<p>A computer that runs the Windows XP operating system is used as an example to describe how to enable the UPnP service on a client.</p>
+			<div style="padding-left: 20px;">
+				<ol>
+					<li>1. Choose Start > Control Panel > Add or Remove Programs > Add/Remove Windows Components. </li>
+					<li>2. Select Networking Services and click Details. </li>
+					<li>3. Select UPnP User Interface to enable the UPnP service. </li>
+					<li>4. Click OK.</li>
+				</ol>
+			</div>
+			<br />
+
+			<div style="padding-left: 15px;">
+				<ul>
+					<li style="list-style: disc;">
+						<h3 style="font-size: 18px;">Port Forwarding</h3></li>
+				</ul>
+			</div>
+			<p>It allows remote computers (for example, computers on the Internet) to connect to a specific computer or service within a private local-area network.</p>
+			<div style="padding-left: 20px;">
+				<ol>
+					<li>1. Choose Settings > Gaming & Apps > Port Forward.</li>
+					<li>2. Select the check box on the left of Enable Port Forward.</li>
+					<li>3. Select the user info from user list, that Host name and MAC address will add to port forwarding list, but you still have to input Config Name, Local and Wan Port by manually. Or you can input all of info by manually.
+						<blockquote><strong>Note:</strong></blockquote>
+						<p style="padding-left: 40px;">Local Port can be repeated, WAN port cannot be repeated.</p>
+					</li>
+					<li>4. Click APPLY button.</li>
+					<li>5. Start the server on the device that added the port forwarding list.
+						<blockquote><strong>Note:</strong></blockquote>
+						<p style="padding-left: 40px;">The server include Web server, ftp server, Web camera server etc.</p>
+					</li>
+					<li>6. Access the device started server with the other terminal connected Internet through WAN IP address with WAN port to the device started server. Such as: http://183.42.114.82:8080</li>
+					<li>7. The server can be accessed successfully.</li>
+				</ol>
+			</div>
+<br />
+			<div style="padding-left: 15px;">
+				<ul>
+					<li style="list-style: disc;">
+						<h3 style="font-size: 18px;">How to add a port forwarding rule?</h3></li>
+				</ul>
+			</div>
+
+
+<p><strong>Procedure:</strong></p>
+<ul>
+<li>Record wan IP of your M2 from Web GUI
+<div class="img_padding"><img src="/img/help_pf_01.jpg"></div>
+</li>
+<li>Choose IP address you want the M2 to forward to, you can get the IP info either from CMD terminal
+<div class="img_padding"><img src="/img/help_pf_02.jpg"></div>
+or just simply choose from User list on 'Gaming &amp; Apps Management' page.
+<div class="img_padding"><img src="/img/help_pf_03.jpg"></div>
+</li>
+<li>Go to Setting -> Gaming &amp; Apps Management page, Enable Port Forward function
+<div class="img_padding"><img src="/img/help_pf_04.jpg"></div>
+</li>
+<li>Fill in all fields for your port forwarding rule
+<ol>
+<li>Click the 'ip' which you want to forward to, it will fill the Mac filed automatically.
+<div class="img_padding"><img src="/img/help_pf_05.jpg"></div>
+</li>
+<li>Fill Config name (rule name) and Local port/WAN port
+<div class="img_padding"><img src="/img/help_pf_06.jpg"></div>
+</li>
+</ol>
+</li>
+<li>Click "Apply" button to apply
+<div class="img_padding"><img src="/img/help_pf_07.jpg"></div>
+</li>
+<li>Now the UDP traffic reach M2 WAN IP(ex: 10.72.125.90)/port 3560 will be redirect to IP of your PC(ex: 192.168.1.101/port 3500).
+<br>
+(In this example, 3500 is 'Local port' and 3560 is 'Wan port')
+</li>
+
+</ul>
+
+
+
+		</div>
+	</body>
+
+</html>

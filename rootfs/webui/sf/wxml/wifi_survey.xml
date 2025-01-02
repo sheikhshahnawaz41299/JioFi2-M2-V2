@@ -1,0 +1,10 @@
+<?xm version="1.0" encoding="UTF-8"?>
+<search>
+<scan>siteurvey_begin_scan(scan)</scan>
+<cnt>get_wifi_survey_num()</cnt>
+<ap>get_wifi_survey_detail(page*5+0)</ap>
+<ap>get_wifi_survey_detail(page*5+1)</ap>
+<ap>get_wifi_survey_detail(page*5+2)</ap>
+<ap>get_wifi_survey_detail(page*5+3)</ap>
+<ap>get_wifi_survey_detail(page*5+4)</ap>
+</search>

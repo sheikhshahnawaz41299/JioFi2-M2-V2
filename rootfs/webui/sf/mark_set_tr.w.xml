@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<dsc><% get_version_dsc(); %></dsc>
+<acsurl><% get_cwmpc_acsurl(); %></acsurl>
+<acs_username><% get_cwmpc_username(); %></acs_username>
+<acs_password><% get_cwmpc_userpassword(); %></acs_password>
+<periodic_inform><% get_enable_cwmpc_periodic_inform(); %></periodic_inform>
+<informinterval><% get_cwmpc_periodic_informinterval(); %></informinterval>
+<request_username><% get_cwmpc_request_username(); %></request_username>
+<request_userpassword><% get_cwmpc_request_userpassword(); %></request_userpassword>
+</setting>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status>
+<desc><% get_device_desc %></desc>
+<cspn><% get_cspn_string(); %></cspn>
+<net_type><% get_network_op_mode(); %></net_type>
+<sig><% get_sig_ind(0); %></sig>
+<netstatus><% get_network_status(); %></netstatus>
+<dial_mode><% get_dial_mode(); %></dial_mode>
+<update><% stats_update(); %></update>
+<tx><% get_tx(); %></tx>
+<rx><% get_rx(); %></rx>
+<all><% get_all(); %></all>
+<active_time><% get_time(); %></active_time>
+<t_tx><% get_t_tx(); %></t_tx>
+<t_rx><% get_t_rx(); %></t_rx>
+<t_all><% get_t_all(); %></t_all>
+<t_active_time><% get_t_time(); %></t_active_time>
+<user_cnt><% get_client_wifi_count(); %></user_cnt>
+<batt><% get_battery_ind(); %></batt>
+<batt_p><% get_batt_percent(); %></batt_p>
+</status>

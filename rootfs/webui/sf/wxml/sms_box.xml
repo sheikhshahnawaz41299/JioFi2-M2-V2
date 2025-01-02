@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sms_inbox>
+<set_box>sms_box_select(href)</set_box>
+<sms_count>sms_get_count()</sms_count>	
+<net_mode>get_network_mode()</net_mode>
+<sms_src>sms_get_src(page*5+1)</sms_src>
+<sms_body>sms_get_content(page*5+1)</sms_body>
+<sms_time>sms_get_time(page*5+1)</sms_time>
+<sms_status>sms_get_status(page*5+1)</sms_status>
+<sms_src>sms_get_src(page*5+2)</sms_src>
+<sms_body>sms_get_content(page*5+2)</sms_body>
+<sms_time>sms_get_time(page*5+2)</sms_time>
+<sms_status>sms_get_status(page*5+2)</sms_status>
+<sms_src>sms_get_src(page*5+3)</sms_src>
+<sms_body>sms_get_content(page*5+3)</sms_body>
+<sms_time>sms_get_time(page*5+3)</sms_time>
+<sms_status>sms_get_status(page*5+3)</sms_status>
+<sms_src>sms_get_src(page*5+4)</sms_src>
+<sms_body>sms_get_content(page*5+4)</sms_body>
+<sms_time>sms_get_time(page*5+4)</sms_time>
+<sms_status>sms_get_status(page*5+4)</sms_status>
+<sms_src>sms_get_src(page*5+5)</sms_src>
+<sms_body>sms_get_content(page*5+5)</sms_body>
+<sms_time>sms_get_time(page*5+5)</sms_time>
+<sms_status>sms_get_status(page*5+5)</sms_status>
+</sms_inbox>

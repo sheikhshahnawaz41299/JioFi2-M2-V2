@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net>
+<ip><% get_dhcp_ip(); %></ip>
+<submask><% get_dhcp_mask(); %></submask>
+<mtu><% get_wan_mtu(); %></mtu>
+<dmz_enable><% get_dmz_enable(); %></dmz_enable>
+<dmz_ip><% get_dmz_ip(); %></dmz_ip>
+<mode><% get_mac_filter_mode(); %></mode>
+<mac_addr><% get_mac_filter_item("0"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("1"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("2"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("3"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("4"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("5"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("6"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("7"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("8"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("9"); %></mac_addr>
+</net>

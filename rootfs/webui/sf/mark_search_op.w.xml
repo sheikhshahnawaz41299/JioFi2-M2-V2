@@ -1,0 +1,6 @@
+<?xm version="1.0" encoding="UTF-8"?>
+<op>
+<dsc><% get_version_dsc(); %></dsc>
+<roam><% get_roam_mode(); %></roam>
+<mode><% get_operator_search_mode(); %></mode>
+</op>

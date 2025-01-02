@@ -1,0 +1,608 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a>Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" style="display:none;"><a>PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf" class="active-item"><a href="javascript:;">Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">PORT FORWARD</h3>
+<div class="line" id="div_content">
+
+<div class="s-12 l-8" id='div_user_list'>
+<table >
+<thead>
+<tr align=left class="head"><th colspan=4>User List</th></tr>
+<tr align=center><th width=35%>Host Name</th><th width=30%>IP</th><th width=35%>MAC</th><th width=20% style="display:none">Link Time</th></tr></thead>
+<tbody id="tbl_user">
+</tbody>
+</table>  
+</div>
+
+  <form class="customform" action="#">
+<!--   <div class="margin"> -->
+
+  <div class="line">
+
+  <div class="s-12 l-8 line_form" style="padding-bottom:1em;">
+  <div class="show_pwd">
+  <label class="check">&#238;</label><label class="after">Enable Port Forward</label><input class="show_pwd_st" type="hidden" value="0" />
+  </div>
+  </div>
+  <div class="s-12 l-8">
+  <p id="p_note">It allows remote computers (for example,computers on the Internet) to connect to a specific computer or service within a private local-area network.</p>
+  </div>
+<!--  <div class="s-12 l-3 line_form">
+  <label class="name">MAC FILTER MODE</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="">
+    <option selected value="0">Disable</option>
+    <option value="1">Black List</option>
+    <option value="2">White List</option>
+    </select>
+  </div>-->
+  </div>
+
+
+  <div class="line">
+  <div class="s-12 l-8">
+  <div id="div_mac_filter">
+  <ul class="head" ><li class="b1">ID</li><li class="b2">Config Name</li><li class="b3">MAC</li><li class="b4">Local Port</li><li class="b5">WAN Port</li><li class="b6">&#215;</li></ul>
+  <ul id="pf00" class="filter" ><li class="b1">01</li><li class="b2"><input class="mac" type="text"></li><li class="b3"><input class="mac" type="text"></li><li class="b4"><input class="mac" type="text"></li><li class="b5"><input class="mac" type="text"></li><li class="b6">&#215;</li></ul>
+  <ul id="pf01" class="filter" ><li class="b1">02</li><li class="b2"><input class="mac" type="text"></li><li class="b3"><input class="mac" type="text"></li><li class="b4"><input class="mac" type="text"></li><li class="b5"><input class="mac" type="text"></li><li class="b6">&#215;</li></ul>
+  <ul id="pf02" class="filter" ><li class="b1">03</li><li class="b2"><input class="mac" type="text"></li><li class="b3"><input class="mac" type="text"></li><li class="b4"><input class="mac" type="text"></li><li class="b5"><input class="mac" type="text"></li><li class="b6">&#215;</li></ul>
+  <ul id="pf03" class="filter" ><li class="b1">04</li><li class="b2"><input class="mac" type="text"></li><li class="b3"><input class="mac" type="text"></li><li class="b4"><input class="mac" type="text"></li><li class="b5"><input class="mac" type="text"></li><li class="b6">&#215;</li></ul>
+  <ul id="pf04" class="filter" ><li class="b1">05</li><li class="b2"><input class="mac" type="text"></li><li class="b3"><input class="mac" type="text"></li><li class="b4"><input class="mac" type="text"></li><li class="b5"><input class="mac" type="text"></li><li class="b6">&#215;</li></ul>
+  </div>
+
+</div>
+</div>
+
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit">APPLY</div>
+  </div>
+  </div>
+<!--  </div>-->
+  </form>
+  
+  <div class="line">
+  <div class="s-12 l-8" style="padding-bottom:1em;padding-left:2em;">
+  <div id="div_notify"> 
+  </div>
+
+</div>
+</div>
+
+
+
+</div>
+</div>
+<img src="img/loading.gif" style="display:none;">
+</div>
+<style type="text/css">
+
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1.2em; }
+.customform .show_pwd{height:2em;line-height:2em;vertical-align:middle;margin-left:2em;}
+
+
+@media screen and (min-width:801px) {
+#aside{height:44em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:48.8em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+#div_user_list{padding-bottom:1em;padding-left:2em;cursor:pointer;}
+#p_note{padding-left:2em;margin-bottom:0.4em;}
+#div_mac_filter{padding-bottom:1em;padding-left:2em;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+#div_user_list{padding-bottom:1em;padding-left:1em;cursor:pointer;padding-right:1em;}
+#p_note{padding-left:1em;margin-bottom:0.4em;}
+#div_mac_filter{padding-bottom:1em;padding-left:1em;padding-right: 1em;}
+.customform .show_pwd{margin-left:1em;}
+}
+ul{
+-webkit-margin-before: 0em;
+-webkit-margin-after: 0em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+-webkit-padding-start: 0px;
+margin-left:0;
+padding-left: 0;
+margin-right:0;
+padding-right: 0;
+}
+
+ul.filter{
+list-style:none;
+display:inline-block;
+width:100%;
+border:1px solid #888; border-top:0px; 
+word-wrap:break-word;word-break:break-all;
+cursor:pointer;
+text-align:left;
+height: 1.6em;
+vertical-align: middle;
+background: #ddd;
+color: #222;
+}
+
+.b1,.b2,.b3,.b4,.b5{float:left;height: 1.55em;line-height: 1.55em;vertical-align: middle;}
+
+ul li.b1{width:10%;border-right:1px solid #888;text-align: center;}
+ul li.b2{width:16%;border-right:1px solid #888;}
+ul li.b3{width:30%;border-right:1px solid #888;}
+ul li.b4{width:20%;border-right:1px solid #888;}
+ul li.b5{width:20%;border-right:1px solid #888;}
+ul li.b6{width:4%;float:left;height: 1em;text-align: center;font-size: 1.6em;margin-top: -0.1em;cursor: pointer;}
+ul li.b6:hover{color:red;}
+ul.head{
+list-style:none;
+display:inline-block;
+width:100%;
+background:#34485C;border:1px solid #34485C;
+line-height:1.6em;
+height:1.6em;
+text-align:left;
+vertical-align: middle;
+color: white;
+font-size: 0.8em;
+}
+
+ul.head .b1,ul.head .b2,ul.head .b3,ul.head .b4,ul.head .b5{text-align: center;}
+
+ul li.cfg_name{width:25%;float:left;border-right:1px solid #888;line-height:1.6em;height:1.6em;vertical-align: middle;}
+ul li.address{width:75%;float:left;line-height:1.6em;height:1.6em;vertical-align: middle;}
+
+table tr th{
+  padding: 0.1em 0.4em;
+  border-right: 1px solid #ccc;
+}
+table tr td{
+  padding: 0;
+}
+tr.head{
+  border: 1px solid #2088B0
+}
+
+form.customform input{ margin-left: 0;}
+
+ .customform input.mac{font-family:dinregular,Arial,Sans-serif;height: 1.5em;border:0px solid red;-webkit-appearance: none;border-radius: 0;padding: 0 0.625em;width: 100%;margin-left: 0;}
+#errHint{color: red;text-align: center;}
+.address a{color: blue;text-decoration:underline;}
+
+th {border-right:1px solid #ccc;}
+th:last-child {border-right:0;}
+tr.head th{border: 1px solid #2088B0;}
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+function load_mark_set(){
+
+}
+
+function pop_waiting(txt){
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>"+txt+"</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content,
+        },
+        fixed : true
+  });
+}
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+function isRepeat(arr, val,len){
+for(var i=0; i<len; i++){
+  if(arr[i] == val)
+  return true;
+}
+return false;
+}
+
+function isRepeat_mac_port(mac, port,max){
+for(var i=0; i<max; i++){
+  if((mac[i] == mac[max]) && (port[i] == port[max])) 
+  return true;
+}
+return false;
+}
+
+$('div.show_pwd').click(function(){
+  if(parseInt($('input.show_pwd_st').val())) {
+    $('input.mac').attr('disabled',true);
+  }
+  else $('input.mac').attr('disabled',false);
+})
+
+$('#to_submit').click(function(event){
+  event.preventDefault();
+  var cfg_name=new Array(5);
+  var local_port=new Array(5);
+  var wan_port=new Array(5);
+  var mac_addr=new Array(5);
+  for(i=0;i<5;i++)
+  {
+    var id='#pf0'+i;
+    cfg_name[i]=$(id+' li.b2 input.mac').val();
+    mac_addr[i]=$(id+' li.b3 input.mac').val();
+    local_port[i]=$(id+' li.b4 input.mac').val();
+    wan_port[i]=$(id+' li.b5 input.mac').val();
+
+    if(mac_addr[i]==dev_mac)
+    {
+      $('#errHint').html("Reserved for WiFi Disk!");
+      $(id+' li.b3 input.mac').focus();
+      break;
+    }
+    if(mac_addr[i]!="" && !mac_check(mac_addr[i]))
+    {
+      $('#errHint').html("Please Input Valid MAC Address!");
+      $(id+' li.b3 input.mac').focus();
+      break;
+    }
+    if(wan_port[i]=='61726' || wan_port[i]=='80')
+    {
+      $('#errHint').html("WAN Port reserved for WiFi Disk!");
+      $(id+' li.b5 input.mac').focus();
+      break;          
+    }
+    if(i>0 &&local_port[i].length && isRepeat_mac_port(mac_addr,local_port,i))
+    {
+      $('#errHint').html("Local Port duplicate!");
+      $(id+' li.b4 input.mac').focus();
+      break;      
+    }
+
+    if(i>0 &&wan_port[i].length && isRepeat(wan_port,wan_port[i],i))
+    {
+      $('#errHint').html("WAN Port duplicate!");
+      $(id+' li.b5 input.mac').focus()
+      break;      
+    }
+    
+    var integrity =(local_port[i].length?1:0)+(wan_port[i].length?1:0) +  (mac_addr[i].length?1:0);
+    if(integrity!=0) 
+    {
+      if(local_port[i].length==0)
+      {
+        $('#errHint').html("Please Input Local Port!");
+        $(id+' li.b4 input.mac').focus();
+        break;
+      }
+      if(wan_port[i].length==0)
+      {
+        $('#errHint').html("Please Input Wan Port!");
+        $(id+' li.b5 input.mac').focus();
+        break;
+      }
+      if(mac_addr[i].length==0)
+      {
+        $('#errHint').html("Please Input MAC Address!");
+        $(id+' li.b3 input.mac').focus();
+        break;
+      }
+      if(local_port[i].length && !(parseInt(local_port[i])>0 && parseInt(local_port[i])<65535))
+      {
+        $('#errHint').html("please input a integer number(0-65535)!");
+        $(id+' li.b4 input.mac').focus();
+        break;          
+      }
+      if(wan_port[i].length && !(parseInt(wan_port[i])>0 && parseInt(wan_port[i])<65535))
+      {
+        $('#errHint').html("please input a integer number(0-65535)!");
+        $(id+' li.b5 input.mac').focus();
+        break;          
+      }
+    }
+  }
+  if(i!=5)
+  {
+    setTimeout(function(){
+      $('#errHint').html('');
+    },5000);
+   return false;
+  }
+  var post_data=('enable='+$('input.show_pwd_st').val());
+
+
+  for(i=0;i<5;i++)
+  {
+    if(cfg_name[i].length) post_data += "&name"+i +'='+esc(cfg_name[i]);
+    else post_data += "&name"+i+'=';
+    if(wan_port[i].length) post_data +="&um"+i +'='+wan_port[i];
+    else post_data +="&um"+i +'=0';
+    if(local_port[i].length) post_data +="&rm"+i +'='+local_port[i];
+    else post_data +="&rm"+i +'=0';
+    if(mac_addr[i].length) post_data +="&mac"+i +'='+mac_addr[i];
+    else post_data +="&mac"+i+'=';
+  }
+/*
+  if(remote_enable==2)
+  {
+    post_data +="&name5=storage&um5=80&rm5=80&mac5="+dev_mac+"&name6=upload&um6=61726&rm6=61726&mac6="+dev_mac;
+  }
+  else post_data +="&name5=&um5=0&rm5=0&mac5=&name6=&um6=0&rm6=0&mac6=";
+*/
+  disableButton('to_submit');
+  pop_waiting('Waiting');
+  locking=1;
+
+  $.ajax({ 
+  url: "/wxml/set_pf.xml",
+  type: "Post", 
+  timeout: 8000,
+  cache: false,
+  datatype: "xml",
+  data: post_data, 
+  success: function(data, status) {
+    locking=0;
+    enableButton('to_submit');
+    close_pop_diag();
+    var enable = parseInt($(data).find("enable").text());
+    var set0 = parseInt($(data).find("set0").text());
+    var set1 = parseInt($(data).find("set1").text());
+    var set2 = parseInt($(data).find("set2").text());
+    var set3 = parseInt($(data).find("set3").text());
+    var set4 = parseInt($(data).find("set4").text());
+
+    inited=0;
+    if(enable&&set0&&set1&&set2&&set3&&set4) pop_submit_result('Setting Apply Success!');
+    else pop_submit_result('Setting Apply Fail!');
+    load_setting();
+  },
+  error: function(x, t, m){
+    if(t==="timeout"){
+      locking=0;
+      close_pop_diag();
+      enableButton('to_submit');
+    }  
+  }
+})
+
+//  pop_submit_result();
+});
+
+var inited=0,dev_mac,remote_enable,g_wan_ip='';
+function refresh_data(data){
+  var netstatus=$(data).find("netstatus").text();
+
+  if(!inited)
+  {
+    inited=1;
+    var dsc = $(data).find("dsc").text();
+    if(dsc&0x01) $('#to_set_pin').show();
+    
+    var pf_enable=parseInt($(data).find("pf_enable").text());
+
+    dev_mac=$(data).find("dev_mac").text();
+    if(pf_enable){
+      $('div.show_pwd label.check').html('&#239;');
+      $('input.mac').attr('disabled',false);
+    }
+    else {
+      $('div.show_pwd label.check').html('&#238;');
+      $('input.mac').attr('disabled',true); 
+    }
+    $('input.show_pwd_st').val(pf_enable);
+
+    $(data).find("pf_list").each(function(index,ele){
+      var cfg_name = $(ele).children('cfg_name').text();
+      var mac_addr = $(ele).children('mac_addr').text().macFormat();
+      var um = $(ele).children('um').text();
+      var rm = $(ele).children('rm').text();
+      if(index<5){
+        var obj_id='#pf0'+index;
+        $(obj_id+' li.b2'+' input.mac').val(cfg_name=='-'?'':cfg_name);
+        $(obj_id+' li.b3'+' input.mac').val(mac_addr=='-'?'':mac_addr);
+        $(obj_id+' li.b4'+' input.mac').val(rm=='-'?'':rm);
+        $(obj_id+' li.b5'+' input.mac').val(um=='-'?'':um);
+      }
+      /*
+      else if(index==5){
+        if(mac_addr==dev_mac && rm=='80' && um=='80') remote_enable=1;
+      }
+      else if(index==6){
+        if(remote_enable==1 && mac_addr==dev_mac && rm=='61726' && um=='61726') remote_enable=2;
+      }
+      */
+    })
+  }
+
+  var wan_ip=$(data).find("wan_ip").text();
+
+  var wifi_disk_note=0,note_content;
+  if(!g_wan_ip || g_wan_ip!=wan_ip ||inited!=2) {
+    inited=2;
+    if(wan_ip=='-1' || wan_ip=='-' || !parseInt($(data).find("pf_enable").text())){
+      note_content='';
+    }
+    else{
+      note_content = '<ul class="head" ><li class="cfg_name">Config Name</li><li class="address">ADDRESS</li></ul>';
+  
+      g_wan_ip=wan_ip;
+      $(data).find("pf_list").each(function(index,ele){
+        var cfg_name = $(ele).children('cfg_name').text();
+        var um = $(ele).children('um').text();
+        if(index<5){
+          if(um!='-'){
+            var href= (wan_ip+':'+um);
+            note_content+=('<ul id="note0'+index+'" class="filter"><li class="cfg_name">'+cfg_name+'</li><li class="address"><a href="//'+href+'" target="_blank">'+href+'</a></li></ul>');
+          }
+        }
+/*
+        else{
+          if(index==5&&cfg_name=='storage'&&um=='80'){
+            wifi_disk_note=1;
+          }
+          if(index==6&&cfg_name=='upload'&&um=='61726'){
+            if(wifi_disk_note){
+              note_content+=('<ul id="note0'+index+'" class="filter"><li class="cfg_name">WIFI DISK</li><li class="address">'+wan_ip+':80</li></ul>');
+            }
+          }
+        }*/
+      })
+    }
+    $('#div_notify').html(note_content);
+  }
+  
+
+  var tbl_content='';
+  $(data).find("user").each(function(){
+    var mac = $(this).children('mac').text().macFormat();
+    if(mac!='-')
+    {
+      var name = $(this).children('name').text().substr(0,20);
+      name=unescape(name.replace(/\\/g,"%"));
+      var ip = $(this).children('ip').text();
+      tbl_content+=('<tr align=center><td>'+name+'</td><td>'+ip+'</td><td>'+mac+'</td><td style="display:none"></td></tr>');      
+    }
+
+  });
+  $('#tbl_user').html(tbl_content);
+/*
+  var c_height;
+    if($('#div_content').height()+100 > 480){
+      c_height = $('#div_content').height()+100;
+    }
+    else c_height = 480;
+*/
+    var c_height;
+    var s_height=$('div.aside-nav').height();
+    if($('#div_content').height() +100> s_height){
+      c_height = $('#div_content').height()+100;
+    }
+    else c_height=s_height;
+
+
+
+    $('#main_content').height(c_height);
+    if($(document).width()>800) $('#aside').height(c_height);
+    else $('#aside').height($('.aside-nav').height());
+
+}
+
+
+
+$('ul.filter li:last-child').die().live('click',function(){
+  $(this).parent().find('input').val('');
+})
+
+$('ul.head li:last-child').die().live('click',function(){
+  $(this).parent().parent().find('input').val('');
+})
+
+function load_setting(){
+//  $("#errHint").html('');
+  $.ajax({ 
+    url: "mark_set_pf.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+      refresh_data(data);
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+}
+
+
+
+
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="set_pf.html"){
+    g_wan_ip='';
+    load_setting();
+    interval_timer = setInterval(load_setting,1000);
+  }
+}
+
+
+</script>
+

@@ -1,0 +1,439 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a>Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" style="display:none;"><a>PIN Setting</a></li>
+    <li id="to_set_mac" class="active-item"><a href="javascript:;">MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">MAC FILTER</h3>
+<div class="line" id="div_content">
+
+<div class="s-12 l-8" id="div_user_list">
+<table >
+<thead>
+<tr align=left class="head"><th colspan=4>User List</th></tr>
+<tr align=center><th width=35%>Host Name</th><th width=30%>IP</th><th width=35%>MAC</th><th width=20% style="display:none">Link Time</th></tr></thead>
+<tbody id="tbl_user">
+</tbody>
+</table>
+</div>
+
+  <form class="customform" action="#">
+<!--  <div class="margin">-->
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">MAC Filter Mode</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="filter_mode">
+    <option selected value="0">Disable</option>
+    <option value="1">Black List</option>
+    <option value="2">White List</option>
+    </select>
+  </div>
+  <div class="s-12 l-8">
+  <p id="p_note">You can control and manage the clients that access the wireless local area network(WLAN) to improve the security performance of the WLAN.</p>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-8" >
+  <div id="div_mac_filter" >
+  <ul class="head" ><li class="b1">ID</li><li class="b3">MAC</li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter00" class="filter" ><li class="b1">01</li><li class="b3"><input class="mac" name="filter00_mac" id="filter00_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter01" class="filter" ><li class="b1">02</li><li class="b3"><input class="mac" name="filter01_mac" id="filter01_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter02" class="filter" ><li class="b1">03</li><li class="b3"><input class="mac" name="filter02_mac" id="filter02_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter03" class="filter" ><li class="b1">04</li><li class="b3"><input class="mac" name="filter03_mac" id="filter03_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter04" class="filter" ><li class="b1">05</li><li class="b3"><input class="mac" name="filter04_mac" id="filter04_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter05" class="filter" ><li class="b1">06</li><li class="b3"><input class="mac" name="filter05_mac" id="filter05_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter06" class="filter" ><li class="b1">07</li><li class="b3"><input class="mac" name="filter06_mac" id="filter06_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter07" class="filter" ><li class="b1">08</li><li class="b3"><input class="mac" name="filter07_mac" id="filter07_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter08" class="filter" ><li class="b1">09</li><li class="b3"><input class="mac" name="filter08_mac" id="filter08_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  <ul id="mac_filter09" class="filter" ><li class="b1">10</li><li class="b3"><input class="mac" name="filter09_mac" id="filter09_mac" maxlength="17" type="text" value="" ></li><li class="b4">&#215;</li></ul>
+  </div>
+
+</div>
+  <div class="s-12 l-8">
+  <p id="p_note">For details,see the MAC Filter introduction in the Help file.</p>
+  </div>
+</div>
+
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit">APPLY</div>
+  </div>
+  </div>
+ <!-- </div>-->
+  </form>
+  
+</div>
+</div>
+<img src="img/loading.gif" style="display:none;">
+</div>
+<style type="text/css">
+
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1.2em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+ul{
+-webkit-margin-before: 0em;
+-webkit-margin-after: 0em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+-webkit-padding-start: 0px;
+margin-left:0;
+padding-left: 0;
+margin-right:0;
+padding-right: 0;
+}
+
+@media screen and (min-width:801px) {
+#aside{height:44em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:48.8em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+#div_user_list{padding-bottom:1em;padding-left:2em;cursor:pointer;}
+#p_note{padding-left:2em;margin-bottom:0.4em;}
+#div_mac_filter{padding-bottom:1em;padding-left:2em;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+#div_user_list{padding-bottom:1em;padding-left:1em;cursor:pointer;padding-right:1em;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+#p_note{padding-left:1em;margin-bottom:0.4em;}
+#div_mac_filter{padding-bottom:1em;padding-left:1em;padding-right: 1em;}
+}
+
+ul.filter{
+list-style:none;
+display:inline-block;
+width:100%;
+border:1px solid #888; border-top:0px; 
+word-wrap:break-word;word-break:break-all;
+cursor:pointer;
+text-align:left;
+height: 1.6em;
+vertical-align: middle;
+background: #ddd;
+color: #222;
+}
+
+.b1,.b2,.b3{float:left;height: 1.55em;line-height: 1.55em;vertical-align: middle;}
+ul li.b1{width:15%;text-align: center;border-right:1px solid #888;}
+ul li.b2{width:0%;display: none;}
+ul li.b3{width:81%;border-right:1px solid #888;}
+ul li.b4{width:4%;float:left;height: 1em;text-align: center;font-size: 1.6em;margin-top: -0.1em;cursor: pointer;}
+ul li.b4:hover{color:red;}
+ul.head .b1,ul.head li.b3{text-align: center;}
+
+
+ul.head{
+list-style:none;
+display:inline-block;
+width:100%;
+background:#34485C;border:1px solid #34485C;
+line-height:  1.6em;;
+text-align:left;
+vertical-align: middle;
+color: white;
+}
+
+table tr th{
+  padding: 0.1em 0.4em;
+  border-right: 1px solid #ccc;
+}
+table tr td{
+  padding: 0;
+}
+
+tr.head{
+  border: 1px solid #2088B0
+}
+
+ .customform input.mac{font-family:dinregular,Arial,Sans-serif;height: 1.5em;border:0px solid red;-webkit-appearance: none;border-radius: 0;padding: 0 0.625em;width: 100%;margin-left: 0;}
+#errHint{color: red;text-align: center;}
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+function load_mark_set(){
+
+}
+
+
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+function isRepeat(arr, val,len){
+for(var i=0; i<len; i++){
+  if(arr[i] == val)
+  return true;
+}
+return false;
+}
+
+function pop_waiting(txt){
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>"+txt+"</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content,
+        },
+        fixed : true
+  });
+}
+
+$('#to_submit').click(function(event){
+  event.preventDefault();
+
+  var mac_addr=new Array(10);
+  var post_data = 'mode='+$('select[name=filter_mode]').val();
+  for(i=0;i<10;i++)
+  {
+    var mac_addr_id = '#filter0'+i+'_mac';
+    mac_addr[i]=$(mac_addr_id).val();
+    if(mac_addr[i]!="" && !mac_check(mac_addr[i]))
+    {
+      $('#errHint').html("Please Input Valid MAC Address!");
+      $(mac_addr_id).focus();
+      break;  
+    }
+    if(i>0 &&mac_addr[i].length && isRepeat(mac_addr,mac_addr[i],i))
+    {
+      $('#errHint').html("MAC Address Duplicate!");
+      $(mac_addr_id).focus();
+      break;
+    }
+    post_data += '&mac'+i+'='+mac_addr[i];
+  }
+  if(i!=10)
+  {
+    setTimeout(function(){$('#errHint').html("&nbsp;");},5000);
+    return false;
+  }
+
+  disableButton('to_submit');
+  pop_waiting('Waiting');
+  locking=1;
+  var headers={};
+headers["__RequestVerificationToken"]=$("#csrf_token2").val();
+  $.ajax({ 
+  url: "/wxml/set_mac.xml",
+  type: "Post", 
+  headers: headers,
+  timeout: 8000,
+  cache: false,
+  datatype: "xml",
+  data: post_data, 
+  success: function(data, status) {
+    locking=0;
+    var new_token=$(data).find("token").text();
+      if(new_token=="-1"){
+        top.location.reload(true); 
+        return false;
+      }
+    $("#csrf_token2").val(new_token);
+    var ret0 = parseInt($(data).find("mode").text());
+    var ret1=1;
+    for(var i=0;i<10;i++){
+      var id='mac'+i;
+      if(!parseInt($(data).find(id).text())) {
+        ret1=0;
+        break;
+      }
+    }
+
+    inited=0;
+    enableButton('to_submit');
+    close_pop_diag();
+    if(ret0&&ret1) pop_submit_result('Setting Apply Success!');
+    else pop_submit_result('Setting Apply Fail!');
+    load_setting();
+  },
+  error: function(x, t, m){
+    if(t==="timeout"){
+      locking=0;
+      close_pop_diag();
+    }  
+  }
+})
+
+//  pop_submit_result();
+});
+
+
+$('select[name=filter_mode]').change(function(){
+  $('input.mac').attr('disabled',$(this).val()?false:true);
+})
+
+
+var inited=0,pre_mode;
+function refresh_data(data){
+  if(!inited)
+  {
+    inited=1;
+    var dsc = $(data).find("dsc").text();
+    if(dsc&0x01) $('#to_set_pin').show();
+    
+    var filter_mode=$(data).find("mode").text();
+    pre_mode=filter_mode;
+    $('select[name=filter_mode]').val(filter_mode);
+    if(filter_mode==0){
+      $('input.mac').attr('disabled',true);
+    }
+    else{
+      $('input.mac').attr('disabled',false); 
+    }
+
+    $(data).find("mac_addr").each(function(index,ele){
+      var input_id="#filter0"+index+"_mac";
+      if($(ele).text()!='-'){
+        $(input_id).val($(ele).text().macFormat());
+      }
+      else $(input_id).val('');
+    })
+  }
+
+  var tbl_content='';
+  $(data).find("user").each(function(){
+    var mac = $(this).children('mac').text().macFormat();
+    if(mac!='-')
+    {
+      var name = $(this).children('name').text().substr(0,20);
+      name=unescape(name.replace(/\\/g,"%"));
+      var ip = $(this).children('ip').text();
+      tbl_content+=('<tr align=center><td>'+name+'</td><td>'+ip+'</td><td>'+mac+'</td><td style="display:none"></td></tr>');      
+    }
+
+  });
+  $('#tbl_user').html(tbl_content);
+
+  var c_height;
+  var s_height=$('div.aside-nav').height();
+  if($('#div_content').height() +100> s_height){
+    c_height = $('#div_content').height()+100;
+  }
+  else
+    c_height=s_height;
+  $('#main_content').height(c_height);
+  if($(document).width()>800) $('#aside').height(c_height);
+  else $('#aside').height($('.aside-nav').height());
+}
+
+$('ul.filter li:last-child').die().live('click',function(){
+  $(this).parent().find('input').val('');
+})
+
+$('ul.head li:last-child').die().live('click',function(){
+  $(this).parent().parent().find('input').val('');
+})
+
+function load_setting(){
+//  $("#errHint").html('');
+  $.ajax({ 
+    url: "mark_set_mac.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+      refresh_data(data);
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+}
+
+
+
+
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="set_mac.html"){
+    load_setting();
+    interval_timer = setInterval(load_setting,1000);
+  }
+}
+
+
+
+</script>
+

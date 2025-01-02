@@ -1,0 +1,229 @@
+<script>
+	if(top.location.pathname != "/index.htm" && top.location.pathname != "/") top.location.href = "./index.htm";
+	var st_lan = {
+		ssid: null,
+		dhcp: null,
+		submask: null,
+		ip: null,
+		mac: null,
+		user_cnt: null,
+		ch_set: null,
+		ch_mode: null,
+		wifi_sw: null,
+		ch_curr: null,
+		bandwidth: null,
+		enc: null,
+		client_list: null
+	}
+
+	$(document).ready(function() {
+
+	});
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "status_lan.html") {
+
+			var sec_mode = ["Disabled", "WEP", "WPA-PSK", "WPA2-PSK", "WPA-PSK/WPA2-PSK"];
+			var wpa_op = ["", "TKIP", "AES", "AES+TKIP"];
+
+			function show_lan_status(st_lan) {
+				$("#input_wifi_ssid").val(st_lan.ssid);
+				$("#input_LAN_Operating_Mode").val(st_lan.dhcp ? "DHCP" : "Static");
+				$("#input_Host_Subnet_Mask").val(st_lan.submask);
+				$("#input_Gateway_IP").val(st_lan.ip);
+				$("#input_MAC_Addr").val(st_lan.mac);
+
+				$("#input_attached_clients").val(st_lan.user_cnt);
+
+				$("#input_wifi_status").val(st_lan.wifi_sw ? 'Enable' : "Disable");
+				if(st_lan.wifi_sw) $("#input_channel").val(st_lan.ch_curr);
+				else {
+					if(st_lan.ch_set == 0) $("#input_channel").val('Auto');
+					else $("#input_channel").val(st_lan.ch_set);
+				}
+				$("#input_auto_channel_selection_status").val(st_lan.ch_mode);
+				$("#input_channel_bandwidth").val(st_lan.bandwidth+"Hz");
+				var enc = st_lan.enc.split(",");
+				$("#input_wifi_security").val(sec_mode[enc[0]]);
+			}
+
+
+			function load_lan_status() {
+				$.ajax({
+					url: '/st_lan.w.xml',
+					type: "Get",
+					timeout: 8000,
+					cache: false,
+					datatype: "xml",
+					data: null,
+					success: function(data, status) {
+						st_lan.ssid = $(data).find("ssid").text();
+						st_lan.dhcp = parseInt($(data).find("dhcp").text());
+						st_lan.submask = $(data).find("submask").text();
+						st_lan.ip = $(data).find("gate").text();
+						st_lan.mac = $(data).find("macaddr").text();
+						st_lan.mac = st_lan.mac.toUpperCase();
+						if(st_lan.mac.length != 12 && st_lan.mac.length != 17) {
+							st_lan.mac = '';
+						}
+						if(st_lan.mac.length == 12) {
+							st_lan.mac = st_lan.mac.replace(/(.{2})/g, "$1-");
+							st_lan.mac = st_lan.mac.substr(0, 17);
+						}
+						st_lan.user_cnt = parseInt($(data).find("user_cnt").text());
+						st_lan.wifi_sw = parseInt($(data).find("wifi").text());
+						st_lan.ch_set = parseInt($(data).find("ch").text());
+						st_lan.ch_mode = (st_lan.ch_set == 0) ? "Auto" : "Manual";
+						st_lan.ch_curr = parseInt($(data).find("channel").text());
+						st_lan.bandwidth = $(data).find("band_width").text();
+						st_lan.enc = $(data).find("enc_type").text();
+						show_lan_status(st_lan);
+
+						var tbl_content = '';
+
+						$(data).find("user").each(function() {
+							var name = $(this).children('name').text();
+							var ip = $(this).children('ip').text();
+							var mac = $(this).children('mac').text(); //.macFormat()
+							var leased_time = $(this).children('leased_time').text();
+							var status = $(this).children('status').text();
+
+							tbl_content += ('<tr><td>' + XSSResolveCannotParseChar(name) + '</td><td>' + ip + '</td><td>' + mac + '</td><td>' + leased_time + '</td><td>' + status + '</td></tr>');
+
+						});
+
+						$('#tbl_user').html(tbl_content);
+					},
+					error: function(x, t, m) {}
+				});
+			}
+
+			load_lan_status();
+			interval_timer = setInterval(load_lan_status, refresh_time * 1000);
+		}
+	}
+
+	/*
+	<user_list>
+	<user><name>USBHost</name><ip>192.168.1.100</ip><mac>FC-DE-56-01-01-06</mac><leased_time>00:01:35:47</leased_time><status>Connected</status></user>
+	</user_list>
+	*/
+
+	
+
+	
+	
+
+</script>
+<!-- </head> -->
+
+<body valign="center" style="border: 0px;margin-left:25px;width:650px;">
+	<table class="table_main" align="left">
+		<tbody style="border: 0px;width: 530px;">
+			<tr>
+				<td>
+					<h3 class="main_menu">LAN Information</h3></td>
+			</tr>
+			<tr>
+				<td class="_td" style="padding-left: 50px;">
+					</br>
+					<h4 class="small_menu" style="color:#515151; margin:0">LAN Information</h4>
+					<table style="width:90%;">
+						<tr id="Wifi_ssid">
+							<td width="37%" class="head_top">SSID</td>
+							<td width="63%" class="tail_top">
+								<input id="input_wifi_ssid" maxlength="32" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<tr id="LAN_operating_mode">
+							<td width="37%" class="head_top">LAN Operating Mode</td>
+							<td width="63%" class="tail_top">
+								<input id="input_LAN_Operating_Mode" maxlength="16" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<!--<tr id="Host_ip_address">
+                                <td width="37%" class="head_top">Host IP Address</td>
+                                <td width="63%" class="tail_top">
+                           		    <input id="input_Host_IP_Addr" maxlength="16" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on" style="font-size: 12px;"/>
+                                </td>
+						    </tr>-->
+						<tr id="Host_subnet_mask">
+							<td width="37%" class="head_top">Subnet Mask</td>
+							<td width="63%" class="tail_top">
+								<input id="input_Host_Subnet_Mask" maxlength="16" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<tr id="Gateway_ip">
+							<td width="37%" class="head_top">Gateway IP</td>
+							<td width="63%" class="tail_top">
+								<input id="input_Gateway_IP" maxlength="16" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<!--<tr id="Connection_up_time">
+                                <td width="37%" class="head_top">Connection UP Time</td>
+                                <td width="63%" class="tail_top">
+                           		    <input id="input_Connection_UP_Time" maxlength="16" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on" style="font-size: 12px;"/>
+                                </td>
+						    </tr>-->
+						<tr id="Mac_address">
+							<td width="37%" class="head_top">MAC Address</td>
+							<td width="63%" class="tail_top">
+								<input id="input_MAC_Addr" maxlength="16" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<tr id="tr_attached_clients">
+							<td width="37%" class="head_top">Number Of Clients Attached</td>
+							<td width="63%" class="tail_top">
+								<input id="input_attached_clients" maxlength="3" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<tr id="tr_channel">
+							<td width="37%" class="head_top">Wi-Fi Channel</td>
+							<td width="63%" class="tail_top">
+								<input id="input_channel" maxlength="1" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<tr id="tr_wifi_status">
+							<td width="37%" class="head_top">Wi-Fi Status</td>
+							<td width="63%" class="tail_top">
+								<input id="input_wifi_status" maxlength="2" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<tr id="tr_auto_channel_selection_status">
+							<td width="37%" class="head_top">Automatic Channel Selection Status</td>
+							<td width="63%" class="tail_top">
+								<input id="input_auto_channel_selection_status" maxlength="2" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<tr id="tr_channel_bandwidth">
+							<td width="37%" class="head_top">Wi-Fi Channel Bandwidth</td>
+							<td width="63%" class="tail_top">
+								<input id="input_channel_bandwidth" maxlength="10" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+						<tr id="tr_wifi_security">
+							<td width="37%" class="head_top">Wireless Security</td>
+							<td width="63%" class="tail_top">
+								<input id="input_wifi_security" size="16" type="text" readonly="readonly" style="width:330px" unselectable="on"/>
+							</td>
+						</tr>
+					</table>
+					</br>
+					<h4 class="small_menu" style="color:#515151;margin-bottom: 15px;">LAN Client List</h4>
+					<table id="table_lan_client_list" cellspacing="0" cellpadding="0" width="90%" align="left">
+						<thead>
+							<td class="table_head" style="border-left: 1px solid #AAA;" width="25%">Name</td>
+							<td class="table_head" width="16%">IP</td>
+							<td class="table_head" width="25%">MAC</td>
+							<td class="table_head" width="16%">Leased Time</td>
+							<td class="table_head" >Status</td>
+						</thead>
+						<tbody id="tbl_user" style="font-size:12px;"></tbody>
+<!-- 						<tfoot></tfoot> -->
+					</table>
+				</td>
+		</tr>
+		</tbody>
+	</table>
+</body>

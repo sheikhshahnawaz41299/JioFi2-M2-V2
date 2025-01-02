@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<style type="text/css">
+	html,body,#object{margin: 0;width: 0;}
+</style>
+<script type="text/javascript">
+window.onload=function(){
+	var href=window.location.href;
+	var peek=href.indexOf('?')+1;
+  
+	var h=document.documentElement.clientHeight;
+	var w=document.documentElement.clientWidth;
+
+
+  var file_src = href.substring(peek);
+ 
+  document.getElementById('object').innerHTML='<object height="'+h+'" width="'+w+'" align="center" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0"><param value="'+file_src+'" name="movie"><param value="high" name="quality"><param value="transparent" name="wmode"><embed height="'+h+'" width="'+w+'" align="center" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" quality="high" src="'+file_src+'" title="Adobe Flash Player"></object>'
+}
+</script>
+<body>
+<div id="object">
+
+</div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fota>
+<state>fota_state(get)</state>
+<check_result>fota_check_result(check_result)</check_result>
+<dl_progress>fota_download_progress(dl_progress)</dl_progress>
+<dl_result>fota_download_result(dl_result)</dl_result>
+<install_progress>fota_install_progress(install_progress)</install_progress>
+<install_result>fota_install_result(install_result)</install_result>
+</fota>

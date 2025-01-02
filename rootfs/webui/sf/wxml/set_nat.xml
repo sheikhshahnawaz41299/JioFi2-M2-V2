@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nat>
+<generic_time>set_nat_generic_timeout(generic_time)</generic_time>
+<icmp_time>set_nat_icmp_timeout(icmp_time)</icmp_time>
+<tcp_time>set_nat_tcp_timeout_established(tcp_time)</tcp_time>
+<udp_time>set_nat_udp_timeout(udp_time)</udp_time>
+</nat>

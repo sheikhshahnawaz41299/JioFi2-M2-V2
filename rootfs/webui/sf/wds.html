@@ -1,0 +1,878 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a>Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin"><a>PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds" class="active-item "><a href="javascript:;">WDS</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">WDS</h3>
+<div class="line" style="padding:0em 0.6em;" id="wds_set">
+  <form class="customform" action="#">
+  <div class="margin">
+  <div class="s-12 l-8">
+  <p id="p_note">Through the open Wireless Distribution System(WDS) function, it can extend the expansion of wireless signal, the scope of more and more widely.</p>
+  </div>
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> WDS</label>
+  </div>
+  <div class="s-12 l-5 line_form" >
+    <input type="radio" name="state" value="0" /><label class="radio" >Disable</label>
+    <input type="radio" name="state" value="1" /><label class="radio">Enable</label>
+  </div>
+  </div>
+
+  
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="btn_apply">APPLY</div>
+  </div>
+  </div>
+
+
+  <div class="s-12 l-8">
+  <hr>
+  <p id="p_note1">Please make sure all devices ( bridge and repeater) work under the same wifi channel.</p>
+  </div>
+
+  <div class="line" style="padding-top:1em;">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> MAC Address</label>
+  </div>
+  <div class="s-12 l-5 line_form" >
+    <input type="text" id="mac" name="mac" title="MAC" placeholder="MAC" />
+  </div>
+  </div>
+  
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+<label class="name"> Comment</label>
+  </div>
+  <div class="s-12 l-5 line_form" >
+<input type="text" id="comment" name="comment" title="COMMENT" placeholder="COMMENT" maxlength="20" />
+  </div>
+  </div>
+  
+  <div class="s-12 l-8">
+    <div class="s-12 l-6" id="add_errHint"></div>
+  <div class="s-12 l-6 right">
+  <div class="s-12 l-6 margin">
+  <div class="button_gray" id="btn_search">SEARCH</div>
+  </div>
+  <div class="s-12 l-6 right">
+  <div class="button_gray" id="btn_add">ADD</div>
+  </div>
+  </div>
+  </div>
+  
+
+  <div class="s-12 l-8">
+  <hr>
+  </div>  
+  
+  <div class="line">
+<div class="s-12 l-8" id="div_tbl_wds">
+<table id="table_wds">
+<thead><th>MAC Address</th><th>Tx Rate</th><th>Comment</th><th>Select</th><th>&#215;</th></thead>
+<tbody id="wds_tbl">
+<!-- <tr><td>11-22-33-44-55-66</td><td>Auto</td><td>11111111</td><td><input type="checkbox" class="check_mac" id="check_0" /><label>&#238;</label></td></tr> -->
+</tbody>
+</table>
+
+  </div>
+
+  <div class="s-12 l-8 margin" style="padding-left:2em;display:none;">
+  <div class="s-12 l-4">
+  <div class="button" id="del_all">DELETE ALL</div>
+  </div>
+  
+  <div class="s-12 l-4">
+   <div class="button_gray" id="del_sel" disabled="disabled">DELETE SELECT</div>
+  </div>
+   <div class="s-12 l-4">
+   <div class="button" id="reset">RESET</div>
+	  </div>
+  </div>
+
+  </div>
+  
+  <div class="line">
+  <div class="s-12 l-8">
+  <div class="s-12 l-8">
+  &nbsp;
+  </div>
+    <div class="s-12 l-4">
+    <div class="button" id="restart">RESTART WIFI</div>
+    </div>
+  </div>
+
+  </div>
+  </div>
+
+  </<!-- div -->
+  </form>
+  <img src="img/loading.gif" style="display:none;">  
+</div>
+
+<div class="line" style="padding:0em 1.6em;display:none;" id="wds_search_list">
+<div class="s-12 l-8">
+<div>Click to Add MAC Automatically</div>
+<table id="table_search">
+<thead>
+<tr align=center><th width=35%>SSID</th><th width=35%>MAC</th><th width=10%>Channel</th><th width=20%>Signal</th></tr></thead>
+<tbody id="tbl_wifi">
+</tbody>
+</table>
+</div>
+<div class="s-12 l-8" style="margin-top:1em;">
+<div class="s-12 l-9">&nbsp;</div>
+<div class="s-12 l-3">
+  <div class="button" id="btn_back">BACK</div>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+<style type="text/css">
+
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+
+#table_wds tr{cursor: pointer;}
+#table_wds tr td:nth-child(1) {width: 45%;word-wrap:break-word; word-break:break-all;}
+#table_wds tr td:nth-child(2) {width: 18%;}
+#table_wds tr td:nth-child(3) {width: 35%;word-wrap:break-word; word-break:break-all;}
+#table_wds tr td:nth-child(4) {width: 0%;text-align:center;display: none;}
+#table_wds tr td:nth-child(5) {width: 2%;text-align:center;}
+#table_wds tr td:nth-child(5):hover{color:red;}
+#table_wds thead th:nth-child(1){width: 45%;}
+#table_wds thead th:nth-child(2){width: 18%;}
+#table_wds thead th:nth-child(3){width: 35%;}
+#table_wds thead th:nth-child(4){width: 0%;display: none;}
+#table_wds thead th:nth-child(5){width: 2%;}
+
+#table_wds thead th:nth-child(5):hover{color:red;}
+td .check_mac{display: none;}
+
+
+#table_search tr td:nth-child(1) {width: 35%;word-wrap:break-word; word-break:break-all;}
+#table_search tr td:nth-child(2) {width: 35%;text-align:center;}
+#table_search tr td:nth-child(3) {width: 10%;text-align:center;}
+#table_search tr td:nth-child(4) {width: 20%;text-align:center;}
+
+#tbl_wifi{cursor: pointer;}
+
+table tr th{
+  padding: 0.2em 0.4em;
+}
+table tr td{
+  padding: 0.2em;
+}
+
+
+
+@media screen and (min-width:801px) {
+#aside{height:44em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:48.8em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+#p_note{padding-left:2em;margin-bottom:0.4em;}
+#p_note1{padding-left:2em;margin-bottom:0.4em;margin-top: 1em;}
+#div_tbl_wds{padding:1em 0em 1em 2em;}
+}
+
+@media screen and (max-width:900px) {
+div.button_gray,div.button {font-size: 1em;}
+}
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+#p_note{padding-left:1em;margin-bottom:0.4em;}
+#p_note1{padding-left:1em;margin-bottom:0.4em;margin-top: 1em;}
+#div_tbl_wds{padding:1em;}
+}
+
+
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+#errHint,#add_errHint{color: red;text-align: center;vertical-align: middle;line-height: 2em;height: 2em;}
+</style>
+<script type="text/javascript">
+
+function restart_wifi(){
+  var post_data="restart=1";
+  $.ajax({ 
+  url: "/wxml/wds_add.xml",
+  type: "Post", 
+  timeout: 8000,
+  cache: false,
+  datatype: "xml",
+  data: post_data, 
+  success: function(data, status) {
+    load_setting();
+  },
+  error: function(x, t, m){
+    if(t==="timeout"){
+
+    }  
+  }
+})
+}
+
+
+$('#restart').click(function(){
+    var content = "<div class='pop_div'><div style='text-align:center;'>Do you want restart Wi-Fi to Apply?</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Message',
+            content : content,
+            yesText : 'OK',
+            yesFn : restart_wifi,
+            noText : 'Cancel',
+            noFn : close_pop_diag
+        },
+        fixed : true
+    });
+
+});
+
+
+$('#reset').click(function(){
+	$("[type='checkbox']").attr("checked",false);
+	$('.check_mac+label').html('&#238');
+	$('#del_sel').attr({disabled:true,class:'button_gray'});
+	})
+
+// $('#wds_tbl tr').live('click',function(){
+//   var index=$(this).index();
+//   var obj=$('#check_'+index);
+//   if(obj.attr('checked')){
+//     obj.attr('checked',false);
+//     $('#check_'+index+'+label').html('&#238;'); 
+//   }
+//   else{
+//     obj.attr('checked',true);
+//     $('#check_'+index+'+label').html('&#239;'); 
+//   }
+//   var check_num=$("[type='checkbox']:checked").length;
+//   if(check_num){
+//     $('#del_sel').attr({disabled:false,class:'button'});
+//     }
+//   else{
+//     $('#del_sel').attr({disabled:true,class:'button_gray'});
+//     }
+  
+//   });
+
+
+
+function close_pop_diag(){
+easyDialog.close();
+//if(timer_count) clearInterval(timer_count);
+//return false;
+}
+
+function load_mark_set(){
+
+}
+
+function pop_confirm(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : submit_op,
+            noText : 'Cancel',
+            noFn : close_pop_diag
+        },
+        fixed : false
+    });
+  return true;
+}
+
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+
+function pop_waiting(){
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>Please Waiting...</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content,
+        },
+        fixed : true
+  });
+}
+
+function refresh_page_height(id){
+  var div_id=("#"+id);
+  var c_height;
+  var s_height=$('div.aside-nav').height();
+  if($(div_id).height() +100> s_height){
+  c_height = $(div_id).height()+100;
+  }
+  else
+  c_height=s_height;
+  $('#main_content').height(c_height);
+  if($(document).width()>800) $('#aside').height(c_height);
+  else $('#aside').height($('.aside-nav').height());
+}
+
+var wds_tbl_content,wds_curr_id,wds_curr_page;
+function show_wifi_survey(page_no){
+  var post_data="page="+page_no;
+  if(page_no==0){
+    post_data+='&scan=1';
+  } 
+  $.ajax({ 
+    url: "/wxml/wifi_survey.xml",
+    type: "Post", 
+    timeout: 20000,
+    cache: false,
+    datatype: "xml",
+    data: post_data,
+    success: function(data, status) {
+      if(page_no==0){
+        wds_curr_id=0;
+        wds_curr_page=0;
+        wds_tbl_content='';
+        $('#wds_set').hide();
+        $('#wds_search_list').show();      
+      }
+
+      var wifi_num=parseInt($(data).find('cnt').text());
+      if(isNaN(wifi_num)) return false;
+      var page_cnt =Math.ceil(wifi_num/5);
+
+      $(data).find("ap").each(function(){
+        if(wds_curr_id<wifi_num){
+      var mac = $(this).children('mac').text().macFormat();
+      if(mac!='-')
+      {
+        var ssid = $(this).children('ssid').text();
+        var ch = $(this).children('ch').text();
+        var sig = '-'+$(this).children('sig').text()+' dBm';
+            wds_tbl_content+=('<tr><td>'+ssid+'</td><td>'+mac+'</td><td>'+ch+'</td><td>'+sig+'</td></tr>');
+            wds_curr_id++;
+          }
+      }
+    });
+
+      wds_curr_page++;
+      if(wds_curr_page>=page_cnt){
+        $('#tbl_wifi').html(wds_tbl_content);
+        
+    refresh_page_height('wds_search_list');
+        locking=0;
+    close_pop_diag();
+      }
+      else{
+        show_wifi_survey(wds_curr_page);
+      }
+    // $('#tbl_wifi').html(tbl_content);
+    // $('#wds_set').hide();
+    // $('#wds_search_list').show();
+    // refresh_page_height('wds_search_list');
+    // close_pop_diag();
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+        close_pop_diag();
+      }  
+    }
+  })
+}
+
+
+$('#btn_search').click(function(event){
+event.preventDefault();
+if($(this).prop('disabled')==true){
+  // if(!state){
+  //   $('#add_errHint').html('Enable WDS First!');
+  //   return false;
+  // } 
+  return false;
+}
+locking=1;
+pop_waiting();
+wds_tbl_content='';
+wds_curr_id=0;
+wds_curr_page=0;
+show_wifi_survey(0);
+
+});
+
+$('#btn_back').click(function(event){
+  event.preventDefault();
+  $('#wds_set').show();
+  $('#wds_search_list').hide();
+  refresh_page_height('wds_set');
+});
+
+
+function submit_op(){
+   pop_waiting();
+    locking=1;
+    var enable = $('input[name=state]:checked').val();
+    var post_data = 'enable='+enable;
+
+    if(!parseInt(enable)){
+      post_data+="&mode=0";
+    }
+    else post_data+="&mode=3&sw=1";
+
+    $.ajax({ 
+      url: "/wxml/wds_add.xml",
+      type: "Post", 
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+        locking=0;
+        var ret = parseInt($(data).find("enable").text());
+        curr_del_page=0;
+        del_page_cnt=0;
+        curr_id=0;
+        curr_page=0;
+        if(ret) pop_submit_result('Setting Apply Success!');
+        else pop_submit_result('Setting Apply Fail!');
+        load_setting();
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+          locking=0;
+          close_pop_diag();
+        }  
+      }
+    })
+    return false;
+}
+
+
+$('#btn_apply').click(function(event){
+  event.preventDefault();
+
+ return pop_confirm("The Wi-Fi module will be restart, it will cause the Wi-Fi disconnection.");
+//  pop_submit_result();
+});
+
+function updateState(){
+  if(!wifi_enable || (wifi_mode != 2 && wifi_mode !=3) ){
+//    disableButton('btn_apply');
+    disableButton('btn_search');
+    disableButton('btn_add');
+    $('#mac').attr('disabled',true);
+    $('#comment').attr('disabled',true);
+//    $('input[name=state]').attr('disabled',true);
+    disableButton('reset');
+    disableButton('del_sel');
+    disableButton('del_all');
+  }else{
+    var enable = parseInt($('input[name=state]:checked').val());
+    if (enable){
+      $('#mac').attr('disabled',false);
+      $('#comment').attr('disabled',false);
+    }else{
+      $('#mac').attr('disabled',true);
+      $('#comment').attr('disabled',true);
+    }
+    enableButton('btn_apply');
+    enableButton('btn_search');
+//    enableButton('btn_add');
+  }
+}
+
+
+var state=0,wifi_enable,wifi_mode,wds_client_cnt=0,curr_page=0,page_cnt=0,curr_id=0,tbl_content;
+function load_setting(){
+  disableButton('del_sel');
+  disableButton('btn_add');
+  $.ajax({ 
+    url: "/wxml/wds.xml",
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: { page:curr_page}, 
+    success: function(data, status) {
+
+  if(curr_page==0){
+    state= parseInt($(data).find("state").text());
+    wifi_enable = parseInt($(data).find("wifi").text());
+    wifi_mode = parseInt($(data).find("mode").text());
+
+    $('input[name=state]').eq(state).attr('checked','true');
+
+    updateState();
+    wds_client_cnt = parseInt($(data).find("cnt").text());
+    page_cnt= Math.ceil(wds_client_cnt/5);
+    tbl_content=''; 
+  }
+
+
+  for (var i=0;i<5;i++)
+  {
+    var mac=$(data).find("mac").eq(i).text().macFormat();;
+    if(mac!="" && mac!='-')
+    {
+      var rate=$(data).find("rate").eq(i).text();
+      var comment=$(data).find("comment").eq(i).text();
+      tbl_content += '<tr><td>'+ mac +'</td><td>'+ 'Auto' +'</td><td>'+ comment +'</td><td>'+
+'<input type="checkbox" class="check_mac" id="check_'+curr_id+'" /><label>&#238;</label>'+'</td><td>&#215;</td></tr>';
+    }
+    curr_id++;
+    if(curr_id>=wds_client_cnt) break;
+  }
+  curr_page++;
+  if(curr_page<page_cnt){
+    load_setting();
+  }
+  else{
+    $('#wds_tbl').html(tbl_content);
+    if(wds_client_cnt){
+      $('#table_wds').show();
+    }
+    else{
+      $('#table_wds').hide();
+    }
+
+    refresh_page_height('wds_set');
+    
+  }
+
+
+
+    },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+}
+
+function load_mark(url){
+if(interval_timer) clearInterval(interval_timer);
+  if(url=="wds.html"){
+    load_setting();
+  }
+}
+
+var del_para='',del_page_cnt=0,curr_del_page=0;
+function del_select_mac(){
+  curr_del_page--;
+    if(curr_del_page>=0){
+      del_para='page='+curr_del_page;
+      for(var i=5;i>0;i--){
+        var curr_del_id = curr_del_page*5+i;
+        if(curr_del_id>wds_client_cnt) continue;
+        var id='#check_'+(curr_del_id-1);
+        if($(id).attr('checked')){
+          del_para += ('&no'+i+'='+i)
+        }
+      }
+      $.ajax({ 
+        url: "/wxml/wds_del.xml",
+        type: "Post", 
+        timeout: 8000,
+        cache: false,
+        datatype: "xml",
+        data: del_para, 
+        success: function(data, status) {
+          del_select_mac();
+        },
+        error: function(x, t, m){
+          if(t==="timeout"){
+
+          }  
+        }
+      })
+    }
+    else{
+      curr_del_page=0;
+      del_page_cnt=0;
+      curr_id=0;
+      curr_page=0;
+      load_setting();
+    }
+}
+
+$('#table_wds thead th:last-child').die().live('click',function(){
+
+$.ajax({ 
+  url: "/wxml/wds_del.xml",
+  type: "Post", 
+  timeout: 8000,
+  cache: false,
+  datatype: "xml",
+  data: { all:'1'}, 
+  success: function(data, status) {
+    curr_del_page=0;
+    del_page_cnt=0;
+    curr_id=0;
+    curr_page=0;
+    load_setting();
+  },
+  error: function(x, t, m){
+    if(t==="timeout"){
+
+    }  
+  }
+})
+});
+
+
+
+$('#wds_tbl td:last-child').die().live('click',function(){
+  var index=$(this).parent().index();
+  var page_no=Math.floor(index/5);
+  var del_no= index%5+1;
+  var del_para=('page='+page_no+'&no'+del_no+'='+del_no);
+  $.ajax({ 
+    url: "/wxml/wds_del.xml",
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: del_para, 
+    success: function(data, status) {
+      curr_del_page=0;
+      del_page_cnt=0;
+      curr_id=0;
+      curr_page=0;
+      load_setting();
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+})
+
+$('ul.head li:last-child').die().live('click',function(){
+  $(this).parent().parent().find('input').val('');
+})
+
+
+
+$('#del_sel').click(function(){
+  event.preventDefault();
+  if($(this).prop('disabled')==true){
+    return false;
+  }
+
+  del_page_cnt = Math.ceil(wds_client_cnt/5);
+  curr_del_page = del_page_cnt;
+  del_select_mac();
+})
+
+$('#del_all').click(function(){
+  event.preventDefault();
+  if($(this).prop('disabled')==true){
+    return false;
+  }
+
+
+  $.ajax({ 
+  url: "/wxml/wds_del.xml",
+  type: "Post", 
+  timeout: 8000,
+  cache: false,
+  datatype: "xml",
+  data: { all:'1'}, 
+  success: function(data, status) {
+    curr_del_page=0;
+    del_page_cnt=0;
+    curr_id=0;
+    curr_page=0;
+    load_setting();
+  },
+  error: function(x, t, m){
+    if(t==="timeout"){
+
+    }  
+  }
+})
+})
+
+$('#btn_add').click(function(event){
+// $('#btn_add').die().live('click',function(event){
+	 event.preventDefault();
+   if(!$('#mac').val().length || !$('#mac').val().length){
+    disableButton('btn_add');
+   }
+	 if($(this).prop('disabled')==true){
+
+    // if(!state) $('#add_errHint').html('Enable WDS First!');
+    // else{
+    //   if($('#comment').val().length){
+    //     $('#add_errHint').html('Please Input Valid Mac');        
+    //     $('#mac').focus();
+    //   }
+    //   else{
+    //     $('#add_errHint').html('Please Input Comment');
+    //     $('#comment').focus();
+    //   } 
+    // }
+		return;
+	}
+
+var mac_input=$('#mac').val();
+if(mac_input.length==12){
+  mac_input=mac_input.replace(/(.{2})/g,'$1-');
+  mac_input=mac_input.substring(0,mac_input.length-1);
+}
+
+  if($('#wds_tbl').html().indexOf(mac_input)>-1){
+    $('#add_errHint').html("MAC Address Duplicate!");
+    $('#mac').focus();
+    return false;
+  }
+var cmt_val=$('#comment').val();
+if(cmt_val.length>20){
+  cmt_val=cmt_val.substring(0,20);
+  $('#comment').val(cmt_val);
+}
+
+  var post_data='mac='+esc($('#mac').val().replace(/-|:/g,''))+'&rate=0&comment='+esc($('#comment').val());
+
+  $('#mac').val('').focus();
+  $('#comment').val('');
+  disableButton('btn_add');
+  $.ajax({ 
+      url: "/wxml/wds_add.xml",
+      type: "Post", 
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+        var st1=parseInt($(data).find("add").text());
+        if(st1==1){
+          curr_id=0;
+          curr_page=0;
+          load_setting();
+        }
+        else{
+          pop_submit_result('Unable to add, maximum only support up to 8 device clients');
+        }
+        btn_click=0;
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+})
+
+
+
+$('#tbl_wifi tr').die().live('click',function(){
+  var mac=$(this).children("td:eq(1)").html();
+  $('#wds_set').show();
+  $('#wds_search_list').hide();
+  refresh_page_height('wds_set');
+  $('#mac').val(mac).focus();
+});
+
+
+
+$('#mac').bind('input propertychange', function() {
+	$('#add_errHint').html('');
+  if(mac_check($(this).val()) && $('#comment').val().length){
+    enableButton('btn_add');
+  }
+  else {
+    disableButton('btn_add');
+  }
+});
+
+$('#comment').bind('input propertychange', function() {
+  $('#add_errHint').html('');
+  if(mac_check($('#mac').val()) && $(this).val().length){
+    enableButton('btn_add');
+  }
+  else {
+    disableButton('btn_add');
+  }
+});
+
+
+</script>
+

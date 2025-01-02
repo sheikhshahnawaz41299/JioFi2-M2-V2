@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<show>
+<net>get_network_mode()</net>
+<set_box>sms_box_select(href)</set_box>
+<src>sms_get_src(page*5+no)</src>
+<body>sms_get_content(page*5+no)</body>
+<time>sms_get_time(page*5+no)</time>
+<read>sms_set_read(5*page+no)</read>
+<id>(5*page+no)</id>
+</show>

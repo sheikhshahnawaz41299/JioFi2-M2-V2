@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lan>
+<dhcp_enable>set_dhcp_server_enabled(dhcp_state)</dhcp_enable>
+<start_ip>set_dhcp_start_ip(start_ip)</start_ip>
+<end_ip>set_dhcp_end_ip(end_ip)</end_ip>
+<static_ip>
+<ip0>set_static_lease(0,ip0,mac0,client0)</ip0>
+<ip1>set_static_lease(1,ip1,mac1,client1)</ip1>
+<ip2>set_static_lease(2,ip2,mac2,client2)</ip2>
+<ip3>set_static_lease(3,ip3,mac3,client3)</ip3>
+<ip4>set_static_lease(4,ip4,mac4,client4)</ip4>
+<ip5>set_static_lease(5,ip5,mac5,client5)</ip5>
+<ip6>set_static_lease(6,ip6,mac6,client6)</ip6>
+<ip7>set_static_lease(7,ip7,mac7,client7)</ip7>
+<ip8>set_static_lease(8,ip8,mac8,client8)</ip8>
+<ip9>set_static_lease(9,ip9,mac9,client9)</ip9>
+</static_ip>
+<commit>set_dhcp_commit()</commit>
+</lan>

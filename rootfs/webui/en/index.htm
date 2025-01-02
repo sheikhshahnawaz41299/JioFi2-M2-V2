@@ -1,0 +1,1409 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=1090">
+		<title>Web Admin</title>
+		<link href="favicon.ico" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" />
+		<link href="favicon.ico" mce_href="favicon.ico" rel="icon" type="image/x-icon" />
+		<link href="favicon.ico" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+		<style type="text/css">
+
+		</style>
+		<!--<script type="text/javascript" src="jquery-1.8.2.min.js"></script> -->
+		<script type="text/javascript" id="seajsnode" src="sea.js"></script>
+		<!--<script type="text/javascript" src="jquery-ui.min.js"></script> -->
+		<link rel="stylesheet" href="jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="newStyle.css" />
+
+		<script type="text/javascript">
+
+		var seed=new Date().getTime();
+		function toSelfXSS(){
+			if(!window.console) return;
+			//location.href = "selfxss.html";
+			if(!!window.ActiveXObject || "ActiveXObject" in window){
+				console.error("Stop:")
+				console.warn("Developer tools only for developer.");
+			}else{
+				console.log("%cStop:"," text-shadow: 0 1px 0 #ccc,0 2px 0 #c9c9c9,0 3px 0 #bbb,0 4px 0 #b9b9b9,0 5px 0 #aaa,0 6px 1px rgba(0,0,0,.1),0 0 5px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.3),0 3px 5px rgba(0,0,0,.2),0 5px 10px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.2),0 20px 20px rgba(0,0,0,.15);color:red;font-size:5em")
+				console.log("%cDeveloper tools only for developer.","color:red;");
+			}
+			return "SelfXSS detected!";
+		}
+
+			function loadXMLDoc(url) {
+				var xmlHttp = null;
+				if(window.XMLHttpRequest) {
+					xmlHttp = new XMLHttpRequest();
+				} else if(window.ActiveXObject) {
+					xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				if(xmlHttp != null) {
+					xmlHttp.onreadystatechange = function() {
+						if(xmlHttp.readyState == 4) {
+							window.location.reload(true);
+						}
+					}
+					xmlHttp.open("GET", url, true);
+					xmlHttp.setRequestHeader("If-Modified-Since", "0");
+					xmlHttp.send(null);
+				} else {
+					window.location.reload(true);
+				}
+			}
+
+function XSSResolveCannotParseChar(xmlStr) {
+    return xmlStr.replace(/(\&|\'|\"|\>|\<|\/|\(|\))/g, function($0, $1) {
+        return {
+            '&' : '&amp;',
+            "'" : '&#39;',
+            '"' : '&quot;',
+            '<' : '&lt;',
+            '>' : '&gt;',
+            '/' : '&#x2F;',
+            '(' : '&#40;',
+            ')' : '&#41;'
+        }[$1];
+    }
+    );
+}
+
+			function disableCacheRefresh(s) {
+				if(s!=seed) return toSelfXSS();
+				loadXMLDoc("/mark_cache.w.xml");
+			}
+
+			// $.ajaxSetup ({
+			//     cache: false
+			// });
+			var pop_dialog = 0,
+				pop_restart = 0,
+				Macfilter_dialog = 0,
+				StaticIP_dialog=0,
+				dlg_upload_file = 0,
+				dlg_effect_firm = 0;
+			var Can_Render = 0;
+			var resizeTimer;
+			var idleTime = 0;
+			var idleInterval = 0;
+			var Session_inactivity_timeout;
+			var session_token = 0;
+			var session_level = 0;
+			var session_refresh_timeout = 10;
+			var guiInterval = 0;
+
+			var need_refresh = 0,
+				locking = 0,
+				dsc = "<% get_version_dsc(); %>";
+			var timer_3s, interval_timer, refresh_time = parseInt(<% get_gui_refresh_time(); %>);
+			var fota = 0,
+				batt_per,
+				sd_st = '<% get_sdst(); %>';
+			var login_timeout = parseInt(<% get_login_timeout(); %>),
+				user_logout = 0,
+				pre_timeout = 0,
+				pre_login = 0;
+			if(refresh_time == 0) refresh_time = 1;
+			var curr_page;
+			var target = "<% url_get_target_test(); %>";
+			var login = <% get_login(); %>;
+			login = parseInt(login);
+
+			// window.onunload=function(){
+			// 	logout(1);
+			// }
+
+			// On browser close event
+			function logout(s,close) {
+				if(s!=seed) return toSelfXSS();
+				var headers = {};
+				headers["__RequestVerificationToken"] = $("#csrf_token1").val();
+				$.ajax({
+						url: '/wxml/login_exit.xml',
+						type: "Post",
+						headers: headers,
+						timeout: 8000,
+						cache: false,
+						datatype: "xml",
+						data: null,
+						success: function(data, status) {
+							var new_token = $(data).find("token").text();
+							if(new_token == "-1") {
+								top.location.reload(true);
+								return false;
+							}
+							//    			$("#csrf_token1").val(new_token);
+							if(close != 1) load_page("status_lte.html");
+						},
+						error: function(x, t, m) {
+							window.location.reload();
+						}
+					})
+					//alert("Your browser is closing");
+				return;
+			}
+
+			function refresh_login(s,timeout,login_cnt) {
+				if(s!=seed) return toSelfXSS();
+				if((login & 0x0F) >= 2) {
+					if(!timer_3s) timer_3s = IntervalTitle(seed, 1000);
+					$("#button_default_login").hide();
+					$("#Top_menu").show();
+					
+					hide_login_dialog(seed)
+				} else {
+					if((pre_login & 0x0F) >= 2) {
+						if(user_logout) {
+							user_logout = 0;
+						} else if(!user_logout && (!timeout && pre_timeout + 1 == login_timeout * 60)) {
+							//				if(!locking) create_tips("Session timeout, please login again");
+						} else {
+							if(login_cnt) alert("Another user also logged in as administrator. Logging you out as administrator.");
+						}
+					}
+
+					$("#button_default_login").show();
+					if(Macfilter_dialog) {
+						Macfilter_dialog.dialog("close");
+					}
+					if(StaticIP_dialog) {
+						StaticIP_dialog.dialog("close");
+					}
+					if( !(login & 0x20)    && dlg_upload_file) {
+						dlg_upload_file.dialog("close");
+					}
+					if(!(login & 0x20) &&  dlg_effect_firm) {
+						dlg_effect_firm.dialog("close");
+					}
+
+					if((login & 0x20) && (curr_page == "engineer.html" || curr_page == "set_ad_secu.html")) {
+						hide_menu_default(seed);
+						check_default_page(0);
+					} else if(curr_page != 'login.htm' && curr_page != 'status_lte.html' && curr_page != 'status_lan.html' && curr_page != 'status_wan.html' && curr_page != 'status_dev.html' && curr_page != 'status_per.html' && curr_page != 'to_engineer_login.html') {
+						load_defaultpage(seed);
+					} else {
+						hide_menu_default(seed);
+						check_default_page(0);
+					}
+				}
+				pre_login=login;
+				pre_timeout=timeout;
+			}
+
+var isMac = navigator.platform.toLowerCase().indexOf('mac') > -1;
+var isChromeOrIE11 = window.navigator.userAgent.indexOf("Chrome") > -1 || ((!!window.ActiveXObject || "ActiveXObject" in window) &&  (window.navigator.userAgent.toLowerCase().indexOf("trident") > -1 && window.navigator.userAgent.indexOf("rv") > -1));
+//var isChrome = true;
+var fobbidenDebug=0;
+if(isChromeOrIE11)
+{
+	var checkStatus;
+	var element = new Image();
+	// var element = document.createElement('any');
+	try{
+		element.__defineGetter__('id', function() {
+		    checkStatus = 'on';
+		});	
+	}
+	catch (ex){
+		isChromeOrIE11=false;
+		if(window.console&&window.console.log) console.log(ex);
+	}
+}
+
+if(window.console&&window.console.log && !isChromeOrIE11 && fobbidenDebug>0){
+var firstTest;
+var openedRatio = isMac ? 1.6 : 1.5;
+var startedOpenedRatio = isMac ? 0.5 : 0.8;
+	function testDevTools() {
+		//var t = performance.now();
+		var t = new Date().getTime();
+		for (var i = 0; i < 100; i++) {
+			console.log(1);
+			console.clear();
+		}
+
+		return new Date().getTime() - t;
+	}
+	firstTest = testDevTools();
+}
+
+
+	function IntervalTitle(s,time){
+		if(s!=seed) return toSelfXSS();
+		return setInterval(function fast_refresh() {
+				if(window.console&&window.console.log && fobbidenDebug>0){
+					if(!isChromeOrIE11){
+						var test = testDevTools(),
+						ratio = test / firstTest,
+						opened = ratio > openedRatio;
+						if(opened){
+							location.href="/selfxss.html";
+						}
+
+						if (ratio < startedOpenedRatio) {
+							firstTest = test;
+						}	
+					}
+					else{
+						checkStatus = 'off';
+						console.log(element);
+						console.clear();
+						if(checkStatus=="on") location.href="/selfxss.html";						
+					}
+				}
+
+				$.ajax({
+					url: '/mark_title.w.xml',
+					type: "Get",
+					timeout: 8000,
+					cache: false,
+					datatype: "xml",
+					data: null,
+					success: function(data, status) {
+						if(need_refresh > 20) {
+							location.reload(true);
+							return;
+						}
+						//    	locking=0;
+						var timeout = parseInt($(data).find("timeout").text());
+						login = parseInt($(data).find("login").text());
+						var login_cnt=parseInt($(data).find("login_cnt").text());
+						sd_st = parseInt($(data).find("sd_st").text());
+						fota = parseInt($(data).find("fota").text());
+						dsc = parseInt($(data).find("dsc").text());
+						batt_per = parseInt($(data).find("batt_per").text());
+						if(fota == 99 && !locking) {
+							show_tips(seed,"<b>Firmware Upgrading...</b><p>Please do not power off or unplug <br>device during upgrading in any way.<br>The device will reboot when upgrade is done.</p>");
+							$(".ui-dialog").css({
+								height: '120px'
+							});
+							locking = 99;
+						}
+						if((fota == 109 || fota == 110) && (!locking || locking == 99)) {
+							if(locking == 99) {
+								locking = 0;
+								hide_tips(seed);
+								pop_dialog = 0;
+							}
+							if(fota == 109) show_restart(seed,"Upgrade Success,Need Reboot...");
+							else if(fota == 110) show_restart(seed,"Upgrade Fail,Need Reboot...");
+							locking = 109;
+						}
+						if((fota != 99 && locking == 99) || (fota != 109 && fota != 110 && locking == 109)) {
+							locking = 0;
+							pre_login = login;
+							if(pop_dialog) {
+								hide_tips(seed);
+								pop_dialog = 0;
+							}
+
+							if(pop_restart) {
+								pop_restart.dialog("close");
+								pop_restart = 0;
+							}
+						}
+
+						var refresh = parseInt(parseInt($(data).find("refresh").text()));
+						if(refresh > 0 && refresh != refresh_time) {
+							location.reload(true);
+							return;
+						}
+						refresh_login(seed,timeout,login_cnt);
+					},
+					error: function(x, t, m) {
+						if(locking == 109 || fota == 109 || fota == 110) {
+							if(pop_restart) {
+								pop_restart.dialog("close");
+								pop_restart = 0;
+								locking = 0;
+							}
+							if(dlg_effect_firm) {
+								dlg_effect_firm.dialog("close");
+								dlg_effect_firm = 0;
+								locking = 0;
+							}
+
+						}
+						if(fota != 99 && fota != 109 && fota != 110) {
+							if(t === "timeout") {
+								if(need_refresh < 22 && !locking) need_refresh++;
+								if(need_refresh == 21) location.reload(true);
+							} else if(t === "error") {
+								if(need_refresh < 22 && !locking) need_refresh++;
+								if(need_refresh == 21) location.reload(true);
+							}
+						}
+					}
+				})
+			}, 1000);
+}
+
+			function create_tips(s,text, time) {
+				if(s!=seed) return toSelfXSS();
+				locking = 1;
+				if(!pop_dialog) {
+					pop_dialog = $("#pop_tips").dialog({
+						autoOpen: false,
+						resizable: false,
+						draggable: false,
+						width: 450,
+						height: 200,
+						modal: true,
+						closeText: null,
+						position: {
+							my: "top",
+							at: "top",
+							of: "#Table_Body"
+						},
+						buttons: {
+							OK: function() {
+								pop_dialog.dialog("close");
+							}
+
+						},
+
+						close: function() {
+							locking = 0;
+							pop_dialog = 0;
+						}
+					});
+				}
+				$("#pop_tips").html(text);
+				$(".ui-dialog").css({
+					top: "398px",
+					height: 'auto'
+				});
+				pop_dialog.dialog("open");
+				if(time > 0) setTimeout(function() {
+					hide_tips(seed);
+				}, time * 1000);
+
+			}
+
+			function show_tips(s,text, time) {
+				if(s!=seed) return toSelfXSS();
+				locking = 1;
+				if(!pop_dialog) {
+					pop_dialog = $("#pop_tips").dialog({
+						autoOpen: false,
+						resizable: false,
+						draggable: false,
+						width: 450,
+						height: 100,
+						modal: true,
+						closeText: null,
+						// position: {
+						// 	my: "top",
+						// 	at: "top",
+						// 	of: "#Table_Body"
+						// },
+						close: function() {
+							locking = 0;
+							pop_dialog = 0;
+						}
+					});
+				}
+				$("#pop_tips").html(text);
+				$(".ui-dialog .ui-dialog-titlebar").hide();
+				pop_dialog.dialog("open");
+
+				// var v_height=$(document).height()/2-100;
+
+				$(".ui-dialog").css({
+//					top: v_height+"px",
+					height: '80px'
+				});
+
+				if(time > 0) setTimeout(function() {
+					hide_tips(seed);
+				}, time * 1000);
+			}
+
+			function restart_device(s) {
+				if(s!=seed) return toSelfXSS();
+				show_tips(seed,'Restarting...');
+				setTimeout(function() {
+					locking = 109;
+				}, 3000);
+
+				var headers = {};
+				headers["__RequestVerificationToken"] = $("#csrf_token1").val();
+				$.ajax({
+					url: "/wxml/fota_op.xml",
+					type: "Post",
+					headers: headers,
+					timeout: 8000,
+					cache: false,
+					datatype: "xml",
+					data: {
+						reboot: 1
+					},
+					success: function(data, status) {
+						var new_token = $(data).find("token").text();
+						if(new_token == "-1") {
+							top.location.reload(true);
+							return false;
+						}
+						$("#csrf_token1").val(new_token);
+						//      var ret0 = parseInt($(data).find("restore").text());
+						//      if(ret0) pop_submit_result('Setting Apply Success!');
+						//      else pop_submit_result('Setting Apply Fail!');
+					},
+					error: function(x, t, m) {
+						if(t === "timeout") {
+
+						}
+					}
+				})
+
+				return false;
+			}
+
+			function show_restart(s,text) {
+				if(s!=seed) return toSelfXSS();
+				locking = 1;
+				if(!pop_restart) {
+					$("#pop_restart").html("<div>" + text + "</div>");
+					pop_restart = $("#pop_restart").dialog({
+						autoOpen: false,
+						resizable: false,
+						draggable: false,
+						width: 450,
+						height: 100,
+						modal: true,
+						closeText: null,
+						dialogClass: "no-close",
+						position: {
+							my: "top",
+							at: "top",
+							of: "#Table_Body"
+						},
+						buttons: {
+							Reboot: function() {
+								pop_restart.dialog("close");
+								pop_restart = 0;
+								restart_device(seed);
+							}
+
+						},
+						close: function() {
+							locking = 0;
+						}
+					});
+				}
+
+				$(".ui-dialog .ui-dialog-titlebar").show();
+				$(".ui-dialog").css({
+					top: "398px",
+					height: 'auto'
+				});
+				pop_restart.dialog("open");
+
+				// if(time>0) setTimeout(function(){
+				// 	hide_tips(seed);
+				// },time*1000);
+			}
+
+			function hide_tips(s) {
+				if(s!=seed) return toSelfXSS();
+				pop_dialog.dialog("close");
+				pop_dialog = 0;
+			}
+
+			function load_page(url) {
+				if(url == "login.htm") {
+					$(".blacklayer").css({"height":2000}).show();
+					$(".loginLoadArea").show().css({"top":$(window).height()/2-310/2,"margin-top":"0"}).load(url, function() {
+						enable_button(seed);
+					});
+					return;
+				}
+				$('#Content').load(url, function(response, status) {
+					if(status == "success") {
+						var res_to_login = 'top.window.open("http://' + location.hostname + '/login.htm","_self")';
+						if(response.indexOf(res_to_login) > -1) {
+							$("#button_default_login").hide();
+							clearInterval(timer_3s);
+							timer_3s = 0;
+							if(url != 'login.htm') load_page('login.htm');
+							return;
+						}
+						curr_page = url;
+						if(url == 'conn.html') {
+							load_sidemenu(seed,1);
+						} else if(url.indexOf("status_") == 0) {
+							load_sidemenu(seed,2);
+						} else if(url.indexOf("set_") == 0) {
+							load_sidemenu(seed,3);
+						} else if(url == "engineer.html") {
+							load_sidemenu(seed,3);
+						}
+						load_mark(url);
+
+						setLeftMenu(seed,url);
+					}
+				});
+			}
+
+			function hide_login_dialog(s){
+				if(s!=seed) return toSelfXSS();
+				$(".loginLoadArea").hide();
+				$(".blacklayer").hide();
+				$("#LOGIN_USER").val("");
+				$("#LOGIN_PWD").val("");
+			}
+
+			function open_page(s) {
+				if(s!=seed) return toSelfXSS();
+				clearTimeout(resizeTimer);
+				//clearhelp();
+				//hide_menu();
+				//show_menu();
+
+				if(locking) hide_tips(seed);
+
+				// resizeTimer = setTimeout(RenderMe, 500);
+				//	refresh_login();
+				if((login & 0x0F) >= 2) {
+					show_menu(seed);
+					if(target == 'help.html') target = 'status_lte.html';					
+				}
+				if(target == 'home.html') target = 'status_lte.html';
+				load_page(target);
+			}
+
+			function setLeftMenu(s,para) {
+				if(s!=seed) return toSelfXSS();
+				var paraArr = para.split(".");
+				var targetArr = ["status_lte", "status_lan", "status_wan", "status_dev", "status_per"];
+
+				$(".menu_content li").removeClass("left_ACTIVE");
+				$("#" + paraArr[0]).addClass("left_ACTIVE");
+
+				$.each(targetArr, function(index) {
+					if(targetArr[index] == paraArr[0]) {
+						$("#Table_Menu_Status li").eq(index).addClass("left_ACTIVE");
+						return;
+					}
+				});
+			}
+
+			function hide_menu(s) {
+				if(s!=seed) return toSelfXSS();
+				document.getElementById("Top_menu").style.display = "none";
+				document.getElementById("Table_Menu_Status").style.display = "block";
+				document.getElementById("Table_Menu_Setting").style.display = "none";
+				//document.getElementById("Table_Menu_Help").style.display = "none";
+				document.getElementById("Table_Menu_Connection").style.display = "none";
+			}
+
+			function hide_menu_default(s) {
+				if(s!=seed) return toSelfXSS();
+				document.getElementById("Top_menu").style.display = "none";
+				document.getElementById("Table_Menu_Status").style.display = "block";
+				document.getElementById("Table_Menu_Setting").style.display = "none";
+				//document.getElementById("Table_Menu_Help").style.display = "none";
+				document.getElementById("Table_Menu_Connection").style.display = "none";
+			}
+
+			function show_menu(s) {
+				if(s!=seed) return toSelfXSS();
+				load_sidemenu(seed,1);
+				document.getElementById("Top_menu").style.visibility = "visible";
+			}
+
+			// function RenderMe() {
+			// 	var height = 0;
+			// 	var width = 0;
+			// 	var browser = "";
+			// 	browser = window.navigator.userAgent;
+			// 	if(browser.indexOf("Chrome") == -1) {
+			// 		if(browser.indexOf("Firefox") == -1) {
+			// 			if(browser.indexOf("MSIE") == -1) {} else
+			// 				browser = "MSIE";
+			// 		} else
+			// 			browser = "Firefox";
+			// 	} else
+			// 		browser = "Chrome";
+
+			// 	height = document.body.clientHeight - 130;
+			// 	width = document.body.clientWidth;
+			// 	if(Can_Render == 0) {
+			// 		Can_Render = 1;
+			// 		$("#Table_Menu").width("325px");
+			// 		$("#Table_Menu").height(height + "px");
+			// 		$("#Table_Content").width("764px");
+			// 		Can_Render = 0;
+			// 	}
+			// };
+
+
+
+			function load_defaultpage(s) {
+				if(s!=seed) return toSelfXSS();
+				load_page('status_lte.html');
+				hide_menu_default(seed);
+				check_default_page(0);
+				//			    restartguitimeout();
+			}
+
+			// td id
+			var _side_manu_name = new Array(
+				"Table_Menu_Connection",
+				"Table_Menu_Status",
+				"Table_Menu_Setting"
+			);
+
+			function menu_init(s) {
+				if(s!=seed) return toSelfXSS();
+				var _max_li = 6;
+				var _li_color = "#A0A0A0";
+				var ii = 1;
+				var _li_id = "li_top_";
+
+				//				for(ii; ii < _max_li; ii++) {
+				//					document.getElementById(_li_id + ii).style.background = _li_color;
+				//				}
+
+				for(ii = 0; ii < 3; ii++) {
+					document.getElementById(_side_manu_name[ii]).style.display = "none";
+				}
+
+			}
+
+			function load_sidemenu(s,sidemenu_index) {
+				if(s!=seed) return toSelfXSS();
+				$(".menu_top li").removeClass("TM_active");
+				menu_init(seed);
+				switch(sidemenu_index) {
+					case 1:
+						$("#li_top_1").addClass("TM_active");
+//						document.getElementById(_side_manu_name[0]).style.display = "block";
+						$("#"+_side_manu_name[0]).show();
+						break;
+					case 2:
+						$("#li_top_2").addClass("TM_active");
+//						document.getElementById(_side_manu_name[1]).style.display = "block";
+						$("#"+_side_manu_name[1]).show();
+						break;
+					case 3:
+						$("#li_top_3").addClass("TM_active");
+//						document.getElementById(_side_manu_name[2]).style.display = "block";
+						$("#"+_side_manu_name[2]).show();
+						if(dsc & 0x02) {
+							$("#set_wps").show();
+							$("#set_adv").show();
+						}
+						break;
+					case 4:
+
+						$("#li_top_4").addClass("TM_active");
+//						document.getElementById(_side_manu_name[3]).style.display = "block";
+						$("#"+_side_manu_name[3]).show();
+						break;
+					case 5:
+						//document.getElementById('li_top_5').style.background = _change_color;
+						break;
+					case 6:
+					default:
+						$(".menu_top li").removeClass("TM_active");
+						$("#li_top_6").addClass("TM_active");
+//						document.getElementById(_side_manu_name[0]).style.display = "block";
+						$("#"+_side_manu_name[0]).show();
+						hide_menu_default(seed);
+						check_default_page(0);
+						break;
+				}
+			}
+
+			function Rebooting(s) {
+				if(s!=seed) return toSelfXSS();
+//				closeIt();
+				open_page(seed);
+				alert("The device will restart in 3 seconds to apply the changes.");
+			}
+			/* match function */
+			function check_pattern(_obj, _pattern) {
+				if(_obj.val().match(_pattern)) {
+					_obj.focus();
+					enable_button(seed);
+					return false;
+				}
+				return true;
+			}
+
+			function check_alpa_num(_obj) {
+				/*if (check_value_length(_obj))
+				    return true;*/
+				if(_obj.val().match(/[^a-zA-Z0-9]/)) {
+					_obj.focus();
+					//alert("special charters is unavailable");
+					enable_button(seed);
+					return true;
+				}
+				return false;
+			}
+
+			function check_specialchar(_obj) {
+				/*if (check_value_length(_obj))
+				    return true;*/
+				if(_obj.val().match(/[^!#-%*-:?-\[\]-~]+/)) {
+					_obj.focus();
+					//alert("number, alphabet and specialchar(`~!@#$%^*_+-{}[]|:?,./) available for values.");
+					enable_button(seed);
+					return true;
+				}
+				return false;
+			}
+
+			function check_number_only(_obj) {
+				if(_obj.val().match(/[^0-9]/)) {
+					_obj.focus();
+					//alert("Input number only");
+					enable_button(seed);
+					return true;
+				}
+				return false;
+			}
+
+			function check_value_length(_obj) {
+				if(_obj.val().length < 1) {
+					_obj.focus();
+					//alert("input values");
+					enable_button(seed);
+					return true;
+				}
+				return false;
+			}
+
+			function check_user_name(_obj) {
+				if(_obj.val().length < 4) {
+					alert("Enter 4 or more characters.");
+					_obj.focus();
+					enable_button(seed);
+					return true;
+				} else if(_obj.val().match(/[^a-zA-Z0-9-._]/)) {
+					_obj.focus();
+					alert("number, alphabet and specialchar(-._) available for values.");
+					enable_button(seed);
+					return true;
+				} else if(_obj.val().match(/^[-._]|[-._]$/)) {
+					_obj.focus();
+					alert("Special characters are not able to come to the front and back of the string.");
+					enable_button(seed);
+					return true;
+				}
+			}
+
+			function check_default_page(_val) {
+				if(_val == 1) {
+					clearInterval(timer_3s);
+					timer_3s = 0;
+					load_page('login.htm');
+					$("#button_default_login").hide();
+					$("html").css({"overflow-y": "hidden","overflow-x": "hidden"});
+				} else {
+					if(!timer_3s) timer_3s = IntervalTitle(seed, 1000);
+					$("#button_default_login").show();
+					if(document.body.clientWidth<1060)  $("html").css({"overflow-y": "auto","overflow-x": "auto"});
+					else $("html").css({"overflow-y": "auto","overflow-x": "hidden"});
+				}
+			}
+
+			function EnableBtn(s,id) {
+				if(s!=seed) return toSelfXSS();
+				$('#' + id).removeAttr("disabled");
+			}
+
+			function DisableBtn(s,id) {
+				if(s!=seed) return toSelfXSS();
+				$('#' + id).attr("disabled", true);
+			}
+
+			function enable_button(s) {
+				if(s!=seed) return toSelfXSS();
+				$('input[type="button"], button').removeAttr("disabled");
+			}
+
+			function disable_button(s) {
+				if(s!=seed) return toSelfXSS();
+				$('input[type="button"], button').click(function() {
+					$('input[type="button"], button').attr("disabled", true);
+				});
+			}
+
+			function esc(str) {
+				str = "" + str;
+				str = str.replace(/%/g, '%25');
+				str = str.replace(/&/g, '%26');
+				str = str.replace(/=/g, '%3D');
+				str = str.replace(/\+/g, '%2B');
+				str = str.replace(/ /g, '+');
+				str = str.replace(/\\/g, '%5C');
+				return str;
+			}
+
+			function isNull(str) {
+				if(str == "")
+					return true;
+				else return false;
+			}
+
+			function isIP(strIP) {
+				var patrn = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+				if(isNull(strIP)) return false;
+				if(!patrn.exec(strIP)) {
+					return false;
+				}
+
+				laststr = strIP.split(".");
+				if(parseInt(laststr[0]) > 255 || parseInt(laststr[1]) > 255 || parseInt(laststr[2]) > 255 || parseInt(laststr[3]) > 255) {
+					return false;
+				}
+				return true;
+			}
+
+			var com_radio, com_checkbox, com_select;
+
+			window.seajs &&
+				seajs.config({
+					base: "./",
+					map: [
+							[/^(.*\.(?:css|js))(.*)$/i, '$1']
+						]
+						//    alias: {
+						// 	jquery: './jquery'
+						// }
+				}).use(['jquery-1.8.2.min'], function() {
+
+					if(typeof jQuery == 'undefined') {
+						disableCacheRefresh(seed);
+					}
+
+					var dev_time = '<% get_sys_time(); %>';
+					if(dev_time.split(' ')[1].split('-')[0] == '1970') {
+						var date = new Date();
+						var offsetHouts = date.getTimezoneOffset();
+						var postHours = 0;
+
+						var post_data = 'time=' + date.getUTCFullYear() + '-' + parseInt(date.getUTCMonth() + 1) + '-' + date.getUTCDate() + ' ' + date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + date.getUTCSeconds();
+						if(offsetHouts == -480) post_data += ('&timezone=' + esc("-8 1"))
+						else if(offsetHouts == -330) post_data += ('&timezone=' + esc("-5 3"))
+
+						//	var post_data= 'time='+date.getFullYear()+'-'+parseInt(date.getMonth()+1)+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+						// if(offsetHouts==-480) post_data+=('&timezone='+esc("-8 1"))
+						// else if(offsetHouts==-330) post_data+=('&timezone='+esc("-5 3"))
+
+						var headers = {};
+						headers["__RequestVerificationToken"] = "<% get_csrf_token(); %>";
+						$.ajax({
+							url: "/wxml/set_time.xml",
+							type: "Post",
+							headers: headers,
+							timeout: 8000,
+							cache: false,
+							datatype: "xml",
+							data: post_data,
+							success: function(data, status) {
+								var new_token = $(data).find("token").text();
+								if(new_token == "-1") {
+									top.location.reload(true);
+									return false;
+								}
+								$("#csrf_token1").val(new_token);
+							},
+							error: function(x, t, m) {
+								if(t === "timeout") {
+
+								}
+							}
+						})
+					}
+
+					if((login & 0x0F) >= 0x02) {
+						hide_login_dialog(seed);
+					}
+					// $(window).resize(function() {
+					// 	clearTimeout(resizeTimer);
+					// 	resizeTimer = setTimeout(RenderMe, 500);
+					// });
+
+	setInterval(function(){
+		if(!reset_login_ts || ((login & 0x0F) < 2)) return;
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token1").val();
+		reset_login_ts=0;
+		$.ajax({
+			url: '/wxml/login_reset.xml',
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: null,
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token1").val(new_token);
+			},
+			error: function(x, t, m) {
+	//			window.location.reload();
+			}
+		})
+	},10000);
+var reset_login_ts=0;
+
+
+$(document).on("keyup mouseup",function(e){
+	reset_login_ts=1;
+})
+
+
+					$(document).ready(function() {
+						var win_avw=window.screen.availWidth;
+						if(window.screen.availWidth!=$(window).width() && window.devicePixelRatio){
+						   win_avw = window.screen.availWidth*window.devicePixelRatio;
+						}
+
+						if(win_avw< $(document).width()) {
+							$("html").width($(document).width());
+							var scale=win_avw/$(document).width();
+//							$('head').append('<meta name="viewport" content="width=device-width;initial-scale='+scale+'>');
+						}
+						open_page(seed);
+						setTimeout(function() {
+							var show_noti = 0;
+
+							var noti_wifi = parseInt("<% get_wifi_key_is_default(); %>");
+							if(noti_wifi) {
+								$("#noti_wifi").show();
+								$(".ieshow").show();
+								show_noti = 1;
+							}
+
+							if(location.hash == "#pwd") {
+								location.hash = "";
+								$("#noti_pwd").show();
+								if(!show_noti) $(".ieshow").show();
+
+								// if(confirm("You are using the default password that is widely known,do you want to change it to a secure password?"))
+								// {
+								// 	if((login&0x0F) <2){
+								// 		hide_menu();
+								// 		$("#button_default_login").hide();
+								// 	}
+								// 	else{
+								// 		load_sidemenu(3);
+								// 	}
+								// 	load_page("set_user.html");
+								// }
+							}
+							if(show_noti) setTimeout(function() {
+								$('.ieshow').hide();
+							}, 120000);
+						}, 1000);
+
+
+						if(!timer_3s) timer_3s = IntervalTitle(seed, 1000);
+
+						$("#li_top_1").on('click', function() {
+							load_sidemenu(seed,1);
+							load_page('conn.html');
+						});
+						$("#li_top_2,#to_st_lte").on('click', function() {
+							load_sidemenu(seed,2);
+							load_page('status_lte.html');
+							$("#Table_Menu_Status li").removeClass("left_ACTIVE").eq(0).addClass("left_ACTIVE");
+						});
+
+						$("#to_st_lan").on('click', function() {
+							load_sidemenu(seed,2);
+							load_page('status_lan.html');
+						});
+
+						$("#to_st_wan").on('click', function() {
+							load_sidemenu(seed,2);
+							load_page('status_wan.html');
+						});
+
+						$("#to_st_dev").on('click', function() {
+							load_sidemenu(seed,2);
+							load_page('status_dev.html');
+						});
+
+						$("#to_st_per").on('click', function() {
+							load_sidemenu(seed,2);
+							load_page('status_per.html');
+						});
+
+						$("#li_top_3,#set_lte").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_lte.html');
+							$("#Table_Menu_Setting li").removeClass("left_ACTIVE").eq(0).addClass("left_ACTIVE");
+						});
+
+						$("#set_net").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_net.html');
+						});
+
+						$("#set_lan").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_lan.html');
+						});
+
+						$("#set_wifi").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_wifi.html');
+						});
+						$("#set_sd").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_sd.html');
+						});
+						$("#set_nat").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_nat.html');
+						});
+						$("#set_ad_secu").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_ad_secu.html');
+						});
+						$("#set_user").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_user.html');
+						});
+						$("#set_firm").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_firm.html');
+						});
+						$("#set_upnp").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_upnp.html');
+						});
+
+						$("#set_wps").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_wps.html');
+						});
+						$("#set_adv").on('click', function() {
+							load_sidemenu(seed,3);
+							load_page('set_adv.html');
+						});
+
+						$("#li_top_4").on('click', function() {
+							if(!sd_st) {
+								alert("SD card not exist!");
+								return false;
+							}
+							var ismobile = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)|(blackberry)|(iemobile)/i);
+							if(ismobile) {
+								top.window.open("/msd.html", "_self");
+								return false;
+							} else {
+								top.window.open("/sdcard.html", "_self");
+								return false;
+							}
+						});
+
+						$("#li_top_6,#to_logout").on('click', function() {
+							user_logout=1;
+							load_sidemenu(seed,6);
+							logout(seed);
+						});
+
+						// $(".Table_Menu_LEFT ul>li").click(function() {
+						// 	$(this).siblings("li").removeClass("left_ACTIVE").end().addClass("left_ACTIVE");
+						// });
+
+						$(".Table_Menu_LEFT ul>li").hover(function() {
+							$(this).addClass("left_HOVER");
+						}, function() {
+							$(this).removeClass("left_HOVER");
+						});
+
+						$("#Top_menu li").hover(function() {
+							$(this).addClass("TM_hover");
+						}, function() {
+							$(this).removeClass("TM_hover");
+						});
+
+						$(".menu_content ul li~li").css({
+							"border-top": "1px solid #ccc"
+						});
+
+						$(document).on("click", ".btnLgClose", function() {
+							hide_login_dialog(seed);
+							$("#button_default_login").show();
+							$("html").css({
+								"overflow-y": "hidden","overflow-x": "hidden"
+							})
+							if(typeof(curr_page)=="string") load_page(curr_page);
+							else load_defaultpage(seed);
+						});
+						$('.ieshowoff').on('click', function() {
+							$('.ieshow').hide();
+						});
+						
+						$('#to_wifi').click(function(){
+							load_page("set_wifi.html");
+						});
+						
+						$('#to_user').click(function(){
+							load_page("set_user.html");
+						});
+
+						$("#button_default_login").click(function(){
+							check_default_page(1);
+							hide_menu(seed);
+						})
+
+					});
+
+					function load_compnents(s) {
+						if(s!=seed) return toSelfXSS();
+//						if($.browser.msie && parseInt($.browser.version)<8) return;
+//						if($(this).hasClass('disabled')) return false;
+
+						// 加载CSS
+						var style = document.createElement('link');
+						style.rel = 'stylesheet';
+						style.href = './ui.css';
+						document.getElementsByTagName('head')[0].appendChild(style);
+
+						// 加载JS
+						seajs.use([
+							'Radio',
+//							'Checkbox',
+							'Select',
+							//			'DateTime',
+							//			'Tips',
+							'Dialog',
+							'jquery-ui.min'
+							//			'Validate'
+						], function(Radio,
+//							Checkbox,
+							Select,
+							Dialog1
+							// DateTime, Tips, Dialog , Validate
+						) {
+							// 单复选框和下拉初始化
+							com_radio = Radio;
+//							com_checkbox = Checkbox;
+							com_select = Select;
+							Radio.init();
+//							Checkbox.init();
+							Select.init();
+
+							// 日期
+							//			new DateTime($('#achieveDate'));
+
+							// 黑色tips初始化
+							//			new Tips($('.ui_tips'));
+
+							// 弹框
+							window.alert = function(message) {
+								new Dialog1().alert(message, "aaa");
+							};
+							window.confirm = function(message, onOK, onCancel) {
+								new Dialog1().confirm(message, {
+									title: "Confirm",
+									type: "",
+									buttons: [{
+										type: "primary",
+										value: "OK",
+										callback: onOK
+									}, {
+										type: "",
+										value: "Cancel",
+										callback: onCancel
+									}]
+								});
+							};
+
+							// 验证
+							//			new Validate(elForm, fnSubmit);
+						});
+
+						// elForm.addClass('loaded');
+
+						// $(this).html('加载和执行成功').addClass('disabled');
+
+					}
+					load_compnents(seed);
+				});
+
+			function reload_compnets(s) {
+				if(s!=seed) return toSelfXSS();
+//				if($.browser.msie && parseInt($.browser.version)<8) return;
+				window.initedRadio=0;
+				if(com_radio) com_radio.init();
+//				window.initedCheckbox=0;
+//				if(com_checkbox) com_checkbox.init();
+				if(com_select) com_select.init();
+			}
+		</script>
+	</head>
+
+	<body>
+		<input type="hidden" id="connectedStatus" value="<% get_attach_status_string(); %>" />
+		<input type="hidden" id="imsi" value="<% get_imsi_ex(); %>" />
+		<input type="hidden" id="batterystatus" value="<% get_bat_args_string(); %>" />
+		<input type="hidden" id="batterylevel" value="<% get_batt_percent_ex(); %>" />
+		<input type="hidden" id="signalstrength" value="<% get_signal_strength(); %>" />
+		<input type="hidden" id="noOfClient" value="<% get_client_count(); %>" />
+		<input type="hidden" id="devicemodel" value="<% get_model(); %>" />
+		<input type="hidden" id="ulCurrentDataRate" value="<% get_current_tx_rate(); %>" />
+		<input type="hidden" id="dlCurrentDataRate" value="<% get_current_rx_rate(); %>" />
+		<input type="hidden" id="ConnectionTime" value="<% get_time(); %>" />
+		<input type="hidden" id="physicalCellId" value="<% get_physicalCellId(); %>" />
+		<input type="hidden" id="eutrancellid" value="<% get_eutrancellid(); %>" />
+		<div id="main">
+			<div class="ieshow" style="min-width: 1090px;">
+				<table style="width: 100%;">
+					<tbody>
+						<tr>
+							<td>
+								<span id="noti_wifi">
+                        * For security reasons please change default Wi-Fi password.
+                        <a  href="javascript:void(0)" id="to_wifi">Modify</a>
+                    </span>
+								<span id="noti_pwd">
+                        * For security reasons please change default WebGUI password.
+                        <a href="javascript:void(0)" id="to_user">Modify</a>
+                    </span>
+							</td>
+
+							<td>
+								<img src="./img/x.png" class="ieshowoff">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div align="center">
+				<div class="logo_top_td">
+					<input type=button class="btn" value="Login" id="button_default_login" name="button_default_login">
+					<span></span>
+				</div>
+				<table id="Table_Body" style="width: 1090px;height: auto;border-collapse:collapse">
+					<tr>
+						<td colspan="2" style="height: 25px;"></td>
+					</tr>
+					<tr>
+						<td id="Top_menu" colspan="2" style="width: 100%; display: none;">
+							<div class="menu_top">
+								<ul class="clearfix">
+									<li id="li_top_1">
+										<a href="javascript:void(0)" class="aF">Connection</a>
+									</li>
+									<li id="li_top_2">
+										<a href="javascript:void(0)" class="aA">Status</a>
+									</li>
+									<li id="li_top_3">
+										<a href="javascript:void(0)" class="aA">Setting</a>
+									</li>
+									<li id="li_top_4">
+										<a href="javascript:void(0)" class="aA">Wi-Fi Disk</a>
+									</li>
+									<li id="li_top_6">
+										<a href="javascript:void(0)" class="aL">Logout</a>
+									</li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="height: 20px;"></td>
+					</tr>
+					<tr valign="top">
+						<td id="Table_Menu_Connection" width="325" class="Table_Menu_LEFT clearfix" style="display:none;">
+							<div class="menu_content">
+								<ul>
+								</ul>
+							</div>
+						</td>
+						<td id="Table_Menu_Status" width="325" class="Table_Menu_LEFT clearfix" style="display:none;">
+							<div class="menu_content">
+								<ul>
+									<li id="to_st_lte" class="left_ACTIVE">
+										<a href="javascript:void(0)" class="aF">LTE Status</a>
+									</li>
+									<li id="to_st_lan">
+										<a href="javascript:void(0)" class="aA">LAN Info</a>
+									</li>
+									<li id="to_st_wan">
+										<a href="javascript:void(0)" class="aA">WAN Info</a>
+									</li>
+									<li id="to_st_dev">
+										<a href="javascript:void(0)" class="aA">Device Details</a>
+									</li>
+									<li id="to_st_per">
+										<a href="javascript:void(0)" class="aL">System Performance</a>
+									</li>
+								</ul>
+							</div>
+						</td>
+						<td id="Table_Menu_Setting" width="325" class="Table_Menu_LEFT clearfix" style="display:none;">
+							<div class="menu_content">
+								<ul>
+									<li id="set_lte" class="left_ACTIVE">
+										<a href="javascript:void(0)" class="aF">LTE</a>
+									</li>
+									<li id="set_net">
+										<a href="javascript:void(0)" class="aA">Network</a>
+									</li>
+									<li id="set_lan">
+										<a href="javascript:void(0)" class="aA">LAN</a>
+									</li>
+									<li id="set_wifi">
+										<a href="javascript:void(0)" class="aA">Wi-Fi</a>
+									</li>
+									<li id="set_sd">
+										<a href="javascript:void(0)" class="aA">Storage</a>
+									</li>
+									<li id="set_user">
+										<a href="javascript:void(0)" class="aA">User Management</a>
+									</li>
+									<li id="set_firm">
+										<a href="javascript:void(0)" class="aA">Firmware Upgrade</a>
+									</li>
+									<li id="set_upnp">
+										<a href="javascript:void(0)" class="aA">Gaming & Apps Management</a>
+									</li>
+									<li id="set_wps" style="display: none;">
+										<a href="javascript:void(0)" class="aA">WPS</a>
+									</li>
+									<li id="set_adv" style="display: none;">
+										<a href="javascript:void(0)" class="aL">Advance</a>
+									</li>
+								</ul>
+							</div>
+						</td>
+
+						<td id="Table_Content" width="764" class="clearfix" valign="top">
+							<div id="Content" class="main_content" valign="top"></div>
+						</td>
+
+					</tr>
+					<tr>
+						<td colspan="2" width="100%">
+						</td>
+					</tr>
+				</table>
+
+				<div class="loginLoadArea"></div>
+				<div id="pop_tips" style="display:none;text-align:center;" title="Message">Waiting</div>
+				<div id="pop_restart" style="display:none;text-align:center;" title="Message">Need Reboot</div>
+			</div>
+		</div>
+						<div class="blacklayer"></div>
+		<input id="csrf_token1" type="hidden" value="<% get_csrf_token(); %>">
+	</body>
+
+</html>

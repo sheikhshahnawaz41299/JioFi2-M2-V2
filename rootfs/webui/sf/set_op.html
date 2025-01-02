@@ -1,0 +1,536 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a>Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op" class="active-item"><a href="javascript:;">Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" style="display:none;"><a>PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">Network Operators</h3>
+<div class="line" style="padding:0em 0.6em;" id="div_content">
+  <form class="customform" action="#">
+  <div class="margin">
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> Data Roaming</label>
+  </div>
+  <div class="s-12 l-5 line_form">
+    <input type="radio" name="roam_mode" value="0" /><label class="radio">Disable</label>
+    <input type="radio" name="roam_mode" value="1" /><label class="radio">Enable</label>
+  </div>
+  </div>
+
+
+  <div id="div_search_mode">
+  <div class="line" >
+  <div class="s-12 l-3 line_form">
+  <label class="name">Network Operators</label>
+  </div>
+  <div class="s-12 l-5 line_form">
+    <input type="radio" name="search_mode" value="0" /><label class="radio">Auto</label>
+    <input type="radio" name="search_mode" value="1" /><label class="radio">Manual</label>
+  </div>
+  </div>
+
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_search" style="display:none;">SEARCH</div>
+  </div>
+  </div>
+
+
+  <div class="line" style="padding:0em 2em;">
+<div class="s-12 l-8">
+ <table id="table_op">
+  <thead><th>Operator Name</th><th>Status</th><th style="display:none;">Network Type</th><th>Select</th><th>plmn</th></thead>
+  <tbody id="op_tbl">
+<!--   <tr><td>China Mobile</td><td>Active</td><td>TDD LTE</td><td><input type="checkbox" class="check_op" id="check_0" /><label>&#238;</label></td><td>46000</td></tr> -->
+  </tbody>
+ </table>
+  </div>
+  </div>
+
+</div>
+
+  </div>
+  </form>
+  
+</div>
+</div>
+<img src="img/loading.gif" style="display:none;">
+</div>
+<style type="text/css">
+
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+
+fieldset{border:1px solid #999;margin-left:2em; margin-bottom:1.6em;font-size:1em;}
+legend{font-size:1.2em;border:0px solid #999;padding:0.2em 0.4em;background:#2088B0;color:white;}
+@media screen and (min-width:801px) {
+#aside{height:55em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:61em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+fieldset{border:1px solid #999;margin-left:1em; margin-bottom:1.6em;margin-right: 1em;font-size:1em;}
+legend{font-size:1.4em;padding:0.2em 0.4em;}
+}
+
+#table_op thead th:nth-child(1) {width: 50%;}
+#table_op thead th:nth-child(2) {width: 45%;}
+#table_op thead th:nth-child(3) {width: 0%;}
+#table_op thead th:nth-child(4) {width: 5%;}
+#table_op tr td:nth-child(1) {width: 50%;word-wrap:break-word; word-break:break-all;}
+#table_op tr td:nth-child(2) {width: 45%;}
+#table_op tr td:nth-child(3) {width: 0%;word-wrap:break-word; word-break:break-all;display: none;}
+#table_op tr td:nth-child(4) {width: 5%;text-align:center;}
+#table_op tr td:nth-child(5),#table_op tr th:nth-child(5) {display: none;width: 0;}
+td .check_op{display: none;}
+#op_tbl{cursor: pointer;}
+
+
+#errHint{color: red;text-align: center;}
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+function load_mark_set(){
+
+}
+
+function pop_waiting(txt){
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>"+txt+"</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content,
+        },
+        fixed : true
+  });
+}
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+
+function load_setting(){
+  $("#errHint").html('');
+  $.ajax({ 
+    url: "mark_search_op.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+      var dsc = $(data).find("dsc").text();
+      if(dsc&0x01) $('#to_set_pin').show();
+
+      var roam_mode = parseInt($(data).find("roam").text());  
+      var search_mode = parseInt($(data).find("mode").text());  
+      
+      $('input[name=search_mode]').eq(search_mode).attr('checked','true');
+
+       if(search_mode){
+        $('#to_search').show();
+        $('#table_op').show();
+       }
+       else{
+        $('#to_search').hide();
+        $('#table_op').hide();
+       }
+       $('input[name=roam_mode]').eq(roam_mode).attr('checked','true');
+       if(!roam_mode){
+        $('#div_search_mode').hide();
+       }
+       else{
+        $('#div_search_mode').show();
+       }
+      
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+}
+
+
+
+
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="set_op.html"){
+    load_setting();
+  }
+}
+
+
+$('input[name=dns_mode],input[name=dns_mode]+label').die().live('click',function(){
+var dns_manual = parseInt($('input[name=dns_mode]:checked').val());
+if(dns_manual){
+  $('#dns_input').show(); 
+}
+else{
+  $('#dns_input').hide();
+}
+})
+
+
+
+var net_srv_st=['Unknown','Available','Registered','Forbidden'];
+var net_type=['GSM/GPRS','Unknown','WCDMA','Unknown','Unknown','Unknown','Unknown','LTE'];
+var curr_index=0;
+var curr_page=0;
+var tbl_content;
+
+function refresh_page_height(){
+  var c_height;
+  var s_height=$('div.aside-nav').height();
+  if($('#div_content').height() +100> s_height){
+  c_height = $('#div_content').height()+100;
+  }
+  else
+  c_height=s_height;
+  $('#main_content').height(c_height);
+  if($(document).width()>800) $('#aside').height(c_height);
+  else $('#aside').height($('.aside-nav').height());
+}
+
+function get_searched_op_list(page_no){
+    $.ajax({ 
+    url: "/wxml/op_list.xml",
+    type: "Post", 
+    timeout: 12000,
+    cache: false,
+    datatype: "xml",
+    data: { page:page_no }, 
+    success: function(data, status) {
+      if(page_no==0){
+        curr_index=0;
+        tbl_content='';        
+      }
+
+      var op_num=parseInt($(data).find('cnt').text());
+      if(isNaN(op_num)) return false;
+      var page_cnt =Math.ceil(op_num/10);
+
+      $(data).find("op").each(function(){
+        if(curr_index<op_num){
+          var op_detail=$(this).text().split(',');
+          var st = parseInt(op_detail[0]);
+          var name = op_detail[1].replace(/"/g,"");
+          var plmn = op_detail[3].replace(/"/g,"");
+          var lv = parseInt(op_detail[4]);
+          if(!name.length){
+            if(plmn=='51088'){
+              name="BOLT";
+            }
+            else if(plmn=='51009' || plmn=='51028'){
+              name="Smartfren";
+            }
+            else name=plmn;
+          }
+
+          if(st!=2)
+            tbl_content+=('<tr><td>'+name+'</td><td>'+ net_srv_st[st]+'</td><td>'+net_type[lv]+'</td><td><input type="checkbox" class="check_op" id="check_'+curr_index+'" /><label>&#238;</label></td><td>'+plmn+'</td></tr>');
+          else 
+            tbl_content+=('<tr><td>'+name+'</td><td>'+ net_srv_st[st]+'</td><td>'+net_type[lv]+'</td><td><input type="checkbox" class="check_op" selected id="check_'+curr_index+'" /><label>&#239;</label></td><td>'+plmn+'</td></tr>');
+
+          curr_index++;          
+        }
+        else{
+          
+        }
+
+      });
+      curr_page++;
+      if(curr_page>=page_cnt){
+        $('#op_tbl').html(tbl_content);
+        
+        refresh_page_height();
+        
+        if(interval_timer) clearInterval(interval_timer);
+        locking=0;
+        close_pop_diag();
+      }
+      else{
+        get_searched_op_list(curr_page);
+      }
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+        curr_page=0;
+        get_searched_op_list(0);
+//          interval_timer=setInterval(get_searched_op,10000);
+      }  
+    }
+  })
+}
+
+
+
+
+function get_searched_op(){
+  if(!locking){
+    pop_waiting('Searching...');
+    locking=1;
+  }
+  get_searched_op_list(0);
+}
+
+
+$('#to_search').click(function(){
+  var post_data='start=1';
+  start_search(post_data,1);
+});
+
+
+function start_search(post_data,mode){
+  if(net_st==9){
+    pop_submit_result('Please disconnect your internet connection firstly, then try it again.');
+    return false;
+  }
+if(mod_sig==7){
+    pop_submit_result('No UIM.');
+    return false;
+}
+
+  refresh_page_height();
+  $.ajax({ 
+    url: "/wxml/set_op.xml",
+    type: "Post", 
+    timeout: 20000,
+    cache: false,
+    datatype: "xml",
+    data: post_data, 
+    success: function(data, status) {
+      if(mode==0) {
+        var result = parseInt($(data).find("mode").text());
+        if(!result) pop_submit_result('Setting Apply Success!');
+        else pop_submit_result('Setting Apply Fail!');
+      }
+      //reinit
+      curr_index=0;
+      curr_page=0;
+      tbl_content='';
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+      
+      }  
+    }
+  })
+  if(mode==1){
+    get_searched_op();
+    // if(!interval_timer) {
+//    interval_timer=setInterval(get_searched_op,10000);    
+    // }
+  }
+
+}
+
+
+$('input[name=roam_mode],input[name=roam_mode]+label').die().live('click',function(){
+  if(!locking) {
+    locking++;
+  }
+  else{
+    if(locking<3) return false;
+  }
+  if(interval_timer) clearInterval(interval_timer);
+  var roam_mode = parseInt($('input[name=roam_mode]:checked').val());
+  if(!roam_mode){
+    $('#div_search_mode').hide();
+  }
+  else $('#div_search_mode').show();
+
+  var post_data=("roam="+roam_mode);
+   $.ajax({ 
+    url: "/wxml/set_op.xml",
+    type: "Post", 
+    timeout: 20000,
+    cache: false,
+    datatype: "xml",
+    data: post_data, 
+    success: function(data, status) {
+      //reinit
+      curr_index=0;
+      curr_page=0;
+      tbl_content='';
+      locking=0;
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+      
+      }  
+    }
+  })
+
+
+})
+
+
+
+$('input[name=search_mode],input[name=search_mode]+label').die().live('click',function(){
+  if(!locking) {
+    locking++;
+  }
+  else{
+    if(locking<3) return false;
+  }
+  if(interval_timer) clearInterval(interval_timer);
+  var post_data='';
+  var search_mode = parseInt($('input[name=search_mode]:checked').val());
+  if(search_mode){
+    pop_waiting('Searching...');
+    post_data="mode=1&start=1";
+    $('#to_search').show();
+    $('#table_op').show();
+  }
+  else{
+    $('#to_search').hide();
+    $('#table_op').hide();
+    pop_waiting('Searching...');
+    post_data="mode=0";  
+  }
+  locking=1;
+  start_search(post_data,search_mode);
+})
+
+
+var submit_plmn=0;
+$('#op_tbl tr').die().live('click',function(){
+  submit_plmn=1;
+  var index=$(this).index();
+  var name = $(this).children("td:eq(0)").html();
+  var plmn = $(this).children("td:eq(4)").html();
+  var obj=$('#check_'+index);
+  // if(obj.attr('checked')){
+  //   alert(1);
+  //   // obj.attr('checked',false);
+  //   // $('#check_'+index+'+label').html('&#238;'); 
+  // }
+  // else{
+  //   alert(2);
+    $("[type='checkbox']").attr("checked",false);
+    $('.check_op+label').html('&#238');
+    obj.attr('checked',true);
+    $('#check_'+index+'+label').html('&#239;'); 
+
+  var post_data = 'plmn='+plmn;
+
+  locking=1;
+  pop_waiting('Registering on '+name);
+  $.ajax({ 
+    url: "/wxml/set_op.xml",
+    type: "Post", 
+    timeout: 20000,
+    cache: false,
+    datatype: "xml",
+    data: post_data, 
+    success: function(data, status) {
+      submit_plmn=0;
+      var reg_result=parseInt($(data).find('register').text());
+      if(reg_result==0){
+        pop_submit_result('Registered on network');
+      }
+      else {  //maybe -1
+        pop_submit_result('Can\'t connect to this network right now.<br>Try again later');
+      }
+      locking=0;
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+        locking=0;
+        submit_plmn=0;
+        close_pop_diag();
+      }  
+    }
+  })
+
+
+  // }
+ 
+  });
+
+
+</script>
+

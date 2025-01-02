@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<dsc><% get_version_dsc();%></dsc>
+<ip><% get_dhcp_ip(); %></ip>
+<submask><% get_dhcp_mask(); %></submask>
+<enable><% get_dhcp_server_enabled(); %></enable>
+<start><% get_dhcp_start_ip(); %></start>
+<end><% get_dhcp_end_ip(); %></end>
+<time><% get_dhcp_lease_time(); %></time>
+</setting>

@@ -1,0 +1,414 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li class="active"><a class="to_sms"><span class="icon">&#214;</span><span class="text">SMS</span></a></li>
+    <li><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_inbox" class="active-item "><a href="javascript:;">Inbox</a></li>
+  <li id="to_outbox"><a>Outbox</a></li>
+  <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+  </ul>
+  </li>
+
+
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 id="h3_title">Inbox</h3>
+<div class="line" style="padding:0em 0.6em;">
+
+
+
+<form class="customform">
+<div class="line margin">
+<div class="s-6 l-3">
+<div class="button" id="send_new_sms" >New Message</div>
+</div>
+<input id="1x_open" type="hidden" value="0" />
+<div class="s-6 l-3">
+<div id="del_sms" class="button_gray" disabled="disabled">Delete</div>  
+</div>
+</div>
+</form>
+
+<table class="sms_list">
+  <thead><tr><td class="check_td"><input type="checkbox" class="check_sms" id="check_all" ><label>&#238;<label></td><td>Number</td><td>Content</td><td>Date</td></tr></thead>
+  <tbody id="sms_list">
+<!--  <tr class="bold"><td class="check_td"><input type="checkbox" class="check_sms" id="check_01"><label>&#238;<label></td><td><label style="color:#08F;font-size:1.8em;">&#241;</label>10001</td><td>TESTTESTTESTTESTTESTTEST TEST
+TESTTESTTESTTESTTESTTEST
+TESTTESTTESTTESTTESTTEST TESTTEST
+TESTTESTTEST
+TESTTESTTESTTEST
+TESTTESTTESTTESTTESTTEST01</td><td>2015-02-11 15:04</td></tr>
+  <tr><td class="check_td"><input type="checkbox" class="check_sms" id="check_02"><label>&#238;<label></td><td><label style="color:#08F;font-size:1.8em;">&#198;</label>10002</td><td>TEST02</td><td>2015-02-11 15:04</td></tr>
+  <tr><td class="check_td"><input type="checkbox" class="check_sms" id="check_03"><label>&#238;<label></td><td>10003</td><td>TEST03</td><td>2015-02-11 15:04</td></tr>
+  <tr><td class="check_td"><input type="checkbox" class="check_sms" id="check_04"><label>&#238;<label></td><td>10004</td><td>TEST04</td><td>2015-02-11 15:04</td></tr>
+  <tr><td class="check_td"><input type="checkbox" class="check_sms" id="check_05"><label>&#238;<label></td><td>10005</td><td>TEST05</td><td>2015-02-11 15:04</td></tr>
+-->
+  </tbody>
+</table>
+
+
+
+
+
+<table align=center width=95% border=0 cellspacing=0 cellpadding=0>
+<tr><td align=center id='table_foot'>1</td></tr></table>
+  
+</div>
+</div>
+</div>
+
+<style type="text/css">
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+
+.bold{color: black;font-weight: bold;}
+.nomal{color: black;}
+
+table tr td:nth-child(1) {width: 5%;cursor: pointer;}
+table tr td:nth-child(2) {width: 20%;cursor: pointer;}
+table tr td:nth-child(3) {width: 45%;word-wrap:break-word; word-break:break-all;cursor: pointer;}
+table tr td:nth-child(4) {width: 20%;cursor: pointer;}
+td .check_sms{display: none;}
+
+
+td a,td a:link{color: blue;}
+
+@media screen and (min-width:801px) {
+#aside{height:35em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:38.8em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+}
+
+
+</style>
+<script type="text/javascript">
+function isKeyTrigger(e,keyCode)
+{   
+var argv = isKeyTrigger.arguments;   
+var argc = isKeyTrigger.arguments.length;   
+var bCtrl = false;   
+if(argc > 2)
+{   
+bCtrl = argv[2];   
+}   
+var bAlt = false;   
+if(argc > 3)
+{   
+bAlt = argv[3];   
+}   
+var nav4 = window.Event ? true : false;   
+if(typeof e == 'undefined') 
+{   
+e = event;   
+}   
+if(bCtrl &&   
+ !((typeof e.ctrlKey != 'undefined') ?   
+ e.ctrlKey :   
+ e.modifiers & Event.CONTROL_MASK > 0)) 
+{   
+return false;   
+}   
+if( bAlt &&   
+ !((typeof e.altKey != 'undefined') ?   
+ e.altKey : e.modifiers & Event.ALT_MASK > 0))
+{   
+return false;   
+}   
+var whichCode = 0;   
+if (nav4) whichCode = e.which;   
+else if (e.type == "keypress" || e.type == "keydown") whichCode = e.keyCode;   
+else whichCode = e.button;   
+return (whichCode == keyCode);   
+}   
+  
+function ctrlEnter(e)
+{
+var ie = navigator.appName == "Microsoft Internet Explorer" ? true : false;   
+if(ie)
+{
+if(event.ctrlKey && event.keyCode == 13) 
+{   
+submit();   
+}   
+else 
+{
+if(isKeyTrigger(e,13,true)) submit();   
+}   
+}   
+}
+function capture(event,o)
+{
+var keynum;
+if(window.event)
+{
+keynum=event.keyCode;
+}
+else
+{
+keynum=event.which;
+}
+event = event || window.event;
+if(event.ctrlKey&&(keynum==13||keynum==10))
+{
+submit();
+}
+}
+
+function checkcharwidth(str)
+{
+var cArr = str.match(/[^\x00-\xff]/ig);
+return (cArr == null ? false : true); 
+}
+ 
+
+function getStrLength(str) 
+{ 
+var cArr = str.match(/[^\x00-\xff]/ig);
+return str.length + (cArr == null ? 0 : cArr.length); 
+}
+
+function cutstr(str,len)
+{
+var str_length = 0;
+var str_len = 0;
+str_cut = new String();
+str_len = str.length;
+for(var i = 0;i<str_len;i++)
+{
+a = str.charAt(i);
+str_length++;
+if(escape(a).length > 4)
+{
+//中文字符的长度经编码之后大于4
+str_length++;
+}
+str_cut = str_cut.concat(a);
+if(str_length==len)
+{
+return str_cut;
+}
+if(str_length==len+1)
+{
+return str_cut.substring(0,i);
+}
+}
+if(str_length<len){
+return  str;
+}
+}
+String.prototype.replaceAll = function(reallyDo, replaceWith, ignoreCase) {  
+if (!RegExp.prototype.isPrototypeOf(reallyDo)) {  
+return this.replace(new RegExp(reallyDo, (ignoreCase ? "gi": "g")), replaceWith);  
+} else {  
+return this.replace(reallyDo, replaceWith);  
+}  
+}  
+
+var textarea_maxlen = 
+{
+isMax : function ()
+{
+var sendnumber = $("#number"); 
+var textarea = $("#area");
+var sms_content = textarea.val();
+
+sms_content=sms_content.replaceAll('\r\n','\n');
+sendnumber.val(sendnumber.val().replace(/\r\n|\n/ig,""));
+if(checkcharwidth(sendnumber.val()))
+{
+if(sendnumber.val().length > 15)  sendnumber.val(sendnumber.val().substr(0,15)); 
+}
+else
+{
+if(sendnumber.val().length > 30)  sendnumber.val(sendnumber.val().substr(0,30));
+}
+
+if(checkcharwidth(textarea.val()))
+{
+if(sms_content.length > 70)  
+{
+  sms_content = sms_content.substr(0,70);
+  textarea.val(sms_content.replaceAll('\n','\r\n'));
+}
+$("#txtHint").html(sms_content.length+"/70").css('color','');
+}
+else
+{
+if(textarea.val().length > 160)  
+{
+  sms_content = sms_content.substr(0,160);
+  textarea.val(sms_content.replaceAll('\n','\r\n'));
+}
+$("#txtHint").html(sms_content.length+"/160").css('color','');
+}
+/*
+if(getStrLength(textarea.value) > max_length)
+{
+textarea.value = cutstr(textarea.value,max_length);
+}
+$("txtHint").innerHTML=getStrLength(textarea.value)+"/160";
+*/
+},
+
+disabledRightMouse : function ()
+{
+document.oncontextmenu = 
+function (){ return false; }
+},
+
+enabledRightMouse : function ()
+{
+document.oncontextmenu = null;
+}
+};
+
+
+var box_type=0,page_num=0;
+
+function load_mark(url){
+if(interval_timer) clearInterval(interval_timer);
+  if(url.indexOf("sms.html")>-1){
+    if(url.indexOf('outbox')>0){
+      box_type=1;
+      $('#to_inbox').attr('class','');
+      $('#to_outbox').attr('class','active-item').html('<a href="javascript:;">Outbox</a>');
+      $('#h3_title').html('Outbox');
+    }
+    else{
+      box_type=0;
+      $('#to_inbox').attr('class','active-item');
+      $('#to_outbox').attr('class','');
+      $('#h3_title').html('Inbox');
+    }
+
+    $.ajax({ 
+    url: '/wxml/sms_box.xml',
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: { href:box_type,page:page_num }, 
+    success: function(data, status) {
+    var sms_count = $(data).find("sms_count").text();
+    var page_cnt =Math.ceil(sms_count/5);
+
+    var sms_list='';
+    if(sms_count>0){
+      for (var i=0;i<5;i++)
+      {
+        var src = $(data).find("sms_src").eq(i).text();
+        if(src!='-'){
+          var body = $(data).find("sms_body").eq(i).text();
+          var time = $(data).find("sms_time").eq(i).text();
+  //        time = time.replace(/ /, "<br \>");
+          var sms_status = $(data).find("sms_status").eq(i).text();
+
+          sms_list+='<tr class="'
+          var check_id="check_0"+(i+1);
+          if(sms_status=='3' || sms_status=='7') {
+            sms_list+='bold';
+          }
+          else{
+           sms_list+='nomal'; 
+          }
+          sms_list+=('"><td class="check_td"><input type="checkbox" class="check_sms" id="'+check_id+'"><label>&#238;</label></td><td><label style="font-size:1.8em;');
+          if(box_type==0 && sms_status=='3'){
+            sms_list+='color:#08F;">&#198;';
+          }
+          else if(box_type==1 && sms_status=='7'){
+            sms_list+='color:#F00;">&#198;';
+          }
+          else if(box_type==0 && sms_status=='8'){
+            sms_list+='color:#08F;">&#241;';
+          }
+          else{
+            sms_list+='color:#000;">&nbsp;';
+          }
+          sms_list+='</label>'+src+'</td><td>'+body+'</td><td>'+time+'</td></tr>';
+        }
+      }
+
+      $('#sms_list').html(sms_list);
+
+      var foot='';
+
+      if(page_num!=0 && page_cnt>0) foot += '<a href="javascript:;" onclick="open_sms_page(this)">'+ 'Prev' +'</a>&nbsp;&nbsp';    //page_num-1
+      for (i=0;i<page_cnt;i++) {
+      if(i==page_num)  foot += ''+(i+1)+'&nbsp;&nbsp';
+      else foot += '<a href="javascript:;" onclick="open_sms_page(this)">'+ (i+1) +'</a>&nbsp;&nbsp';
+      }
+
+      if(page_num<page_cnt-1) foot += '<a href="javascript:;" onclick="open_sms_page(this)">'+ 'Next' +'</a>&nbsp;&nbsp';
+
+      $('#table_foot').html(foot);
+      $('table.sms_list').show();
+    }
+    else{
+      $('table.sms_list').hide();
+      $('#table_foot').html('Empty'); 
+    }
+    
+
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+    })
+  }
+}
+
+function open_sms_page(obj){
+$('#check_all').attr('checked',false);
+$('#check_all+label').html('&#238');
+$('#del_sms').attr('disabled',true).attr('class','button_gray');
+var clicked = obj.innerHTML;
+if(clicked=='Next') page_num++;
+else if(clicked=='Prev') page_num--;
+else page_num= (parseInt(clicked)-1);
+
+if(box_type==0) load_mark('sms.html');
+else load_mark('sms.html#outbox');
+
+}
+
+</script>
+

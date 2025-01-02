@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<script type="text/javascript">
+window.onload=function(){
+var href=window.location.href;
+var peek=href.indexOf('?')+1;
+var elem=document.getElementById('video');
+if (elem.requestFullscreen) {
+  elem.requestFullscreen();
+} else if (elem.mozRequestFullScreen) {
+  elem.mozRequestFullScreen();
+} else if (elem.webkitRequestFullscreen) {
+  elem.webkitRequestFullscreen();
+}
+ elem.src = href.substring(peek);
+}
+</script>
+<body>
+<video id='video' autoplay="autoplay" controls="controls">
+your browser does not support the video tag
+</video>
+</body>
+</html>

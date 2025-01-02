@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<cfg>
+<gen><% generate_backup_config_file(); %></gen>
+<back_url><% get_backup_config_file_name(); %></back_url>
+<restore_url><% configuratoin_restore_file_fullname(); %></restore_url>
+</cfg>

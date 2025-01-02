@@ -1,0 +1,620 @@
+<script>
+	if(top.location.pathname != "/index.htm") top.location.href = "./index.htm";
+	$(document).ready(function() {
+
+	});
+</script>
+
+<body>
+	<table id="table_main" class="table_main" align="left">
+		<tr>
+			<td>
+				<h3 class="main_menu">WPS</h3>
+			</td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px;">
+
+				</br>
+				<table style="width:100%;">
+					<tr>
+						<td width="100%" colspan="2"  style="font-size: 14px;padding-right: 50px;">
+							Wi-Fi Protected Setup(WPS) is a special way to connect Wi-Fi,the AP and the client can automatically for security settings, you can simply press the button.
+<!-- 							or enter the PIN -->
+						</td>
+					</tr>
+
+					<tr>
+						<td width="37%" class="head_top">WPS</td>
+						<td width="63%" class="tail_top" style="font-size: 14px;padding-right: 50px;">
+							<input type="radio" id="wps_disable" name="state" value="0" checked/><label class="ui_radio" for="wps_disable"></label><label for="wps_disable" class="ml5">Disable</label>
+							<input type="radio" id="wps_enable" name="state" value="1" /><label class="ui_radio" for="wps_enable"></label><label class="mr20 ml5" for="wps_enable">Enable</label>
+						</td>
+					</tr>
+					<tr>
+						<td width="100%" colspan="2" style="font-size: 14px;padding-right: 50px;">
+							Notice:The function of WPS only support the Wireless Security as follows:Disabled,WPA2-PSK,WPA-PSK/WPA2-PSK and the Wireless Encryption Type as follows:AES,AES+TKIP, and ensure SSID broadcast is enabled.
+						</td>
+					</tr>
+				</table>
+
+				<table style="width: 90%;">
+				<tr>
+					<td width="50%" style="color: red;text-align: center;font-size:12px;" id="errHint"></td>
+					<td width="50%" align="right">
+						<button class="btn-Green" id="to_submit"><span><em>Apply</em></span></button>
+						<button class="btn-Green" id="update_wps" oncut="return false" oncopy="return false" onpaste="return false"><span><em>Update</em></span></button>
+					</td>
+				</tr>
+				</table>
+
+		<table style="width:90%;margin-top: 20px;">
+			<tr>
+				<td width="37%" class="head_top">PBC</td>
+				<td width="63%" class="tail_top">
+					Click Button to Start/Stop PBC,Duration:120s
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="3" id="pbc_errHint" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;color:red;">&nbsp;</td>
+			</tr>
+
+			<tr>
+				<td colspan="3" align="right">
+
+					<button class="btn-Green" id="start_pbc"><span><em>Start</em></span></button>
+					<!--           <input type="button" value = "Start" id= "start_pbc"> -->
+				</td>
+			</tr>
+		</table>
+
+		<table style="width:90%;margin-top: 20px;font-size:14px;display: none;">
+			<tr>
+				<td width="37%" class="head_top">PIN</td>
+				<td width="63%" class="tail_top">
+					<input type="text" id="pin" name="pin" title="pin" placeholder="PIN" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" id="pin_errHint" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;color:red;">&nbsp;</td>
+			</tr>
+
+			<tr>
+				<td colspan="3" align="right">
+					<button class="btn-Green" id="start_pin"><span><em>Start</em></span></button>
+				</td>
+			</tr>
+
+		</table>
+		</td>
+		</tr>
+	</table>
+
+	<div id="dlg_confirm" style="display:none;" title="Confirm">The Wi-Fi module will be restart, it will cause the Wi-Fi disconnection.</div>
+	<div id="dlg_result" style="display:none;" title="Message">
+		<div id="text_result" style="text-align: center;"></div>
+	</div>
+	<!-- <div id="dlg_waiting" style="display:none;" title="Waiting">Waiting...</div> -->
+	<div id="dlg_pbc" style="display:none;" title="WPS">
+		<div style='text-align:center;'>Please press the WPS key of your device<br> which you want connect to <% get_model(); %>.</div>
+		<div style='text-align:center;' id='count_down'>120s</div>
+	</div>
+	<div id="dlg_pin" style="display:none;" title="WPS">
+		<div style='text-align:center;'>Please waiting...</div>
+	</div>
+	<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+</body>
+
+<script type="text/javascript">
+
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "set_wps.html") {
+
+	var dlg_confirm = null,
+		dlg_result = null,
+		dlg_pbc = null,
+		dlg_pin = null;
+
+	function close_pop_diag() {
+		if(dlg_pbc && locking == 2) {
+			locking = 0;
+			dlg_pbc.dialog("close");
+			dlg_pbc = 0;
+		} else if(locking == 4 && dlg_pin) {
+			locking = 0;
+			dlg_pin.dialog("close");
+			dlg_pin = 0;
+		}
+	}
+
+	function pop_submit_result(txt) {
+		$("#text_result").text(txt);
+		if(!dlg_result) dlg_result = $("#dlg_result").dialog({
+			autoOpen: false,
+			height: 330,
+			width: 450,
+			modal: true,
+			buttons: {
+				OK: function() {
+					dlg_result.dialog("close");
+				}
+			},
+			close: function() {
+				load_setting()
+					//         dlg_result=0;
+			}
+		});
+		dlg_result.dialog("open");
+		// var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+		// easyDialog.open({
+		//       container : {
+		//           header : 'Setting',
+		//           content : content,
+		//           yesText : 'OK',
+		//           yesFn : close_pop_diag
+		//       },
+		//       callback: load_setting,
+		//       fixed : false
+		//   });
+		// return false;
+	}
+
+	// function pop_waiting(){
+	//   var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>Please Waiting...</span></div></div>";
+	//   easyDialog.open({
+	//         container : {
+	//             content : content
+	//         },
+	//         fixed : true
+	//   });
+	// }
+
+	function submit_op() {
+		var enable = $('input[name=state]:checked').val();
+		var post_data = 'enable=' + enable;
+
+		show_tips(seed,"Waiting...");
+		locking = 1;
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: "/wxml/wps.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: post_data,
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				locking = 0;
+				hide_tips(seed);
+				var ret = parseInt($(data).find("state").text());
+				if(ret) alert('Setting Apply Success!');
+				else alert('Setting Apply Fail!');
+				load_setting();
+			},
+			error: function(x, t, m) {
+				locking = 0;
+				hide_tips(seed);
+			}
+		})
+		return false;
+	}
+
+	$('#to_submit').click(function(event) {
+		event.preventDefault();
+		var enable = $('input[name=state]:checked').val();
+		if(enable == "1" && (enc_type[0] == "1" || enc_type[0] == "2" || enc_type[1] == "1" || !wifi_brd)) {
+			alert('Please See the Notice!');
+			return false;
+		}
+
+		confirm("The Wi-Fi module will be restart, it will cause the Wi-Fi disconnection.", submit_op, function() {});
+
+		//  pop_submit_result();
+	});
+
+	$("#update_wps").click(function(){
+		load_setting();
+	})
+
+
+
+	var state, enc_type, wifi_sw, wifi_brd;
+
+	function load_setting() {
+		$.ajax({
+			url: "mark_wps.w.xml",
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+			success: function(data, status) {
+				var dsc = $(data).find("dsc").text();
+				if(dsc & 0x01) $('#to_set_pin').show();
+				state = parseInt($(data).find("state").text());
+				wifi_sw = parseInt($(data).find("sw").text());
+				wifi_brd = parseInt($(data).find("brd").text());
+				$('input[name=state]').eq(state).attr('checked', 'checked');
+				enc_type = $(data).find("enc_type").text().split(',');
+				if(state) {
+					if(enc_type[0] != "1" && enc_type[0] != "2" && !(enc_type[1]=="1")) {
+						$('#start_pbc').removeAttr("disabled").removeClass("disabled");
+					}
+					// $('#start_pin').removeAttr("disabled").removeClass("disabled");
+					$('#pin').attr('disabled', false);
+				} else {
+					$('#start_pbc').attr("disabled", true).addClass("disabled");
+					$('#start_pin').attr("disabled", true).addClass("disabled");
+					$('#pin').attr('disabled', true);
+				}
+				reload_compnets(seed);
+				return true;
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+	var wps_timer;
+
+	function get_wps_state() {
+		wps_timer = setInterval(function() {
+			$.ajax({
+				url: "wps_end.w.xml",
+				type: "Get",
+				timeout: 8000,
+				cache: false,
+				datatype: "xml",
+				success: function(data, status) {
+					var end = parseInt($(data).find("end").text());
+					if(end) {
+						clearInterval(wps_timer);
+						close_pop_diag();
+
+					}
+				},
+				error: function(x, t, m) {
+					if(t === "timeout") {
+
+					}
+				}
+			})
+		}, 1000);
+	}
+
+
+	var count = 120,
+		timer_count;
+	$('#start_pbc').die().live("click", function(event) {
+		event.preventDefault();
+		if($(this).attr('disabled')) {
+			return;
+		}
+
+		if(!wifi_sw || !wifi_brd) {
+			pop_submit_result('Please Make sure Wi-Fi Module Enable and SSID Broadcast Enable!');
+			return false;
+		}
+
+		if(enc_type[0] == "1" || enc_type[0] == "2" ||  enc_type[1] == "1") {
+			pop_submit_result('Please See the Notice!');
+			return false;
+		}
+
+		count = 120;
+		$('#count_down').html('120s');
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: "/wxml/wps.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: {
+				start: 1
+			},
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				get_wps_state();
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+
+		//   var content = "<div class='pop_div'><div style='text-align:center;'>Please Press The WPS Key Of Your Device</div><div style='text-align:center;' id='count_down'>120s</div></div>";
+		//   easyDialog.open({
+		//         container : {
+		//             header : 'Count',
+		//             content : content,
+		//             yesText : 'Stop',
+		//             yesFn : stop_pbc_op
+		//         },
+		//         callback: clear_timer,
+		// 				lock: true,
+		//         fixed : false
+		// });
+		//     $('#closeBtn').hide();
+
+		var dialogParent = $("#dlg_pbc").parent();
+		var dialogOwn = $("#dlg_pbc").clone();
+		dialogOwn.hide();
+
+		if(!dlg_pbc) dlg_pbc = $("#dlg_pbc").dialog({
+			autoOpen: false,
+			height: 330,
+			width: 450,
+			modal: true,
+			buttons: {
+				Stop: function() {
+					locking = 0;
+					dlg_pbc.dialog("close");
+					dlg_pbc = 0;
+				}
+			},
+			close: function() {
+				dlg_pbc=0;
+				//dlg_pbc.dialog("close");
+				locking = 0;
+				stop_pbc_op();
+				clear_timer();
+				dialogOwn.appendTo(dialogParent);
+				$(this).dialog("destroy").remove();
+			}
+		});
+		dlg_pbc.dialog("open");
+		locking = 2;
+
+		clearInterval(timer_count);
+
+		timer_count = setInterval(function() {
+			if(count > 0) count--;
+			else clearInterval(timer_count);
+			//    	.ajax
+
+			if(count) $('#count_down').html(count + 's');
+			else close_pop_diag();
+		}, 1000);
+	});
+
+	function stop_pbc_op() {
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: "/wxml/wps.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: {
+				stop: 1
+			},
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+//		close_pop_diag();
+	}
+
+	function clear_timer() {
+		clearInterval(wps_timer);
+		clearInterval(timer_count);
+	}
+
+	function pop_start_pin() {
+		//   var content = "<div class='pop_div'><div style='text-align:center;'>Please waiting...</div></div>";
+		//   easyDialog.open({
+		//     container : {
+		//       header : 'Wait',
+		//       content : content,
+		//       yesText : 'Stop',
+		//       yesFn : stop_pbc_op
+		//     },
+		//         callback: clear_timer,
+		//     lock: true,
+		//     fixed : false
+		// });
+		//   $('#closeBtn').hide();
+
+		var dialogParent = $("#dlg_pin").parent();
+		var dialogOwn = $("#dlg_pin").clone();
+		dialogOwn.hide();
+
+
+		if(!dlg_pin) dlg_pin = $("#dlg_pin").dialog({
+			autoOpen: false,
+			height: 330,
+			width: 450,
+			modal: true,
+			buttons: {
+				Stop: function() {
+					close_pop_diag();					
+				}
+			},
+			close: function() {
+//				console.log("close");
+				dlg_pin=0;
+				locking=0;
+				stop_pbc_op();
+				clear_timer();
+				dialogOwn.appendTo(dialogParent);
+				$(this).dialog("destroy").remove();
+			}
+		});
+		dlg_pin.dialog("open");
+		locking = 4;
+	}
+
+	$('#start_pin').click(function(event) {
+		event.preventDefault();
+		return false;
+		if($(this).attr('disabled')) {
+			if(!state) $('#pin_errHint').html('Enable WPS First!');
+			return;
+		}
+
+		if(!wifi_sw || !wifi_brd) {
+			pop_submit_result('Please Make sure Wi-Fi Module Enable and SSID Broadcast Enable!');
+			return false;
+		}
+
+		if(enc_type[0] == "1" || enc_type[0] == "2" ||  enc_type[1] == "1") {
+			pop_submit_result('Please See the Notice!');
+			return;
+		}
+
+		if(setPinClicked($('#pin'))) {
+
+			pop_start_pin();
+			//show_tips("Waiting...");
+			var pin_code=$('#pin').val().replace(/[^0-9]/g,"");
+
+			var post_data = 'pin=' + pin_code;
+			var headers = {};
+			headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+			$.ajax({
+				url: "/wxml/wps.xml",
+				type: "Post",
+				headers: headers,
+				timeout: 8000,
+				cache: false,
+				datatype: "xml",
+				data: post_data,
+				success: function(data, status) {
+					var new_token = $(data).find("token").text();
+					if(new_token == "-1") {
+						top.location.reload(true);
+						return false;
+					}
+					$("#csrf_token2").val(new_token);
+					get_wps_state();
+				},
+				error: function(x, t, m) {
+					if(t === "timeout") {
+
+					}
+				}
+			})
+		}
+
+	})
+
+	$('#pin').bind('input propertychange', function() {
+		$('#pin_errHint').html('');
+		if($(this).val().length >= 4) {
+			$('#start_pin').removeAttr("disabled").removeClass("disabled");
+		} else {
+			$('#start_pin').attr("disabled", true).addClass("disabled");
+		}
+	});
+
+	function setPinClicked(obj) {
+		var ret;
+		ret = check_pin_code(obj.val());
+		if(ret == 1) {
+			$('#pin_errHint').html('Invalid PIN length!<br> The device PIN is usually four or eight digits long.');
+			obj.focus();
+			return false;
+		} else if(ret == 2) {
+			$('#pin_errHint').html('Invalid PIN!  <br>PIN must be in numeric digits.');
+			obj.focus();
+			return false;
+		} else if(ret == 3) {
+			if(!confirm('Checksum failed! Use PIN anyway? ')) {
+				obj.focus();
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function validate_pin_code(code) {
+		var accum = 0;
+
+		accum += 3 * (parseInt(code / 10000000) % 10);
+		accum += 1 * (parseInt(code / 1000000) % 10);
+		accum += 3 * (parseInt(code / 100000) % 10);
+		accum += 1 * (parseInt(code / 10000) % 10);
+		accum += 3 * (parseInt(code / 1000) % 10);
+		accum += 1 * (parseInt(code / 100) % 10);
+		accum += 3 * (parseInt(code / 10) % 10);
+		accum += 1 * (parseInt(code / 1) % 10);
+		return(0 == (accum % 10));
+	}
+
+	// modify for WPS2DOTX  test case 4.2.4  ; PIN input can filter whitespace and dash
+	function check_pin_code(str) {
+		var i;
+		var code_len;
+		code_len = str.length;
+
+		var codestr = "";
+
+		for(i = 0; i < str.length; i++) {
+
+			if((str.charAt(i) == ' ') || (str.charAt(i) == '-')) {
+				code_len--;
+				continue;
+			} else {
+				codestr += str.charAt(i);
+			}
+
+			if((str.charAt(i) < '0') || (str.charAt(i) > '9'))
+				return 2;
+
+		}
+
+		if(code_len != 8 && code_len != 4)
+			return 1;
+
+		if(code_len == 8) {
+			var code = parseInt(codestr, 10);
+			if(!validate_pin_code(code))
+				return 3;
+			else
+				return 0;
+		} else
+			return 0;
+	}
+
+
+			load_setting();
+		}
+	}
+
+	
+</script>

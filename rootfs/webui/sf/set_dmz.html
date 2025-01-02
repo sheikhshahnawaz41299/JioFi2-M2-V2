@@ -1,0 +1,182 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head> 
+<title>Network Setting</title>-->
+<script>
+if(top.location.pathname!="/index.htm") top.location.href="./index.htm";
+
+
+
+function load_mark(url){
+if(interval_timer) clearInterval(interval_timer);
+  if(url=="set_dmz.html"){
+
+function load_setting(){
+  $.ajax({ 
+    url: "mark_network.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    success: function(data, status) {
+
+		var dmz_enable = parseInt($(data).find("dmz_enable").text());
+		if(dmz_enable==0){
+			$("#select_dmz_enable").val('DISABLE');
+			$("#tr_dmz_ip").hide();
+		}
+		else{
+			$("#select_dmz_enable").val('ENABLE');
+			$("#tr_dmz_ip").show();
+		}
+		var dmz_ip = $(data).find("dmz_ip").text();
+		if(dmz_ip=='-') dmz_ip='';
+		$("#input_dmz_ip_address").val(dmz_ip);
+
+
+		reload_compnets(seed);
+
+	},
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+}
+
+$("#button_mac_filter_apply").click(function(){
+	var dmz_enable = (($("#select_dmz_enable").val()=="ENABLE") ? 1:0);
+	var dmz_ip = $("#input_dmz_ip_address").val();
+
+	if(dmz_enable && !isIP(dmz_ip))
+	{
+		$("#errHint").html("Please input valid IP Address!");
+		$("#input_dmz_ip_address").focus();
+		setTimeout(function(){
+			$("#errHint").html("&nbsp;");
+		},4000);
+		return;
+	}
+	if(dmz_enable && dmz_ip.indexOf("192.168.1.")!=0)
+	{
+		$("#errHint").html("Please input valid IP Address like 192.168.1.*");
+		$("#input_dmz_ip_address").focus();
+		setTimeout(function(){
+			$("#errHint").html("&nbsp;");
+		},4000);
+		return;	
+	}
+
+	var post_data = "dmz_enable="+dmz_enable+"&dmz_ip="+esc(dmz_ip);
+	var headers={};
+	headers["__RequestVerificationToken"]=$("#csrf_token2").val();
+	$.ajax({ 
+	  url: "/wxml/set_dmz.xml",
+	  type: "Post", 
+	  headers: headers,
+	  timeout: 20000,
+	  cache: false,
+	  datatype: "xml",
+	  data: post_data, 
+	  success: function(data, status) {
+		var new_token=$(data).find("token").text();
+	      if(new_token=="-1"){
+	        top.location.reload(true); 
+	        return false;
+	      }
+		$("#csrf_token2").val(new_token);
+	    var ret0 = parseInt($(data).find("dmz_enable").text());
+		var ret1 = parseInt($(data).find("dmz_ip").text());
+		if(dmz_enable &&ret0 && ret1){ $("#errHint").html("Setting Apply Success!");}
+		else if(!dmz_enable && ret0) { $("#errHint").html("Setting Apply Success!");}
+		else {$("#errHint").html("Setting Apply Fail!"); }
+		setTimeout(function(){
+			$("#errHint").html("&nbsp;");
+		},4000);
+	    load_setting();
+	  },
+	  error: function(x, t, m){
+	    if(t==="timeout"){
+	    }  
+	  }
+	})
+})
+
+
+
+$("#select_dmz_enable").change(function(){
+		if ($("#select_dmz_enable").val() == "ENABLE") {
+			$("#tr_dmz_ip").show();
+		}
+		else{
+			$("#tr_dmz_ip").hide();
+		}
+});
+
+
+    load_setting();
+  }
+}
+
+
+
+
+
+			
+</script>
+
+<!-- </head> -->
+
+	<body>
+	    <table id="table_main" class="table_main" align="left">
+			<tr>
+				<td>
+				<h3 class="main_menu">Network Mode</h3>
+				</tr>
+				<tr>
+			<td class="_td" style="padding-left: 50px; padding-bottom: 25px;">
+				</br>
+			
+
+ <h4 class="small_menu" style="color:#515151; margin:0;">DMZ Setting</h4>
+		        	<table style="width:90%;">
+	        	        <tr>
+				            <td width="37%" class="head_top">DMZ</td>
+				            <td width="63%" class="tail_top">
+					            <font face="Arial">
+						            <select id="select_dmz_enable" style="width: 130px" <!--onchange="check_selectbox_dmz()"--> style="font-size: 12px;">
+							            <option value="ENABLE">Enable</option>
+							            <option value="DISABLE">Disable</option>									
+						            </select>
+					            </font>							
+				            </td>
+			            </tr>
+			            <tr id ="tr_dmz_ip" style="display:none;">
+			                <td width="37%" class="head_top">IP Address</td>
+			            	<td width="63%" class="tail_top">
+									<input type="text" oncut="" oncopy="" onpaste="" name="input_dmz_ip_address" id="input_dmz_ip_address" MaxLength="16" />					
+				            </td>
+				        </tr>
+				        <tr>
+			                <td colspan="3" style="padding:8px 20px 4px 12px;">
+			                <ol>
+			                	<li>It's suggested that your DMZ server obtains the ip in the static way.</li>
+			                	<!-- <li>When the DMZ server is also the USB Host,it wouldn't act in the standard DMZ way.Becasue the USB Host is someone like the super user.However, the DMZ is limited in consideration of security.</li> -->
+			                	<li>DMZ is mutually exclusive with Internet Storage.</li>
+			                </ol></td>
+				        </tr>
+			            <tr>
+							<td colspan="3" style="text-align:right">
+							<span style="text-align: center;font-size: 14px;color: red;width:480px;display: inline-block;" id="errHint"></span>
+							<button id="button_mac_filter_apply" name="button_mac_filter_apply" class="btn-Green"><span><em>Apply</em></span></button>
+                             
+							</td>
+						</tr>
+					</table>
+
+                </td>      
+			</tr>
+		</table>
+		<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+	</body>
+<!-- </html> -->

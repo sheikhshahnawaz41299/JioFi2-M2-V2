@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<title>
+<ssid><% get_wifi_ssid(); %></ssid>
+<dhcp><% get_dhcp_server_enabled(); %></dhcp>
+<submask><% get_dhcp_mask(); %></submask>
+<gate><% get_dhcp_ip(); %></gate>
+<macaddr><% get_wifi_mac(); %></macaddr>
+<user_cnt><% get_client_count(); %></user_cnt>
+<ch><% get_wifi_channel(); %></ch>
+<wifi><% get_wifi_state(); %></wifi>
+<channel><% get_current_wifi_channel(); %></channel>
+<band_width><% get_wifi_bandwidth(); %></band_width>
+<enc_type><% get_wifi_sec_wpa(); %></enc_type>
+<user_list>
+<% get_client_list_extend("0"); %>
+</user_list>
+<user_list>
+<% get_client_list_extend("5"); %>
+</user_list>
+<user_list>
+<% get_client_list_extend("10"); %>
+</user_list>
+<user_list>
+<% get_client_list_extend("15"); %>
+</user_list>
+<user_list>
+<% get_client_list_extend("20"); %>
+</user_list>
+<user_list>
+<% get_client_list_extend("25"); %>
+</user_list>
+<user_list>
+<% get_client_list_extend("30"); %>
+</user_list>
+
+</title>

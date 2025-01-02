@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="telephone=no" name="format-detection" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>MF800 Web Admin</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<script type="text/javascript">
+if(window==top) location.href="index.htm";
+<!-- 
+document.oncontextmenu=function(e){return false;} 
+// -->
+document.onmousedown=function(e){
+var e=e||window.event;
+if(e.button&2)
+{
+document.oncontextmenu=function(e){return false;}
+return false;
+}	
+}
+
+var xmlpost;
+var xmlHttp;
+function $(id){return document.getElementById(id);}
+function x_v(tag){return xmlpost.responseXML.getElementsByTagName(tag)[0].childNodes[0].nodeValue;}
+
+function createXMLHttpRequest()
+{
+if(window.ActiveXObject)
+{
+xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+else if (window.XMLHttpRequest)
+{
+xmlHttp = new XMLHttpRequest();
+}
+}
+
+function startRequest(xmlurl)
+{
+createXMLHttpRequest();
+xmlHttp.onreadystatechange = handleStateChange;
+xmlHttp.open("GET", xmlurl, true);
+xmlHttp.setRequestHeader("If-Modified-Since","0");
+xmlHttp.send(null);
+}
+
+function handleStateChange()
+{
+if(xmlHttp.readyState == 4)
+{
+if(xmlHttp.status == 200)
+{
+GetHandler();
+}
+}
+}
+
+</script>
+</head>
+<body>
+<div id="container">
+<div id="navi"><li><a class="navi" href="home.html">Home</a></li><li><a class="navi" href="connection.html">Connection</a></li><li><a class="sel">SMS</a></li><li><a class="navi" href="setting.html">Setting</a></li><li><a class="navi" href="statistics.html">Statistics</a></li><li><a class="navi" href="about.html">About</a></li></div>
+<div id="mainContent">
+<div id="sidebar">
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu"><a class="side" href="sms_box.html" >Inbox</a></div>
+<div id="sidemenu"><a class="side" href="sms_box.html?href=1" >Outbox</a></div>
+<div id="sidemenu"><a class="side" href="setting_sms.html" >Setting</a></div>
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu_df78a">MF800</div>
+</div>
+<div id="content">
+
+<h2 class="title">Del Message Report</h2>
+<hr size=1 style="color:#C0C0C0">
+<script type="text/javascript">
+var para_str;
+var page_num;
+var box_type;
+var ret_str;
+
+function ajax_post(form_data){
+if (window.XMLHttpRequest){
+xmlpost=new XMLHttpRequest();
+}
+else{
+xmlpost=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlpost.onreadystatechange=function()
+{
+if (xmlpost.readyState==4 && xmlpost.status==200){
+PostHandler();
+}
+}
+xmlpost.open("POST","/wxml/sms_del.xml",true);
+xmlpost.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlpost.send(form_data);
+}
+window.onload =function(){
+var href=window.location.href;
+var peek=href.indexOf('?');
+if(peek>-1) para_str = href.substring(peek+1);
+else para_str='';
+peek = para_str.search(/href=/i);
+if(peek>-1) box_type = parseInt(para_str.substring(peek+5));
+else box_type = 0;
+peek = para_str.search(/page=/i);
+if(peek>-1) page_num = parseInt(para_str.substring(peek+5));
+else page_num = 0;
+ret_str = '?href='+box_type+'&page='+page_num;
+startRequest("mark_sms_new_recv.w.xml");
+}	
+
+function GetHandler(){
+  var xmlDoc = xmlHttp.responseXML;
+  var sms_sig = xmlDoc.getElementsByTagName('sms_sig')[0].childNodes[0].nodeValue;
+  if(sms_sig==3) $('result').innerHTML = "Delete Failed,please retry!";
+  else ajax_post(para_str);
+}
+
+function PostHandler(){
+var cnt=0;
+for(i=1;i<=5;i++){
+if(x_v('no'+i)==1) cnt++;
+} 
+if(cnt) $('result').innerHTML = (cnt>1)?''+cnt+' Selected Messages have been deleted':'1 Selected Message has been deleted';
+else $('result').innerHTML = "Delete Failed!";
+}
+
+function click_return(){
+location.href = 'sms_box.html'+ret_str;
+}
+</script>
+<div style="margin-top:5px;margin-left:15px">
+<button id="btn_return" class="button_return"  onclick="click_return()"><span><em>Back</em></span></button>
+</div>
+<table border=0 cellspacing=0 cellpadding=0 valign=center>
+<tr height=50><td id='result'></td></tr></table>
+</table>
+</div></div>
+<div id="footer">Copyright &copy; 2014 We-wins Inc. All Rights Reserved.</div>
+</div></body></html>

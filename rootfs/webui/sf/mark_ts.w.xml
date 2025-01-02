@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<statistics>
+<ts>
+<update><% stats_update(); %></update>
+<tx><% get_tx(); %></tx>
+<rx><% get_rx(); %></rx>
+<all><% get_all(); %></all>
+<active_time><% get_time(); %></active_time>
+<t_tx><% get_t_tx(); %></t_tx>
+<t_rx><% get_t_rx(); %></t_rx>
+<t_all><% get_t_all(); %></t_all>
+<t_active_time><% get_t_time(); %></t_active_time>
+</ts>
+</statistics>

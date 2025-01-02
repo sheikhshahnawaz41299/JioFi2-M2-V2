@@ -1,0 +1,221 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>System Performance</title> -->
+<script>
+	if(top.location.pathname != "/index.htm" && top.location.pathname != "/") top.location.href = "./index.htm";
+	$(document).ready(function() {});
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "status_per.html") {
+			function load_per_status() {
+				$.ajax({
+					url: '/st_per.w.xml',
+					type: "Get",
+					timeout: 8000,
+					cache: false,
+					datatype: "xml",
+					data: null,
+					success: function(data, status) {
+						var st_per = {
+							period: null,
+							cpu: null,
+							mem: null,
+							curr_tx: null,
+							max_tx: null,
+							min_tx: null,
+							curr_rx: null,
+							max_rx: null,
+							min_rx: null
+						}
+						st_per.period = $(data).find("period").text();
+						st_per.cpu = $(data).find("cpu").text();
+						st_per.mem = $(data).find("mem").text();
+						st_per.curr_tx = $(data).find("curr_tx").text();
+						st_per.max_tx = $(data).find("max_tx").text();
+						st_per.min_tx = $(data).find("min_tx").text();
+						st_per.curr_rx = $(data).find("curr_rx").text();
+						st_per.max_rx = $(data).find("max_rx").text();
+						st_per.min_rx = $(data).find("min_rx").text();
+
+						show_per_status(st_per);
+					},
+					error: function(x, t, m) {}
+				});
+			}
+
+			function show_per_status(st_per) {
+				$("#Text_MONITOR_PRE").val(st_per.period + " SEC");
+				var cpu = st_per.cpu.split(",");
+				$("#Text_CPU_MAX_USAGE").val(cpu[1] + " %");
+				$("#Text_CPU_MIN_USAGE").val(cpu[0] + " %");
+				var mem = st_per.mem.split(",");
+				var mem_max = mem[1] / 1024;
+				var mem_min = mem[0] / 1024;
+				$("#Text_MEM_MAX_USAGE").val(mem_max.toFixed(3) + " MB");
+				$("#Text_MEM_MIN_USAGE").val(mem_min.toFixed(3) + " MB");
+
+				$("#Text_UPCUR_DATA_RATE").val(st_per.curr_tx);
+				$("#Text_UPMAX_DATA_RATE").val(st_per.max_tx);
+				$("#Text_UPMIN_DATA_RATE").val(st_per.min_tx);
+				$("#Text_DWCUR_DATA_RATE").val(st_per.curr_rx);
+				$("#Text_DWMAX_DATA_RATE").val(st_per.max_rx);
+				$("#Text_DWMIN_DATA_RATE").val(st_per.min_rx);
+			}
+
+			load_per_status();
+			interval_timer = setInterval(load_per_status, refresh_time * 1000);
+		}
+	}
+
+	
+</script>
+<!-- </head> -->
+
+<body style="margin:0;padding:0;border:0;">
+	<table class="table_main" align="left">
+		<tr>
+			<td>
+				<h3 class="main_menu">System Performance</h3></td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px;">
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">Monitor Period Configuration</h4>
+				<table style="width:90%;">
+					<tr id="System_monitor_period">
+						<td width="37%" class="head_top">System Perf. Monitor Period</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_MONITOR_PRE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+				</table>
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">CPU Utilization</h4>
+				<table style="width:90%;">
+					<!--<tr id="Cpu_curren_usage">
+                            <td width="37%" class="head_top">CPU Current Usage</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_CPU_CUR_USAGE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>-->
+					<tr id="Cpu_max_usage">
+						<td width="37%" class="head_top">CPU Max. Usage</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_CPU_MAX_USAGE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+					<tr id="Cpu_min_usage">
+						<td width="37%" class="head_top">CPU Min. Usage</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_CPU_MIN_USAGE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+					<!--<tr id="Cpu_usage_threshold">
+                            <td width="37%" class="head_top">CPU Usage Threshold</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_CPU_USAGE_THRESHOLD" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" value="80" style="font-size: 12px;"/> %
+                            </td>
+						</tr>-->
+				</table>
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">Memory Utilization</h4>
+				<table style="width:90%;">
+					<!--<tr id="Memory_cureent_usage">
+                            <td width="37%" class="head_top">Memory Current Usage</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_MEM_CUR_USAGE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>-->
+					<tr id="Memory_max_usage">
+						<td width="37%" class="head_top">Memory Max. Usage</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_MEM_MAX_USAGE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+					<tr id="Memory_min_usage">
+						<td width="37%" class="head_top">Memory Min. Usage</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_MEM_MIN_USAGE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+					<!--<tr id="Memory_usage_threshold">
+                            <td width="37%" class="head_top">Memory Usage Threshold</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_MEM_USAGE_THRESHOLD" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" value="80" style="font-size: 12px;"/> %
+                            </td>
+						</tr>-->
+				</table>
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">Uplink Data Rate</h4>
+				<table style="width:90%;">
+					<tr id="Up_current_data_rate">
+						<td width="37%" class="head_top">Current Data Rate</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_UPCUR_DATA_RATE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+					<tr id="Up_max_data_rate">
+						<td width="37%" class="head_top">Max Data Rate</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_UPMAX_DATA_RATE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+					<tr id="Up_min_data_rate">
+						<td width="37%" class="head_top">Min Data Rate</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_UPMIN_DATA_RATE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+				</table>
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">Downlink Data Rate</h4>
+				<table style="width:90%;">
+					<tr id="Down_current_data_rate">
+						<td width="37%" class="head_top">Current Data Rate</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_DWCUR_DATA_RATE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+					<tr id="Down_max_data_rate">
+						<td width="37%" class="head_top">Max Data Rate</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_DWMAX_DATA_RATE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+					<tr id="Down_min_data_rate">
+						<td width="37%" class="head_top">Min Data Rate</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_DWMIN_DATA_RATE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on"/>
+						</td>
+					</tr>
+				</table>
+				</br>
+				<!--
+				    <h4 class="small_menu" style="color:#515151; margin:0;">System Information</h4>
+					<table style="width:90%;">
+						<tr id="Firewall">
+                            <td width="37%" class="head_top">Firewall</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_SYSINFO_FIREWALL" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>
+						<tr id="Device_up_time">
+                            <td width="37%" class="head_top">Device Up Time</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_DEV_UP_TIME" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>
+						<tr id="Restart_reson">
+                            <td width="37%" class="head_top">Restart Reason</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_RESTART_REASON" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>
+					</table>
+					-->
+			</td>
+		</tr>
+	</table>
+</body>
+<!-- </html> -->

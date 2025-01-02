@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status>
+<divice>
+<networkmode><% get_network_mode(); %></networkmode>
+<modem_mode><% get_modem_network_mode(); %></modem_mode>
+<op_mode><% get_network_op_mode(); %></op_mode>
+<netstatus><% get_network_status(); %></netstatus>
+<wan><% get_wan_ip(); %></wan>
+<pri><% get_wan_pri_dns(); %></pri>
+<sec><% get_wan_sec_dns(); %></sec>
+<wifistatus><% get_wifi_state(); %></wifistatus>
+</divice>
+<user_cnt><% get_client_wifi_count(); %></user_cnt>
+<user_list>
+<% get_client_wifi_list("0"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("5"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("10"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("15"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("20"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("25"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("30"); %>
+</user_list>
+</status>

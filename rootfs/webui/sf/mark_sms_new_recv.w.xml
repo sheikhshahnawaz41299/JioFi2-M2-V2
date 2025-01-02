@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+<sms_sig><% get_sms_ind(); %></sms_sig>
+</check>

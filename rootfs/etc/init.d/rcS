@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# rcS		Call all S??* scripts in /etc/rcS.d in
+#		numerical/alphabetical order.
+#
+# Version:	@(#)/etc/init.d/rcS  2.76  19-Apr-1999  miquels@cistron.nl
+#
+
+# wewins start
+PATH=/app/bin:/sbin:/bin:/usr/sbin:/usr/bin
+LD_LIBRARY_PATH=/app/lib
+runlevel=S
+prevlevel=N
+umask 022
+export PATH LD_LIBRARY_PATH runlevel prevlevel
+# wewins end
+
+#	Make sure proc is mounted
+#
+[ -d "/proc/1" ] || mount /proc
+
+#
+#	Source defaults.
+#
+. /etc/default/rcS
+
+#
+#	Trap CTRL-C &c only in this shell so we can interrupt subprocesses.
+#
+trap ":" INT QUIT TSTP
+
+#
+#	Call all parts in order.
+#
+exec /etc/init.d/rc S
+
+

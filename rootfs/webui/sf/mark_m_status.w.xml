@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status>
+<cspn><% get_cspn_string(); %></cspn>
+<net_type><% get_network_op_mode(); %></net_type>
+<sig><% get_sig_ind(0); %></sig>
+<netstatus><% get_network_status(); %></netstatus>
+<dial_mode><% get_dial_mode(); %></dial_mode>
+<ts>
+<tx><% get_tx(); %></tx>
+<rx><% get_rx(); %></rx>
+<all><% get_all(); %></all>
+<active_time><% get_time(); %></active_time>
+</ts>
+<user_cnt><% get_client_wifi_count(); %></user_cnt>
+</status>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<upd>
+<install_progress>fota_install_progress(install_progress)</install_progress>
+<install_result>fota_install_result(install_result)</install_result>
+</upd>

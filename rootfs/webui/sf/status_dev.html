@@ -1,0 +1,287 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>Device Details</title> -->
+<script>
+	if(top.location.pathname != "/index.htm" && top.location.pathname != "/") top.location.href = "./index.htm";
+
+	$(document).ready(function() {});
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "status_dev.html") {
+			function load_dev_status() {
+				$.ajax({
+					url: '/st_dev.w.xml',
+					type: "Get",
+					timeout: 8000,
+					cache: false,
+					datatype: "xml",
+					data: null,
+					success: function(data, status) {
+						var st_dev = {
+							time: null,
+							odm: null,
+							model: null,
+							oui: null,
+							make: null,
+							serial: null,
+							imei: null,
+							imsi: null,
+							msisdn: null,
+							iccid: null,
+							swver: null,
+							swdate: null,
+							hwver: null,
+							uiver: null,
+							macaddr: null,
+							batt_per: null,
+							batt_st: null,
+							freq: null
+						}
+						st_dev.dsc = parseInt($(data).find("dsc").text());
+						st_dev.odm = $(data).find("odm").text();
+						st_dev.time = $(data).find("time").text();
+						st_dev.model = $(data).find("model").text();
+						st_dev.oui = $(data).find("oui").text();
+						st_dev.make = $(data).find("make").text();
+						st_dev.serial = $(data).find("serial").text();
+						st_dev.imei = $(data).find("imei").text();
+						st_dev.imsi = $(data).find("imsi").text();
+
+						st_dev.msisdn = $(data).find("msisdn").text();
+						st_dev.iccid = $(data).find("iccid").text();
+
+						if(st_dev.msisdn=="-1" || st_dev.msisdn=="?") st_dev.msisdn="";
+						if(st_dev.iccid=="-1" || st_dev.iccid=="?") st_dev.iccid="";
+
+						st_dev.swver = $(data).find("swver").text();
+						st_dev.swdate = $(data).find("swdate").text();
+						st_dev.hwver = $(data).find("hwver").text();
+						st_dev.uiver = $(data).find("uiver").text();
+						st_dev.macaddr = $(data).find("macaddr").text();
+						st_dev.batt_per = $(data).find("batt_per").text();
+						st_dev.batt_st = $(data).find("batt_st").text();
+						st_dev.freq = $(data).find("freq").text();
+
+						show_dev_status(st_dev);
+					},
+					error: function(x, t, m) {}
+				});
+			}
+
+			function show_dev_status(st_dev) {
+				$("#Text_LOCAL_TIME").val(st_dev.time);
+				$("#Text_ODM").val(st_dev.odm);
+				$("#Text_ID_NAME_NO").val(st_dev.model);
+				$("#Text_SETIAL_NO").val(st_dev.serial);
+				$("#Text_IMEI").val(st_dev.imei);
+				$("#Text_IMSI").val(st_dev.imsi);
+				$("#Text_MSISDN").val(st_dev.msisdn);
+				$("#Text_ICCID").val(st_dev.iccid);
+				$("#Text_FW_VER").val(st_dev.swver);
+				$("#Text_FW_DATE").val(st_dev.swdate);
+				$("#Text_HW_VER").val(st_dev.hwver);
+				$("#Text_PRI_MAC_ID").val(st_dev.macaddr);
+				$("#Text_OUI_DEVICE").val(st_dev.oui);
+				$("#Text_DEVICE_MAKE").val(st_dev.make);
+				$("#Text_FREQUENCY_BAND").val(st_dev.freq);
+
+			if(st_dev.dsc&0x02){
+				var hi=st_dev.batt_st>>>8;
+				if (parseInt(st_dev.batt_per)>0) {
+					$("#input_battery_level").val(st_dev.batt_per + "%");    
+					if(hi < 4) {
+						$("#input_battery_status").val("Discharging");
+					} else if(hi == 4) {
+						$("#input_battery_status").val("Charging");
+					} else if (hi == 5) {
+						$("#input_battery_status").val("Full Charged");
+					}
+				}
+				else {
+					$("#input_battery_level").val('');
+					$("#input_battery_status").val("No Battery");
+				}
+				
+			}
+			else{
+				$("#Battery_level_id").hide();
+				$("#Battery_status").hide();
+			}
+
+			}
+
+
+			load_dev_status();
+			interval_timer = setInterval(load_dev_status, refresh_time * 1000);
+		}
+	}
+
+	
+</script>
+
+<!-- </head> -->
+
+<body style="margin:0;padding:0;border:0;">
+	<table class="table_main" align="left">
+		<tr>
+			<td><h3 class="main_menu">Device Details</h3></td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px;">
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">Device Time</h4>
+				<table style="width:90%;">
+					<tr id="Current_local_time">
+						<td width="37%" class="head_top">Current Local Time</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_LOCAL_TIME" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<!--<tr id="Synchronize_with_pc">
+                            <td width="37%" class="head_top">Synchronize With PC</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_SYNC_PC" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>-->
+					<!--<tr id="Time_zone">
+                            <td width="37%" class="head_top">Time Zone</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_TIME_ZONE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>-->
+					<!--<tr id="Auto_adjus_daylight_time">
+                            <td width="37%" class="head_top">Auto Adjust for Daylight Saving Time</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Check_AUTO_DAYLIGHT_SAVE" type="checkbox" name="adjus_info" value="Auto" checked="checked" disabled="disabled" style="font-size: 12px;"/>Auto
+
+                            </td>
+						</tr>-->
+					<!--
+						<tr id="Device_Time_Get">
+						    <td align = "center" >
+						        <input id="BTN_Device_TimeGet" type="button" value="Get Device Time" onclick = "Get_DeviceTime();"/>
+						    </td>
+						</tr>
+						-->
+				</table>
+				</br>
+
+				<h4 class="small_menu" style="color:#515151; margin:0;">Device Information</h4>
+				<table style="width:90%;">
+					<tr id="ODM">
+						<td width="37%" class="head_top">ODM</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_ODM" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+
+						</td>
+					</tr>
+					<tr id="Product_id_name_no">
+						<td width="37%" class="head_top">Product ID</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_ID_NAME_NO" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="Serial_number">
+						<td width="37%" class="head_top">Serial Number</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_SETIAL_NO" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="IMEI">
+						<td width="37%" class="head_top">IMEI</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_IMEI" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="TR_IMSI">
+						<td width="37%" class="head_top">IMSI</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_IMSI" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="TR_MSISDN">
+						<td width="37%" class="head_top">MSISDN</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_MSISDN" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="TR_ICCID">
+						<td width="37%" class="head_top">ICCID</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_ICCID" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="Firmware_version">
+						<td width="37%" class="head_top">Firmware Version</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_FW_VER" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="Firmware_creation_date">
+						<td width="37%" class="head_top">Firmware Creation Date</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_FW_DATE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="Hardware_version">
+						<td width="37%" class="head_top">Hardware Version</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_HW_VER" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="Primary_mac_id">
+						<td width="37%" class="head_top">Primary Mac Id</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_PRI_MAC_ID" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="Battery_level_id">
+						<td width="37%" class="head_top">Battery Level</td>
+						<td width="63%" class="tail_top">
+							<input id="input_battery_level" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="Battery_status">
+						<td width="37%" class="head_top">Battery Status</td>
+						<td width="63%" class="tail_top">
+							<input id="input_battery_status" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="OUI_device">
+						<td width="37%" class="head_top">OUI</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_OUI_DEVICE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<tr id="Device_make">
+						<td width="37%" class="head_top">Device Make</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_DEVICE_MAKE" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<!--<tr id="Device_model">
+                            <td width="37%" class="head_top">Device model</td>
+                            <td width="63%" class="tail_top">
+                                <input id="Text_DEVICE_MODEL" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>-->
+					<tr id="Frequency_band">
+						<td width="37%" class="head_top">Frequency Bands Supported</td>
+						<td width="63%" class="tail_top">
+							<input id="Text_FREQUENCY_BAND" maxlength="20" size="20" type="text" readonly="readonly" unselectable="on" />
+						</td>
+					</tr>
+					<!--
+						<tr id="Device_Information_Get">
+						    <td align = "center" >
+						        <input id="BTN_DEVICE_INFO" type="button" value="Get Device Info" onclick = "Get_DeviceInfo();"/>
+						    </td>
+						</tr>
+						-->
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+<!-- </html> -->

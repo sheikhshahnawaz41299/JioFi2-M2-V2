@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<port_filter>
+<dsc><% get_version_dsc(); %></dsc>
+<enable><% get_port_filter_enable(); %></enable>
+<port><% get_port_filter_item("0"); %></port>
+<port><% get_port_filter_item("1"); %></port>
+<port><% get_port_filter_item("2"); %></port>
+<port><% get_port_filter_item("3"); %></port>
+<port><% get_port_filter_item("4"); %></port>
+<port><% get_port_filter_item("5"); %></port>
+<port><% get_port_filter_item("6"); %></port>
+<port><% get_port_filter_item("7"); %></port>
+<port><% get_port_filter_item("8"); %></port>
+<port><% get_port_filter_item("9"); %></port>
+</port_filter>

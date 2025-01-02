@@ -1,0 +1,2929 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
+<title>Wi-Fi Disk</title>
+<script src="jquery-1.4.1.min.js" type="text/javascript"></script>
+<script type="text/javascript" charset="UTF-8" src="ww_vc_lightbox.js"></script>
+<link rel="stylesheet" type="text/css" href="lightbox.css" media="screen,tv" />
+<!--<script src="ZhCN_Pinyin.min.js" type="text/javascript"></script>-->
+<style type="text/css">
+@font-face {
+font-family: 'dinregular';
+src: url('/img/dinreg.eot');
+src: url('/img/dinreg.eot?#iefix') format('embedded-opentype'),
+url('/img/dinreg.woff') format('woff'),
+url('/img/dinreg.ttf') format('truetype'),
+url('/img/dinreg.svg#dinregular') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+html{height:100%;overflow-y:hidden;margin: 0;padding: 0;min-width: 558px;}
+input{font-family:dinregular,Arial,Sans-serif;}
+body{background: white;height:100%;margin:0px;padding:0px;overflow-y:hidden;font-family:dinregular,Arial,Sans-serif;min-width: 558px;}
+button{
+  background: #6AAEC3;
+  background-image: -webkit-linear-gradient(top, #6ACEC3, #6AAEC3);
+  background-image: -moz-linear-gradient(top, #6ACEC3, #6AAEC3);
+  background-image: -ms-linear-gradient(top, #6ACEC3, #6AAEC3);
+  background-image: -o-linear-gradient(top, #6ACEC3, #6AAEC3);
+  background-image: linear-gradient(to bottom, #6ACEC3, #6AAEC3);
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  border: none;
+  text-shadow: 1px 1px 3px #666666;
+  font-family: webdsr,Arial,Sans-serif;
+  color: #ffffff;
+  text-decoration: none;
+  margin-left:5px;height:29px;line-height:29px;width:120px;color:white;text-align:center;vertical-align:middle;cursor:pointer;
+  font-size: 14px;
+  outline:none;
+}
+
+
+button:hover {
+  background: #6ACEC3;
+  background-image: -webkit-linear-gradient(top, #6AAEC3, #6ACEC3);
+  background-image: -moz-linear-gradient(top, #6AAEC3, #6ACEC3);
+  background-image: -ms-linear-gradient(top, #6AAEC3, #6ACEC3);
+  background-image: -o-linear-gradient(top, #6AAEC3, #6ACEC3);
+  background-image: linear-gradient(to bottom, #6AAEC3, #6ACEC3);
+  text-decoration: none;
+}
+
+
+
+.fu_list{ width:100%; border:1px solid #CCC;line-height:auto; font-size:12px;}
+.fu_list thead{background-color:#CCC;cursor: pointer;text-align: left;padding:0px;font-size:14px}
+.fu_list td{padding:5px;word-wrap: break-word; word-break: break-all; }
+.odd_even{background-color:#f0f0f0;}
+.hoverTr{color:#00DDCC;}
+.fu_list td.up{ background:url(/img/up.gif) right center no-repeat; background-color:#CCC;}
+.fu_list td.down{ background:url(/img/down.gif) right center no-repeat; background-color:#CCC;}
+
+.dict_icon,.img_icon,.file_icon,.pdf_icon,a.download,a.more,.file_list_del,#close_upload_div,#close_sd_set,a.rename,a.delete,a.link_href{
+  background: url('/img/sd_css1.gif') no-repeat;
+  display: inline-block;
+  *display: inline;
+}
+
+.dict_icon{background-position: -0px -67px; height: 12px;cursor: pointer;padding-left:16px;}
+.img_icon{background-position: -0px -122px; height: 12px;cursor: pointer;padding-left:16px;}
+.file_icon{background-position: -0px -108px; height: 14px;cursor: pointer;padding-left:16px;}
+.pdf_icon{background-position: -0px -150px;height: 12px;cursor: pointer;padding-left:16px;}
+a{text-decoration: none;}
+pre.file_name{display: none;}
+a.file{color: black;text-decoration: none; }
+a:hover{color: #00DDCC;text-decoration: underline;}
+a.download{background-position: -0px -92px; width: 18px;height: 16px;cursor: pointer;*display: inline-block;}
+a.more{background-position: -0px -135px; width: 15px;height: 15px;margin-left:4px;cursor: pointer;}
+a.delete{background-position: -0px -217px; width: 18px;height: 16px;margin-left:4px;cursor: pointer;*display: inline-block;}
+a.rename{background-position: -0px -233px; width: 18px;height: 16px;margin-left:4px;cursor: pointer;*display: inline-block;}
+a.link_href{background-position: -0px -249px; width: 18px;height: 17px;margin-left:4px;cursor: pointer;*display: inline-block;}
+
+#menu{width:50px;display:none;position:absolute;top:0;left:0;padding:5px;z-index:100;}
+ul,li{margin:0px;padding:0;}
+li{list-style:none;}    
+#menu ul{background:#FFF;border-radius:5px;box-shadow:0 1px 3px rgba(0, 0, 0, 0.2);font-size: 12px;}
+#menu ul li{line-height:30px;border-bottom:1px solid #F2F2F2;text-align:center;}
+#menu ul li a{display:block;text-decoration: none;color:#0DC;}
+#menu ul li a:hover{background:#FAFAFA;}
+input.rename_target{width: 100px;height: 12px;display: inline-block;}
+#set_box{ width:300px; margin:0 auto; background:#fff; border:1px solid #ccc; padding:20px; display:none; -webkit-border-radius: 10px;-moz-border-radius: 10px; display:none; } 
+#upload_progress{ width:600px; margin:0 auto; background:#fff; border:1px solid #ccc; padding:20px; display:none; -webkit-border-radius: 10px;-moz-border-radius: 10px; display:none; } 
+.input-file {position: relative;margin-left:5px;margin-top:10px;width: 120px;height: 30px;background: #ddd;border: 1px solid gray;text-align: center;cursor: pointer;display: inline-block;*display:inline;zoom:1}
+.up_btn_name {display: inline-block;margin-top: 5px;color: #000;font-size: 16px;}
+.upload {display: block;position: absolute;top: 0;left: 0;width: 120px;height: 30px;font-size:22px\9;opacity: 0;-moz-opacity: 0;filter: alpha(opacity=0);}
+
+#upload_form{margin: 0;padding: 0;}
+
+a.new_folder{display: inline-block;+margin-top:-12px;margin-left:5px;text-align:center;background:#ddd;cursor:pointer;width: 120px;height: 30px;line-height: 30px;border: 1px solid gray;vertical-align: middle;*display:inline;zoom:1}
+
+a.filter{text-decoration: none;display: block;height:40px;line-height:40px;font-size: 20px;cursor:pointer;padding-left: 16%;padding-top: 6%;vertical-align: middle;}
+a.filter_sel{text-decoration: none;display: block;height:40px;line-height:40px;font-size: 20px;cursor:pointer;padding-left: 16%;padding-top: 6%;background: #ddd;border: 1px solid #ccc;vertical-align: middle;}
+.doc_gray,.doc,.au_gray,.au,.mv_gray,.mv,.img_gray,.img,.zip_gray,.zip,.all_gray,.all{
+  vertical-align: middle;display: inline-block;
+  margin-left:2px;width: 20px;height:20px;background: url(/img/filter.gif) no-repeat ;}
+
+.doc_gray{background-position:0px 0px;}
+.doc{background-position:0px -20px;}
+
+.au_gray{background-position:-20px 0px;}
+.au{background-position:-20px -20px;}
+
+.mv_gray{background-position:-40px 0px;}
+.mv{background-position:-40px -20px;}
+
+.img_gray{background-position:-60px 0px;}
+.img{background-position:-60px -20px;}
+
+
+.all_gray{background-position:-80px 0px;}
+.all{background-position:-80px -20px;}
+
+.zip_gray{background-position:-100px 0px;}
+.zip{background-position:-100px -20px;}
+
+input[type="search"]{color: #666;width: 240px;padding: 0;height: 30px;line-height: 32px;vertical-align: middle;padding-left: 10px;font-size:16px;}
+.file_list_name{width:60%;display: inline-block; padding:2px 5px;word-wrap: break-word; word-break: break-all;}
+.file_list_size{width:20%;display: inline-block;padding:2px 5px;}
+.file_list_del{background-position: -0px -55px; height: 12px;width:12px;display: inline-block;vertical-align:super;cursor: pointer;}
+
+#page_href{margin-left:18%;height:30px;text-align:center;padding-top:5px;}
+
+#page_href a{display: inline-block;width: 20px;height: 20px;margin-left: 10px;vertical-align: middle;font-size: 18px;border: 1px dotted #00ddcc;cursor: pointer;}
+#page_href span{display: inline-block;width: 20px;height: 20px;margin-left: 10px;vertical-align: middle;font-size: 18px;color:white;background: #00cccc;}
+
+#cpath{height:24px;line-height: 24px;vertical-align: middle;padding-left: 12px;white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis;overflow: hidden;}
+td span label{display: none;}
+
+#start_upload{width:120px;height:40px;font-size: 20px;padding:5px 10px 3px 10px;margin: 15px 0px 15px 0px;float: right;color:white;-webkit-border-radius: 5px;-moz-border-radius: 5px;outline:none;cursor: pointer;}
+
+#close_upload_div{float:right;margin-right:-20px;margin-top:-20px;padding:0;border:0px solid red;cursor:pointer;background-position:-0px -16px;width:40px;height:40px;}
+
+#close_sd_set{float:right;margin-right:-20px;margin-top:-20px;padding:0;border:0px solid red;cursor:pointer;background-position: -0px -16px;width:40px;height:40px;}
+
+#search_big_start,#search_big_end{height: 26px;width: 100px;}
+#upload_state_tips,#upload_fail_tips{color: red;margin-top: 10px;}
+
+#file_cate_text{display:inline-block;margin-left:4%;}
+
+@media screen and (max-width: 799px){
+#file_cate_text{margin-left:1%;font-size: 14px;}
+a.filter_sel{padding-left: 2%;}
+a.filter{padding-left: 2%;}
+}
+
+@media screen and (max-width: 699px){
+#file_cate_text{margin-left:1%;font-size:14px;}
+a.filter_sel{padding-left: 2%;}
+a.filter{padding-left: 2%;}
+#sd_set{width: 90px;}
+}
+a.help{
+  width: 45px;
+  height: 45px;
+  background: url(img/icon_help.gif) no-repeat 0 0;
+  border: 0px solid #fff;
+  float: right;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+a.help:hover{
+  width: 45px;
+  height: 45px;
+  background: url(img/icon_help.gif) no-repeat 0 -45px; 
+}
+#go_page{width: 40px;margin-left: 10px;}
+
+</style>
+</head>
+<body>
+
+<div id="set_box">
+<span id="close_sd_set" ></span>
+<h4>SD System</h4>
+<div id="sd_sys_content">
+<div><span>SD capacity:&nbsp;</span><span id="t_capacity"></span></div>
+<div style="margin-top:10px;"><span>Free capacity:&nbsp;</span><span id="f_capacity"></span></div>
+</div>
+<div id="sd_need_format" style="display: none;">You need to Format SD, if you have files in disk, please backup them at Local Storage mode.</div>
+<button id="format_card" style="margin-top:10px;">Format card</button> 
+</div>
+<div id="upload_progress">
+<span id="close_upload_div"></span>
+<h4>Upload</h4>
+<div id="file_list">
+</div>
+<div id="upload_fail_tips">&nbsp;
+</div>
+<div id="upload_state_tips">&nbsp;
+</div>
+<div style="height:40px;">
+<button id="start_upload">Start</button>
+</div>
+</div>
+
+<div id="menu">
+<ul>
+<li><a id="rename" href="javascript:;">Rename</a></li>
+<li><a id="del" href="javascript:;">Delete</a></li>
+<!--<li><a id="move" href="javascript:;">Move</a></li>
+<li><a id="copy" href="javascript:;">Copy</a></li>-->
+</ul>
+</div>
+<div style="display:none;">
+<ul class="photos">
+<li id="li_img_show"></li>
+</ul></div>
+<div style="height:30px;background:#ddd;">
+<button id="btn_refresh" style="position:relative;float:right">Refresh</button>
+<button id="back_to_web" style="display:none;position:relative;z-index:9999;">BACK</button>
+
+<span id="browser_tips" style="font-size:12px;margin-left:30px;color:#800000;display:none;">Tips:&nbsp; For better performance,we recommend using <b>Chrome /Firefox / Safari / IE10+</b>;</span>
+
+
+</div>
+
+<div style="width:18%;height:90%;min-width:100px;postion:absolute;float:left;background:#eee;">
+<div id="filter_div" style="height:90%;margin-top:8px;">
+<a class="filter_sel" title="All Files" ><img alt="all" class="all" src="/img/default.gif"/><span id="file_cate_text">All Files</span></a>
+<a class="filter" title="All Documents"><img alt="doc" class="doc_gray" src="/img/default.gif"/><span id="file_cate_text">Document</span></a>
+<a class="filter" title="All Audios"><img alt="audio" class="au_gray" src="/img/default.gif"/><span id="file_cate_text">Audio</span></a>
+<a class="filter" title="All Videos"><img alt="video" class="mv_gray" src="/img/default.gif"/><span id="file_cate_text">Video</span></a>
+<a class="filter" title="All Images"><img alt="image" class="img_gray" src="/img/default.gif"/><span id="file_cate_text">Image</span></a>
+<a class="filter" title="All Packages"><img alt="zip" class="zip_gray" src="/img/default.gif"/><span id="file_cate_text">Package</span></a>
+<hr>
+<button id='sd_set'>System</button>
+</div>
+</div>
+
+<div style="width:81.9%;min-width:456px;height:90%;border:0px solid red;float:right;">
+<div>
+<a class="help" href="help.html#104" target="_blank">&nbsp;</a>
+<div class="input-file" style="display: none">
+<!--
+  <form id="upload_form" method="post" enctype="multipart/form-data" action="http://10.51.1.1:61726/upload">
+    <span class="up_btn_name">Upload</span>
+    <input name="path" id="ie_hide_path" type="hidden" value="sd/"/>
+    <input name="files" id="up_file" class="upload" type="file" multiple="multiple" />
+  </form>
+--> 
+  <form id="upload_form">
+    <span class="up_btn_name">Upload</span>
+    <input name="path" id="ie_hide_path" type="hidden" value="sd/"/>
+    <input name="upload_file_id" id="upload_file_id" type="hidden" value=""/>
+    <input name="session" id="ie_hide_session" type="hidden" value=""/>
+    <input name="token" id="ie_hide_token" type="hidden" value=""/>
+    <input name="files" id="up_file" class="upload" type="file" multiple="multiple" />
+<!--    <input type="button" value="upload" onClick="ie_fileUpload(this.form); return false;" >-->
+  </form> 
+</div>
+<a class="new_folder">New Folder</a>
+<form id="form_search" style="display:inline-block;*display:inline;zoom:1;" onsubmit="javascript:;"><input id="search" type="search" title="please input filename you want to search" results=5  placeholder="search filename.." /></form>
+</div>
+<div id="cpath"></div>
+<div >
+<table style="width:100%" border="0" cellspacing="0" cellpadding="0" class="fu_list" >
+<thead>
+<td id="idcheck" width=10%><input type="checkbox" id="cbAll"/></td>
+<td id="idTitle" class="up" width=40%>Name</td>
+<td id="idAddtime" width=20% style="display:none;">Time</td>
+<td id="idSize" width=15%>Size</td>
+<td id="idOp" width=15% ><a style="display:block;vertical-align:middle;margin-left:12px;height:16px;" href='javascript:;' title='delete' id='more_menu_m' class='delete'></a></td>
+</thead>
+</table>
+</div>
+<div style="width:100%;height:84%;float:left;overflow:hidden;overflow-y:auto;">
+<div id="reload"></div>
+<table style="margin-top:-10px;" border="0" cellspacing="0" cellpadding="0" class="fu_list" id="idTable">
+<thead >
+<td width=10%></td>
+<td width=40%></td>
+<td width=20% style="display:none;"></td>
+<td width=15%></td>
+<td width=15%></td>
+</thead>
+<tbody id="tb_body"></tbody>
+</table>
+</div>
+</div>
+<div style="clear:both;width:100%;height:10%;background:#ddd;">
+<div id="page_href">
+</div>
+</div>
+<iframe id="dl_iframe" style="display: none;"></iframe>
+<input id="csrf_token" type="hidden" value="<% get_csrf_token(); %>">
+</body>
+<script type="text/javascript">
+if(window!=top) top.location.href="sdcard.html";
+var del_name_array=new Array(),del_path_array=new Array(),file_upload_list_flag=new Array();
+var curr_path="/",curr_page=0,curr_file,sel_path,menu_obj,curr_page_file_cnt=0,filter_num=255,filter_enable=1,is_search=0,is_dir=0,_interval,iframeId;
+var hf_alloc_data={};
+var lightbox = new Lightbox({
+    loadingimg:'/img/loading.gif',
+    expandimg:'/img/expand.gif',
+    shrinkimg:'/img/shrink.gif',
+    previmg:'/img/prev.gif',
+    nextimg:'/img/next.gif',
+    closeimg:'/img/close.gif',
+    blankimg:'/img/blank.gif', 
+    resizable:true,
+    animation:true
+  });
+function checkImgType(ths){
+if (ths == "") return 0;
+ths = ths.toLowerCase();
+if (/\.(gif|jpg|jpeg|png|bmp)$/.test(ths)) return 1;
+else if (/\.(mp3)$/.test(ths)) return 3;
+else if (/\.(mp4|avi|rmvb|mov|mpg|wma|f4v|flv|3gp|m4a|mp3|swf|wav|aac|wmv|asf|mkv|rmvb)$/.test(ths)) return 3;
+else if (/\.(pdf)$/.test(ths)) return 4;
+else if (/\.(txt)$/.test(ths)) return 5;
+return 255;  
+}
+
+$(window).resize(function(){
+  var zoom=(100/detectZoom()).toFixed(4);
+  if(zoom>1.0) return;
+//  var marginTop = parseInt(( window.screen.availHeight/25 +10/zoom)/zoom);
+//  $("#upload_progress").parent().css({"zoom":""+zoom,'-moz-transform': 'scale('+zoom+')',"transform-origin": "center top 0","margin-top":marginTop});
+  $("#upload_progress").parent().css({"zoom":""+zoom,'-moz-transform': 'scale('+zoom+')',"transform-origin": "center top 0"});
+});
+function detectZoom(){
+  var ratio=0;
+  ua=navigator.userAgent.toLowerCase();
+  if(window.devicePixelRatio !=undefined) {
+    ratio = window.devicePixelRatio;
+  }
+  else if(~ua.indexOf('msie')){
+    if(screen.deviceXDPI && screen.logicalXDPI){
+      ratio=screen.deviceXDPI/screen.logicalXDPI;
+    }
+  }
+  else if(window.outerWidth !== undefined && window.innerWidth !== undefined){
+    ratio = window.outerWidth/window.innerWidth;
+  }
+  if(ratio){
+    ratio = Math.round(ratio*100);
+  }
+  return ratio;
+}
+
+function XSSResolveCannotParseChar(xmlStr) {
+    return xmlStr.replace(/(\&|\'|\"|\>|\<|\/|\(|\))/g, function($0, $1) {
+        return {
+            '&' : '&amp;',
+            "'" : '&#39;',
+            '"' : '&quot;',
+            '<' : '&lt;',
+            '>' : '&gt;',
+            '/' : '&#x2F;',
+            '(' : '&#40;',
+            ')' : '&#41;'
+        }[$1];
+    }
+    );
+}
+function ec_file_name(str){
+    var len=str.length;
+    if(len>32){
+      var dot_pos=str.lastIndexOf(".");
+      if(len-dot_pos<=8 ){
+        var post=str.substr(dot_pos,len);
+        str=str.substr(0,32-len+dot_pos)+"..."+post;
+      }
+      else{
+        str=str.substr(0,32)+"...";
+      }
+    }
+    return str;
+  }
+
+
+function Byte2Format(size){
+var f_size=''+size;
+if(size<1024) f_size += 'B ';
+else if(size<1048576) f_size = (size/1024).toFixed(1)+'KB ';
+else if(size<1073741824) f_size = (size/1048576).toFixed(1)+'MB ';
+else f_size = (size/1073741824).toFixed(1)+'GB ';
+return f_size;
+}
+
+function get_hf_token(id){
+  var file_id=parseInt(hf_alloc_data.start_id)+id;
+  file_id = file_id.toString();
+  var len=file_id.length;
+  if(len>6) return hf_alloc_data.token+ file_id.substr(-6);
+  else return (hf_alloc_data.token+ "000000".substring(len)+file_id);
+
+}
+
+
+function ajax_post(url,form_data,index)
+{
+var xmlpost;
+if (window.XMLHttpRequest){
+xmlpost=new XMLHttpRequest();
+}
+else{
+xmlpost=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlpost.onreadystatechange=function()
+{
+if (xmlpost.readyState==4 && xmlpost.status==200){
+upload_result_handle(xmlpost);
+}
+if (xmlpost.readyState==4 && xmlpost.status==0){
+$.unblockUI();
+$('#upload_form')[0].reset();
+if(xhr) xhr.abort();
+if(_interval) clearInterval(_interval);
+if(time_s) clearInterval(time_s);
+pop_BlockUI_normal('Please check your network!');
+}
+}
+xmlpost.open("POST",url,true);
+xmlpost.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+token_used=$("#csrf_token").val();
+xmlpost.setRequestHeader("__RequestVerificationToken", token_used); 
+xmlpost.send(form_data);
+}
+
+function loadXMLDoc(url){
+  var xmlHttp=null;
+  if (window.XMLHttpRequest){
+    xmlHttp=new XMLHttpRequest();
+  }
+  else if (window.ActiveXObject){
+    xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  if (xmlHttp!=null)
+  {
+    xmlHttp.onreadystatechange=function()
+    {
+      if (xmlHttp.readyState==4){
+        window.location.reload(true);
+      }
+    }
+    xmlHttp.open("GET",url,true);
+    xmlHttp.setRequestHeader("If-Modified-Since","0");
+    xmlHttp.send(null);
+  }
+  else{
+    window.location.reload(true);
+  }
+}
+
+function disableCacheRefresh(){
+  loadXMLDoc("/mark_cache.w.xml");
+}
+
+
+if (typeof jQuery == 'undefined') { 
+  disableCacheRefresh();
+}
+
+function ie_fileUpload(form) {
+uploaded_size = 0;
+var iframe = document.createElement("iframe");
+iframe.setAttribute("id", "upload_iframe");
+iframe.setAttribute("name", "upload_iframe");
+iframe.setAttribute("width", "0");
+iframe.setAttribute("height", "0");
+iframe.setAttribute("border", "0");
+iframe.setAttribute("style", "width: 0; height: 0; border: none;");
+form.parentNode.appendChild(iframe);
+window.frames['upload_iframe'].name = "upload_iframe";
+
+iframeId = document.getElementById("upload_iframe");
+var eventHandler = function () {
+
+if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
+else iframeId.removeEventListener("load", eventHandler, false);
+
+var content;
+
+if (iframeId.contentDocument) {
+content = iframeId.contentDocument.body.innerHTML;
+} else if (iframeId.contentWindow) {
+content = iframeId.contentWindow.document.body.innerHTML;
+} else if (iframeId.document) {
+content = iframeId.document.body.innerHTML;
+}
+if(_interval) clearInterval(_interval);
+if(time_s) clearInterval(time_s);
+if(content=='upload OK') {
+  $('.file_list_del_span').eq(0).html('OK');
+$.unblockUI();
+$.blockUI({
+message: 'Upload Success!', 
+css: {
+top: '10px',          
+border: 'none', 
+padding: '15px', 
+backgroundColor: '#000', 
+'-webkit-border-radius': '10px', 
+'-moz-border-radius': '10px', 
+opacity: .5, 
+color: '#fff' 
+} }); 
+setTimeout('send_finish_refresh()',2000);
+$('.blockOverlay').attr('title','Click to close').click(function(){
+  $('#upload_form')[0].reset();
+  if(_interval) clearInterval(_interval);
+  if(time_s) clearInterval(time_s);
+  $.unblockUI();
+
+function refresh_curr(){
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+    url: "/wxml/sd_show_curr.xml",
+    type: "Post", 
+headers: headers, 
+    timeout: 20000,
+    cache: false,
+    datatype: "xml",
+    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+    show_table(data,0);
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+    })
+}
+
+if(token_index!=-1) refresh_curr();
+else{
+  timer_delay = setInterval(function(){
+    if(token_index!=-1){
+      clearInterval(timer_delay);
+      refresh_curr();
+    }
+  },delay_time);
+}
+
+});
+}
+else{
+if(content=='upload fail')
+  $('.file_list_del_span').eq(0).html('Fail');
+}
+setTimeout(function remove_iframe(){if(iframeId.parentNode) iframeId.parentNode.removeChild(iframeId)}, 250);
+}
+
+if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
+if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+
+var action_url = "http://"+document.domain+":61726/upload";
+
+form.setAttribute("target", "upload_iframe");
+form.setAttribute("action", action_url);
+form.setAttribute("method", "post");
+form.setAttribute("enctype", "multipart/form-data");
+form.setAttribute("encoding", "multipart/form-data");
+form.submit();
+}
+
+var up_index=0,up_size=0,up_length,up_ok=0,up_fail=0,xhr,uploaded_size=0,time_i,time_s,free_size;
+var token_used,token_index=0,timer_delay,delay_time=200;
+function upload_result_handle(data)
+{
+var xmldoc=data.responseXML;
+var new_token = xmldoc.getElementsByTagName('token')[0].childNodes[0].nodeValue;
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+var name = xmldoc.getElementsByTagName('name')[0].childNodes[0].nodeValue;
+var progress = parseInt(xmldoc.getElementsByTagName('progress')[0].childNodes[0].nodeValue);
+
+var rate = 1600*1024;
+
+if(progress && name!='-')
+{
+  if($.browser.msie && parseInt($.browser.version)<10)
+{
+    up_size = parseInt(xmldoc.getElementsByTagName('size')[0].childNodes[0].nodeValue);
+    $('.file_list_size').eq(1).html(Byte2Format(up_size));
+    if( (parseInt(up_size/1048576)+2) > free_size){
+      $('#upload_form')[0].reset();
+      if(iframeId) iframeId.setAttribute('src','');
+      if(upload_state_interval) clearInterval(upload_state_interval);
+      if(_interval) clearInterval(_interval);
+      if(time_s) clearInterval(time_s);
+      $('.file_list_del_span').eq(up_index).html("Fail");
+      $("#upload_state_tips").html('The remaining space is not enough!');
+      return;
+    }
+
+
+    
+    time_i=3000;
+  }
+  if(progress <= up_size)
+  {
+    if(uploaded_size && progress) rate = Math.floor((progress - uploaded_size)*1000/time_i);
+    if(!rate) rate = 1600*1024;
+    uploaded_size = progress;
+
+    var percent = Math.floor((progress*100)/up_size)+'%';
+    var time_need = Math.floor((up_size - progress)/rate);
+    if(time_need<=0) time_need =1;
+//    $('.file_list_del_span').eq(up_index).html(percent+Math.floor(time_need/60)+'m'+Math.floor(time_need%60)+'s');
+    if(time_s) clearInterval(time_s);
+    time_s = setInterval(function(){
+      $('.file_list_del_span').eq(up_index).html( (Math.floor(time_need/60)>0 ? (Math.floor(time_need/60)+'m'):'')+Math.floor(time_need%60)+'s');
+      if(time_need>1) time_need--;
+    },1000);
+  }
+}
+}
+
+function upload_result(){
+var data = 'file_id='+(hf_alloc_data.start_id + up_index);
+if(token_used!=$("#csrf_token").val()){
+  token_used=$("#csrf_token").val();
+  ajax_post('/wxml/sd_upload.xml', data);
+}
+}
+
+function send_finish_refresh(){
+  $('#upload_form')[0].reset();
+  if(_interval) clearInterval(_interval);
+  if(time_s) clearInterval(time_s);
+  $.unblockUI();
+var headers={};
+token_used=$("#csrf_token").val();
+headers["__RequestVerificationToken"]=token_used;
+token_index=-1;
+$.ajax({ 
+    url: "/wxml/sd_show_curr.xml",
+    type: "Post", 
+headers: headers, 
+    timeout: 20000,
+    cache: false,
+    datatype: "xml",
+    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+    show_table(data,0);
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+    })
+}
+
+function pop_send_succ(){
+$.unblockUI();
+$.blockUI({
+message: 'Upload Success!', 
+css: {
+top: '10px',          
+border: 'none', 
+padding: '15px', 
+backgroundColor: '#000', 
+'-webkit-border-radius': '10px', 
+'-moz-border-radius': '10px', 
+opacity: .5, 
+color: '#fff' 
+} });
+$('.blockOverlay').attr('title','Click to close').click(function(){
+  send_finish_refresh();
+});
+
+setTimeout('send_finish_refresh()',2000);
+}
+
+
+function send_files(index)
+{
+var i=index;
+clearInterval(_interval);
+if(index==0) {
+  up_ok=0;
+  up_fail=0;
+}
+while(file_upload_list_flag[i]==0) i++; 
+var files = $('#up_file')[0].files;
+if(i== files.length) {
+ pop_send_succ();
+  return;
+}
+up_length = files.length;
+
+var tips_upload="";
+// var ptn=/[:*?<>|]/im;
+ var ptn=/[:*?<>\\"/|]/im;
+if(ptn.test(files[i].name)) {
+  up_fail++;
+  $('.file_list_del_span').eq(i).html('Fail');
+  if(index < (up_length-1)) send_files(index+1);
+  $('#upload_fail_tips').html('File name contains: *?:|<>\\/"');
+//  pop_BlockUI_normal('File name contails ":"!');
+  return;
+}
+
+
+$('.file_list_del_span').eq(i).html('progressing');
+//$('.file_list_del').eq(i).parent().html('progressing');
+var form = new FormData();
+form.append("path", 'sd'+curr_path);
+form.append("upload_file_id", hf_alloc_data.start_id+index);
+form.append("session", hf_alloc_data.session);
+form.append("token", get_hf_token(index));
+form.append("files", files[i]);
+xhr = new XMLHttpRequest();
+xhr.open("post", "http://"+location.hostname+":61726/upload?"+Math.random(), true);
+
+
+xhr.onError=function(){
+      clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('.file_list_del_span').eq(up_index).html('Fail');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+}
+
+
+xhr.onreadystatechange=function()
+{
+if (xhr.readyState==4 && xhr.status==0)
+{
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('.file_list_del_span').eq(up_index).html('Fail');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+}
+
+if (xhr.readyState==4 && xhr.status==200)
+{
+  if(xhr.responseText=="upload OK")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('.file_list_del_span').eq(up_index).html('OK');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_ok++;
+  }
+  else if(xhr.responseText=="upload busy")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('.file_list_del_span').eq(up_index).html('Progress.');
+    setTimeout(function retry_send(){if(up_index < (up_length-1)) send_files(up_index);},500);
+  }
+  else if(xhr.responseText=="upload fail")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('.file_list_del_span').eq(up_index).html('Fail');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+  }
+  else if(xhr.responseText=="upload fail, file exists")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('.file_list_del_span').eq(up_index).html('File exists');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+  }
+  else if(xhr.responseText=="upload fail, invalid request")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('.file_list_del_span').eq(up_index).html('Invalid request');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+  }
+  else if(xhr.responseText=="upload fail, name too long")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('.file_list_del_span').eq(up_index).html('File name too long');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+  }
+
+//    var ok_cnt=up_index-up_fail;
+    $('#upload_state_tips').html('<span style="color:blue;">Upload OK: '+up_ok+'</span> Upload Fail: '+up_fail);    
+
+if((up_index == (up_length-1)) && xhr.responseText!=""){
+//  var ok_cnt=up_index+1-up_fail;
+  $('#upload_state_tips').html('<span style="color:blue;">Upload OK: '+up_ok+'</span> Upload Fail: '+up_fail);
+}
+  if((up_index == (up_length-1)) && (up_fail==0) && xhr.responseText!="")
+  {
+    pop_send_succ();
+  }
+}
+}
+
+
+xhr.send(form);
+
+up_index = i;
+up_size = files[i].size;
+//time_i=1000;
+
+if(up_size>102400){
+  if(up_size<1024*1000) time_i=1000;
+  else if(up_size<1024*1000*10) time_i=1000*3;
+  else time_i=10000;
+  uploaded_size = 0;
+  _interval = setInterval("upload_result()",time_i);
+  upload_result();
+}
+}
+
+function pop_BlockUI_normal(msg,auto_close,close_func){
+  $.blockUI({
+   message: msg, 
+   css: {
+   top: '10px',          
+   border: 'none', 
+   padding: '15px', 
+   backgroundColor: '#000', 
+   '-webkit-border-radius': '10px', 
+   '-moz-border-radius': '10px', 
+   opacity: .5, 
+   color: '#fff' 
+  } }); 
+
+
+
+  if(auto_close!=0)
+  {
+  $('.blockOverlay').attr('title','Click to close').click(
+
+    function(){
+          $.unblockUI({ 
+    onUnblock: function(){     
+      if (typeof (close_func) == 'function') {
+        close_func();
+      }
+     } 
+    });
+    }
+
+ );
+  setTimeout(function(){
+    $.unblockUI({ 
+    onUnblock: function(){     
+      if (typeof (close_func) == 'function') {
+        close_func();
+      }
+     } 
+  }); 
+  },2500);
+}
+}
+
+function pop_BlockUI_loading(msg){
+  $.blockUI({
+   message: msg, 
+   css: {
+   width:  '80px', 
+   height: '80px', 
+   top: '42%', 
+   left: '45%',
+   border: 'none', 
+   padding: '5px', 
+   backgroundColor: '#000', 
+   '-webkit-border-radius': '10px', 
+   '-moz-border-radius': '10px', 
+   opacity: .5, 
+   color: '#fff' 
+  } }); 
+}
+
+
+
+function output_capacity(cap){
+  var output='';
+  if(cap<1024)  {
+    output= cap+' MB';
+    return output;
+  }
+  var cap_g = parseInt(cap/1024)+' GB ';
+
+  var cap_m= (parseInt(cap%1024)?(cap%1024+' MB'):'');
+  output = cap_g+cap_m;
+  return output;
+}
+var upload_state_interval;
+function refresh_upload_state(){
+if(token_index==-1) return;
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_upload_state.xml",
+type: "Post", 
+headers: headers, 
+cache: false,
+timeout: 20000,
+datatype: "xml",
+data: {count: '0'}, 
+success: function(data, status) {
+var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+
+var state = parseInt($(data).find("state").text());
+var count = parseInt($(data).find("count").text());
+if(!state && !count) { if(upload_state_interval) clearInterval(upload_state_interval); $('#upload_state_tips').html('');$('#upload_fail_tips').html(''); $('#start_upload').show();}
+else $('#start_upload').hide();
+},
+error: function(x, t, m) {
+    clearInterval(upload_state_interval);
+}
+});
+}
+function refresh_filter_html(filter){
+var filter_html= '<a class="filter_sel" title="All Files" ><img alt="all" class="all" src="/img/default.gif"/><span id="file_cate_text">All Files</span></a><a class="filter" title="All Documents"><img alt="doc" class="doc_gray" src="/img/default.gif"/><span id="file_cate_text">Document</span></a><a class="filter" title="All Audios"><img alt="audio" class="au_gray" src="/img/default.gif"/><span id="file_cate_text">Audio</span></a><a class="filter" title="All Videos"><img alt="video" class="mv_gray" src="/img/default.gif"/><span id="file_cate_text">Video</span></a><a class="filter" title="All Images"><img alt="image" class="img_gray" src="/img/default.gif"/><span id="file_cate_text">Image</span></a><a class="filter" title="All Packages"><img alt="zip" class="zip_gray" src="/img/default.gif"/><span id="file_cate_text">Package</span></a><hr><button id="sd_set">System</button>';
+$('#filter_div').html(filter_html);
+}
+
+function show_table(data,search){
+var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+
+if(typeof(data)!='object') {
+//  pop_BlockUI_normal('Please check your network!');
+location.href = "sd_login.html";
+  return false;
+}
+is_search = search;
+if(typeof(is_search)=='undefined') {
+  is_search=0;
+  curr_page = 0;
+}
+if(!is_search) $('#search').val('');
+$('#cbAll').attr('checked',false);
+$("#more_menu_m").hide();
+
+var sd_st = parseInt($(data).find("sd_st").text());
+if(sd_st==0)
+{
+  pop_BlockUI_normal('SD card not exist!',0);
+  return false;
+}
+else if(sd_st==4){
+ // pop_BlockUI_normal('You need to switch "<b>Storage Mode</b>" to "<b>Internet Storage</b>"<br> at page "<b>Storage Setting</b>"!',0); 
+  pop_BlockUI_normal('You need to switch "<b>Storage Mode</b>" to "<b>WiFi Storage</b>"<br> at page "<b>Storage Setting</b>"!',0); 
+ return false;
+}
+else if(sd_st==2){
+  pop_BlockUI_normal('You need to switch "<b>Storage Mode</b>" to "<b>WiFi Storage</b>"<br> at page "<b>Storage Setting</b>"!',0); 
+ // pop_BlockUI_normal('You need to switch "<b>Storage Mode</b>" to "<b>WiFi Storage/Internet Storage</b>"<br> at page "<b>Storage Setting</b>"!',0); 
+ return false;
+}
+else if(sd_st==8){
+  $("#sd_sys_content").hide();
+  $("#close_sd_set").hide();
+  $("#sd_need_format").show();
+  
+ $.blockUI({ 
+message: $('#set_box'), 
+css: { 
+top:        '50%',
+left:       '50%',
+textAlign:  'left',
+marginLeft:     '-320px', 
+marginTop:      '-145px', 
+width: '600px',
+background:'none'
+} 
+}); 
+ return false;
+}
+
+if(sd_st<8)
+{
+  $("#sd_need_format").hide();
+  $("#sd_sys_content").show();
+  $("#close_sd_set").show();
+}
+
+var wan_access = parseInt($(data).find("wan_access").text());
+if(wan_access==1)
+{
+	$('#back_to_web').show();
+}
+
+var exist = parseInt($(data).find("init").text());
+var t_cap = parseInt($(data).find("tcap").text());
+
+if(!exist){
+pop_BlockUI_normal('Path not exist!');
+if((curr_path=='/' && t_cap==0) || isNaN(t_cap) || isNaN(exist)) return false; 
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers, 
+datatype: "xml",
+cache: false,
+timeout: 20000,
+data: { path:"/",page:"0",filter:'255'}, 
+success: function(data, status) {
+show_table(data,0);
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+}
+})
+return;
+}
+
+var total_cap='';
+if(t_cap!=0){
+  if(t_cap<1024) total_cap = '1GB';
+  else if(t_cap<2048) total_cap = '2GB';
+  else if(t_cap<4096) total_cap = '4GB';
+  else if(t_cap<8192) total_cap = '8GB';
+  else if(t_cap<16384) total_cap = '16GB';
+  else if(t_cap<32768) total_cap = '32GB';
+  else total_cap= 'Unknown';
+}
+else total_cap= '0';
+
+//var free_cap = $(data).find("free").text()+'MB';
+free_size = parseInt($(data).find("free").text());
+var free_cap=output_capacity(free_size);
+$('#t_capacity').html(total_cap);
+$('#f_capacity').html(free_cap);
+
+var file_num = parseInt($(data).find("cnt").text());
+var page_num;
+if(file_num){
+   page_num = Math.ceil(file_num/100);
+  //curr_page = $(data).find("curr_page").text();
+  var page_href ="";
+   page_href += "<a><span style='display:none'>1</span>&lt;&lt;</a>";
+      if(curr_page==0)  page_href += "<span>"+"&lt;"+"</span>";
+      else page_href += "<a><span style='display:none'>"+(curr_page*1)+"</span>&lt;</a>";
+  for(var i=0;i<page_num;i++){
+
+    if(curr_page>page_num-10){
+      if(i<page_num-20) continue;
+    }
+    else if(curr_page<10){
+      if(i>=20) continue;
+    }
+    else{
+      if(page_num>20 && (curr_page>=10)) {
+        if(i<curr_page-10 ) continue;
+      }
+      if(page_num>20) {
+        if(i>=curr_page+10 ) continue;
+      }
+    }
+
+    if(i==curr_page) page_href += "<span>"+(curr_page*1+1)+"</span>";
+    else page_href += "<a>"+(i*1+1)+"</a>";
+  }  
+    
+  if(curr_page==page_num-1)    page_href += "<span>"+"&gt;"+"</span>";
+  else   page_href += "<a><span style='display:none'>"+(curr_page*1+2)+"</span>&gt;</a>";
+  page_href += "<a><span style='display:none'>"+(page_num*1)+"</span>&gt;&gt;</a>";
+    
+  page_href += '<input type="text" id="go_page" maxlength=5 ><input type="hidden" id="page_max" value="'+page_num+'"><input type="button" id="btn_go" value="Go">';
+}
+
+$("#page_href").html(page_href);
+
+//curr_path = $(data).find("path").eq(0).text();
+curr_path = $(data).find("curr_path").text();
+
+//location.hash = escape(curr_path);
+var cpath_html;
+if(curr_path=='/') cpath_html="All Files";
+else {
+sub_path=curr_path.split('/');
+
+cpath_html ="<a href='javascript:;'>Pre</a>&nbsp;|&nbsp;"+ "<a href='javascript:;'>All Files</a>&nbsp;>&nbsp;";
+
+if(sub_path.length>6) 
+{
+for(var i=1;i<sub_path.length-5;i++){
+cpath_html +=  "<a href='javascript:;' style='display:none;'>" +sub_path[i] +"</a>";
+}
+cpath_html += "....&nbsp;>&nbsp;";
+for(var i=sub_path.length-5;i<sub_path.length-2;i++){
+cpath_html +=  "<a href='javascript:;'>" +sub_path[i] +"</a>&nbsp;>&nbsp;";
+}  
+}  
+else{
+for(var i=1;i<sub_path.length-2;i++){
+cpath_html +=  "<a href='javascript:;'>" +sub_path[i] +"</a>&nbsp;>&nbsp;";
+}  
+}
+
+cpath_html += sub_path[i];
+}
+
+if(is_search){
+  cpath_html += "&nbsp;>&nbsp;search:"+$('#search').val();
+}
+else{
+if(filter_num!=255){
+  if(filter_num==8) cpath_html='Document';
+  else if(filter_num==2)  cpath_html='Audio';
+  else if(filter_num==4)  cpath_html='Video';
+  else if(filter_num==1)  cpath_html='Image';
+  else if(filter_num==16)  cpath_html='Package';
+}
+}
+if(!file_num){
+  cpath_html+=": No File";
+  $(".fu_list").hide();
+}
+else{
+  $(".fu_list").show();
+}
+
+$("#cpath").html(cpath_html);
+var tr_data="";
+var img_data="";
+curr_page_file_cnt=0;
+$(data).find("file").each(function(){
+if($(this).children('succ').text()=="1"){
+curr_page_file_cnt++;
+var path = $(this).children('path').text();
+var name=$(this).children('name').text();
+var org_size=parseInt($(this).children('size').text());
+
+var size=org_size;
+if(size<1024) size += 'B ';
+else if(size<1048576) size = (size/1024).toFixed(1)+'KB ';
+else if(size<1073741824) size = (size/1048576).toFixed(1)+'MB ';
+else size = (size/1073741824).toFixed(1)+'GB ';
+
+size+=('<span style="display:none;">'+org_size+'</span>');
+
+var time=$(this).children('time').text();
+if(parseInt(size)!=-1){
+switch(checkImgType(name)){
+case 4:
+tr_data+=("<tr><td><input type='checkbox' name='cb'/></td><td><span class='pdf_icon'><label>"+path+"</label><pre class='file_name'>"+name+"</pre><a class='file' href='javascript:;'>"+ec_file_name(name).replace(/ /g, "&nbsp;")+"</a></span></td><td style='display:none;'>"+time+"</td><td>"+size+"</td><td></td></tr>");
+break;
+case 1:
+tr_data+=("<tr><td><input type='checkbox' name='cb'/></td><td><span class='img_icon'><label>"+path+"</label><pre class='file_name'>"+name+"</pre><a class='file' href='javascript:;'>"+ec_file_name(name).replace(/ /g, "&nbsp;")+"</a></span></td><td style='display:none;'>"+time+"</td><td>"+size+"</td><td></td></tr>");
+break;
+default:
+tr_data+=("<tr><td><input type='checkbox' name='cb'/></td><td><span class='file_icon'><label>"+path+"</label><pre class='file_name'>"+name+"</pre><a class='file' href='javascript:;'>"+ec_file_name(name).replace(/ /g, "&nbsp;")+"</a></span></td><td style='display:none;'>"+time+"</td><td>"+size+"</td><td></td></tr>");
+break;
+}
+}
+else
+{
+tr_data+=("<tr><td><input type='checkbox' name='cb'/></td><td><span class='dict_icon'><label>"+path+"</label><pre class='file_name'>"+name+"</pre><a class='file' href='javascript:;'>"+ec_file_name(name).replace(/ /g, "&nbsp;")+"</a></span></td><td style='display:none;'>"+time+"</td><td>-</td><td></td></tr>");  
+}
+} 
+})
+if(curr_page_file_cnt==0 && curr_page>0)
+{
+  curr_page=curr_page-1;
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+  url: "/wxml/sd_show_curr.xml",
+  type: "Post", 
+headers: headers, 
+  datatype: "xml",
+  cache: false,
+  timeout: 20000,
+  data: { path:curr_path,page:curr_page ,filter:filter_num}, 
+  success: function(data, status) {
+  show_table(data,0);
+  },
+  error: function(x, t, m){
+    if(t==="timeout")
+    pop_BlockUI_normal('Please check your network!');
+  }
+  })
+  return;
+}
+
+$("#tb_body").html(tr_data);
+
+TableOrderOper.Init("idTable", 0, {
+OnShow: function (i, trJqObj, _tbodyObj) {
+trJqObj.attr("class", ((i + 1) % 2 == 0 ? "odd_even" : ""));
+}
+});
+if($('#idTitle')[0].className){
+$('#idTitle').click();$('#idTitle').click();
+}
+if($('#idAddtime')[0].className){
+  $('#idAddtime').click();$('#idAddtime').click();
+}
+if($('#idSize')[0].className){
+  $('#idSize').click();$('#idSize').click();
+}
+
+$('tbody span.img_icon').each(function(){
+var name = $(this).find('pre').text();
+var path = $(this).find('label').text();
+var full_path = encodeURIComponent('sd'+path+name);
+var posix = BASE64.encoder(name);
+posix = posix.replace(/\//g,"_");
+posix = posix.replace(/\+/g,"_");
+posix = posix.replace(/=/g,"_");
+
+img_data += ("<a href=\""+full_path+"\" title=\""+name+ "\" rel=\"lightbox1\" class=\"horizontal\" id=\"img_id"+posix+"\"></a>");
+})
+
+$("#li_img_show").html(img_data);
+lightbox.refresh();
+return 1;
+}
+
+$(document).ajaxError(function(e, xhr, settings, exception) {
+  pop_BlockUI_normal('Please check your network!');
+});
+function loadScript(url, callback){
+var script = document.createElement ("script")
+script.type = "text/javascript";
+if (script.readyState){ //IE
+    script.onreadystatechange = function(){
+        if (script.readyState == "loaded" || script.readyState == "complete"){
+            script.onreadystatechange = null;
+            callback();
+        }
+    };
+} else { //Others
+    script.onload = function(){
+        callback();
+    };
+}
+script.src = url;
+document.getElementsByTagName("head")[0].appendChild(script);
+}
+</script>
+<script type="text/javascript">
+$("document").ready(function(){
+  loadScript("TableOrder.js", function(){
+   loadScript("base64.js", function(){
+    loadScript("jquery.blockUI.js", function(){
+    loadScript("custom.js", function(){});
+    $("#more_menu_m").hide();
+	if ($.browser.mozilla) { $("#up_file").attr("size", 5) } 
+    if(location.hostname.search(/jiofi.local.html/i)>=0 || location.hostname.search(/192.168./i)>=0) {
+      $('#back_to_web').show();
+      $('.input-file').show();
+    }
+    else{
+      $('.input-file').hide();
+    }
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post",
+headers: headers,
+timeout: 20000,
+cache: false,
+datatype: "xml",
+data: { path:"/",page:"0",filter:'255'}, 
+success: function(data, status) {
+        if(show_table(data,0))
+{
+  TableOrderOper.SetOrder("idTitle", 1, { ValAttr: "", DataType: "string" ,DefaultOrder: true, OnClick: function () {
+document.getElementById('idAddtime').className=""; 
+document.getElementById('idSize').className=""; 
+}});
+TableOrderOper.SetOrder("idAddtime", 2, { ValAttr: "", DataType: "date" , OnClick: function () {
+document.getElementById('idTitle').className=""; 
+document.getElementById('idSize').className=""; 
+
+}});
+TableOrderOper.SetOrder("idSize", 3, { DataType: "size",  OnClick: function () {
+document.getElementById('idTitle').className="";
+document.getElementById('idAddtime').className="";
+} });
+}
+var img_data = "";
+$('tbody span.img_icon').each(function(){
+var path = $(this).find('label').text();
+var name = $(this).find('pre').text();
+var full_path = encodeURIComponent('sd'+path+name);
+var posix = BASE64.encoder(name);
+posix = posix.replace(/\//g,"_");
+posix = posix.replace(/\+/g,"_");
+posix = posix.replace(/=/g,"_");
+
+  img_data += ("<a href=\""+full_path+"\" title=\""+name+ "\" rel=\"lightbox1\" class=\"horizontal\" id=\"img_id"+posix+"\"></a>");
+})
+//alert(img_data);
+$("#li_img_show").html(img_data);
+lightbox.refresh();
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+}
+
+})
+    });
+   });
+  });
+
+if($.browser.msie && parseInt($.browser.version)<10){
+  $('#browser_tips').show();
+}
+
+
+$('#btn_refresh').live('click',function(){
+      var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+        url: "/wxml/sd_show_curr.xml",
+        type: "Post", 
+headers: headers, 
+        cache: false,
+        timeout: 20000,
+        datatype: "xml",
+        data: { path:curr_path,page:curr_page ,filter:filter_num}, 
+        success: function(data, status) {
+        show_table(data,0);
+        },
+        error: function(x, t, m){
+          if(t==="timeout")
+          pop_BlockUI_normal('Please wait!');
+        }
+      });
+});
+
+
+$('#back_to_web').live('click',function(){
+if(rename_submited==2 || new_folder_submited==2) return;
+else top.location.href="/index.htm";
+});
+
+$('#sd_set').live('click',function(){
+  var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers, 
+timeout: 20000,
+cache: false,
+datatype: "xml",
+data: { path:curr_path,page:curr_page,filter:'255'  }, 
+success: function(data, status) {
+show_table(data,0);
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+}
+});
+
+$.blockUI({ 
+message: $('#set_box'), 
+css: { 
+top:        '50%',
+left:       '50%',
+textAlign:  'left',
+marginLeft:     '-320px', 
+marginTop:      '-145px', 
+width: '600px',
+background:'none'
+} 
+}); 
+$('.blockOverlay').attr('title','Click to close').click($.unblockUI); 
+});
+
+
+$("#idcheck").click(function(){
+if($(this.childNodes[0]).attr("checked")) {
+$(this.childNodes[0]).removeAttr("checked");
+}
+else{
+$(this.childNodes[0]).attr("checked",'true');
+}
+
+if($(this.childNodes[0]).attr("checked")){
+$("[type='checkbox']").attr("checked",'true');
+$("#more_menu_m").show();
+}
+else{
+$("[type='checkbox']").removeAttr("checked");
+$("#more_menu_m").hide();
+} 
+});
+
+var tr_hover=1;
+$("#tb_body tr").live("hover",function(e){
+  if(tr_hover==0) return;
+  $("#tb_body tr").each(function(){
+    this.cells[4].innerHTML="";
+  })
+  $("#tb_body tr").removeClass("hoverTr");
+  $(this).addClass("hoverTr");
+//  if(this.cells[1].firstChild.className=='dict_icon') this.cells[4].innerHTML = "<a href='javascript:;' id='more_menu' class='more'></a>";
+//  else this.cells[4].innerHTML = "<a href='javascript:;' id='dl_href' class='download'></a><a href='javascript:;' id='more_menu' class='more'></a>";
+
+  if(this.cells[1].firstChild.className=='dict_icon') this.cells[4].innerHTML = "<a title='rename' href='javascript:;' class='rename'></a><a title='delete' href='javascript:;' class='delete'></a>";
+  else this.cells[4].innerHTML = "<a href='javascript:;' id='dl_href' title='download' class='download'></a><a title='show link' href='javascript:;' id='link_href' class='link_href'></a><a title='rename' href='javascript:;' class='rename'></a><a title='delete' href='javascript:;' class='delete'></a>";
+
+},function () {
+  if(tr_hover==0) return;
+    $(this).removeClass("hoverTr");
+    this.cells[4].innerHTML = "";
+  }
+).live('contextmenu',function(e){
+if(typeof e.preventDefault === "function"){
+e.preventDefault();
+e.stopPropagation();
+}else{
+e.returnValue = false;
+e.cancelBubble = true;
+}
+//$("#menu").css({"left":e.clientX,"top":e.clientY-12}).fadeIn();
+
+//if(e.clientY < $(document).height()-130) $("#menu").css({"left":e.clientX,"top":e.clientY-12}).fadeIn();
+//else $("#menu").css({"left":e.clientX,"top":e.clientY-130}).fadeIn();
+if(e.clientY < $(document).height()-60) $("#menu").css({"left":e.clientX,"top":e.clientY-12}).fadeIn();
+else $("#menu").css({"left":e.clientX,"top":e.clientY-60}).fadeIn();
+
+$("#rename").show();
+del_name_array.length=0;
+del_path_array.length=0;
+//menu_obj=$("#more_menu").closest('tr').children('td:eq(1)');
+menu_obj=$(this).children('td:eq(1)');
+var find=menu_obj.find("pre");
+
+if($(this).children('td:eq(3)').html()=="-") is_dir=1;
+else is_dir=0;
+if(find.length) del_name_array[0] = find.text();
+else del_name_array[0] =  menu_obj.text();
+find=menu_obj.find("label");
+if(find.length) del_path_array[0] = find.text();
+else del_path_array[0] =  menu_obj.text();
+tr_hover=0;
+});
+
+$("#dl_href").live('click',function(event){
+
+          menu_obj=$("#dl_href").closest('tr').children('td:eq(1)');
+          var find=menu_obj.find("pre");
+          if(find.length) del_name_array[0] = find.text();
+          else del_name_array[0] =  menu_obj.text();
+          find=menu_obj.find("label");
+          if(find.length) del_path_array[0] = find.text();
+          else del_path_array[0] =  menu_obj.text();
+          var path="/sd"+del_path_array[0]+del_name_array[0];
+          //path=path.replace(/#/g,'%23');
+          path = encodeURIComponent(path);
+          path=path.replace(/%2F/g,'/');
+//          window.open(path+"?dl=1", "_blank");
+        //$("#dl_iframe").src=path+"?dl=1";
+
+//        document.getElementById("dl_iframe").src=path+"?dl=1";
+      var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+        url: "/wxml/sd_show_curr.xml",
+        type: "Post", 
+headers: headers, 
+        cache: false,
+        timeout: 20000,
+        datatype: "xml",
+        data: { path:curr_path,page:curr_page ,filter:filter_num}, 
+        success: function(data, status) {
+          if(typeof(data)!='object') {
+//            pop_BlockUI_normal('Please check your network!');
+          location.href = "sd_login.html";
+            return false;
+          }
+          document.getElementById("dl_iframe").src=path+"?dl=1";
+          var new_token=$(data).find("token").text();
+          if(new_token=="-1"){
+          top.location.reload(true); 
+          return false;
+          }
+          token_index=0;
+$("#csrf_token").val(new_token);
+        },
+        error: function(x, t, m){
+          if(t==="timeout")
+//          pop_BlockUI_normal('Please check your network!');
+          location.href = "sd_login.html";
+          return false;
+        }
+      });
+});
+
+$("#link_href").live('click',function(event){
+menu_obj=$("#link_href").closest('tr').children('td:eq(1)');
+var find=menu_obj.find("pre");
+if(find.length) del_name_array[0] = find.text();
+else del_name_array[0] =  menu_obj.text();
+find=menu_obj.find("label");
+if(find.length) del_path_array[0] = find.text();
+else del_path_array[0] =  menu_obj.text();
+
+var full_path = encodeURIComponent(del_path_array[0]+del_name_array[0]);
+
+var path="http://"+location.hostname+'/sd'+full_path;
+//path=path.replace(/#/g,'%23');
+//path = encodeURIComponent(path);
+//path=path.replace(/%2F/g,'/');
+//window.open(path+"?dl=1", "_blank");
+var msg = "<input  id='link_href_copy' type='text' value='" + path + "' size='"+ (path.length+3) + "'>" + "&nbsp;&nbsp;<input type='button' id='close_link_href' value='Close'>" ;
+
+$.blockUI({
+   message: msg, 
+   css: {
+   width:  path.length*9, 
+   height: '30px',
+   border: 'none', 
+   padding: '5px', 
+   backgroundColor: '#000', 
+   '-webkit-border-radius': '10px', 
+   '-moz-border-radius': '10px', 
+   opacity: .9, 
+   color: '#fff' 
+  } }); 
+$('#link_href_copy').setCursorPosition(0,path.length);
+$('.blockOverlay').attr('title','Click to close').click($.unblockUI); 
+$('#close_link_href').click($.unblockUI);
+//alert(path);
+});
+
+
+$("#more_menu").live('click',function(e){
+if(typeof e.preventDefault === "function"){
+e.preventDefault();
+e.stopPropagation();
+}else{
+e.returnValue = false;
+e.cancelBubble = true;
+}
+
+//if(e.clientY < $(document).height()-130) $("#menu").css({"left":e.clientX,"top":e.clientY-10}).fadeIn();
+//else $("#menu").css({"left":e.clientX,"top":e.clientY-130}).fadeIn();
+if(e.clientY < $(document).height()-60) $("#menu").css({"left":e.clientX,"top":e.clientY-10}).fadeIn();
+else $("#menu").css({"left":e.clientX,"top":e.clientY-60}).fadeIn();
+$("#rename").show();
+del_name_array.length=0;
+del_path_array.length=0;
+menu_obj=$("#more_menu").closest('tr').children('td:eq(1)');
+var find=menu_obj.find("pre");
+if(find.length) del_name_array[0] = find.text();
+else del_name_array[0] =  menu_obj.text();
+
+find=menu_obj.find("label");
+if(find.length) del_path_array[0] = find.text();
+else del_path_array[0] =  menu_obj.text();
+
+//alert(curr_file+','+sel_path);
+tr_hover=0;
+});
+
+$("#more_menu_m").live('click',function(e){
+if(typeof e.preventDefault === "function"){
+e.preventDefault();
+e.stopPropagation();
+}else{
+e.returnValue = false;
+e.cancelBubble = true;
+}
+//$("#menu").css({"left":e.clientX,"top":e.clientY-10}).fadeIn();
+$("#rename").hide();
+del_name_array.length=0;
+del_path_array.length=0;
+var i=0;
+$('INPUT[name=cb]:checked').each(function(i){
+menu_obj=$(this).closest('tr').children('td:eq(1)');
+var find=menu_obj.find("pre");
+if(find.length) del_name_array[i]= find.text();
+else del_name_array[i]=menu_obj.text();
+find=menu_obj.find("label");
+if(find.length) del_path_array[i]= find.text();
+else del_path_array[i]=menu_obj.text();
+i++;
+});
+
+});
+
+
+$(document).bind("click",function(e){
+var target  = $(e.target);
+if(target.closest("table").length == 0){
+$("#menu").hide();
+tr_hover = 1;
+}
+});
+
+$("#menu").hover(function(){
+}
+,function(){
+$("#menu").hide();
+tr_hover = 1;
+}
+);
+
+var rename_submited=0;
+var new_folder_submited=0;
+$("#rename,a.rename").live('click',function(){
+//  if(!curr_file) return false;
+//  alert("rename:"+curr_path+'/'+curr_file);
+if(this.className=='rename')  {
+  menu_obj=$(this).closest('tr').children('td:eq(1)'); 
+  if($(this).closest('tr').children('td:eq(3)').html()=="-") is_dir=1;
+  else is_dir=0;
+del_name_array.length=0;
+del_path_array.length=0;
+var find=menu_obj.find("pre");
+if(find.length) del_name_array[0] = find.text();
+else del_name_array[0] =  menu_obj.text();
+find=menu_obj.find("label");
+if(find.length) del_path_array[0] = find.text();
+else del_path_array[0] =  menu_obj.text();
+}
+  $(menu_obj).children().html("<input maxlength='32' class='rename_target'>");
+  $('.rename_target').val(del_name_array[0]);
+  $('.rename_target').focus();
+  var point_pos = del_name_array[0].lastIndexOf('.');
+  if(point_pos<0 || is_dir) point_pos = del_name_array[0].length;
+  $('.rename_target').setCursorPosition(0,point_pos);
+  rename_submited=1;
+});
+
+
+function new_folder_handle(){
+if(new_folder_submited!=1) return;
+
+var foldername= $('input.new_folder').val();
+var msg=['New Folder Fail!','New Folder Success!','Folder Existed!','Folder name is empty!','Folder name too long!']
+
+if(!foldername.length)
+{
+  pop_BlockUI_normal(msg[3]);
+  $('input.new_folder').focus();
+  new_folder_submited=1;
+  return false;
+}
+ var ptn=/[:*?<>\\"/|]/im;
+
+if(ptn.test(foldername)) {
+  pop_BlockUI_normal('File name contains: *?:|<>\\/"',1,function(){
+    $('input.new_folder').focus();    
+  });
+
+  return;
+}
+
+new_folder_submited=2;
+if(curr_path=='/' && filter_num!=255)
+{
+  filter_num=255;
+  var yymm = new Date().Format("YYYY.MM");
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+  url: "/wxml/sd_new.xml",
+  type: "Post", 
+headers: headers, 
+  cache: false,
+  async: false,
+  timeout: 20000,
+  datatype: "xml",
+  data: { path:curr_path,name:yymm  }, 
+  success: function(data, status) {
+    var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+    var result = parseInt($(data).find('new').text());
+    var exist = parseInt($(data).find('exist').text());
+    if(!result && exist){  result = 2; }
+    if(result>0) curr_path = '/'+yymm+'/';
+  },
+  error: function(x, t, m){
+    if(t==="timeout")
+    pop_BlockUI_normal('Please check your network!');
+    }
+   });  
+}
+
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_new.xml",
+type: "Post", 
+headers: headers, 
+timeout: 20000,
+cache: false,
+datatype: "xml",
+data: { path:curr_path,name:foldername  }, 
+success: function(data, status) {
+  var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+  var result = parseInt($(data).find('new').text());
+  var exist = parseInt($(data).find('exist').text());
+  if(!result && exist){  result = 2; }
+
+pop_BlockUI_normal(msg[result]);
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+ $.ajax({ 
+      url: "/wxml/sd_show_curr.xml",
+      type: "Post", 
+headers: headers, 
+      datatype: "xml",
+      timeout: 20000,
+      cache: false,
+      data: { path:curr_path,page:curr_page,filter:'255' }, 
+      success: function(data, status) {
+      new_folder_submited = 0;
+      show_table(data,0);
+      },
+      error: function(x, t, m){
+      if(t==="timeout")
+        pop_BlockUI_normal('Please check your network!');
+      }
+      })   
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+ }
+})
+}
+
+
+$("input.new_folder").live('keydown',function(event) {
+e = event ? event :(window.event ? window.event : null); 
+if(e.keyCode==13){
+  new_folder_handle();
+} 
+});
+
+$('input.new_folder').live("blur",function(){
+new_folder_handle();
+});
+
+function rename_handle(){
+if(rename_submited!=1) return;
+
+var newname= $('.rename_target').val();
+var msg=['Rename Fail','Rename Success!','File name existed!','File name error!','File or directory already open','File or directory already delete','File name too long!'];
+var result = 3;
+//if(!newname) newname = curr_file;
+ var ptn=/[:*?<>\\"/|]/im;
+
+if(ptn.test(newname)) {
+  pop_BlockUI_normal('File name contains: *?:|<>\\/"',1,function(){
+    $('.rename_target').focus();
+  });
+  
+  return;
+}
+rename_submited=2;
+if(newname.length && newname.lastIndexOf('.'))
+{
+  var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_rename.xml",
+type: "Post", 
+headers: headers, 
+datatype: "xml",
+timeout: 20000,
+cache: false,
+data: { path:del_path_array[0],old_name:del_name_array[0],new_name:newname}, 
+success: function(data, status) {
+var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+result = parseInt($(data).find('rename').text());
+if(result!=1){
+  var exist = parseInt($(data).find('exist').text());
+  if(exist) result = 2;
+  else {
+    if(result==13) result=0;
+    else if(result==16) result=4;
+    else if(result==26) result=4;
+    else if(result==36) result=6;
+    else if(result > 6) result=0;
+  }
+}
+pop_BlockUI_normal(msg[result]);
+del_path_array.length=0;
+if(result==1){
+  del_name_array[0]=newname;
+}
+
+setTimeout(function(){
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers, 
+datatype: "xml",
+timeout: 20000,
+cache: false,
+data: { path:curr_path,page:curr_page,filter:filter_num}, 
+success: function(data, status) {
+rename_submited=0;
+show_table(data,0);
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+}
+})
+},1000);
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+}
+});
+}
+else{
+  pop_BlockUI_normal(msg[result]);
+}
+
+}
+
+$("input.rename_target").live('keydown',function(event) {
+e = event ? event :(window.event ? window.event : null); 
+if(e.keyCode==13){
+ rename_handle();
+} 
+});
+
+
+$('input.rename_target').live('blur',function(){
+rename_handle();
+});
+
+$("#move").click(function(){
+  alert("move:"+curr_path+'/'+curr_file);
+});
+
+$("#copy").click(function(){
+  alert("copy:"+curr_path+'/'+curr_file);
+});
+
+$("#del,a.delete").live('click',function(){
+if(this.className=='delete')  {
+if(!del_path_array.length && tr_hover)
+{
+del_name_array.length=0;
+del_path_array.length=0;
+menu_obj=$(this).closest('tr').children('td:eq(1)');
+var find=menu_obj.find("pre");
+if(find.length) del_name_array[0] = find.text();
+else del_name_array[0] =  menu_obj.text();
+find=menu_obj.find("label");
+if(find.length) del_path_array[0] = find.text();
+else del_path_array[0] =  menu_obj.text();
+}
+}
+if(!confirm('The file will not be recovered, are you sure delete it?'))
+{
+  return false;
+}
+var del_num=0, fail_num=0,succ_num=0;
+var fail_tips='';
+var msg=['Delete Fail','Delete Success!','','','Operation not permitted','No such file or directory','Permission denied','Device or resource is busy','File or directory already open',' File name too long'];
+del_num = del_path_array.length;
+
+
+function send_del(index){
+  var i=index;
+  var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_del.xml",
+type: "Post", 
+headers: headers, 
+cache: false,
+timeout: 20000,
+datatype: "xml",
+data: { path1:del_path_array[5*i],file1:del_name_array[5*i], path2:del_path_array[5*i+1],file2:del_name_array[5*i+1],path3:del_path_array[5*i+2],file3:del_name_array[5*i+2],path4:del_path_array[5*i+3],file4:del_name_array[5*i+3],path5:del_path_array[5*i+4],file5:del_name_array[5*i+4]}, 
+success: function(data, status) {
+  var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+  
+  if(index+1==Math.ceil(del_path_array.length/5)){
+    del_path_array.length=0;
+    del_name_array.length=0;
+  }
+  for(var j=0;j<5;j++)
+  {
+    var result=parseInt($(data).find('del').eq(j).text())
+    if(result!=1 && result!=-1)
+    {
+      if(result==3) result=4;
+      else if(result==2) result=5;
+      else if(result==13) result=6;
+      else if(result==16) result=7;
+      else if(result==26) result=8;
+      else if(result==36) result=9;
+      fail_num++;
+      fail_tips = "No such file or directory/file or directory already open";
+    }
+    else if(result==1)
+    {
+      succ_num++;
+    }
+    if((fail_num+succ_num)==del_num)
+    {
+    del_path_array.length=0;
+    del_name_array.length=0;
+      if(fail_num){
+        if(del_num==1){
+          if(result==0) pop_BlockUI_normal('Delete fail!');
+          else pop_BlockUI_normal('Delete fail! <br>'+msg[result]);
+        }
+        else pop_BlockUI_normal(fail_num+' delete fail! <br>'+fail_tips);
+      }
+      else {
+        pop_BlockUI_normal('Operation success!');
+      }
+    var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+        url: "/wxml/sd_show_curr.xml",
+        type: "Post", 
+headers: headers, 
+        cache: false,
+        timeout: 20000,
+        datatype: "xml",
+        data: { path:curr_path,page:curr_page ,filter:filter_num}, 
+        success: function(data, status) {
+        show_table(data,0);
+        },
+        error: function(x, t, m){
+          if(t==="timeout")
+          pop_BlockUI_normal('Please wait!');
+        }
+      });
+
+      break;
+    }
+  }
+
+  if(i+1<Math.ceil(del_path_array.length/5)) send_del(i+1);
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+}
+});
+}
+
+send_del(0);
+
+// for(var i=0; i<Math.ceil(del_path_array.length/5);i++)
+// {
+  
+// }
+});
+
+  $("tr").live("click",function(event){
+  v = (this.firstElementChild || this.children[0] || {});
+  if(v.id=='idcheck') return;
+  if(event.target.parentElement != this) return;
+    var check=v.firstElementChild || v.children[0] || {};
+    if($(check).attr("checked")) {
+    $(check).removeAttr("checked");
+   }
+   else{
+    $(check).attr("checked",'true');
+   }
+   $('#cbAll').attr('checked',$('INPUT[name=cb]:checked').length == $('INPUT[name=cb]').length);
+   if($('INPUT[name=cb]:checked').length) $("#more_menu_m").show();
+   else $("#more_menu_m").hide();
+});
+
+$('INPUT[name=cb]').live("click",function(event){
+ event.stopPropagation();
+ $('#cbAll').attr('checked',$('INPUT[name=cb]:checked').length == $('INPUT[name=cb]').length);
+ if($('INPUT[name=cb]:checked').length) $("#more_menu_m").show();
+   else $("#more_menu_m").hide();
+});
+
+
+$('#cbAll').bind("click",function(event){
+event.stopPropagation();
+if($('#cbAll').attr('checked')) {
+  $('#cbAll').attr('checked',true);
+  $('INPUT[name=cb]').attr('checked',true);
+  $("#more_menu_m").show();
+}
+ else {
+  $('#cbAll').attr('checked',false);
+  $('INPUT[name=cb]').attr('checked',false);
+ $("#more_menu_m").hide();
+ } 
+});
+
+$("span.dict_icon").live("click",function(){
+if(rename_submited==1) return;
+var path = curr_path;
+if(is_search){
+  path=$(this).children("label").html();
+}
+path += $(this).find('pre').text()+'/';
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers, 
+datatype: "xml",
+cache: false,
+timeout: 20000,
+data: { path:path,page:"0",filter:'255' }, 
+success: function(data, status) {
+show_table(data,0);
+},
+error: function(x, t, m){
+  if(t==="timeout")
+pop_BlockUI_normal('Please check your network!');
+}
+})
+
+});
+
+$("span.img_icon,span.pdf_icon,span.file_icon").live("click",function(){
+var full_path;
+var path = $(this).find('label').text();
+var name = $(this).find('pre').text();
+
+if(name=="" || path=="") return;
+var file_type=checkImgType(name);
+
+if(file_type==1)
+{
+var posix = BASE64.encoder(name);
+posix = posix.replace(/\//g,"_");
+posix = posix.replace(/\+/g,"_");
+posix = posix.replace(/=/g,"_");
+var id = "img_id"+posix;
+if (!document.all) {
+$('#'+id).trigger('click');
+}
+else{
+if(document.createEvent)
+{
+var evt = document.createEvent("HTMLEvents");
+evt.initEvent("click", true, true);
+document.getElementById(id).dispatchEvent(evt); 
+}
+else if(document.createEventObject){
+  var evObj = document.createEventObject();
+  document.getElementById(id).fireEvent( 'onClick', evObj );
+}
+}
+}
+else if(file_type==4)
+{
+full_path = "sd"+path + name;
+window.open(encodeURIComponent(full_path), "_blank")
+}
+else if(file_type==3)
+{
+ full_path = "sd"+path + name;
+  
+if (!!(document.createElement('video').canPlayType) && !((navigator.userAgent.toLowerCase().indexOf("trident") > -1 && navigator.userAgent.toLowerCase().indexOf("rv")>-1 ) || ($.browser.msie &&  parseInt($.browser.version)<=11)) && (/\.(mp4)$/i).test(name)) {
+  window.open('video.html?'+encodeURIComponent(full_path), "_blank");
+}
+else if (!!(document.createElement('video').canPlayType) && !((navigator.userAgent.toLowerCase().indexOf("trident") > -1 && navigator.userAgent.toLowerCase().indexOf("rv")>-1 ) || ($.browser.msie &&  parseInt($.browser.version)<=11)) && (/\.(mov)$/i).test(name)) {
+ window.open('video.html?'+encodeURIComponent(full_path), "_blank");
+}
+
+else if((/win/i).test(navigator.platform) && ((navigator.userAgent.toLowerCase().indexOf("trident") > -1 && navigator.userAgent.toLowerCase().indexOf("rv")>-1 ) || ($.browser.msie &&  parseInt($.browser.version)<=11)) && (/\.(mpg|avi|wmv|3gp|mov|wma|m4a|mp3|wav|aac|wmv|asf|rmvb|mp4)$/i).test(name)){
+  window.open('wmp.html?'+encodeURIComponent(full_path), "_blank");
+}
+else if ((/\.(flv|f4v)$/i).test(name)) {
+  window.open('flash.html?'+encodeURIComponent(full_path), "_blank");
+}
+else if ((/\.(swf)$/i).test(name)) {
+  window.open('swf.html?'+encodeURIComponent(full_path), "_blank");
+}
+else window.open(encodeURIComponent(full_path), "_blank");
+}
+else 
+{
+  full_path = "sd"+path + name;
+    window.open(encodeURIComponent(full_path), "_blank")
+}
+});
+
+
+$("#cpath > a").live("click",function(){
+var clk_txt = this.innerHTML;
+var sub_path = curr_path.split('/');
+var post_data ="";
+var path = curr_path.substring(0,curr_path.length-1);
+if(clk_txt=="Pre") post_data =path.substring(0,path.lastIndexOf('/')+1);
+else if(clk_txt=="All Files") post_data ="/";
+else{
+var index = $(this).index();
+for(var i=0;i<index-1;i++){
+post_data += sub_path[i]+'/';
+}
+post_data += sub_path[i]+'/';
+} 
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers, 
+timeout: 20000,
+cache: false,
+datatype: "xml",
+data: { path:post_data,page:"0",filter:'255'  }, 
+success: function(data, status) {
+show_table(data,0);
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+}
+})
+})
+
+function getFileSize(fileObj)
+{
+var image=new Image();
+image.src=fileObj.value;
+}
+
+if ($.browser.msie && parseInt($.browser.version)<10)
+{
+    // IE suspends timeouts until after the file dialog closes
+    $('#up_file').click(function(event)
+    {
+        setTimeout(function()
+        {
+            if($('#up_file').val().length > 0) {
+//              alert($('#up_file').val());
+                var path = $('#up_file').val();
+                var file_name = path.substring(path.lastIndexOf('\\')+1,path.length);
+                file_name=XSSResolveCannotParseChar(file_name);
+                getFileSize($('#up_file').val());
+var list='<div style="border:1px solid gray;background:#ddd;"><span class="file_list_name">Name</span><span class="file_list_size">Size</span>Status</div>';
+
+              list += ('<div style="border:1px solid gray;border-top:none;"><span class="file_list_name">'+file_name+'</span><span class="file_list_size">-</span><span class="file_list_del_span"><a title="cancel upload this file" class="file_list_del"><img src="/img/default.gif" /></a></span></div>');
+             
+             $('#file_list').html(list);
+             $('#upload_state_tips').html('');
+             $('#upload_fail_tips').html('');
+$('#start_upload').hide();
+$.blockUI({ 
+message: $('#upload_progress'), 
+css: { 
+top:        '50%',
+left:       '50%',
+textAlign:  'left',
+marginLeft:     '-320px', 
+marginTop:      '-145px', 
+width: '600px',
+background:'none'
+} 
+}); 
+
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+    url: "/wxml/sd_upload_state.xml",
+    type: "Post", 
+headers: headers, 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: {count: '1'}, 
+    success: function(data, status) {
+      var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+      var state = parseInt($(data).find("state").text());
+      var count = parseInt($(data).find("count").text());
+      if(!state && !count) $('#start_upload').show();
+      else {
+        $('#upload_state_tips').html('Another upload instance found,please wait...');
+        upload_state_interval=setInterval(refresh_upload_state,5000);
+      }
+      hf_alloc_data.start_id=parseInt($(data).find("alloc_file_id").text());
+      hf_alloc_data.session=$(data).find("session_id").text();
+      hf_alloc_data.token=$(data).find("alloc_token_id").text();
+      hf_alloc_data.id_cnt=1;
+
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+    })
+
+
+$('#close_upload_div').attr('title','Click to close').click(function(){
+  $('#upload_form')[0].reset();
+  if(xhr) xhr.abort();
+
+if($.browser.msie && parseInt($.browser.version)<10){
+  if(iframeId) iframeId.setAttribute('src','');
+}
+  if(upload_state_interval) clearInterval(upload_state_interval);
+  if(_interval) clearInterval(_interval);
+  if(time_s) clearInterval(time_s);
+  $.unblockUI();
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+    url: "/wxml/sd_show_curr.xml",
+    type: "Post", 
+headers: headers, 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: { path:curr_path,page:curr_page,filter:filter_num  }, 
+    success: function(data, status) {
+    show_table(data,0);
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+    })
+  }
+  
+  );
+            }
+        }, 0);
+    });
+}
+
+else
+{
+
+$('#up_file').live('change',function(){
+
+if(/*typeof FileReader !='undefined' &&*/ typeof FormData !='undefined'){
+var files=this.files;
+if(files.length==0) return;
+file_upload_list_flag.length=0;
+var list='<div style="border:1px solid gray;background:#ddd;"><span class="file_list_name">Name</span><span class="file_list_size">Size</span>Status</div>';
+
+if(files.length>12)
+list += '<div style="height:310px;overflow-y:auto;">';
+var all_size =0;
+for (var i=0;i<files.length;i++){
+ if( (files[i].size) > 4*1024*1024*1024){
+  $('#upload_form')[0].reset();
+  alert('Support for file uploads less than 4GB!');
+  return;
+ }  
+  var up_file_name = files[i].name;
+  up_file_name=XSSResolveCannotParseChar(up_file_name);
+  if(up_file_name.length>30) up_file_name = up_file_name.substr(0,27)+'...';
+  list +=('<div style="border:1px solid gray;border-top:none;"><span class="file_list_name">'+up_file_name+'</span><span class="file_list_size">'+Byte2Format(files[i].size)+'</span><span class="file_list_del_span"><a title="cancel upload this file" class="file_list_del"><img src="/img/default.gif" /></a></span></div>');
+file_upload_list_flag[i]=1;
+all_size+=files[i].size;
+} 
+
+if( (parseInt(all_size/1048576)+2) > free_size){
+  $('#upload_form')[0].reset();
+  alert('The remaining space is not enough!');
+  return;
+}
+
+if(files.length>12) list+="</div>";
+
+$('#file_list').html(list);
+$('#upload_state_tips').html('');
+$('#upload_fail_tips').html('');
+$('#start_upload').hide();
+//$('#start_upload').show();
+var zoom=(100/detectZoom()).toFixed(4);
+if(zoom>1.0) zoom=1;
+//$("#upload_progress").css({"zoom":"1",'-moz-transform': 'scale(1)'});
+$.blockUI({ 
+message: $('#upload_progress'), 
+css: { 
+top:        '50%',
+left:       '50%',
+textAlign:  'left',
+marginLeft:     '-320px', 
+marginTop:      '-175px', 
+width: '600px',
+zoom: zoom,
+'-moz-transform': 'scale('+zoom+')',
+background:'none'
+} 
+}); 
+$('.blockOverlay').click(function(){
+
+}); 
+
+$('#close_upload_div').attr('title','Click to close').click(function(){
+  $('#upload_form')[0].reset();
+  if(xhr) xhr.abort();
+  if(_interval) clearInterval(_interval);
+  if(time_s) clearInterval(time_s);
+  $.unblockUI();
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+    url: "/wxml/sd_show_curr.xml",
+    type: "Post", 
+headers: headers, 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: { path:curr_path,page:curr_page,filter:filter_num }, 
+    success: function(data, status) {
+    show_table(data,0);
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+    })
+  }
+  
+  );
+
+
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+    url: "/wxml/sd_upload_state.xml",
+    type: "Post", 
+headers: headers, 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: {count: files.length}, 
+    success: function(data, status) {
+      var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+      var state = parseInt($(data).find("state").text());
+      var count = parseInt($(data).find("count").text());
+      if(!state && !count) $('#start_upload').show();
+      else {
+        $('#upload_state_tips').html('Another upload instance found,please wait...');
+        upload_state_interval=setInterval(refresh_upload_state,5000);
+      }
+      hf_alloc_data.id_cnt=files.length;
+      hf_alloc_data.start_id=parseInt($(data).find("alloc_file_id").text());
+      hf_alloc_data.session=$(data).find("session_id").text();
+      hf_alloc_data.token=$(data).find("alloc_token_id").text();
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+    })
+}
+else
+{
+  alert("Your Browser does not support html5,please setup the latest Chrome/Firefox!");
+}
+});
+}
+
+$("a.filter,a.filter_sel").live("click",function(){
+if(rename_submited!=0 || new_folder_submited !=0) return;
+pop_BlockUI_loading("<img src='/img/ajax-loader.gif'><p>Loading</p>");
+
+if(filter_enable)
+{
+  filter_enable=0;
+} 
+else return;
+
+var cls_name=$(this).find('img').attr('class');
+var index = cls_name.search(/_gray/i);
+if(index!=-1)
+{
+  var old_cls = $("a.filter_sel").children('img').attr('className');
+  $("a.filter_sel").children('img').attr('className',old_cls+'_gray');
+  $("a.filter_sel").attr('className','filter');
+  $(this).attr('className','filter_sel');
+  $("a.filter_sel").children('img').attr('className',cls_name.substr(0,index));  
+}
+
+switch($(this).index()){
+case 6:
+filter_num=32;
+break;
+case 5:
+filter_num=16;
+break;
+case 4:
+filter_num=1;
+break;
+case 3:
+filter_num=4;
+break;
+case 2:
+filter_num=2;
+break;
+case 1:
+filter_num=8;
+break;
+case 0:
+default:
+filter_num = 255;
+break;
+}
+/*
+if(filter_num==255) 
+{
+  $("a.new_folder").show();
+  $("div.input-file").show();
+}
+else {
+  $("a.new_folder").hide();
+  $("div.input-file").hide();
+}
+*/
+is_search=0;
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers, 
+cache: false,
+timeout: 20000,
+datatype: "xml",
+data: { path:'/',page:'0',filter:filter_num }, 
+success: function(data, status) {
+$.unblockUI();
+if(typeof(data)=='object') filter_enable=1;
+show_table(data,0);
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+}
+})
+})
+
+
+$('#form_search').submit(function(event){
+  var psearch = $('#search')[0].value;
+  if(psearch.length){
+    is_search=1;
+    filter_num=255;
+    refresh_filter_html();
+  var ppath;
+  if(filter_num==255){
+    ppath = curr_path;
+  }
+  else ppath = '/';
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+    url: "/wxml/sd_show_search.xml",
+    type: "Post", 
+headers: headers, 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: { path:ppath,page:'0',search:psearch }, 
+    success: function(data, status) {
+    show_table(data,is_search);
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+  });    
+  }
+
+  event.preventDefault();
+})
+
+
+
+$('.file_list_del').live('click',function(){
+  var index = $('#file_list .file_list_del').index($(this));
+  file_upload_list_flag[index]=0;
+//$(this).parent().html();
+var list_num=0;
+$(this).parent().parent().css('display','none');
+for (var i = 0;i<file_upload_list_flag.length;i++){
+if(file_upload_list_flag[i]) list_num++;
+};
+if(!list_num) {
+    $('#upload_form')[0].reset();
+  if(xhr) xhr.abort();
+  if(_interval) clearInterval(_interval);
+  if(time_s) clearInterval(time_s);
+  $.unblockUI();
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+    url: "/wxml/sd_show_curr.xml",
+    type: "Post", 
+headers: headers, 
+    timeout: 20000,
+    cache: false,
+    datatype: "xml",
+    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+    show_table(data,0);
+    },
+     error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+    })
+}
+})
+
+$('a.new_folder').live('click',function(){
+  $(".fu_list").show();
+  var tbody_cont="<tr><td><input type='checkbox' name='cb'/></td><td><label class='dict_icon'><input maxlength='32' class='new_folder' value='New folder'/></label></td><td>-</td><td>-</td><td></td></tr>"+$("#tb_body").html();
+$("#tb_body").html(tbody_cont);
+$('input.new_folder').blur();
+$('input.new_folder').focus();
+$('input.new_folder').setCursorPosition(0,$('input.new_folder').val().length);
+new_folder_submited=1;
+});
+
+function go_to_page(target){
+
+curr_page = target;
+var post_data = curr_path;
+
+if(is_search){
+  p_url="";
+  var p_search=$('#search')[0].value;
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+  url: "/wxml/sd_show_search.xml",
+  type: "Post", 
+headers: headers, 
+  cache: false,
+  timeout: 20000,
+  datatype: "xml",
+  data: { path:post_data,page:target,search:p_search}, 
+  success: function(data, status) {
+  show_table(data,1);
+  },
+  error: function(x, t, m){
+    if(t==="timeout")
+    pop_BlockUI_normal('Please check your network!');
+  }
+  });
+}
+else{
+  var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers, 
+cache: false,
+timeout: 20000,
+datatype: "xml",
+data: { path:post_data,page:target,filter:filter_num  }, 
+success: function(data, status) {
+show_table(data,0);
+},
+error: function(x, t, m){
+  if(t==="timeout")
+  pop_BlockUI_normal('Please check your network!');
+}
+});  
+}
+}
+
+$("#btn_go").live('click',function(){
+var target = parseInt($("#go_page").val())-1;
+if(target>=0 && target<$("#page_max").val()){
+  go_to_page(target);
+}
+$("#go_page").val("").focus();
+});
+
+
+$('#page_href a').live('click',function(){
+var target = parseInt($(this).text())-1;
+if(target>=0 && target<$("#page_max").val()){
+  go_to_page(target);
+}
+});
+
+function format_card_process(){
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+  url: "/wxml/sd_format.xml",
+  type: "Post", 
+headers: headers, 
+  cache: false,
+  timeout: 20000,
+  async: true,
+  datatype: "xml",
+  data: { nu:'1'  }, 
+  success: function(data, status) {
+    var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+    var format = parseInt($(data).find("format").text());
+    $('#format_card').attr('disabled',false).html('Format Card');
+    if(1 == format) pop_BlockUI_normal('Format success!');
+    else if(2 == format) pop_BlockUI_normal('Format fail! <br> File or directory already open');
+    else pop_BlockUI_normal('Format fail!');
+    curr_path='/';
+    curr_page=0;
+    filter_num=255;
+    refresh_filter_html();
+  var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+      url: "/wxml/sd_show_curr.xml",
+      type: "Post", 
+headers: headers, 
+      cache: false,
+      timeout: 20000,
+      datatype: "xml",
+//      data: { path:post_data,page:target,filter:filter_num  }, 
+
+      data: { path:curr_path,page:curr_page,filter:filter_num  }, 
+      success: function(data, status) {
+      show_table(data,0);
+      },
+      error: function(x, t, m){
+       if(t==="timeout")
+        pop_BlockUI_normal('Please check your network!');
+      }
+      });  
+
+  },
+   error: function(x, t, m){
+    if(t==="timeout")
+    pop_BlockUI_normal('Please check your network!');
+  }
+  })
+}
+
+
+$('#format_card').live('click',function(){
+var confirm_txt="All files will be destroyed,please backup your files.Do you want to continue?"  ;  
+if(!confirm(confirm_txt)){
+  return;
+}
+$.unblockUI();
+pop_BlockUI_loading("<img src='/img/ajax-loader.gif'><p>Formating</p>");
+setTimeout(format_card_process,500);
+});
+
+
+$('#close_sd_set').attr('title','Click to close').click(function(){
+  $.unblockUI();
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+    url: "/wxml/sd_show_curr.xml",
+    type: "Post", 
+headers: headers, 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: { path:curr_path,page:curr_page,filter:filter_num  }, 
+    success: function(data, status) {
+    show_table(data,0);
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+    });
+});
+
+
+
+$('#start_upload').live('click',function(){
+  $(this).hide();
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+    url: "/wxml/sd_upload_state.xml",
+    type: "Post", 
+headers: headers, 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: {count: '0'}, 
+    success: function(data, status) {
+      var new_token=$(data).find("token").text();
+      if(!new_token.length){
+        pop_BlockUI_normal('Session timeout,please login again.',true,function(){
+          location.href="to_sd_login.html";
+        });
+        return;
+      }
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+      var state = parseInt($(data).find("state").text());
+      var count = parseInt($(data).find("count").text());
+      if(!state && !count) {
+  
+  if(curr_path=='/')
+{
+  var foldername = new Date().Format("YYYY.MM");
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+  url: "/wxml/sd_new.xml",
+  type: "Post", 
+headers: headers, 
+  cache: false,
+  timeout: 20000,
+  datatype: "xml",
+  data: { path:curr_path,name:foldername  }, 
+  success: function(data, status) {
+    var new_token=$(data).find("token").text();
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+    var result = parseInt($(data).find('new').text());
+    var exist = parseInt($(data).find('exist').text());
+    if(!result && exist){  result = 2; }
+    if(result>0) curr_path = '/'+foldername+'/';
+
+       filter_num=255;
+       refresh_filter_html();
+       $('.file_list_del').parent().html('&nbsp;');
+       if($.browser.msie && parseInt($.browser.version)<10){
+        $('#ie_hide_path').val('sd'+curr_path);
+        $('#upload_file_id').val(hf_alloc_data.start_id);
+        $('#ie_hide_session').val(hf_alloc_data.session);
+        $('#ie_hide_token').val(get_hf_token(0));
+        up_index=0;
+//        $('#upload_form').submit();
+//         alert('send')
+          $('.file_list_del_span').eq(0).html('Progressing');
+          ie_fileUpload($('#upload_form')[0]);
+          _interval = setInterval("upload_result()",3000);
+       }
+       else{
+       send_files(0);
+    }
+    },//succ
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+   }
+  );  
+}
+else
+{
+  $('.file_list_del').parent().html('&nbsp;');
+  if($.browser.msie && parseInt($.browser.version)<10){
+        $('#ie_hide_path').val('sd'+curr_path);
+        $('#upload_file_id').val(hf_alloc_data.start_id);
+        $('#ie_hide_session').val(hf_alloc_data.session);
+        $('#ie_hide_token').val(get_hf_token(0));
+//        $('#upload_form').submit();
+          $('.file_list_del_span').eq(0).html('Progressing');
+          ie_fileUpload($('#upload_form')[0]);
+          up_index=0;
+          _interval = setInterval("upload_result()",3000);
+       }
+       else{
+  send_files(0);  
+}
+}
+      }
+      else {
+        $('#upload_state_tips').html('Another upload instance found,please wait...');
+        upload_state_interval=setInterval(refresh_upload_state,5000);
+      }
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please wait!');
+    }
+    });
+
+})
+
+
+})
+</script>
+
+</html>

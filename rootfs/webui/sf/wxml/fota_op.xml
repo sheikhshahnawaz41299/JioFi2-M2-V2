@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fota>
+<curr_ver>get_current_version(curr)</curr_ver>
+<check>fota_check(check)</check>
+<uncheck>fota_check_cancel(uncheck)</uncheck>
+<note>fota_check_releasenote(note)</note>
+<download>fota_download(download)</download>
+<download_pause>fota_download_pause(pause)</download_pause>
+<download_resume>fota_download_resume(resume)</download_resume>
+<cancel_dl>fota_download_cancel(cancel_dl)</cancel_dl>
+<install>fota_install(install)</install>
+<cancel_install>fota_install_cancel(cancel_install)</cancel_install>
+<reboot>reboot_device(reboot)</reboot>
+</fota>

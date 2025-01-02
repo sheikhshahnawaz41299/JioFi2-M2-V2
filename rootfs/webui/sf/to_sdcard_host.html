@@ -1,0 +1,15 @@
+<html>
+<head>
+</head>
+<script type='text/javascript'>
+function init(){
+var ismobile=navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)|(blackberry)|(iemobile)/i);
+if( ismobile ) {
+  top.window.open("http://mobile.wifi/msd.html","_self"); 
+}
+else top.window.open("http://mobile.wifi/sdcard.html","_self");
+}
+</script>
+<body onload="init();">
+</body>
+</html>

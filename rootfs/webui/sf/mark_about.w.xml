@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<divice>
+<uiver><% get_web_ui_ver(); %></uiver>
+<imsi><% get_imsi(); %></imsi>
+<swver><% get_software_version(); %></swver>
+<hwver><% get_hardware_version(); %></hwver>
+<imei><% get_imei(); %></imei>
+<macaddr><% get_macaddr_string(); %></macaddr>
+</divice>

@@ -1,0 +1,2225 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>Wi-Fi Disk</title> 
+<meta charset="utf-8" />
+<!--<meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<link rel="apple-touch-icon" href="/img/iosicon.png"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+<!--
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+-->
+<meta content="telephone=no" name="format-detection" />
+<link rel="stylesheet" href="swipebox.css">
+<link rel="stylesheet" href="jquery.mobile-1.3.2.min.css" />
+<script src="jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="UTF-8" src="custom.js"></script>
+<script src="jquery.mobile-1.3.2.min.js"></script>
+<script type="text/javascript" src="jquery.transform.js"></script>
+<script src="swipebox.min.js"></script>
+<style type="text/css">
+.file_icon{width:30px;height: 30px;background-repeat: no-repeat;vertical-align: middle;position: relative;display: inline-block;}
+.floder{background-image:url('/img/common3.png');  background-position: -186px 0;-webkit-background-size: 490px 30px;
+background-size: 490px 30px;}
+
+.pdf{background-image:url('/img/common3.png');  background-position: -124px 0;-webkit-background-size: 490px 30px;
+background-size: 490px 30px;}
+
+.img{background-image:url('/img/common3.png');  background-position: -278px 0;-webkit-background-size: 490px 30px;
+background-size: 490px 30px;}
+
+.unknown{background-image:url('/img/common3.png');  background-position: 0 0;-webkit-background-size: 490px 30px;
+background-size: 490px 30px;}
+
+.zip{background-image:url('/img/common3.png');  background-position: -156px 0;-webkit-background-size: 490px 30px;
+background-size: 490px 30px;}
+
+.file_name{display: none;}
+.file_name_show{font-size: 16px;color:#2f3e46;vertical-align: middle;margin-left: 6px;}
+
+
+#cpath{height: 2em;line-height: 2em;vertical-align: middle;white-space:nowrap;overflow-x:scroll;}
+#cpath a{text-decoration: none;font-size: 1.4em;font-weight: 300;color: #0080FF;}
+#cpath span{text-decoration: none;font-size: 1.2em;font-weight: 300;margin: 0 0.4em;padding: 0.2em 0;color: #DDD;}
+
+.last_li{border-bottom: none;}
+
+.up_btn_name {display: inline-block;margin-top: 5px;color: #000;font-size: 16px;}
+.upload_button {opacity: 0;-moz-opacity: 0;filter: alpha(opacity=0);}
+/*
+.file-upload {
+
+}
+
+.file-upload input {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+    margin-top: 0;
+}
+*/
+
+.file-upload {
+    position: absolute;
+    top: 0.2em;
+    right: 0.4em;
+}
+
+.file-upload input {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+    margin-top: 0;
+}
+
+
+.file-upload-ios7 {
+
+}
+
+.file-upload-ios7 input {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+    margin-top: 0;
+}
+
+
+
+
+.ui-page .ui-content .ui-listview .ui-li-desc {
+    white-space : normal;
+}
+
+.ui-btn-down-d{
+    border-color: #34bae8;
+    background-color: #34bae8;
+    background-image: none;
+    color: #fff;
+    text-shadow: 0 1px 0 #369;  
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+li.ui-li.left {
+-webkit-transition: -webkit-transform 250ms ease;
+-webkit-transform: translateX(-100%);
+-moz-transition: -moz-transform 250ms ease;
+-moz-transform: translateX(-100%);
+-o-transition: -o-transform 250ms ease;
+-o-transform: translateX(-100%);
+transition: transform 250ms ease;
+transform: translateX(-100%);
+border-top-width: 0;
+border-right-width: 1px;
+}
+li.ui-li.right {
+-webkit-transition: -webkit-transform 250ms ease;
+-webkit-transform: translateX(100%);
+-moz-transition: -moz-transform 250ms ease;
+-moz-transform: translateX(100%);
+-o-transition: -o-transform 250ms ease;
+-o-transform: translateX(100%);
+transition: transform 250ms ease;
+transform: translateX(100%);
+border-top-width: 0;
+border-left-width: 1px;
+}
+li.ui-li.border {
+border-bottom-width: 1px;
+}
+.touch .delete {
+display: none;
+}
+.touch .ui-link-inherit {
+padding-right: 15px !important;
+}
+#confirm/*,#rename, #pop_new_folder */{
+border: 1px solid;
+border-color: #044062;
+border-color: rgba(4,64,98,.4);
+background: #456f9a;
+background: rgba(69,111,154,.8);
+-moz-box-shadow: 0 2px 6px rgba(69,111,154,.5), inset 0 1px rgba(255,255,255,.3), inset 0 6px rgba(255,255,255,.1), inset 0 10px 20px rgba(255,255,255,.25), inset 0 -15px 30px rgba(69,111,154,.3);
+-webkit-box-shadow: 0 2px 6px rgba(69,111,154,.5), inset 0 1px rgba(255,255,255,.3), inset 0 6px rgba(255,255,255,.1), inset 0 10px 20px rgba(255,255,255,.25), inset 0 -15px 30px rgba(69,111,154,.3);
+box-shadow: 0 2px 6px rgba(69,111,154,.5), inset 0 1px rgba(255,255,255,.3), inset 0 6px rgba(255,255,255,.1), inset 0 10px 20px rgba(255,255,255,.25), inset 0 -15px 30px rgba(69,111,154,.3);
+max-width: 250px;
+}
+#confirm p,#rename p/*,#pop_new_folder p*/ {
+color: #fff;
+text-shadow: 0 1px 1px rgba(0,0,0,.6);
+margin-bottom: .75em;
+}
+#confirm div, #confirm .ui-btn-corner-all, #rename div, #rename .ui-btn-corner-all/*, #pop_new_folder div, #pop_new_folder .ui-btn-corner-all*/{
+-webkit-border-radius: inherit;
+border-radius: inherit;
+}
+#confirm #cancel,#rename #cancel1/*, #pop_new_folder #cancel2 */{
+background-image: none;
+}
+#confirm .file_name_show {
+font-size: inherit;
+text-align: center;
+color: #00FFFF;
+}
+#del_name{font-size: inherit;text-align: center;}
+
+
+
+
+tbody {
+  word-break:break-all;
+  word-wrap:break-word
+    color: black;
+    background: #fff;
+    border: 1px solid #b4b4b4;
+    font: bold 17px helvetica;
+    padding: 0;
+    margin-top:10px;
+    width: 100%;
+    -webkit-border-radius: 8px;
+}
+     
+tbody tr td {
+    color: #666;
+    border-bottom: 1px solid #b4b4b4;
+    padding: 10px 10px 10px 10px;
+    background-image: -webkit-linear-gradient(top, #fdfdfd, #eee);
+}
+
+tbody tr td:last-child {
+    border-right: none;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ui-table-columntoggle-btn {
+    display: none !important;
+}
+
+.cancel_upload{
+color:red;
+cursor: pointer;
+text-decoration: underline;
+}
+
+.progress_cent{
+color:#0066ff;
+}
+
+
+.upload-list thead th,
+.upload-list tbody th .ui-table-cell-label,
+.upload-list tbody td .ui-table-cell-label {
+    text-transform: uppercase;
+    font-size: .7em;
+    color: rgba(0,0,0,0.5);
+    font-weight: normal;
+}
+.upload-list tbody th {
+    font-size: 1.2em;
+    background-color: #fff;
+    color: #77bbff;
+    text-align: center;
+}
+.upload-list tbody td.title {
+    padding-left: .8em;
+}
+#upload_state_tips{color: red;font-size: 0.6em;}
+
+@media (max-width: 40em) {
+    .upload-list tbody th {
+        margin-top: 0;
+        text-align: left;
+    }
+    .upload-list tbody th,
+    .upload-list tbody td.title {
+        display: block;
+        font-size: 1.2em;
+        line-height: 110%;
+        padding: .5em .5em;
+        background-color: #fff;
+        color: #77bbff;
+        -moz-box-shadow: 0 1px 6px rgba(0,0,0,.1);
+        -webkit-box-shadow: 0 1px 6px rgba(0,0,0,.1);
+        box-shadow: 0 1px 6px rgba(0,0,0,.1);
+    }
+    .upload-list tbody th .ui-table-cell-label,
+    .upload-list tbody td.title .ui-table-cell-label {
+        display: none;
+    }
+    .upload-list tbody td.title {
+        margin-top: -2.1em;
+        padding-left: 2.2em;
+        border-bottom: 1px solid rgba(0,0,0,.15);
+    }
+    .upload-list th,
+    .upload-list td {
+        font-weight: normal;
+        font-size: 0.8em;
+    }
+    .upload-list td .ui-table-cell-label,
+    .upload-list th .ui-table-cell-label {
+        min-width: 20%;
+    }
+}
+@media ( min-width: 40em ) {
+    .upload-list td,
+    .upload-list th,
+    .upload-list tbody th,
+    .upload-list tbody td,
+    .upload-list thead td,
+    .upload-list thead th {
+        display: table-cell;
+        margin: 0;
+    }
+    /* Hide the labels in each cell */
+    .upload-list td .ui-table-cell-label,
+    .upload-list th .ui-table-cell-label {
+        display: none;
+    }
+}
+@media ( max-width: 40em ) {
+    .upload-list td,
+    .upload-list th {
+        width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        float: left;
+        clear: left;
+    }
+}
+
+.PathMenu {
+  position:fixed;
+  right: 0px;
+  bottom: 0px;
+  width: 60px;
+  height: 60px;
+}
+.PathInner {
+  z-index: 9999;
+  position:fixed;
+  width: 60px;
+  height: 60px;
+  right: 0.4em;
+  bottom: 2.4em;
+}
+.PathInner .PathItem {
+  position:absolute;
+  left: 0px;
+  bottom: 0px;
+}
+.PathInner a {/* position:absolute; */
+  display:block;/* overflow:hidden; */
+  background-position:center;
+  background-repeat:no-repeat;
+  z-index:999;
+}
+.PathInner a .item, .rotate {
+  width:100%;
+  height:100%;
+  background-position:center;
+  background-repeat:no-repeat;
+  display:block;
+  overflow:hidden;
+  text-align:center;
+  vertical-align:middle;
+  position:absolute;
+}
+.PathInner .PathMain {
+  z-index:1000;
+  position:absolute;
+  display:block;/* overflow:hidden; */
+  background-position:center;
+  background-repeat:no-repeat;
+  bottom:0;
+  left:0;
+}
+.PathInner .PathMain .Tmain {
+  background: url(/img/common3.png);
+  background-position: -796px 0;
+  width: 60px;
+  height: 60px;
+}
+.PathInner .PathMain .Tmain .rotate {
+  background: url(/img/common3.png);
+  background-position: -916px 0;
+    width: 20px;
+  height: 20px; 
+  -moz-transform: rotate(0deg);
+  position:absolute;
+  bottom:20px;
+  left:20px;
+}
+.PathInner .cover {
+  width:100%;
+  height:100%;
+  display:block;
+  background:url(/img/common3.png) center no-repeat;
+  background-position: -856px 0;
+  cursor: pointer;
+*filter:alpha(opacity=0);
+  filter:alpha(opacity=0)\0;
+  opacity:0;
+-webkit-transition:opacity .2s ease-out;
+-moz-transition:opacity .2s ease-out;
+-ms-transition:opacity .2s ease-out;
+-o-transition:opacity .2s ease-out;
+}
+.PathInner .cover:hover {
+  opacity:0.2;
+*filter:alpha(opacity=20);
+  filter:alpha(opacity=20)\0;
+}
+.PathItem .link {
+  position:absolute;
+  bottom:7px;
+  left:7px;
+  width: 60px;
+  height: 60px;
+
+}
+.PathItem .link .item {
+  bottom:0;
+  left:0;
+}
+.metaicondetail {
+  background:#fff;
+  color:#fff;
+  border-radius:6px;
+  border:1px #333 solid;
+  min-width:100px;
+  max-width:300px;
+  overflow:hidden;
+  text-align: center;
+  position:absolute;
+  display:none;
+  top:-115px;
+  left:-22px;
+}
+.metaicondetail .inner {
+  border:2px #fff solid;
+  border-radius:6px;
+  background:#272727;
+  font-size:14px;
+  padding:5px;
+}
+.metaicondetail span {
+  font-family:candara, arail;
+  font-size:18px;
+}
+.metaicondetail s {
+  border-color:#333 transparent transparent;
+  border-style: solid dashed dashed;
+  border-width:5px;
+  clear: both;
+  display: inline-block;
+  font-size: 0;
+  height: 0;
+  margin-left:3px;
+  overflow: hidden;
+  position: absolute;
+  right:50%;
+  top:44px;
+  width:0;
+}
+
+#icon_search,#icon_cate,#icon_new,#icon_sd,#icon_ios7_upload,#icon_help{
+
+  width: 45px;height: 45px;background: url(/img/common3.png) no-repeat;-moz-transform: rotate(0deg);
+  display: block;
+}
+
+#icon_cate{
+  background-position: -616px 0;
+}
+
+#icon_sd{
+  background-position: -661px 0;
+}
+
+#icon_search{
+  background-position: -706px 0;
+}
+
+#icon_new{
+  background-position: -751px 0;
+}
+#icon_ios7_upload{
+  background-position: -936px 0;
+}
+#icon_help{
+  background-position: -1000px 0;
+}
+
+
+
+
+#pop_icon_cate{
+  position: fixed;
+  bottom: 3em;
+  right: 10em;
+}
+
+#pop_upload_ios7{
+   position: fixed;
+  bottom: 14em;
+  right: 4em; 
+}
+
+</style>
+
+<script type="text/javascript">
+
+var PathStatus  = 0;
+var angle     = Math.PI/((5-1)*2);  
+var mainButton  = [
+  {'bg':'bg-2x.gif','css':'','cover':'icon-2x.gif','html':'<span class="cover"></span>'},
+  {'bg':'','css':'','cover':'','html':'','angle':-405,'speed':400}
+];
+var Radius    = 130;
+var Offset    = 40;
+var Path    = 4;
+var OutSpeed  = 180;
+var OutIncr   = 80;
+var OffsetSpeed = 200;
+var InSpeed   = 480;
+var InIncr    = -80;
+function PathRun(){
+  var PathMenu = $('#PathMenu');
+  var PathItems = PathMenu.children('.PathItem').slice(0,6);
+  if(PathStatus == 0){
+    var Count = PathItems.size();
+    PathItems.each(function(SP){
+      var ID = $(this).index();
+      if (ID == 1) {
+        var X   = Radius;
+        var Y   = 0; 
+        var X1  = X + Offset;
+        var Y1  = Y;
+      }else if (ID == Count){
+        if(isIOS7){
+        var X   = 0;
+        var Y   = Radius*1.4;
+        var X1  = X;
+        var Y1  = Y + Offset;          
+        }
+
+      }
+      else if (ID == Count-1){
+        var X   = 0;
+        var Y   = Radius;
+        var X1  = X;
+        var Y1  = Y + Offset;       
+      }else{
+        var X   = Math.cos(angle * (ID - 1)) * Radius;
+        var Y   = Math.sin(angle * (ID - 1)) * Radius;
+        var X1  = X + Offset;
+        var Y1  = Y + Offset;
+      }
+      
+      if(Path==2){
+        Y = -Y;
+        Y1  = -Y1;
+      }else if(Path==3){
+        X = -X;
+        Y = -Y;
+        X1  = -X1;
+        Y1  = -Y1;
+      }else if(Path==4){
+        X = -X;
+        X1  = -X1;
+      }
+
+      $(this).children().children().animate({rotate:720},600);
+      
+      $(this).animate({left:X1,bottom:Y1},OutSpeed+SP*OutIncr,function(){
+        $(this).animate({left:X,bottom:Y},OffsetSpeed);
+      }); 
+    });
+    
+    if(mainButton[1]['angle']){
+//      $(PathMenu.children('.PathMain').find('.rotate')).animate({rotate:mainButton[1]['angle']},mainButton[1]['speed']);
+      $('.rotate').css({"transform": "rotate(45deg)","-ms-transform": "rotate(45deg)","-webkit-transform": "rotate(45deg)"});
+    } 
+    if(mainButton[1]['bg']!='') $(this).children().css('background-image','url('+mainButton[1]['bg']+')')
+    if(mainButton[1]['css']!='') $(this).children().css(mainButton[1]['css']);
+    if(mainButton[1]['cover']!='') $(this).children().children().css('background-image','url('+mainButton[1]['cover']+')');
+    if(mainButton[1]['html']!='') $(this).children().html(mainButton[1]['html']);
+    
+    PathStatus = 1;
+  }else if(PathStatus == 1){
+    PathItems.each(function(SP){
+      if(parseInt($(this).css('left'))==0){
+        X1 = 0;
+      }else{
+        if(Path <=2){
+          X1 = parseInt($(this).css('left')) + Offset;
+        }else if(Path >=3){
+          X1 = parseInt($(this).css('left')) - Offset;
+        }
+      }
+      
+      if(parseInt($(this).css('bottom'))==0){
+        Y1 = 0;
+      }else{
+        if(Path==3 || Path==2){
+          Y1 = parseInt($(this).css('bottom')) - Offset;
+        }else if(Path ==1 || Path == 4){
+          Y1 = parseInt($(this).css('bottom')) + Offset;          
+        }
+      }
+      $(this).children().children().animate({rotate:0},600);
+      $(this).animate({left:X1,bottom:Y1},OffsetSpeed,function(){
+        $(this).animate({left:0,bottom:0},InSpeed+SP*InIncr);
+        
+      });
+    });
+    
+    if(mainButton[1]['angle']){
+//      $(PathMenu.children('.PathMain').find('.rotate')).animate({rotate:0},mainButton[1]['speed']);
+$('.rotate').css({"transform": "rotate(0deg)","-ms-transform": "rotate(0deg)","-webkit-transform": "rotate(0deg)"});
+    }     
+    
+    if(mainButton[0]['bg']!='') $(this).children().css('background-image','url('+mainButton[0]['bg']+')')
+    if(mainButton[0]['css']!='') $(this).children().css(mainButton[0]['css']);
+    if(mainButton[0]['cover']!='') $(this).children().children().css('background-image','url('+mainButton[0]['cover']+')');
+    if(mainButton[0]['html']!='') $(this).children().html(mainButton[0]['html']);     
+        
+    PathStatus = 0;
+  }
+}
+
+function get_hf_token(id){
+  var file_id=parseInt(hf_alloc_data.start_id)+id;
+  file_id = file_id.toString();
+  var len=file_id.length;
+  if(len>6) return hf_alloc_data.token+ file_id.substr(-6);
+  else return (hf_alloc_data.token+ "000000".substring(len)+file_id);
+
+}
+
+var curr_path,curr_page,page_num,filter_num=255,is_search=0,_interval;
+function ajax_post(url,form_data,index)
+{
+var xmlpost;
+if (window.XMLHttpRequest){
+xmlpost=new XMLHttpRequest();
+}
+else{
+xmlpost=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlpost.onreadystatechange=function()
+{
+if (xmlpost.readyState==4 && xmlpost.status==200){
+upload_result_handle(xmlpost);
+}
+}
+xmlpost.open("POST",url,true);
+xmlpost.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+token_used=$("#csrf_token").val();
+xmlpost.setRequestHeader("__RequestVerificationToken", token_used); 
+xmlpost.send(form_data);
+} 
+
+
+function upload_result_handle(data)
+{
+var xmldoc=data.responseXML;
+
+var new_token = xmldoc.getElementsByTagName('token')[0].childNodes[0].nodeValue;
+if(new_token=="-1"){
+top.location.reload(true); 
+return false;
+}
+token_index=0;
+$("#csrf_token").val(new_token);
+var name = xmldoc.getElementsByTagName('name')[0].childNodes[0].nodeValue;
+var progress = xmldoc.getElementsByTagName('progress')[0].childNodes[0].nodeValue;
+//console.log('name:'+name+'progress:'+progress);
+
+var rate = 600*1024;
+if(name!='-' )
+{
+  if(progress <= up_size)
+  {
+    if(uploaded_size && !progress) rate = Math.floor((progress - uploaded_size)*1000/time_i);
+    if(!rate) rate = 600*1024;
+    uploaded_size = progress;
+
+    var percent = Math.floor((progress*100)/up_size)+'%';
+    var time_need = Math.floor((up_size - progress)/rate);
+    if(time_need<=0) time_need =1;
+//    $('.file_list_del_span').eq(up_index).html(percent+Math.floor(time_need/60)+'m'+Math.floor(time_need%60)+'s');
+    if(time_s) clearInterval(time_s);
+    time_s = setInterval(function(){
+      if(!time_need) time_need =1;
+      /*$('.progress_cent').eq(up_index)*/
+      $('#upd_tr'+up_index).find("td:last").html( (Math.floor(time_need/60)>0 ? (Math.floor(time_need/60)+'m'):'')+Math.floor(time_need%60)+'s');
+      if(time_need>1) time_need--;
+    },1000);
+  }
+}
+
+}
+
+function upload_result()
+{
+var data = 'file_id='+(hf_alloc_data.start_id + up_index);
+if(token_used!=$("#csrf_token").val()){
+  token_used=$("#csrf_token").val();
+  ajax_post('/wxml/sd_upload.xml', data);
+}
+}
+
+
+var up_index=0,up_size=0,up_length,up_ok=0,up_fail=0,xhr,uploaded_size=0,time_i,time_s,free_size=0,all_capacity=0;
+//var upload_alloc_id_start,upload_alloc_id_cnt;
+var hf_alloc_data={};
+var token_used;
+function send_files(index)
+{
+var i=index;
+
+if(index==0) {
+  up_ok=0;
+  up_fail=0;
+}
+while(file_upload_list_flag[i]==0) i++; 
+var files = $('#up_file')[0].files;
+if(!files.length) files = $('#up_file_ios')[0].files;
+if(i== files.length) return;
+
+var sel_td = $('tbody tr').eq(i).find("td:last");
+
+//var sel_td = $('tbody tr:eq(i) td(2)');
+sel_td.removeClass('cancel_upload');
+sel_td.html('Progressing');
+sel_td.addClass('progress_cent');
+
+var form_file = new FormData();
+form_file.append("path", 'sd'+curr_path);
+form_file.append("upload_file_id", hf_alloc_data.start_id+index);
+form_file.append("session", hf_alloc_data.session);
+form_file.append("token", get_hf_token(index));
+form_file.append("files", files[i]);
+xhr = new XMLHttpRequest();
+
+
+xhr.onreadystatechange=function()
+{
+if (xhr.readyState==4 && xhr.status==0){
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('#upd_tr'+up_index).find("td:last").html('Fail');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+}
+
+
+if (xhr.readyState==4 && xhr.status==200)
+{
+  if(xhr.responseText=="upload OK")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('#upd_tr'+up_index).find("td:last").html('OK');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_ok++;
+  }
+  else if(xhr.responseText=="upload busy")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('#upd_tr'+up_index).find("td:last").html('Progress.');
+    setTimeout(function retry_send(){if(up_index < (up_length-1)) send_files(up_index);},500);
+  }
+  else if(xhr.responseText=="upload fail")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('#upd_tr'+up_index).find("td:last").html('Fail');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+  }
+  else if(xhr.responseText=="upload fail, file exists")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('#upd_tr'+up_index).find("td:last").html('File exists');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+  }
+  else if(xhr.responseText=="upload fail, invalid request")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('#upd_tr'+up_index).find("td:last").html('Invalid request');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+  }
+  else if(xhr.responseText=="upload fail, name too long")
+  {
+    clearInterval(_interval);
+    if(time_s) clearInterval(time_s);
+    $('.file_list_del_span').eq(up_index).html('File name too long');
+    if(up_index < (up_length-1)) send_files(up_index+1);
+    up_fail++;
+  }
+
+//    var ok_cnt=up_index-up_fail;
+    $('#upload_state_tips').html('<span style="color:blue;">Upload OK: '+up_ok+'</span> Upload Fail: '+up_fail);    
+
+if((up_index == (up_length-1)) && xhr.responseText!=""){
+//  var ok_cnt=up_index+1-up_fail;
+  $('#upload_state_tips').html('<span style="color:blue;">Upload OK: '+up_ok+'</span> Upload Fail: '+up_fail);
+}
+
+  if((up_index == (up_length-1)) && (up_fail==0) && xhr.responseText!="")
+  {
+  if(_interval) clearInterval(_interval);
+  if(time_s) clearInterval(time_s);
+//  $.unblockUI();
+
+  var headers={};
+  token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+  $.ajax({ 
+    url: "/wxml/sd_show_curr.xml",
+    type: "Post", 
+    headers: headers,
+    datatype: "xml",
+    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: onSuccess,
+    })
+}
+}
+}
+xhr.open("post", "http://"+location.hostname+":61726/upload", true);
+xhr.send(form_file);
+up_length = files.length;
+up_index = i;
+up_size = files[i].size;
+//time_i=1000;
+
+if(up_size<1024*1000) time_i=1000;
+else if(up_size<1024*1000*10) time_i=1000*3;
+else time_i=10000;
+uploaded_size = 0;
+_interval = setInterval("upload_result()",time_i);
+upload_result();
+}
+
+var isIOS7=0;
+window.onload=function(){  
+if(document.documentElement.scrollHeight <= document.documentElement.clientHeight) {  
+bodyTag = document.getElementsByTagName('body')[0];  
+bodyTag.style.height = document.documentElement.clientWidth / screen.width * screen.height + 'px';  
+}  
+setTimeout(function() {  
+window.scrollTo(0, 1)  
+}, 0);  
+
+var ua = navigator.userAgent.toLowerCase();
+isIOS7=ua.match(/(ipad)|(iphone)|(ipod)/i) 
+};  
+
+function output_capacity(cap){
+  var output='';
+  if(cap<1024)  {
+    output= cap+' MB';
+    return output;
+  }
+  var cap_g = parseInt(cap/1024)+' GB ';
+
+  var cap_m= (parseInt(cap%1024)?(cap%1024+' MB'):'');
+  output = cap_g+cap_m;
+  return output;
+}
+
+function checkFileType(ths){  
+if (ths == "") return 0;
+else if (/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG|BMP)$/.test(ths)) return 1;
+else if (/\.(mp3|MP3)$/.test(ths)) return 2;
+else if (/\.(MP4|mp4|avi|rmvb|f4v|flv)$/.test(ths)) return 3;
+else if (/\.(PDF|pdf)$/.test(ths)) return 4;
+else if (/\.(TXT|txt)$/.test(ths)) return 5;
+else if (/\.(RAR|rar|ZIP|zip|ISO|iso)$/.test(ths)) return 6;
+return 255;  
+}
+
+function popup_tips(html){
+  $('#sd_tips').html(html);
+  $('#capacity_tips').popup('open');
+}
+
+function getFileSize(size)
+{
+if(size<1024) size += ' B';
+else if(size<1048576) size = (size/1024).toFixed(1)+' KB';
+else if(size<1073741824) size = (size/1048576).toFixed(1)+' MB';
+else size = (size/1073741824).toFixed(1)+' GB';
+return size;
+}
+
+function onSuccess(data,status){
+if(typeof(data)!='object') {
+//  pop_BlockUI_normal('Please check your network!');
+location.href = "sd_login.html";
+return false;
+}
+var new_token=$(data).find("token").text();
+      if(new_token=="-1"){
+        top.location.reload(true); 
+        return false;
+      }
+token_index=0;
+$("#csrf_token").val(new_token);
+
+  if(data.URL.lastIndexOf('sd_show_curr')!=-1) {
+    $('#search').val('');
+    is_search=0;
+  }
+  var sd_st = parseInt($(data).find("sd_st").text());
+if(sd_st==0)
+{
+  $.mobile.changePage("#no_sd_tips",{transition: "slide",changeHash: true});
+  return false;
+}
+else if(sd_st==2){
+    $.mobile.changePage("#sd_mode_tips",{transition: "slide",changeHash: true});
+    return false;
+}
+else if(sd_st==4){
+    $.mobile.changePage("#sd_mode_tips1",{transition: "slide",changeHash: true});
+    return false;
+}
+
+var wan_access = parseInt($(data).find("wan_access").text());
+if(wan_access==1)
+{
+	$('#back_to_web').show();
+}
+
+  var exist = parseInt($(data).find("init").text());
+  all_capacity = parseInt($(data).find("tcap").text());
+  curr_path = $(data).find("curr_path").text();
+//var free_cap = $(data).find("free").text()+'MB';
+free_size = parseInt($(data).find("free").text());
+
+  var list_html="";
+  page_num=0;
+  var sub_path;
+  if(exist){
+    var file_num = parseInt($(data).find("cnt").text());
+    if(file_num) page_num = Math.ceil(file_num/100);
+    var cpath_html;
+    if(curr_path=='/') {
+     if(filter_num==255)   cpath_html = '<a href="#" class="ui-disabled">All Files</a>';
+     if(filter_num==8)   cpath_html = '<a href="#" class="ui-disabled">Document</a>';
+     if(filter_num==2)   cpath_html = '<a href="#" class="ui-disabled">Audio</a>';
+     if(filter_num==4)   cpath_html = '<a href="#" class="ui-disabled">Video</a>';
+     if(filter_num==1)   cpath_html = '<a href="#" class="ui-disabled">Image</a>';
+     if(filter_num==16)   cpath_html = '<a href="#" class="ui-disabled">Package</a>';
+    }
+    else{
+      sub_path=curr_path.split('/');
+      cpath_html ="<a href='javascript:;'>Pre</a><span>|</span>"+ "<a href='javascript:;'>All</a><span>></span>";
+      if(sub_path.length>6) 
+      {
+        for(var i=1;i<sub_path.length-5;i++){
+         cpath_html +=  "<a href='javascript:;' style='display:none;'>" +sub_path[i] +"</a>";
+        }
+        cpath_html += "<span>...</span><span>></span>";
+        for(var i=sub_path.length-5;i<sub_path.length-2;i++){
+          cpath_html +=  "<a href='javascript:;'>" +sub_path[i] +"</a><span>></span>";
+        }  
+      }  
+      else{
+        for(var i=1;i<sub_path.length-2;i++){
+          cpath_html +=  "<a href='javascript:;'>" +sub_path[i] +"</a><span>></span>";
+        }  
+      }
+      cpath_html += "<a href='javascript:;' class='ui-disabled'>" + sub_path[i] + "</a>";
+    }
+    if(is_search){
+      cpath_html += "<span>></span><a href='javascript:;' class='ui-disabled'>search:" + $('#search').val() + "</a>";
+      $('#search').val('');
+    }
+
+    $('#cpath').html(cpath_html);
+ //   $('#cpath').navbar();
+
+    curr_page_file_cnt=0;
+    if(file_num) $(data).find("file").each(function(){
+        if($(this).children('succ').text()=="1"){
+            curr_page_file_cnt++;
+            var path = $(this).children('path').text();
+            var name=$(this).children('name').text();
+            var size=parseInt($(this).children('size').text());
+            var full_path= encodeURIComponent('sd'+path+name);
+            size = getFileSize(size);
+            //<span class="ui-li-count">131 kb</span>
+            if(parseInt(size)!=-1){
+                switch(checkFileType(name)){
+                    case 4:
+//                        list_html += '<li><a data-ajax="false" target="foo" href="/sd'+path+name + '"><i class="file_icon pdf"></i><label style="display:none">'+path+'</label><span class="file_name">'  + name +  '</span><span class="ui-li-count">'+ size +'</span></a><a href="#" class="delete">delete</a></li>';
+                        list_html += '<li><a data-ajax="false" target="foo" href='+full_path+'><i class="file_icon pdf"></i><label style="display:none">'+path+'</label><span class="file_name_show">'  + name.replace(/ /g,'&nbsp;') +  '</span><span class="file_name">'  + name +  '</span><span class="ui-li-count">'+ size +'</span></a><a href="#" class="delete">delete</a></li>';
+
+                    break;
+                    case 1:
+                        list_html += '<li><a href=\''+full_path+ '\' class="swipebox" title=\''+name+'\'><i class="file_icon img"></i><label style="display:none">'+path+'</label><span class="file_name_show">'  + name.replace(/ /g,'&nbsp;') +  '</span><span class="file_name">'  + name +  '</span><span class="ui-li-count">'+ size +'</span></a><a href="#" class="delete">delete</a></li>';
+//                        list_html += '<li><a href=\'/sd'+path+name + '\' class="swipebox" title=\''+name+'\'><i class="file_icon img"></i><label style="display:none">'+path+'</label><span class="file_name">'  + name +  '</span><span class="ui-li-count">'+ size +'</span></a><a href="#" class="delete">delete</a></li>';
+                    break;
+                    case 6:
+                        list_html += '<li><a data-ajax="false" target="foo" href='+full_path+'><i class="file_icon zip"></i><label style="display:none">'+path+'</label><span class="file_name_show">'  + name.replace(/ /g,'&nbsp;') +  '</span><span class="file_name">'  + name +  '</span><span class="ui-li-count">'+ size +'</span></a><a href="#" class="delete">delete</a></li>';
+                    break;
+                    default:
+                        list_html += '<li><a data-ajax="false" target="foo" href='+full_path+'><i class="file_icon unknown"></i><label style="display:none">'+path+'</label><span class="file_name_show">'  + name.replace(/ /g,'&nbsp;') +  '</span><span class="file_name">'  + name +  '</span><span class="ui-li-count">'+ size +'</span></a><a href="#" class="delete">delete</a></li>';
+                    break;
+                }
+            }
+            else{
+                list_html += '<li><a href="#" class="dict"><i class="file_icon floder"></i><label style="display:none">'+path+'</label><b style="display:none;">'+name+'</b><span class="file_name_show">'  + name.replace(/ /g,'&nbsp;') +  '</span><span class="file_name">'  + name +  '</span></a><a href="#" class="delete">delete</a></li>';
+            }
+             
+        }
+    });
+    list_html += '<li class="last_li"></li>';
+  }
+  else {
+    if(curr_path=='/') {
+     list_html = "<li><a href='#'>SD Card not found!</a></li>"
+    }
+    else{
+     list_html = "<li><a href='#'>Path not found!</a></li>"
+    }
+  }
+
+if(curr_page<page_num-1)
+{
+   $('#btn_next').removeClass('ui-disabled'); 
+}
+else $('#btn_next').addClass('ui-disabled');
+if(curr_page>0)
+{
+   $('#btn_pre').removeClass('ui-disabled'); 
+}
+else $('#btn_pre').addClass('ui-disabled');    
+
+if(!file_num || !curr_page_file_cnt) list_html='<li style="color: #F50">No Files</li>';
+
+  $('#list').html(list_html);
+  $('#list').listview('refresh');
+  $(".swipebox").swipebox();
+$.mobile.hidePageLoadingMsg();
+}
+
+var upload_state_interval;
+function refresh_upload_state(){
+  if(token_index==-1) return;
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_upload_state.xml",
+type: "Post", 
+headers: headers,
+cache: false,
+timeout: 20000,
+datatype: "xml",
+data: {count: '0'}, 
+success: function(data, status) {
+var new_token=$(data).find("token").text();
+      if(new_token=="-1"){
+        top.location.reload(true); 
+        return false;
+      }
+token_index=0;
+$("#csrf_token").val(new_token);
+var state = parseInt($(data).find("state").text());
+var count = parseInt($(data).find("count").text());
+if(!state && !count) { if(upload_state_interval) clearInterval(upload_state_interval); $('#upload_state_tips').html(''); $('#start_upload').removeClass('ui-disabled');}
+else $('#start_upload').addClass('ui-disabled');
+}
+});
+}
+
+
+$("document").ready(function(){
+curr_page=0;
+filter_num=255;
+var ua = navigator.userAgent.toLowerCase();
+isIOS7=ua.match(/(ipad)|(iphone)|(ipod)/i); /*&& ua.match(/(version\/7)/i );*/
+if(location.hostname.search(/jiofi.local.html/i)>=0 || location.hostname.search(/192.168./i)>=0) {
+  $('#back_to_web').show();
+  $('.file-upload').show();
+    if(isIOS7) {
+      $('#up_file').attr('accept','image/*');
+      $('#icon_ios7_upload').show();
+    }
+}
+else {
+  $('#back_to_web').hide();
+  $('.file-upload').hide();
+  $('#icon_ios7_upload').hide();
+};  
+
+$.mobile.showPageLoadingMsg("a","loading",false);
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post",
+headers: headers,
+datatype: "xml",
+data: { path:"/",page:"0",filter:filter_num}, 
+success: onSuccess,
+});
+
+
+$('a.dict').live('click',function(){
+//var path = curr_path;
+curr_page=0;
+//var path = $(this).find('label').html();
+//path += $(this).find('span').html()+'/';
+var path = $(this).find('label').text();
+path += $(this).find('b').text()+'/';
+//path=encodeURIComponent(path);
+
+$.mobile.showPageLoadingMsg("a","loading",false);
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers,
+datatype: "xml",
+data: { path:path,page:"0",filter:'255' }, 
+success: onSuccess,
+})
+});
+
+$('#btn_refresh').live('click',function(){
+$.mobile.showPageLoadingMsg("a","loading",false);
+if(!is_search){
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post",
+headers: headers, 
+datatype: "xml",
+data: { path:curr_path,page:curr_page,filter:filter_num }, 
+success: onSuccess,
+})  
+}
+else{
+  var p_search = $('#search')[0].value;
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_search.xml",
+type: "Post", 
+headers: headers,
+datatype: "xml",
+data: { path:curr_path,page:curr_page,search:p_search }, 
+success: onSuccess,
+})
+}
+
+});
+
+$('#btn_next').live('click',function(){
+$.mobile.showPageLoadingMsg("a","loading",false);
+if(curr_page<page_num-1)curr_page++;
+if(!is_search)
+{
+  var headers={};
+  token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers,
+datatype: "xml",
+data: { path:curr_path,page:curr_page,filter:'255' }, 
+success: onSuccess,
+})
+}
+else{
+var p_search = $('#search')[0].value;
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_search.xml",
+type: "Post",
+headers: headers, 
+datatype: "xml",
+data: { path:curr_path,page:curr_page,search:p_search }, 
+success: onSuccess,
+})
+}
+
+});
+
+$('#btn_pre').live('click',function(){
+$.mobile.showPageLoadingMsg("a","loading",false);
+if(curr_page>0) curr_page--;
+if(!is_search){
+    var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+  $.ajax({ 
+  url: "/wxml/sd_show_curr.xml",
+  type: "Post", 
+  headers: headers,
+  datatype: "xml",
+  data: { path:curr_path,page:curr_page,filter:'255' }, 
+  success: onSuccess,
+  })
+}
+else{
+var p_search = $('#search')[0].value;
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_search.xml",
+type: "Post",
+headers: headers, 
+datatype: "xml",
+data: { path:curr_path,page:curr_page,search:p_search }, 
+success: onSuccess,
+})
+}
+
+});
+
+
+
+
+$("#cpath > a").live("click",function(){
+$.mobile.showPageLoadingMsg("a","loading",false);
+curr_page=0;
+var clk_txt = this.innerHTML;
+var sub_path = curr_path.split('/');
+var post_data ="";
+var path = curr_path.substring(0,curr_path.length-1);
+if(clk_txt=="Pre") post_data =path.substring(0,path.lastIndexOf('/')+1);
+else if(clk_txt=="All Files") post_data ="/";
+else{
+//var index = $(this).index();
+var index = $("#cpath > a").index($(this));
+for(var i=0;i<index-1;i++){
+post_data += sub_path[i]+'/';
+}
+post_data += sub_path[i]+'/';
+} 
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post",
+headers: headers, 
+datatype: "xml",
+data: { path:post_data,page:"0",filter:'255'  }, 
+success: onSuccess,
+})
+});
+
+$('#filter_s a').live('click',function(){
+$.mobile.showPageLoadingMsg("a","loading",false);
+  var index=$('#filter_s a').index($(this));
+  if(index==0) filter_num=255;
+  else if(index==1) filter_num=8; //doc
+  else if(index==2) filter_num=2; //
+  else if(index==3) filter_num=4;
+  else if(index==4) filter_num=1;
+  else if(index==5) filter_num=16;
+  else filter_num = 255;
+/*
+if(filter_num!=255){
+$('.file-upload').hide();
+}
+else $('.file-upload').show();
+*/
+//$( "#right-panel" ).panel( "close" );
+
+$('#pop_icon_cate').popup('close');
+var headers={};
+token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post",
+headers: headers, 
+datatype: "xml",
+data: { path:'/',page:"0",filter:filter_num  }, 
+success: onSuccess,
+});
+});
+
+});
+
+
+
+var file_upload_list_flag=new Array();
+
+$( document ).on( "pageinit", "#demo-page", function() {
+
+$('#more').tap(function(){
+
+    $( "#right-panel" ).panel( "open" );
+});
+
+$('#up_file,#up_file_ios').live('change',function(){
+var files=this.files;
+if(files.length==0) return;
+file_upload_list_flag.length=0;
+var tbody_up_html='';
+var all_file_size=0;
+if($(document).width()>640){
+  $('#upload_table thead').html('<tr class="ui-bar-d"><th data-priority="1">Name</th><th data-priority="3">Size</th><th data-priority="2">Status</th></tr>');
+  for (var i=0;i<files.length;i++){
+    var tr_id= "upd_tr"+i;
+    tbody_up_html += "<tr id='"+tr_id+"'><td>" + files[i].name +"</td><td>"+ getFileSize(files[i].size) +"</td><td class='cancel_upload'>Cancel</td></tr>";
+    file_upload_list_flag[i]=1;
+    all_file_size += files[i].size;
+  }
+}
+else {
+  for (var i=0;i<files.length;i++){
+    var tr_id= "upd_tr"+i;
+    tbody_up_html += "<tr id='"+tr_id+"'><td>Name:&nbsp;" + files[i].name +"</td><td>Size:&nbsp;"+ getFileSize(files[i].size) +"</td><td class='cancel_upload'>Cancel</td></tr>";
+    file_upload_list_flag[i]=1;
+    all_file_size += files[i].size;
+  }  
+}
+
+if( (parseInt(all_file_size/1048576)+2) > free_size){
+   control.replaceWith( control = control.clone( true ) );
+   popup_tips("<b style='color:red;'>Warning:</b>&nbsp;&nbsp;The remaining space is not enough!");
+  return;
+}
+
+
+  $('#upload_state_tips').html('');  
+$('#upload_table tbody').html(tbody_up_html);
+//$('#start_upload').removeClass('ui-disabled');
+
+$('#start_upload').addClass('ui-disabled');
+  var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+  $.ajax({ 
+    url: "/wxml/sd_upload_state.xml",
+    type: "Post", 
+    headers: headers,
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: {count: files.length}, 
+    success: function(data, status) {
+      var new_token=$(data).find("token").text();
+      if(new_token=="-1"){
+      top.location.reload(true); 
+      return false;
+      }
+      token_index=0;
+$("#csrf_token").val(new_token);
+
+      hf_alloc_data.start_id=parseInt($(data).find("alloc_file_id").text());
+      hf_alloc_data.session=$(data).find("session_id").text();
+      hf_alloc_data.token=$(data).find("alloc_token_id").text();
+      hf_alloc_data.id_cnt=files.length;
+      var state = parseInt($(data).find("state").text());
+      var count = parseInt($(data).find("count").text());
+      if(!state && !count) {
+$('#start_upload').removeClass('ui-disabled');
+      }
+      else {
+        upload_state_interval=setInterval(refresh_upload_state,5000);
+        $('#upload_state_tips').html('Another upload instance found,please wait...');
+      }
+    }
+    });
+
+
+//$('#popup_href').click();
+$.mobile.changePage( "#upload_list", { role: "dialog" } );
+$('#upload_table').trigger('create').table('refresh');
+});
+
+
+$(".cancel_upload").live('click',function(){
+//__bugs::  var index = $('.cancel_upload').index($(this));
+  var index = $(this).parent().attr('id').substring(6);
+  file_upload_list_flag[index]=0;
+  $(this).parent().css('display','none');
+var list_num=0;
+for(i=0;i<file_upload_list_flag.length;i++){
+  if(file_upload_list_flag[i]) list_num++;
+}
+if(!list_num){
+  $('#upload_list').dialog('close');
+}
+});
+
+
+$('#start_upload').live('click',function(){
+//  $(this).hide();
+$(this).addClass('ui-disabled');
+  var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+  $.ajax({ 
+    url: "/wxml/sd_upload_state.xml",
+    type: "Post", 
+    headers: headers,
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: {count: '0'}, 
+    success: function(data, status) {
+      var new_token=$(data).find("token").text();
+
+      if(!new_token.length){
+        $('#upload_state_tips').html('Session timeout,please login again.');
+        setTimeout(function(){
+          location.href="msd_login.html";
+        },3000);
+        return;
+      }
+
+      if(new_token=="-1"){
+      top.location.reload(true); 
+      return false;
+      }
+      token_index=0;
+$("#csrf_token").val(new_token);
+      var state = parseInt($(data).find("state").text());
+      var count = parseInt($(data).find("count").text());
+      if(!state && !count) {
+if(curr_path=='/'){
+    var foldername = new Date().Format("YYYY.MM");
+    var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+  $.ajax({ 
+  url: "/wxml/sd_new.xml",
+  type: "Post", 
+  headers: headers,
+  datatype: "xml",
+  data: { path:curr_path,name:foldername  }, 
+  success: function(data, status) {
+    var new_token=$(data).find("token").text();
+    if(new_token=="-1"){
+    top.location.reload(true); 
+    return false;
+    }
+    token_index=0;
+$("#csrf_token").val(new_token);
+    var result = parseInt($(data).find('new').text());
+    var exist = parseInt($(data).find('exist').text());
+    if(!result && exist){  result = 2; }
+    if(result>0) curr_path = '/'+foldername+'/';
+       $('.file_list_del').parent().html('&nbsp;');
+       send_files(0);
+    }
+   }
+  );    
+}
+else{
+  send_files(0);
+}
+      }
+      else {
+        upload_state_interval=setInterval(refresh_upload_state,5000);
+        $('#upload_state_tips').html('Another upload instance found,please wait...');
+      }
+    }
+    });
+})
+
+
+
+var control = $("#up_file");
+var control1 = $("#up_file_ios");
+
+$('#upload_list').live('pagehide',function(){
+  if(_interval) clearInterval(_interval);
+  if(time_s) clearInterval(time_s);
+  if(xhr) xhr.abort();
+  control.replaceWith( control = control.clone( true ) );
+//  control1.replaceWith( control1 = control1.clone( true ) );
+    var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+  $.ajax({ 
+    url: "/wxml/sd_show_curr.xml",
+    type: "Post", 
+    headers: headers,
+    datatype: "xml",
+    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: onSuccess,
+    })
+})
+
+$.event.special.swipe.horizontalDistanceThreshold = 100;
+$.event.special.swipe.verticalDistanceThreshold  = 20;
+
+$( document ).on( "swipeleft swiperight", "#list li.ui-li", function( event ) {
+var listitem = $( this ),
+dir = event.type === "swipeleft" ? "left" : "right",
+transition = $.support.cssTransform3d ? dir : false;
+if(dir==="right")
+  confirmAndDelete( listitem, transition );
+else  RenameFile(listitem, transition );
+});
+if ( ! $.mobile.support.touch ) {
+$( "#list" ).removeClass( "touch" );
+$( ".delete" ).live( "click", function() {
+var listitem = $( this ).parent( "li.ui-li" );
+confirmAndDelete( listitem );
+});
+}
+
+function refresh_file_list(){
+  var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+headers: headers,
+datatype: "xml",
+data: { path:curr_path,page:curr_page ,filter:filter_num},
+success: onSuccess,
+});
+}
+
+function confirmAndDelete( listitem, transition ) {
+    
+    listitem.addClass( "ui-btn-down-d" );
+    $( "#confirm .file_name_show" ).remove();
+    listitem.find(".file_name_show").clone().insertAfter( "#question" );
+    $( "#confirm" ).popup( "open" );
+   $(document).delegate(".ui-page", "touchmove", false);
+    $( "#confirm #del_cancel" ).on( "click", function() {
+        listitem.removeClass( "ui-btn-down-d" );
+        $( "#confirm #del_yes" ).off();
+        $(document).undelegate(".ui-page", "touchmove", false);
+    });
+
+    $( "#confirm #del_yes" ).on( "click", function() {
+    if(!listitem) return;
+    listitem.removeClass( "ui-btn-down-d" );
+    $( "#confirm #del_cancel" ).off();
+    var path=listitem.find("label").text();
+    var file = listitem.find(".file_name").text();
+
+        if ( transition ) {
+            listitem
+                .removeClass( "ui-btn-down-d" )
+                .addClass( transition )
+                .on( "webkitTransitionEnd transitionend otransitionend", function() {
+                    listitem.remove();
+                    $( "#list" ).listview( "refresh" ).find( ".ui-li.border" ).removeClass( "border" );
+                })
+                .prev( "li.ui-li" ).addClass( "border" );
+        }
+        else {
+            listitem.remove();
+            $( "#list" ).listview( "refresh" );
+        }
+
+    listitem = null;
+      var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+    $.ajax({ 
+      url: "/wxml/sd_del.xml",
+      type: "Post", 
+      headers: headers,
+      datatype: "xml",
+      data: { path1:path,file1:file},
+      success: function(data, status) {
+        var new_token=$(data).find("token").text();
+        if(new_token=="-1"){
+        top.location.reload(true); 
+        return false;
+        }
+        token_index=0;
+$("#csrf_token").val(new_token);
+      var result = parseInt($(data).find('del').eq(0).text());
+      if(result==1) $.mobile.showPageLoadingMsg("b","Delete success!",true);
+      else 
+        {
+          var msg=['Delete Fail','Delete Success!','','','Operation not permitted','No such file or directory','Permission denied','Device or resource is busy','File or directory already open',' File name too long'];
+          if(result==3) result=4;
+          else if(result==2) result=5;
+          else if(result==13) result=6;
+          else if(result==16) result=7;
+          else if(result==26) result=8;
+          else if(result==36) result=9;
+         $.mobile.showPageLoadingMsg("e",msg[result],true); 
+        }
+      setTimeout(refresh_file_list,2000);
+  
+      },
+    })
+    $(document).undelegate(".ui-page", "touchmove", false);
+});
+}
+/*
+$('#new_folder').on('click',function(){
+new_folder();
+})
+
+
+$('#pop_sd_system').on('click',function(){
+$.ajax({ 
+url: "/wxml/sd_show_curr.xml",
+type: "Post", 
+datatype: "xml",
+data: { path:curr_path,page:curr_page,filter:'255'  }, 
+success: onSuccess,
+});
+
+var total_cap='';
+if(all_capacity!=0){
+  if(all_capacity<1024) total_cap = '1GB';
+  else if(all_capacity<2048) total_cap = '2GB';
+  else if(all_capacity<4096) total_cap = '4GB';
+  else if(all_capacity<8192) total_cap = '8GB';
+  else if(all_capacity<16384) total_cap = '16GB';
+  else if(all_capacity<32768) total_cap = '32GB';
+  else total_cap= 'Unknown';
+}
+else total_cap= '0';
+
+var free_cap=output_capacity(free_size);
+$('#all_cap').html(total_cap);
+$('#free_cap').html(free_cap);
+$.mobile.changePage( "#sd_system", { role: "dialog" } );
+});
+*/
+
+$('#format_card').on('click',function(){
+  $.mobile.changePage( "#sd_format_confirm", { role: "dialog" } );
+});
+
+$('#format_card_confirm').on('click',function(){
+$.mobile.changePage( "#demo-page", { role: "page" } );
+    var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+  $.ajax({ 
+  url: "/wxml/sd_format.xml",
+  type: "Post", 
+  headers: headers,
+  cache: false,
+  timeout: 20000,
+  async: true,
+  datatype: "xml",
+  data: { nu:'1'  }, 
+  success: function(data, status) {
+    var new_token=$(data).find("token").text();
+    if(new_token=="-1"){
+    top.location.reload(true); 
+    return false;
+    }
+    token_index=0;
+$("#csrf_token").val(new_token);
+    var format = parseInt($(data).find("format").text());
+    if(1 == format) popup_tips('Format success!');
+    else if(2 == format) popup_tips('Format fail! <br> File or directory already open');
+    else popup_tips('Format fail!');
+
+    curr_path='/';
+    curr_page=0;
+    filter_num=255;
+      var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+    $.ajax({ 
+      url: "/wxml/sd_show_curr.xml",
+      type: "Post", 
+      headers: headers,
+      cache: false,
+      timeout: 20000,
+      datatype: "xml",
+      data: { path:curr_path,page:curr_page,filter:filter_num  }, 
+      success: onSuccess,
+      });
+  },
+  });
+})
+
+$('.Tmain').on('tap',function(){
+  PathRun();
+  return false;
+});
+
+$('#icon_search').on('tap',function(){
+//	$('#search').focus();
+//  $('#pop_search').popup("open");
+  $.mobile.changePage("#pop_search",{role:"dialog"});
+  $("#search").focus();
+//  PathRun();
+});
+
+// $('#icon_ios7_upload').on('tap',function(){
+//   $('#pop_upload_ios7').popup('open');
+// });
+
+$('#icon_help').on('tap',function(){
+  window.open("help.html#105","_blank");
+});
+
+$('#icon_new').on('tap',function(){
+  new_folder();
+});
+
+$('#icon_sd').on('tap',function(){
+  var total_cap='';
+if(all_capacity!=0){
+  if(all_capacity<1024) total_cap = '1GB';
+  else if(all_capacity<2048) total_cap = '2GB';
+  else if(all_capacity<4096) total_cap = '4GB';
+  else if(all_capacity<8192) total_cap = '8GB';
+  else if(all_capacity<16384) total_cap = '16GB';
+  else if(all_capacity<32768) total_cap = '32GB';
+  else total_cap= 'Unknown';
+}
+else total_cap= '0';
+
+var free_cap=output_capacity(free_size);
+$('#all_cap').html(total_cap);
+$('#free_cap').html(free_cap);
+//PathRun();
+$.mobile.changePage( "#sd_system", { role: "dialog" } );
+});
+
+
+///$('#icon_cate').on('tap',function(){
+//  PathRun();
+///  $('#pop_icon_cate').popup('open');
+
+//  $.mobile.changePage( "#pop_icon_cate", { role: "dialog" } );
+
+///})
+
+$('#pop_search').on('pagehide',function(){
+$('#search').val("");
+})
+
+
+
+$('#btn_search').click(function(){
+  $('#form_search').submit();
+})
+
+
+$('#form_search').submit(function(event){
+  var psearch = $('#search')[0].value;
+  if(psearch.length){
+    is_search=1;
+  var ppath;
+  if(filter_num==255){
+    ppath = curr_path;
+  }
+  else ppath = '/';
+    var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+  $.ajax({ 
+    url: "/wxml/sd_show_search.xml",
+    type: "Post", 
+    headers: headers,
+    datatype: "xml",
+    data: { path:ppath,page:'0',search:psearch }, 
+    success: onSuccess,
+  });    
+  }
+//  $("#right-panel").panel( "close" );
+//  event.preventDefault();
+//  $('#pop_search').popup('close');
+  return false;
+})
+
+var new_folder_show=0;
+
+function new_folder()
+{
+  $('#new_folder_name').attr('value','New Folder');
+//  $( "#pop_new_folder" ).popup( "open" );
+$.mobile.changePage( "#pop_new_folder", { role: "dialog" } );
+  $('#new_folder_name').focus();
+  new_folder_show=1;
+//  $(document).delegate(".ui-page", "touchmove", false);
+    $( "#yes2" ).on( "click", function() {
+     if(!new_folder_show) return;
+
+  var folder_name = $('#new_folder_name').val();
+
+    if(!folder_name.length)
+    {
+      $('#new_folder_name').focus();
+      return;
+    }
+
+     var ptn=/[:*?<>\\"/|]/im;
+    if(ptn.test(folder_name)){
+      $("#new_folder_name_error").html("File name error! File name can not contains: *?:|<>\\/\"");
+      setTimeout(function(){$("#new_folder_name_error").html("")},4000);
+      return;
+    }
+
+
+    $( "#pop_new_folder" ).dialog( "close" );
+    new_folder_show=0;
+
+    if(curr_path=='/' && filter_num!=255){
+      filter_num=255;
+      var yymm = new Date().Format("YYYY.MM");
+      var headers={};
+      token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+      $.ajax({ 
+        url: "/wxml/sd_new.xml",
+        type: "Post", 
+        headers: headers,
+        datatype: "xml",
+        data: { path:curr_path,name:yymm},
+        success: function(data, status) {
+          var new_token=$(data).find("token").text();
+          if(new_token=="-1"){
+          top.location.reload(true); 
+          return false;
+          }
+          token_index=0;
+$("#csrf_token").val(new_token);
+          var result = parseInt($(data).find('new').text());
+          var exist = parseInt($(data).find('exist').text());
+          if(!result && exist){  result = 2; }
+          if(result>0) {
+            curr_path = '/'+yymm+'/';
+        }
+      }
+    });
+  }
+    var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+    $.ajax({ 
+      url: "/wxml/sd_new.xml",
+      type: "Post", 
+      headers: headers,
+      datatype: "xml",
+      data: { path:curr_path,name:folder_name},
+      success: function(data, status) {
+        var new_token=$(data).find("token").text();
+        if(new_token=="-1"){
+        top.location.reload(true); 
+        return false;
+        }
+        token_index=0;
+$("#csrf_token").val(new_token);
+      var result = parseInt($(data).find('new').text());
+      if(result==1) {
+        $.mobile.showPageLoadingMsg("e","New folder success!",true);
+      }
+      else{
+        var exist = parseInt($(data).find('exist').text());
+        if(exist) $.mobile.showPageLoadingMsg("e","New folder existed!",true); 
+        else $.mobile.showPageLoadingMsg("e","New folder fail!",true); 
+      }
+    filter_num=255;
+      setTimeout(refresh_file_list,2000);
+      },
+  });
+      $(document).undelegate(".ui-page", "touchmove", false);
+    });
+/*
+    $( "#cancel2" ).on( "click", function() {
+        $( "#pop_new_folder" ).popup( "close" );
+          $(document).undelegate(".ui-page", "touchmove", false);
+    });*/
+}
+
+
+function RenameFile( listitem, transition ) {
+    
+    listitem.addClass( "ui-btn-down-d" );
+    $( "#rename .input_name" ).remove();
+    var old_name = listitem.find( ".file_name" );
+    $('#new_name').attr('value',old_name.text());
+
+//    $("#rename").popup( "open" );
+$.mobile.changePage("#rename",{role: "dialog",});
+
+    $(document).delegate(".ui-page", "touchmove", false);
+    $( "#rename #cancel1" ).on( "click", function() {
+        listitem.removeClass( "ui-btn-down-d" );
+        $( "#rename #yes1" ).off();
+        $(document).undelegate(".ui-page", "touchmove", false);
+    });
+
+    $( "#rename #yes1" ).on( "click", function() {
+    if(!listitem) return;
+    listitem.removeClass( "ui-btn-down-d" );
+    $( "#rename #cancel" ).off();
+    var path=listitem.find("label").text();
+    var oldname = listitem.find(".file_name").text();
+    var newname = $('#new_name').attr('value');
+
+     var ptn=/[:*?<>\\"/|]/im;
+    if(newname.length && newname.lastIndexOf('.') && !ptn.test(newname)){
+      listitem = null;
+      var headers={};
+    token_used=$("#csrf_token").val();
+token_index=-1;
+headers["__RequestVerificationToken"]=token_used;
+    $.ajax({ 
+      url: "/wxml/sd_rename.xml",
+      type: "Post", 
+      headers: headers,
+      datatype: "xml",
+      data: { path:path,old_name:oldname,new_name:newname},
+      success: function(data, status) {
+        var new_token=$(data).find("token").text();
+        if(new_token=="-1"){
+        top.location.reload(true); 
+        return false;
+        }
+        token_index=0;
+$("#csrf_token").val(new_token);
+      var result = parseInt($(data).find('rename').text());
+      if(result==1) $.mobile.showPageLoadingMsg("e","Rename success!",true);
+      else {
+        var exist = parseInt($(data).find('exist').text());
+        if(exist) $.mobile.showPageLoadingMsg("e","Rename name existed!",true);
+        else {
+          var msg=['Rename Fail','Rename Success!','File name existed!','File name error!','File or directory already open','File or directory already delete','File name too long!'];
+          if(result==13) result=0;
+          else if(result==16) result=4;
+          else if(result==26) result=4;
+          else if(result==36) result=6;
+          else if(result > 6) result=0;
+         $.mobile.showPageLoadingMsg("e",msg[result],true); 
+        }
+       }
+      },
+    })
+   }
+   else{
+    $("#name_error").html("File name error!<br> File name can not contains: *?:|<>\\/\"");
+    setTimeout(function(){$("#name_error").html("")},4000);
+    $(document).undelegate(".ui-page", "touchmove", false);
+    return false;
+   }
+   setTimeout(refresh_file_list,2000);
+   $(document).undelegate(".ui-page", "touchmove", false);
+  });
+}
+});
+
+</script>
+</head> 
+<body> 
+
+<div data-role="page" id="demo-page" data-title="Wi-Fi Disk" data-theme="d">
+<div data-role="header" data-position="fixed">
+<a id="back_to_web"  href="index.htm" data-role="button"  rel="external" data-ajax="false" data-inline="true" data-icon="home" data-iconpos="left" style="display: none">Home</a>
+<h1>Wi-Fi Disk</h1>
+<!--<a data-icon="grid" id="more_to_upload">Upload</a>-->
+<label data-role="button" data-icon="arrow-u" class="file-upload" style="display: none">Upload
+<input id="up_file" type="file" name="files" multiple>
+</label>
+</div>
+<div id="cpath"></div>
+<div data-role="content">
+
+<ul data-filter="false"  class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-split-theme="d" id="list">    
+</ul>
+
+
+</div><!-- /content -->
+
+<div id="confirm" class="ui-content" data-role="popup" data-theme="none"  data-dismissible="false" style="word-wrap: break-word; word-break: break-all;">
+<p id="question">Are you sure you want to delete</p>
+<div class="ui-grid-a">
+<div class="ui-block-a">
+<a id="del_yes" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Yes</a>
+</div>
+<div class="ui-block-b">
+<a id="del_cancel" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Cancel</a>
+</div>
+</div>
+</div>
+
+
+
+<div data-role="popup" id="capacity_tips" class="ui-content" data-theme="e" data-overlay-theme="a">
+  <p id="sd_tips"><p>
+</div>
+
+
+<div data-role="popup" id="pop_upload_ios7" data-theme="e" data-overlay-theme="a"><!-- class="ui-content"  -->
+<label id="upload_ios7_mov" data-role="button" data-mini="true" data-icon="arrow-u" class="file-upload-ios7" data-iconpos="right" >Upload Video
+    <input id="up_file_ios" type="file" name="files">
+</label>
+</div>
+
+
+<div data-role="footer" data-id="foo1" data-position="fixed" >
+<div data-role="navbar" data-grid="b">
+    <ul>
+        <li><a href="javascript:;" id="btn_refresh">Refresh</a></li>
+        <li><a href="javascript:;" id="btn_pre">Pre</a></li>
+        <li><a href="javascript:;" id="btn_next">Next</a></li>
+    </ul>
+</div>
+</div>
+    <div data-role="panel" id="right-panel" data-display="push" data-position="right" data-theme="c" style="margin-top:2.4em;">
+ <!--   <div style="margin-top:0;">
+     <form id="form_search" style="display:inline-block;*display:inline;zoom:1;" onsubmit="javascript:;"><input id="search" type="search" title="please input filename you want to search" results=5  placeholder="search filename.." /></form>
+    </div>-->
+<!--    
+    <ul data-role="listview" data-inset="true" data-divider-theme="e" id="filter_s">
+   
+    <li data-role="list-divider">Filter</li>
+    <li><a >All Files</a></li>
+    <li><a >Document</a></li>
+    <li><a >Audio</a></li>
+    <li><a >Video</a></li>
+    <li><a >Image</a></li>
+    <li><a >Package</a></li>
+    </ul>
+<div style="margin-top:1em;">
+<label data-role="button" data-mini="true" data-icon="arrow-u" class="file-upload" data-iconpos="right" >Upload
+<input id="up_file" type="file" name="files" multiple >
+</label>
+</div>
+<div style="margin-top:1em;">
+<label id="upload_ios7_mov" data-role="button" data-mini="true" data-icon="arrow-u" class="file-upload-ios7" data-iconpos="right" >Upload(mov) for IOS7
+<input id="up_file_ios" type="file" name="files">
+</label>
+</div>
+-->
+<!--
+<div style="margin-top:1em;">
+<a id="new_folder" href="#" data-role="button" data-mini="true"  data-icon="plus" data-iconpos="right">New Folder</a>
+</div>-->
+<!--
+<div style="margin-top:1em;">
+<a id="pop_sd_system" href="#" data-role="button" data-mini="true"  data-icon="gear" data-iconpos="right" data-rel="dialog" data-transition="pop">SD System</a>
+</div>
+
+<a href="simple.html#home" data-role="button" data-theme="e"  rel="external" data-ajax="false" data-inline="true" data-icon="home" data-iconpos="right">Back</a>
+<a href="#" data-rel="close" data-role="button" data-theme="e" data-inline="true" data-icon="delete" data-iconpos="right">Close</a>
+-->
+</div><!-- /panel -->
+
+<a id='popup_href' href="#upload_list" data-rel="dialog" data-position-to="window" class="ui-screen-hidden" data-transition="pop">&nbsp;</a>
+
+
+<div data-role="popup" id="pop_icon_cate" data-theme="e" >
+    <ul data-role="listview" data-inset="true" data-divider-theme="e" id="filter_s">
+   
+    <li data-role="list-divider">Category</li>
+    <li><a >All Files</a></li>
+    <li><a >Document</a></li>
+    <li><a >Audio</a></li>
+    <li><a >Video</a></li>
+    <li><a >Image</a></li>
+    <li><a >Package</a></li>
+    </ul>
+</div>  
+
+<div class="PathInner" id="PathMenu" data-role="none">
+  <div class="PathMain">
+    <div class="Tmain">
+      <div class="rotate" data-transform="rotate(0deg)"><span class="cover"></span></div>
+    </div>
+  </div>
+  <div class="PathItem"> <a class="link" href="#pop_icon_cate" data-rel="popup" data-position-to="origin"> <span class="item" id="icon_cate" data-transform="rotate(0deg)"></span> </a></div>
+  <div class="PathItem"> <a class="link" href="#" > <span class="item" id="icon_new" data-transform="rotate(0deg)"></span> </a></div>
+  <div class="PathItem"> <a class="link" href="#"> <span class="item" id="icon_search" data-transform="rotate(0deg)"></span> </a></div>
+  <div class="PathItem"> <a class="link" href="#"> <span class="item" id="icon_sd" data-transform="rotate(0deg)"></span> </a></div>
+    <div class="PathItem"> <a class="link" href="#"> <span class="item" id="icon_help" data-transform="rotate(0deg)"></span> </a></div>
+  <div class="PathItem"> <a class="link" href="#pop_upload_ios7" data-rel="popup" > <span class="item" id="icon_ios7_upload" data-transform="rotate(0deg)"></span> </a></div>
+</div>
+
+</div><!-- /page -->
+
+<div data-role="dialog" id="upload_list" data-close-btn="right">
+
+    <div data-role="header" data-theme="e">
+        <h1>Upload</h1>
+    </div><!-- /header -->
+
+    <div data-role="content" data-theme="d">
+<!--        <h4>File List</h4>
+<p>I have an id of "popup" on my page container and only look like a dialog because the link to me had a <code>data-rel="dialog"</code> attribute which gives me this inset look and a <code>data-transition="pop"</code> attribute to change the transition to pop. Without this, I'd be styled as a normal page.</p>-->
+<!--
+<table data-role="table" id="upload_table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive"  data-column-popup-theme="b">
+-->
+<table data-role="table" id="upload_table" data-mode="reflow" class="upload-list table-stroke">
+<thead><tr class="ui-bar-d"><th data-priority="1"></th><th data-priority="3"></th><th data-priority="2"></th></tr></thead>
+  <tbody></tbody>  
+</table>
+        <p style="float:right;">
+        <a href="javascript:;" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back</a>
+        <a  href="javascript:;" data-role="button" data-inline="true" data-icon="arrow-u" data-theme="e" id="start_upload">Start</a></p>
+    </div><!-- /content -->
+    <div data-role="footer">
+        <h4 id="upload_state_tips">&nbsp;</h4>
+    </div><!-- /footer -->
+</div><!-- /page popup -->
+
+<div id="rename" data-role="dialog" data-theme="e" >
+<p id="question1">Please input the new name:</p>
+<div>
+<input type="text" name="name" id="new_name" />
+</div>
+<div id="name_error" style="color:white;text-shadow: 0 1px 1px rgba(0,0,0,.6);"> </div>
+<div class="ui-grid-a">
+<div class="ui-block-a">
+<a id="yes1" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Yes</a>
+</div>
+<div class="ui-block-b">
+<a id="cancel1" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Cancel</a>
+</div>
+</div>
+</div>
+
+<div data-role="dialog" id="pop_search" data-theme="e" data-overlay-theme="a" >
+     <form id="form_search"  onsubmit="javascript:;"><input id="search" type="search" title="please input filename you want to search" results=5  placeholder="search filename.." /></form>
+     <!-- <a id="btn_search" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Yes</a>
+ -->
+<div class="ui-grid-a">
+<div class="ui-block-a">
+<a id="btn_search" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Yes</a>
+</div>
+<div class="ui-block-b">
+<a data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Cancel</a>
+</div>
+</div>
+
+</div>
+
+
+
+<div data-role="dialog" id="sd_system" data-close-btn="right">
+<div data-role="header" data-theme="e">
+<h1>SD system</h1>
+</div>
+<div data-role="content" data-theme="d">
+<div style="height:2em"><b>SD Capacity:&nbsp;&nbsp;&nbsp;&nbsp;</b><span id="all_cap"></span></div>
+<div style="height:2em"><b>Free Capacity:&nbsp;&nbsp;&nbsp;&nbsp;</b><span id="free_cap"></span></div>
+<a href="javascript:;" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back</a>
+<a id="format_card" href="#" data-role="button" data-inline="true" data-icon="delete" data-theme="e">Format</a>
+</div>
+<div data-role="footer">
+<h4>&nbsp;</h4>
+</div>
+</div>
+
+<div data-role="dialog" id="sd_format_confirm" data-close-btn="right">
+<div data-role="header" data-theme="e">
+<h1>Format Confirm</h1>
+</div>
+<div data-role="content" data-theme="d">
+  <p>All files will be destroyed,please backup your files.</p><p>Do you want to continue?</p>
+<a href="javascript:;" data-rel="back" data-role="button" data-inline="true" data-icon="back">Cancel</a>
+<a id="format_card_confirm" href="#" data-role="button" data-inline="true" data-icon="delete" data-theme="e">Yes</a>
+</div>
+<div data-role="footer">
+<h4>&nbsp;</h4>
+</div>
+</div>
+<!--
+<div id="pop_new_folder" class="ui-content" data-role="popup" data-theme="none" data-dismissible="false">
+<p id="question1">Please input the new folder name:</p>
+<input type="text" name="name" id="new_folder_name" />
+<div class="ui-grid-a">
+<div class="ui-block-a">
+<a id="yes2" data-role="button" data-mini="true" data-shadow="false" data-theme="b" >Yes</a>
+</div>
+<div class="ui-block-b">
+<a id="cancel2" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Cancel</a>
+</div>
+</div>
+</div>
+-->
+<div data-role="dialog" id="pop_new_folder" data-close-btn="right">
+<div data-role="header" data-theme="e">
+<h1>New Folder</h1>
+</div>
+<div data-role="content" data-theme="d">
+<p>Please input the new folder name:</p>
+<div data-role="fieldcontain">
+<input type="text" name="name" id="new_folder_name" />
+</div>
+<p id="new_folder_name_error" style="color:red;"></p>
+<a href="javascript:;" data-rel="back" data-role="button" data-inline="true" data-icon="back">Cancel</a>
+<a id="yes2" href="#" data-role="button" data-inline="true" data-icon="check" data-theme="e">Yes</a>
+</div>
+</div>
+
+
+    <div data-role="page" id="no_sd_tips" data-theme="e" data-history="false">
+    <p><strong>Please insert SD card first!</strong></p>
+    <a href="index.htm" data-role="button"  rel="external" data-ajax="false" data-inline="true" data-icon="home" data-iconpos="left">Home</a>
+    </div>
+    <div data-role="page" id="sd_mode_tips" data-theme="e" data-history="false">
+    <!-- <p><strong>Please make sure that storage settting mode should be set as WiFi storage or Internet storage</strong></p> -->
+    <p><strong>Please make sure that storage settting mode should be set as WiFi storage</strong></p>
+    <a href="index.htm" data-role="button"  rel="external" data-ajax="false" data-inline="true" data-icon="home" data-iconpos="left">Home</a>
+    </div>
+    <div data-role="page" id="sd_mode_tips1" data-theme="e" data-history="false">
+    <!-- <p><strong>Please make sure that storage settting mode should be set as Internet storage</strong></p> -->
+    <p><strong>Please make sure that storage settting mode should be set as WiFi storage</strong></p>
+    <a href="index.htm" data-role="button"  rel="external" data-ajax="false" data-inline="true" data-icon="home" data-iconpos="left">Home</a>
+    </div>
+<input id="csrf_token" type="hidden" value="<% get_csrf_token(); %>">
+</body>
+</html>

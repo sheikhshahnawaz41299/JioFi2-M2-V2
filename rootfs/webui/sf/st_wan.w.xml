@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wan>
+<update><% stats_update(); %></update>
+<t_tx><% get_tx(); %></t_tx>
+<t_rx><% get_rx(); %></t_rx>
+<wan_op_mode>NAT</wan_op_mode>
+<wan_conn_mode>PPP</wan_conn_mode>
+<plps><% get_t_drop(); %></plps>
+<host><% get_host_name_wan(); %></host>
+<wan_ip><% get_wan_ip(); %></wan_ip>
+<wan_ipv6><% get_wan_ipv6(); %></wan_ipv6>
+<ipv6_prefix_len><% get_ipv6_prefix_len(); %></ipv6_prefix_len>
+<wan_submask><% get_wan_subnet_mask(); %></wan_submask>
+<wan_gate><% get_wan_gate(); %></wan_gate>
+<ipv6_gate><% get_ipv6_gate(); %></ipv6_gate>
+<pri_dns><% get_wan_pri_dns(); %></pri_dns>
+<ipv6_pri_dns><% get_ipv6_pri_dns(); %></ipv6_pri_dns>
+<sec_dns><% get_wan_sec_dns(); %></sec_dns>
+<ipv6_sec_dns><% get_ipv6_sec_dns(); %></ipv6_sec_dns>
+</wan>

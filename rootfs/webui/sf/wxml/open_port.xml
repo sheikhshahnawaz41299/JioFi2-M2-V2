@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<port>
+<adb>switch_adbd(adb_sw,adb_key)</adb>
+<diag>switch_usb_diag(diag_sw,diag_key)</diag>
+</port>

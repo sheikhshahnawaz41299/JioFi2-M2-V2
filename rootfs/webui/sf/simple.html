@@ -1,0 +1,973 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>MF800 Mini UI</title> 
+<meta charset="utf-8" />
+<!--<meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<link rel="apple-touch-icon" href="iosicon.png"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+<!--
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+-->
+<meta content="telephone=no" name="format-detection" />
+<script src="jquery-1.8.2.min.js"></script>
+<script src="jquery.mobile-1.3.2.min.js"></script>
+<link rel="stylesheet" href="jquery.mobile-1.3.2.min.css" />
+<script type="text/javascript" charset="UTF-8" src="custom.js"></script>
+<script type="text/javascript" src="md5.js" charset="utf-8"></script>
+<style type="text/css">
+#login_tips{height:1.4em;color: red;margin-top: 0px;}
+
+.status_th{font-weight: bold;width: 60%;display: inline-block;}
+
+.hsd0,.hsd1,.hsd2,.hsd3,.hsd4,.hsd5,.hsd6,.hsd7,.hsd8,.hsd9,.hsd10,.hsd11{width: 51px;height: 35px;background: url(/img/wifi_status1.gif) no-repeat transparent;display:inline-block;}
+
+.hsd0,.hsd1,.hsd2,.hsd3,.hsd4,.hsd5,.hsd6,.hsd7,.hsd8,.hsd9,.hsd10,.hsd11{*display: inline;}
+
+.hsd0{background-position:-102px 0px;}
+.hsd1{background-position:-153px 0px;}
+.hsd2{background-position:-204px 0px;}
+.hsd3{background-position:-255px 0px;}
+.hsd4{background-position:-306px 0px;}
+.hsd5{background-position:-357px 0px;}
+.hsd6{background-position:-408px 0px;}
+.hsd7{background-position:-459px 0px;}
+.hsd8{background-position:-510px 0px;}
+.hsd9{background-position:-561px 0px;}
+.hsd10{background-position:-612px 0px;}
+.hsd11{background-position:-663px 0px;}
+</style>
+
+<script type="text/javascript">
+
+var rand,submited=0,is_login_page=0,sd_exist,sd_st;
+
+function RandHandler(data,status){
+  rand = $(data).find("value").text();
+}
+
+function logout_handle(){
+  
+}
+
+function login_check_handle(data,status){
+ login = parseInt($(data).find("login").text())&0x0F;
+ lpm = parseInt($(data).find("lpm").text());
+  sd_exist = parseInt($(data).find("sd").text());
+ sd_st = parseInt($(data).find("st").text());
+ if(login<2 && !is_login_page){
+   $.mobile.changePage("#page_login",{transition: "pop",changeHash: true});
+ }
+}
+
+function check_login(){
+  $.ajax({ 
+  url: "mark_m_login.w.xml",
+  type: "Get",
+  datatype: "xml",
+  success: login_check_handle,
+  });
+}
+
+
+function login_page_action(){
+is_login_page=1;
+$('#Name').val('admin');
+$('#password').val('');
+
+  $.ajax({ 
+	url: "/wxml/login_exit.xml",
+	type: "Post",
+	datatype: "xml",
+  data: {null: '0'}, 
+	success: logout_handle,
+  });
+
+	$('#password').focus();
+	$.ajax({ 
+	url: "rand.w.xml",
+	type: "Get",
+	datatype: "xml",
+	success: RandHandler,
+	});	
+}
+
+
+$("document").ready(function(){
+var hash=location.hash;
+if(hash.length && hash!='#home'){
+  location.href="/simple.html";
+  return false;
+}
+else if(hash=='#home'){
+
+}
+else{
+login_page_action();
+}
+
+var timer1;
+$('#home').on('pageshow',function(){
+check_login();
+timer1 = setInterval(check_login,3000);
+});
+
+$('#page_login').on('pageshow',function(){
+  $('#login_tips').html('&nbsp;');
+  if(timer1) clearInterval(timer1);
+  login_page_action(); 
+});
+
+
+$('#login').click(function(){
+  var user = $('#Name').val();
+  var pwd = $('#password').val();
+
+  if(submited) return;
+  if(!user.length) { $('#login_tips').html("Please input username!").trigger('create'); return false;}
+  if(!pwd.length) { $('#login_tips').html("Please input password!").trigger('create'); return false;}
+  submited=1;
+$('#login_tips').html('&nbsp;');
+	$.ajax({ 
+	url: "/wxml/post_login.xml",
+	type: "Post", 
+	datatype: "xml",
+	data: { Name: user,password:hex_md5(rand+pwd.toLowerCase()),rand: rand}, 
+	success: post_handle,
+	});
+});
+
+
+function post_handle(data,status){
+  var result = parseInt($(data).find('login_check').text());
+  submited=0;
+  if(result==0 || result ==2 || result ==4) $('Name').focus();
+  else $('password').focus();
+  if(result==4) $('#login_tips').html("login timeout,please retry").trigger('create');
+  else if(result==5) $('#login_tips').html("hacking detected").trigger('create');
+  else if(result==0) $('#login_tips').html("username & password error").trigger('create');
+  else if(result==1) $('#login_tips').html("password error").trigger('create');
+  else if(result==2) $('#login_tips').html("username error").trigger('create');
+  else if(result==3) {
+    is_login_page =0;
+  	$.mobile.changePage("#home",{transition: "pop",changeHash: true});
+  };
+  if(result!=3){
+      $.ajax({ 
+      url: "rand.w.xml",
+      type: "Get",
+      datatype: "xml",
+      success: RandHandler,
+      });
+  }
+}
+var apn_obj;
+var dial_mode;
+function get_apn_list(data,status){
+  dial_mode = parseInt($(data).find('dial_mode').text());
+  var apn_active = parseInt($(data).find('apn_active').text());
+  var apn_list_obj=$("#apn_select")[0];
+  var select_html='';
+  var index=0;
+  apn_obj=$(data).find('apn');
+    
+  apn_obj.each(function(){
+    var apn_name= $(this).children('apn_name').text();
+    var user= $(this).children('user').text();
+    var pwd= $(this).children('pwd').text();
+
+    if(apn_name=='-') apn_name="APN "+index;
+    apn_list_obj.options[index]=new Option(apn_name,index);
+//    select_html += '<option>'+apn_name+'</option>'
+    if(index==apn_active){
+      $('#profile_name').val(apn_name);
+      $('#apn_user').val(user);
+      $('#apn_pwd').val(pwd);
+    }
+    index++;
+  });
+  $('#apn_select').val(apn_active).selectmenu('refresh',true);
+  if(apn_active==0){
+  	$('#profile_name').attr('disabled','disabled');
+  	$('#apn_user').attr('disabled','disabled');
+  	$('#apn_pwd').attr('disabled','disabled');
+  }
+}
+
+
+//$(document).on('pageinit','#quick_set_p2',function(){
+$(document).on('pageshow','#quick_set_p2',function(){
+  $.ajax({ 
+	url: "mark_m_apn.w.xml",
+	type: "Get",
+	datatype: "xml",
+	success: get_apn_list,
+	});
+});
+
+//$(document).on('pageinit','#quick_set_p3',function(){
+$(document).on('pageshow','#quick_set_p3',function(){
+  $('#dial_mode').val(dial_mode).slider("refresh");
+
+});
+
+
+$(document).on('pageinit','#quick_set_p4',function(){
+  $.ajax({ 
+	url: "mark_m_wifi.w.xml",
+	type: "Get",
+	datatype: "xml",
+	success: get_wifi_cfg,
+	});
+});
+
+
+$(document).on('pageinit','#quick_set_p5',function(){
+  $('#div_wifi_key1').hide();
+  $.ajax({ 
+	url: "mark_m_wifi.w.xml",
+	type: "Get",
+	datatype: "xml",
+	success: get_wifi_sec,
+	});
+});
+
+
+
+
+function get_wifi_sec(data,status){
+var sec_mode = $(data).find('enc_type').text().split(',');
+var wifi_key = $(data).find('key').text();
+var enc_type=sec_mode[0];
+var wpa_option=sec_mode[1];
+
+$('#enc_type').val(enc_type).selectmenu('refresh',true);
+$('#wpa_option').val(wpa_option).selectmenu('refresh',true);
+$('#wifi_key').val(wifi_key);
+$('#wifi_key1').val(wifi_key);
+
+if(enc_type=='0'){
+  $('#div_wpa_option').hide();
+  $('#div_wifi_key').hide();
+  $('#div_wifi_key1').hide();
+}
+else if(enc_type=='1'){
+  $('#div_wpa_option').hide();
+}
+}
+
+
+function get_wifi_cfg(data,status){
+ var ssid = $(data).find('ssid').text();
+ var brd =  parseInt($(data).find('brd').text());
+ $('#ssid').val(ssid);
+ $('#brd').val(brd).slider("refresh"); 
+}
+
+
+$('#show_wifi_pwd').on('change',function(){
+  var chk = $(this)[0].checked;
+
+  if(chk){
+    $('#show_wifi_pwd1').attr("checked",true).checkboxradio("refresh");
+    $('#div_wifi_key1').show();
+    $('#div_wifi_key').hide();
+    $('#wifi_key1').val($('#wifi_key').val());
+  }
+  else{
+    $('#show_wifi_pwd').attr("checked",false).checkboxradio("refresh");
+    $('#div_wifi_key1').hide();
+    $('#div_wifi_key').show();
+    $('#wifi_key').val($('#wifi_key1').val()); 
+  }
+});
+
+
+$('#show_wifi_pwd1').on('change',function(){
+  var chk = $(this)[0].checked;
+  if(chk){
+    $('#show_wifi_pwd1').attr("checked",true).checkboxradio("refresh");
+    $('#div_wifi_key1').show();
+    $('#div_wifi_key').hide();
+    $('#wifi_key1').val($('#wifi_key').val());
+  }
+  else{
+    $('#show_wifi_pwd').attr("checked",false).checkboxradio("refresh");
+    $('#div_wifi_key1').hide();
+    $('#div_wifi_key').show();
+    $('#wifi_key').val($('#wifi_key1').val());
+  }
+});
+
+
+$('#enc_type').bind('change',function(){
+  var selected = $(this).val();
+  if(selected==0){
+  	$('#div_wpa_option').hide();
+    $('#div_wifi_key').hide();
+  }
+  else if(selected==1){
+  	$('#div_wpa_option').hide();
+    if($('#show_wifi_pwd')[0].checked){
+      $('#div_wifi_key1').show();
+      $('#div_wifi_key').hide();
+    }
+    else{
+      $('#div_wifi_key1').hide();
+    $('#div_wifi_key').show();	
+  }
+  }
+  else{
+    $('#div_wpa_option').show();
+    
+    if($('#show_wifi_pwd')[0].checked){
+      $('#div_wifi_key1').show();
+      $('#div_wifi_key').hide();  	
+    }
+    else{
+     $('#div_wifi_key1').hide();  
+    $('#div_wifi_key').show();	
+  }
+  }
+});
+
+
+$('#apn_select').bind('change',function(){
+  var selected = $(this).val();
+  var apn_name= apn_obj.eq(selected).children('apn_name').text();
+  var user= apn_obj.eq(selected).children('user').text();
+  var pwd= apn_obj.eq(selected).children('pwd').text();
+  if(apn_name=='-') {
+    apn_name="APN "+selected;
+    user="";
+    pwd="";
+    $('#apn_user').focus();
+  }
+  $('#profile_name').val(apn_name);
+  $('#apn_user').val(user);
+  $('#apn_pwd').val(pwd);
+   if(selected==0){
+  	$('#profile_name').attr('disabled','disabled');
+  	$('#apn_user').attr('disabled','disabled');
+  	$('#apn_pwd').attr('disabled','disabled');
+  }
+  else{
+  	$('#profile_name').textinput('enable');
+  	$('#apn_user').textinput('enable');
+  	$('#apn_pwd').textinput('enable');
+  }
+})
+
+
+$(document).on('pageshow','#quick_set_p6',function(){
+$('#sum_apn_name').html($('#profile_name').val());
+$('#sum_apn_user').html($('#apn_user').val());
+
+var dial_mode = parseInt($('#dial_mode').val());
+if(!dial_mode) $('#sum_dial_mode').html('AUTO');
+else $('#sum_dial_mode').html('MANUAL');
+
+$('#sum_ssid').html($('#ssid').val());
+
+var brd = parseInt($('#brd').val());
+if(!brd) $('#sum_broad').html('DISABLE');
+else $('#sum_broad').html('ENABLE');
+
+
+var enc_type = parseInt($( "#enc_type" ).val());
+if(enc_type==0){
+  $('#sum_wpa_option').html('NONE');
+}
+else if(enc_type==1){
+  $('#sum_wpa_option').html('WEP');
+}
+else $('#sum_wpa_option').html($( "#wpa_option option:selected").text());
+});
+
+
+$('#submit_quick_set').click(function(){
+if(confirm('This action will disconnect your WiFi connection.Do you still want to continue?')){
+var dial_mode = $('#dial_mode').val();
+var apn_index = $( "#apn_select" ).val();
+var apn_name = $('#profile_name').val();
+var user = $('#apn_user').val();
+var pwd =  $('#apn_pwd').val();
+var ssid = $('#ssid').val()
+var enc_type = $('#enc_type').val();
+var wpa =  $('#wpa_option').val();
+var key =  $("#wifi_key").val();
+var brd =  $('#brd').val();
+$.ajax({ 
+	url: "/wxml/set_m_quick.xml",
+	type: "Post", 
+	datatype: "xml",
+	data: { dial_mode: dial_mode,apn_index:apn_index,apn_name: apn_name,user:user,pwd:pwd,ssid:ssid,enc_type:enc_type,wpa:wpa,key:key,brd:brd,restart:'1'}, 
+	success: set_submit_handle,
+	});
+}
+});
+
+function page_reload(){
+  $.mobile.changePage("#home",{transition: "pop",changeHash: true});
+}
+
+function set_submit_handle(data,status){
+  var dial_mode = $(data).find('dial_mode').text();
+  var apn = $(data).find('apn').text();
+  var ssid = $(data).find('ssid').text();
+  var enc_type = $(data).find('enc_type').text();
+  var key = $(data).find('key').text();
+  var brd = $(data).find('brd').text();
+  if(dial_mode && apn &&ssid &&enc_type &&key&&brd) alert("Success!");
+  else alert("Fail!");
+  setTimeout(page_reload,3000);
+}
+//var str_opmode=['No service','1x','EVDO','EVDO RevA','EVDO RevB',]
+//var str_netstatus=['Connected','Disconnected','Connecting','Tearing down','Dormant'];
+var str_netstatus=['static ip disconnected','static ip connected','dhcp client disconnected','dhcp client connected','pppoe disconnected','pppoe connected','modem initializing','modem dialing','modem disconnected','modem connected']
+var netstatus,lpm;
+function get_status(data,status){
+  var cspn = $(data).find('cspn').text();
+  if(cspn=='-1') cspn="smartfren";
+  var net_type = $(data).find('net_type').text();
+  var sig = parseInt($(data).find('sig').text());
+  netstatus= parseInt($(data).find('netstatus').text());
+  lpm= parseInt($(data).find('lpm').text());
+  var dial_mode = parseInt($(data).find('dial_mode').text());
+  var tx = $(data).find('tx').text();
+  var rx = $(data).find('rx').text();
+  var duration = $(data).find('active_time').text();
+  var user_cnt = $(data).find('user_cnt').text();
+  
+  var net_type_text,show_sig,netstatus_text,tbody_html;
+/*
+  if(net_type==0) {
+  }
+  else if(net_type==1) {
+    show_sig = 'hsd'+one_sig;
+  }
+  else {
+    show_sig = 'hsd'+do_sig;
+  }
+*/   
+
+show_sig = 'hsd'+sig;
+if(sig=='-1') show_sig='hsd0';
+//  net_type_text = str_opmode[net_type];
+  netstatus_text = str_netstatus[netstatus].toUpperCase();
+
+  if(dial_mode){
+    $('#div_dial_hang').show();
+    if(netstatus==7){
+      $('#dial_hang  .ui-btn-text').text('Connecting');
+    }
+    else if(netstatus==9){
+      $('#dial_hang  .ui-btn-text').text('Disconnect');
+    }
+    else {
+      $('#dial_hang  .ui-btn-text').text('Connect');
+    }
+  }
+  else $('#div_dial_hang').hide();
+
+
+
+  tbody_html = 
+    "<tr><td><label class='status_th'>Network name:</label><span>"+cspn+"</span></td></tr><tr><td><label class='status_th'>Network type:</label><span>"+net_type+ "</span></td></tr><tr><td><label class='status_th'>Signal level:</label><span class='"+show_sig+"'></span></td></tr><tr><td><label class='status_th'>Connection status:</label><span>"+netstatus_text+"</span></td></tr><tr><td><label class='status_th'>Sent:</label><span>" +tx+ "</span></td></tr><tr><td><label class='status_th'>Received:</label><span>"+rx+"</span></td></tr><tr><td><label class='status_th'>Duration:</label><span>"+duration+"</span></td></tr><tr><td><label class='status_th'>Current WiFi user:</label><span>"+user_cnt+"</span></td></tr>";
+
+  $('#tb_status tbody').html(tbody_html);
+  $('#tb_status').table('refresh');
+}
+
+function get_status_req(){
+  $.ajax({ 
+	url: "mark_m_status.w.xml",
+	type: "Get",
+	datatype: "xml",
+	success: get_status,
+  });
+}
+
+var timer;
+$(document).on('pageshow','#page_status',function(){
+   get_status_req();
+   timer = setInterval(get_status_req,3000);
+});
+
+
+$(document).on('pagehide','#page_status',function(){
+   if(timer) clearInterval(timer);
+});
+
+
+$('#dial_hang').click(function(){
+  if(netstatus==2 || netstatus==3) return;
+  if(lpm) {
+    $.mobile.showPageLoadingMsg("e","Please open 3G and retry!",true);
+    setTimeout(function(){
+      $.mobile.hidePageLoadingMsg();
+    },4000);
+    return;
+  }
+  var data = (netstatus==1)?'0':'1';
+  $.ajax({ 
+  url: "/wxml/conn.xml",
+  type: "Post", 
+  datatype: "xml",
+  data: { conn: data },
+  });
+});
+
+
+$('.to_logout').click(function(){
+  $.mobile.changePage("#page_login",{transition: "pop",changeHash: true});
+});
+
+$('.to_home').click(function(){
+  $.mobile.changePage("#home",{transition: "pop",changeHash: true});
+});
+
+$('#to_page_status').click(function(){
+  $.mobile.changePage("#page_status",{transition: "slide",changeHash: true});
+});
+
+$('#to_msd').click(function(){
+if(!sd_exist){
+$('#no_sd_tips').popup('open');
+setTimeout(function(){$('#no_sd_tips').popup('close');},5000);
+return false;
+}
+else{
+  if(sd_st==2){
+    $('#sd_mode_tips').popup('open');
+    setTimeout(function(){$('#sd_mode_tips').popup('close');},5000);
+    return false;
+  }
+  else{
+    location.href="msd.html";  
+  }
+}
+});
+
+$('#to_qs_p1').click(function(){
+  $.mobile.changePage("#quick_set_p1",{transition: "slide",changeHash: true});
+});
+
+$('#to_qs_p2').click(function(){
+  $.mobile.changePage("#quick_set_p2",{transition: "slide",changeHash: true});
+});
+
+$('#to_qs_p3').click(function(){
+  $.mobile.changePage("#quick_set_p3",{transition: "slide",changeHash: true});
+});
+
+$('#to_qs_p4').click(function(){
+  $.mobile.changePage("#quick_set_p4",{transition: "slide",changeHash: true});
+});
+
+$('#to_qs_p5').click(function(){
+
+ if($('#ssid').val().length<3){
+   alert('SSID too short!');
+   return;
+ }
+  $.mobile.changePage("#quick_set_p5",{transition: "slide",changeHash: true});
+});
+
+$('#to_qs_p6').click(function(){
+  var enc_type = parseInt($('#enc_type').val());
+
+  if($('#show_wifi_pwd')[0].checked) {
+    $("#wifi_key").val($("#wifi_key1").val());    
+  }
+
+ var key = $("#wifi_key").val();
+ 
+  if(enc_type==0){
+  	if(confirm('We strongly recommend using encryption.Please review your manual for details of different encryption types.Are you sure you want to continue?')){
+    	$.mobile.changePage("#quick_set_p6",{transition: "pop",changeHash: true});
+    }
+  }
+  else{
+  	if(enc_type==1 && key.length!=5 && key.length!=13){
+	   alert('KEY WEP length must be 5 or 13.');
+	   return;
+	 }
+	 else if(enc_type>1 && key.length<8){
+	   alert('KEY too short(Minimum 8 characters).');
+	   return;
+	 }
+	 $.mobile.changePage("#quick_set_p6",{transition: "pop",changeHash: true});
+	}
+});
+
+$('#back_qs_p1').click(function(){
+  $.mobile.changePage("#quick_set_p1",{transition: "slide",reverse: true,changeHash: true});
+});
+
+
+$('#back_qs_p2').click(function(){
+  $.mobile.changePage("#quick_set_p2",{transition: "slide",reverse: true,changeHash: true});
+});
+
+$('#back_qs_p3').click(function(){
+  $.mobile.changePage("#quick_set_p3",{transition: "slide",reverse: true,changeHash: true});
+});
+
+$('#back_qs_p4').click(function(){
+  if($('#show_wifi_pwd')[0].checked) {
+    $("#wifi_key").val($("#wifi_key1").val());    
+  }
+  $.mobile.changePage("#quick_set_p4",{transition: "slide",reverse: true,changeHash: true});
+});
+
+$('#back_qs_p5').click(function(){
+  $.mobile.changePage("#quick_set_p5",{transition: "slide",reverse: true,changeHash: true});
+});
+
+});
+
+</script>
+
+
+</head>
+<body>
+
+<!-- Start of first page -->
+<div data-role="page" id="page_login">
+
+	<div data-role="header">
+		<h1>LOGIN</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<div data-role="fieldcontain">
+		    <label for="Name">Username:</label>
+		    <input type="text" name="Name" id="Name" maxlength="30" placeholder="input username" value="">
+		</div>
+		<div data-role="fieldcontain" >
+		    <label for="password">Password:</label>
+		    <input type="password" name="password" id="password" maxlength="30" placeholder="input password" value="">
+		</div>
+		
+        <div id="login_tips">&nbsp;</div>
+   <div style="margin-top:0px;">     
+		<input type="button" value="LOGIN" id="login" data-icon="check" data-theme="b"  data-iconpos="right">
+	 </div>
+  </div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+		<h4 style="font-size:0.6em;">Copyright &copy; 2015 All Rights Reserved.</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<!-- Start of second page -->
+<div data-role="page" id="home">
+
+	<div data-role="header">
+		<a data-icon="arrow-l" href="#" class="to_logout">LOG OUT</a>
+		<h1>HOME</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<ul data-role="listview" data-inset="true">
+		    <li><a href="#" id="to_qs_p1">
+		        <img style="width:64px;height:64px;padding:12px;" src="/img/cog.png">
+		        <h1 style="font-size:1.5em;">Quick Setup</h1>
+		        </a>
+		    </li>
+		    <li><a href="#" id="to_page_status">
+		        <img style="width:64px;height:64px;padding:12px;" src="/img/status.png">
+		        <h2 style="font-size:1.5em;">STATUS</h2>
+		        </a>
+		    </li>
+		    <li><a href="#" id="to_msd" rel="external" data-ajax="false">
+		        <img style="width:64px;height:64px;padding:12px;" src="/img/iosicon.png">
+		        <h2 style="font-size:1.5em;">Wi-Fi Disk</h2>
+		        </a>
+		    </li>
+		</ul>
+    <div data-role="popup" id="no_sd_tips" data-theme="e" data-history="false">
+    <p><strong>Please insert SD card first!</strong></p>
+    </div>
+    <div data-role="popup" id="sd_mode_tips" data-theme="e" data-history="false">
+    <p><strong>Please make sure that storage settting mode should be set as WiFi storage or internet storage</strong></p>
+    </div>
+		<!--
+		  <p>I'm the second in the source order so I'm hidden when the page loads. I'm just shown if a link that references my id is beeing clicked.</p>
+		  <p><a href="#foo">Back to foo</a></p>
+		-->
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position='fixed'>
+		<h4 style="font-size:0.6em;">Copyright &copy; 2015 All Rights Reserved.</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+<div data-role="page" id="quick_set_p1">
+	<div data-role="header">
+		<a data-icon="arrow-l" href="#" class="to_logout">LOG OUT</a>
+		<h1>Quick Setup</h1>
+		<a data-icon="arrow-u" href="#" class="to_home">HOME</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		  <p>Follow the onscreen instructions to configure your device quickly.On the following pages.click "Next" to continue or "Back" to return to the previous page.To exit without saving these settings.click "Cancel"</p>
+		  <a href="#" id="to_qs_p2" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-r" >Next</a>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position='fixed'>
+		<h4 style="font-size:0.6em;">Copyright &copy; 2015 All Rights Reserved.</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<div data-role="page" id="quick_set_p2">
+	<div data-role="header">
+		<a data-icon="arrow-l" href="#" class="to_logout">LOG OUT</a>
+		<h1>Quick Setup</h1>
+		<a data-icon="arrow-u" href="#" class="to_home">HOME</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+	  <div style="font-size:1.2em;"> Configure profile settings</div>
+      
+      <div data-role="fieldcontain">
+		  <label for="apn_select">APN List:</label>
+		  <select name="apn_select" id="apn_select">
+
+		  </select>
+	  </div>
+
+      <div data-role="fieldcontain">
+		  <label for="profile_name">Profile name:</label>
+		  <input type="text" name="profile_name" id="profile_name" maxlength="30" placeholder="Profile name" value="">
+	  </div>
+	  <div data-role="fieldcontain">
+		<label for="apn_user">User name:</label>
+		<input type="text" name="apn_user" id="apn_user" maxlength="30" placeholder="User name" value="">
+	  </div>
+      <div data-role="fieldcontain">
+		<label for="apn_pwd">Password:</label>
+		<input type="password" name="apn_pwd" id="apn_pwd" maxlength="30" placeholder="Password" value="">
+	  </div>
+
+      <a href="#" id="back_qs_p1" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-l" data-inline="true">Back</a>
+	  <a href="#" id="to_qs_p3" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-r" data-inline="true">Next</a>
+      <a href="#" class="to_home" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="delete" data-inline="true">Cancel</a>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position='fixed'>
+		<h4 style="font-size:0.6em;">Copyright &copy; 2015 All Rights Reserved.</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="quick_set_p3">
+	<div data-role="header">
+		<a data-icon="arrow-l" href="#" class="to_logout">LOG OUT</a>
+		<h1>Quick Setup</h1>
+		<a data-icon="arrow-u" href="#" class="to_home">HOME</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+	  <div style="font-size:1.2em;"> Configure Dial-up Settings</div>
+      
+      <div data-role="fieldcontain">
+		  <label for="dial_mode">Connection mode:</label>
+			<select name="dial_mode" id="dial_mode" data-role="slider">
+			    <option value="1">Manual</option>
+			    <option value="0">Auto</option>
+			</select>
+	  </div>
+
+      <a href="#" id="back_qs_p2" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-l" data-inline="true">Back</a>
+	  <a href="#" id="to_qs_p4" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-r" data-inline="true">Next</a>
+      <a href="#" class="to_home" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="delete" data-inline="true">Cancel</a>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position='fixed'>
+		<h4 style="font-size:0.6em;">Copyright &copy; 2015 All Rights Reserved.</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<div data-role="page" id="quick_set_p4">
+	<div data-role="header">
+		<a data-icon="arrow-l" href="#" class="to_logout">LOG OUT</a>
+		<h1>Quick Setup</h1>
+		<a data-icon="arrow-u" href="#" class="to_home">HOME</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+	  <div style="font-size:1.2em;"> Configure WLAN Settings</div>
+      <div data-role="fieldcontain">
+		<label for="ssid">Name (SSID):</label>
+		<input type="text" name="ssid" id="ssid" maxlength="30" placeholder="ssid" value="">
+	  </div>
+      <div data-role="fieldcontain">
+		  <label for="brd">SSID Broadcast:</label>
+			<select name="brd" id="brd" data-role="slider">
+			    <option value="0">Disable</option>
+			    <option value="1">Enable</option>
+			</select>
+	  </div>
+
+      <a href="#" id="back_qs_p3" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-l" data-inline="true">Back</a>
+	  <a href="#" id="to_qs_p5" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-r" data-inline="true" >Next</a>
+      <a href="#" class="to_home" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="delete" data-inline="true">Cancel</a>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position='fixed'>
+		<h4 style="font-size:0.6em;">Copyright &copy; 2015 All Rights Reserved.</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="quick_set_p5">
+	<div data-role="header">
+		<a data-icon="arrow-l" href="#" class="to_logout">LOG OUT</a>
+		<h1>Quick Setup</h1>
+		<a data-icon="arrow-u" href="#" class="to_home">HOME</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+	  <div style="font-size:1.2em;"> Configure WLAN Security</div>
+      <div data-role="fieldcontain">
+		<label for="enc_type">802.11 authentication:</label>
+		<select name="enc_type" id="enc_type">
+		 <option value="0">Disabled
+		</option><option value="1">WEP
+		</option><option value="2">WPA-PSK
+		</option><option value="3">WPA2-PSK
+		</option><option value="4">WPA-PSK/WPA2-PSK
+		</option>   
+		  </select>
+	  </div>
+
+      <div data-role="fieldcontain" id="div_wpa_option">
+		<label for="wpa_option">Encryption mode:</label>
+		<select name="wpa_option" id="wpa_option">
+		 <option value="1">TKIP
+		</option><option value="2">AES
+		</option><option value="3">AES+TKIP
+		</option>   
+		  </select>
+	  </div>
+
+      <div data-role="fieldcontain" id="div_wifi_key">
+		  <label for="wifi_key">WPA pre-shared key:</label>
+        <input type="password" name="wifi_key" id="wifi_key" maxlength="32" placeholder="key" value="">
+        <fieldset data-role="controlgroup" style="margin-top:1em;">
+         <legend>&nbsp;</legend>
+         <input type="checkbox" name="show_wifi_pwd" id="show_wifi_pwd" data-mini="true"/>
+         <label for="show_wifi_pwd">Show password</label>
+        </fieldset>
+	  </div>
+
+    <div data-role="fieldcontain" id="div_wifi_key1">
+      <label for="wifi_key">WPA pre-shared key:</label>
+        <input type="text" name="wifi_key1" id="wifi_key1" maxlength="32" placeholder="key" value="">
+        <fieldset data-role="controlgroup" style="margin-top:1em;">
+         <legend>&nbsp;</legend>
+         <input type="checkbox" name="show_wifi_pwd1" id="show_wifi_pwd1" data-mini="true"/>
+         <label for="show_wifi_pwd1">Show password</label>
+        </fieldset>
+    </div>
+
+      <a href="#" id="back_qs_p4" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-l" data-inline="true">Back</a>
+	  <a id="to_qs_p6" href="#" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-r" data-inline="true">Next</a>
+      <a href="#" class="to_home" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="delete" data-inline="true">Cancel</a>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position='fixed'>
+		<h4 style="font-size:0.6em;">Copyright &copy; 2015 All Rights Reserved.</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="quick_set_p6">
+	<div data-role="header" data-position='fixed'>
+		<a data-icon="arrow-l" href="#" class="to_logout">LOG OUT</a>
+		<h1>Quick Setup</h1>
+		<a data-icon="arrow-u" href="#" class="to_home">HOME</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+	  <div style="font-size:1.2em;"> Configure Summary</div>
+	  <div>Click "Finish" to save the settings.</div>
+      <hr>
+    <div style="font-size:1.1em;padding-left:1em;">
+      <div data-role="fieldcontain">
+      <div style="font-weight:bold;"> Profile name:</div>
+      <div id="sum_apn_name"> </div>
+      </div>
+      <div data-role="fieldcontain">
+      <div style="font-weight:bold;"> User name:</div>
+      <div id="sum_apn_user"> </div>
+      </div>
+      <div data-role="fieldcontain">
+      <div style="font-weight:bold;"> Connection mode:</div>
+      <div id="sum_dial_mode"> </div>
+      </div>
+      <div data-role="fieldcontain">
+	  <div style="font-weight:bold;"> Name(SSID):</div>
+      <div id="sum_ssid"> </div>
+      </div>
+      <div data-role="fieldcontain">
+	  <div style="font-weight:bold;"> SSID Broadcast:</div>
+      <div id="sum_broad"> </div>
+      </div>
+      <div data-role="fieldcontain">
+      <div style="font-weight:bold;"> Encryption mode:</div>
+      <div id="sum_wpa_option"> </div>
+      </div>
+    </div>
+      <a href="#" id="back_qs_p5" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-l" data-inline="true">Back</a>
+	  <a id="submit_quick_set" href="#" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="arrow-r" data-inline="true">Finish</a>
+      <a href="#" class="to_home" data-mini="true" data-role="button" data-theme="b" data-iconpos="right" data-icon="delete" data-inline="true">Cancel</a>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position='fixed'>
+		<h4 style="font-size:0.6em;">Copyright &copy; 2015 All Rights Reserved.</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="page_status">
+	<div data-role="header" data-position='fixed'>
+		<a data-icon="arrow-l" href="#" class="to_logout">LOG OUT</a>
+		<h1>Status</h1>
+		<a data-icon="arrow-u" href="#" class="to_home">HOME</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+
+  <div data-role="fieldcontain" id="div_dial_hang">
+     <label style="display:inline-block;width:9em;font-weight:bold;padding-left:0.5em;">Dial/Hang:</label>
+     <a data-role="button" data-inline="true" data-theme="b" data-mini="true" href="#" id="dial_hang">
+      <span class="ui-btn-inner ui-btn-corner-all">
+        <span class="ui-btn-text">Disconnect</span>
+      </span>
+     </a>
+   </div>
+    <table id="tb_status" data-role="table" data-mode="reflow" class="ui-responsive table-stroke">
+	  <thead>
+	  	<tr>
+	      <td></td>
+	    </tr>
+	  </thead>
+	  <tbody >
+	 </tbody>
+	</table>    
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position='fixed'>
+		<h4 style="font-size:0.6em;">Copyright &copy; 2015 All Rights Reserved.</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+</body>
+
+</html>

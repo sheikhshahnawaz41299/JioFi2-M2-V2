@@ -1,0 +1,439 @@
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a>Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp" class="active-item "><a href="javascript:;">DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" style="display:none;"><a>PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a href="javascript:;">DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">DHCP</h3>
+<div class="line" style="padding:0em 0.6em;">
+  <form class="customform" action="#">
+  <div class="margin">
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">IP Address</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" name="ip" title="ip" placeholder="IP"/>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Subnet Mask</label>
+  </div>
+  <div class="s-12 l-5">
+    <input type="text" name="submask" title="SUBNET MASK" placeholder="SUBNET MASK"/>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">DHCP Server</label>
+  </div>
+  <div class="s-12 l-5 line_form" >
+    <input type="radio" name="dhcp" value="0" /><label class="radio" >Disable</label>
+    <input type="radio" name="dhcp" value="1" /><label class="radio">Enable</label>
+  </div>
+  </div>
+
+  <div class="line" id="div_start_ip">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Start IP</label>
+  </div>
+  <div class="s-12 l-5">
+    <input type="text" name="start" title="START IP" placeholder="START IP"/>
+  </div>
+  </div>
+  <div class="line" id="div_end_ip">
+  <div class="s-12 l-3 line_form">
+  <label class="name">End IP</label>
+  </div>
+  <div class="s-12 l-5">
+    <input type="text" name="end" title="END IP" placeholder="END IP"/>
+  </div>
+  </div>
+  <div class="line" id="div_lease_time">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Lease Time (s)</label>
+  </div>
+  <div class="s-12 l-5">
+    <input type="text" name="leasetime" title="LEASE TIME" placeholder="LEASE TIME"/>
+  </div>
+  </div>
+
+  
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit">APPLY</div>
+  </div>
+  </div>
+  </div>
+  </form>
+  
+</div>
+</div>
+</div>
+<style type="text/css">
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+
+
+@media screen and (min-width:801px) {
+#aside{height:33.3em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:37em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+}
+#errHint{color: red;text-align: center;}
+
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+function load_mark_set(){
+
+}
+
+
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+
+function pop_confirm(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag,
+            noText : 'Cancel',
+            noFn : cancel_disable_dhcp
+        },
+        fixed : false
+    });
+  return false;
+}
+
+
+function cancel_disable_dhcp(){
+  $('input[name=dhcp]').eq(1).attr('checked','true');
+  $('#div_start_ip').show();
+  $('#div_end_ip').show();
+  $('#div_lease_time').show();
+}
+
+$('input[name=ip]').on('input',function(){
+//console.log("ip=%s",$(this).val());
+var str=$(this).val();
+if(str.length<8) $(this).val('192.168.');
+str=$(this).val();
+$(this).val(str.replace(/\.{1,}/g,'.'));
+str=$(this).val();
+var len=$(this).val().split('.').length;
+if(len==3|| len==4){
+  
+  if(len==4){
+    var index= str.lastIndexOf('.')+1;
+    if(index<str.length) str=str.substr(0,index);
+  }
+  $('input[name=start]').val(str);
+  $('input[name=end]').val(str);
+}
+});
+
+$('input[name=start],input[name=end]').on('input',function(){
+var str=$('input[name=ip]').val();
+var len1=str.split('.').length;
+var len2=$(this).val().split('.').length;
+
+if(len2<=len1){
+  if(len1==4&& len2<4) {
+    var index= str.lastIndexOf('.')+1;
+    if(index<=str.length) $(this).val(str.substr(0,index));
+  }
+  else if(len1==4&&len2==4){
+    var index= str.lastIndexOf('.')+1;
+    var str2=$(this).val();
+    var index2= str2.lastIndexOf('.')+1;
+    if(str.substr(0,index) != str2.substr(0,index2)){
+      $(this).val(str.substr(0,index));
+    }
+  }
+  else if(len1==3){
+    $(this).val(str); 
+  }
+}
+
+});
+
+
+
+$('input[name=dhcp],input[name=dhcp]+label').die().live('click',function(){
+  var dhcp_enable = parseInt($('input[name=dhcp]:checked').val());
+  if(!dhcp_enable){
+    $('#div_start_ip').hide();
+    $('#div_end_ip').hide();
+    $('#div_lease_time').hide();
+    //pop_confirm('If you disable dhcp server,you need to set ip manual of your device corrently,otherwise you can not visit web admin any more.Do you want to continue?');
+    pop_confirm('If the Dynamic Host Configuration Protocol(DHCP) server is disabled,the Device does not allocate IP address to clients connected to it and IP address must be entered from each client.Do you want to continue?'); 
+  }
+  else{
+    $('#div_start_ip').show();
+    $('#div_end_ip').show();
+    $('#div_lease_time').show();
+  }
+});
+
+function judge_ip_start_end(start,end){
+var i_st=parseInt(start.split('.')[3]);
+var i_end=parseInt(end.split('.')[3]);
+if(i_st<i_end) return 1;
+return 0;
+}
+
+function judge_ip_range(ip,start,end){
+var i_ip=parseInt(ip.split('.')[3]);
+var i_st=parseInt(start.split('.')[3]);
+var i_end=parseInt(end.split('.')[3]);
+if(i_ip>=i_st && i_ip<=i_end) return 0;
+else return 1;
+}
+
+$('#to_submit').click(function(event){
+  event.preventDefault();
+  var srv_ip=$('input[name=ip]').val();
+  var submask=$('input[name=submask]').val();
+  var enable = $('input[name=dhcp]:checked').val();
+  var start=$('input[name=start]').val();
+  var end=$('input[name=end]').val();
+  var time=$('input[name=leasetime]').val();
+
+  var str_invalid_ip="Please Input Valid IP!"
+
+  if(isIP(srv_ip) && !parseInt(enable)){
+    var ind=srv_ip.lastIndexOf('.')+1;
+    if(!isIP(start)){
+      start=srv_ip.substr(0,ind)+'100';
+      $('input[name=start]').val(start);
+    }
+    if(!isIP(end)){
+      end=srv_ip.substr(0,ind)+'200';
+      $('input[name=end]').val(end);
+    }
+  }
+  if(!isIP(srv_ip)){
+    $('#errHint').html(str_invalid_ip);
+    $('input[name=ip]').focus();
+  }
+  else if(!isMask(submask)){
+    $('#errHint').html('Please Input Valid Subnet Mask!');
+    $('input[name=submask]').focus();
+  }
+  else if(parseInt(enable)==1 && !isIP(start)){
+    $('#errHint').html(str_invalid_ip);
+    $('input[name=start]').focus();
+  }
+  else if(parseInt(enable)==1 &&!isIP(end)){
+    $('#errHint').html(str_invalid_ip);
+    $('input[name=end]').focus();
+  }
+  else if(parseInt(enable)==1 && !judge_ip_start_end(start,end)){
+   $('#errHint').html('End IP must greater than Start IP!'); 
+   $('input[name=end]').focus(); 
+  }
+  else if(parseInt(enable)==1 && !judge_ip_range(srv_ip,start,end)){
+   $('#errHint').html('Server IP must less than Start IP or greater than End IP!'); 
+   $('input[name=ip]').focus(); 
+  }
+  else if(!isInt(time)){
+   $('#errHint').html('Please Input Valid Number!'); 
+   $('input[name=leasetime]').focus();
+  }
+  else{
+
+    submit_srv_ip=srv_ip;
+
+    var post_data = "srv_ip="+esc(srv_ip)+"&submask="+esc(submask)+"&enable="+enable+"&start="+esc(start)+"&end="+esc(end)+"&time="+esc(time);
+
+    $("#errHint").html('');
+    if(post_data==ori_post_data){
+      pop_submit_result('Setting Apply Success!');
+      return false;
+    }
+
+    $.ajax({ 
+      url: "/wxml/set_dhcp.xml",
+      type: "Post", 
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+        var srv_ip = parseInt($(data).find("srv_ip").text());
+        var submask = parseInt($(data).find("submask").text());
+        var enable = parseInt($(data).find("enable").text());
+        var start = parseInt($(data).find("start").text());
+        var end = parseInt($(data).find("end").text());
+        var time = parseInt($(data).find("time").text());
+        if(srv_ip&& submask &&enable &&start&& end&&time) {
+          pop_submit_result('Setting Apply Success!');
+          if(old_srv_ip!=submit_srv_ip) setTimeout(function(){top.location.href=("http://"+submit_srv_ip+'/index.htm');},15000);
+        }
+        else pop_submit_result('Setting Apply Fail!');
+
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+  } 
+//  pop_submit_result();
+});
+
+
+
+var old_srv_ip,submit_srv_ip,ori_post_data;
+function load_setting(){
+  $("#errHint").html('');
+  $.ajax({ 
+    url: "mark_set_dhcp.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+      var dsc = $(data).find("dsc").text();
+      if(dsc&0x01) $('#to_set_pin').show();
+
+      var srv_ip=$(data).find("ip").text();
+      old_srv_ip=srv_ip;
+      var submask=$(data).find("submask").text();
+      var enable=parseInt($(data).find("enable").text());
+      var start=$(data).find("start").text();
+      var end=$(data).find("end").text();
+      var time=$(data).find("time").text();
+
+
+      if(!enable){
+        $('#div_start_ip').hide();
+        $('#div_end_ip').hide();
+        $('#div_lease_time').hide();
+      }
+      else{
+        $('#div_start_ip').show();
+        $('#div_end_ip').show();
+        $('#div_lease_time').show();
+      }
+
+      $('input[name=ip]').val(srv_ip);
+      $('input[name=submask]').val(submask);
+      $('input[name=dhcp]').eq(enable).attr('checked','true');
+      $('input[name=start]').val(start);
+      $('input[name=end]').val(end);
+      $('input[name=leasetime]').val(time);
+
+
+      ori_post_data = "srv_ip="+esc(srv_ip)+"&submask="+esc(submask)+"&enable="+enable+"&start="+esc(start)+"&end="+esc(end)+"&time="+esc(time);
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+}
+
+
+
+
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="dhcp.html"){
+    load_setting();
+  }
+}
+
+
+</script>
+

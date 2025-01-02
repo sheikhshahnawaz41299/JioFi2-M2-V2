@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<send>
+<ret><% get_sms_send_result(); %></ret>
+</send>

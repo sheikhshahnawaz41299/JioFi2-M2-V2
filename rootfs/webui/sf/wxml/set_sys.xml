@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sys>
+<user>set_login_username(username)</user>
+<pwd>set_login_password(password)</pwd>
+<refresh>set_gui_refresh_time(refresh)</refresh>
+<timeout>set_login_timeout(timeout)</timeout>
+<save>set_system_sleep_time(save)</save>
+<timezone>set_ntp_timezone(timezone)</timezone>
+<daylight>set_daylight_save(daylight)</daylight>
+<time>set_sys_time(time)</time>
+<ntp_enabled>set_ntp_enabled(ntp_enabled)</ntp_enabled>
+<server_id>set_ntp_server_id(ntp_id)</server_id>
+<server_ip1>set_ntp_server_ip1(ip1)</server_ip1>
+<server_ip2>set_ntp_server_ip2(ip2)</server_ip2>
+<commit>ntp_commit()</commit>
+</sys>

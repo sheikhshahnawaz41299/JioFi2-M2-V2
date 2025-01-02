@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dev>
+<dsc><% get_version_dsc(); %></dsc>
+<time><% get_sys_time(); %></time>
+<odm><% get_vendor(); %></odm>
+<model><% get_model(); %></model>
+<oui><% get_oui(); %></oui>
+<make><% get_device_make(); %></make>
+<serial><% get_serial_number(); %></serial>
+<imei><% get_imei(); %></imei>
+<imsi><% get_imsi(); %></imsi>
+<msisdn><% get_mdn(); %></msisdn>
+<iccid><% get_iccid(); %></iccid>
+<swver><% get_software_version(); %></swver>
+<swdate><% get_firmware_creation_date(); %></swdate>
+<hwver><% get_hardware_version(); %></hwver>
+<uiver><% get_web_ui_ver(); %></uiver>
+<macaddr><% get_macaddr_string(); %></macaddr>
+<batt_per><% get_batt_percent(); %></batt_per>
+<batt_st><% get_battery_ind(); %></batt_st>
+<freq><% get_bands_support(); %></freq>
+</dev>

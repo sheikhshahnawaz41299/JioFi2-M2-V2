@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net>
+<ip_mode>set_ppp_mode(ip_mode)</ip_mode>
+<mtu>set_wan_mtu_nv(mtu)</mtu>
+<rm_sw>set_rmnet_up_down(rm_sw)</rm_sw>
+<commit>net_set_commit()</commit>
+</net>

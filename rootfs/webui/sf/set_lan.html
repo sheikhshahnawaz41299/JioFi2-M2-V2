@@ -1,0 +1,974 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>Network Setting</title>-->
+<script>
+	if(top.location.pathname != "/index.htm") top.location.href = "./index.htm";
+
+	function commitLanSet(s) {
+		if(s!=seed) return toSelfXSS();
+
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: "/wxml/set_lan_apply.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 20000,
+			cache: false,
+			datatype: "xml",
+			data: null,
+			success: function(data, status) {
+
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				hide_tips(seed);
+				load_setting(seed);
+				var ret0 = parseInt($(data).find("commit").text());
+				if(ret0) alert("Setting Apply Success!");
+				else alert("Setting Apply Fail");
+
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {}
+			}
+		})
+	}
+
+
+function get_host_ip(){
+	return $("#host_ip_1").val()+"."+$("#host_ip_2").val()+"."+$("#host_ip_3").val()+"."+$("#host_ip_4").val();
+}
+
+function get_start_ip(){
+	return $("#start_ip_1").val()+"."+$("#start_ip_2").val()+"."+$("#start_ip_3").val()+"."+$("#start_ip_4").val();
+}
+
+function get_end_ip(){
+	return $("#end_ip_1").val()+"."+$("#end_ip_2").val()+"."+$("#end_ip_3").val()+"."+$("#end_ip_4").val();
+}
+
+
+function SubmitLanSet(){
+	//post_data = 'mode=' + filter_mode;
+
+	var startip= get_start_ip();
+	var endip= get_end_ip();
+	//var dhcpstate = $('input[name=dhcp_state]:checked').val();
+
+//	var commit =  (startip!=dhcp_start_ip || endip!=dhcp_end_ip)?1:0;
+
+
+//	var post_data="start_ip="+startip+"&end_ip="+endip+"&commit="+commit;
+	var post_data="start_ip="+startip+"&end_ip="+endip;
+
+	for(var i = 0; i < 10; i++) {
+		if(i < ($("#table_static_ip tr").length - 1)) {
+			post_data += ('&ip' + i + '=' + esc($("#table_static_ip tr").eq(i + 1).children("td").eq(1).text()));
+//			var sw = (($("#table_static_ip tr").eq(i + 1).children("td").eq(1).html() == "Enabled") ? "1" : "0");
+//			post_data += ('&sw' + i + '=' + esc(sw));
+			post_data += ('&client' + i + '=' + esc($("#table_static_ip tr").eq(i + 1).children("td").eq(2).text()));
+
+			post_data += ('&mac' + i + '=' + esc($("#table_static_ip tr").eq(i + 1).children("td").eq(3).text()));
+		} else {
+			post_data += ('&ip' + i + '=' + '&client' + i + '=' + '&mac' + i + '=');
+		}
+	}
+
+
+	// console.log(post_data);
+	// return;
+
+
+	show_tips(seed,"waiting...")
+	var headers = {};
+	headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+	$.ajax({
+		url: "/wxml/set_lan.xml",
+		type: "Post",
+		headers: headers,
+		timeout: 20000,
+		cache: false,
+		datatype: "xml",
+		data: post_data,
+		success: function(data, status) {
+			var new_token = $(data).find("token").text();
+			if(new_token == "-1") {
+				top.location.reload(true);
+				return false;
+			}
+			$("#csrf_token2").val(new_token);
+			//    var ret0 = parseInt($(data).find("mode").text());
+			
+			hide_tips(seed);
+			load_setting(seed);
+
+			var ret0 = parseInt($(data).find("dhcp_enable").text());
+			var ret1 = parseInt($(data).find("start_ip").text());
+			var ret2 = parseInt($(data).find("end_ip").text());
+			var ret3 = parseInt($(data).find("commit").text());
+
+			if(!ret0 || !ret1 || !ret2 || !ret3)
+			{
+				alert("Setting Apply Fail");
+				return false;
+			}
+
+			for (var i = 0; i <10; i++) {
+				var ret = parseInt($(data).find("ip"+i).text());
+				if(!ret) {
+					alert("Setting Apply Fail");
+					return false;
+				}
+			}
+
+			alert("Setting Apply Success!");
+
+			//commitLanSet(seed);
+		},
+		error: function(x, t, m) {
+			if(t === "timeout") {}
+		}
+	})
+}
+
+function addLanSet(mac, ipaddr, clientname){
+	var new_id = $("#table_static_ip tr").length;
+	var real_id = -1;
+	for(var i = 0; i < 10; i++) {
+		if(static_ip_list[i] == "-") {
+			real_id = i;
+			break;
+		}
+		if(mac.toUpperCase() == static_ip_list_mac[i].toUpperCase()) {
+			alert("MAC Address Exist!");
+			$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+			return;
+		}
+		if(ipaddr == static_ip_list[i]) {
+			alert("IP Address Exist!");
+			$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+			return;
+		}
+	}
+	if(new_id>10 || real_id==-1 ){
+		alert("Reservation IP Address Full!");
+		$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+		return;
+	}
+
+
+	var tr_html = ('<tr style="text-align:center;"><td>' + new_id + '</td><td>' + ipaddr + '</td><td>' + XSSResolveCannotParseChar(clientname)  + '</td><td>' +mac+ '</td><td><img src="img/delete.png" onClick="deleteStaticIP(this,' + real_id + ')">&nbsp;&nbsp;&nbsp;<img src="img/update.jpg" onClick="updateStaticIP(this,' + real_id + ')"></td>');
+
+
+	var obj = $("#table_static_ip tr:last");
+	if(obj.parent().is('thead')) {
+		$("#tbody_static_ip").html(tr_html);
+	} else $("#table_static_ip tr:last").after(tr_html);
+
+	static_ip_list[real_id] = ipaddr;
+	static_ip_list_mac[real_id] = mac;
+	static_ip_list_dev[real_id] = clientname;
+}
+
+function updateLanSet(idx, mac, ipaddr, clientname){
+
+	for (var i = 0; i < 10; i++) {
+		if(i!= idx && mac.toUpperCase() == static_ip_list_mac[i].toUpperCase()) {
+			alert("MAC Address Exist!");
+			$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+			return;
+		}
+		if(i!= idx && ipaddr == static_ip_list[i]) {
+			alert("IP Address Exist!");
+			$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+			return;
+		}
+	}
+
+	$("#table_static_ip tr").eq(update_index).children("td").eq(1).html(ipaddr);
+	$("#table_static_ip tr").eq(update_index).children("td").eq(2).html(XSSResolveCannotParseChar(clientname));
+	$("#table_static_ip tr").eq(update_index).children("td").eq(3).html(mac);
+	static_ip_list[index] = ipaddr;
+	static_ip_list_mac[index] = mac;
+	static_ip_list_dev[index] = clientname;
+}
+
+function deleteLanSet(del_index){
+	$("#table_static_ip tr").eq(del_index+1).remove();
+	static_ip_list[del_index] = "-";
+	static_ip_list_mac[del_index] = "-";
+	static_ip_list_dev[del_index] = "-";
+	//update the all table
+
+	for(var i = del_index+1; i < $("#table_static_ip tr").length; i++) {
+		$("#table_static_ip tr").eq(i).children("td").eq(0).html(i);
+	}
+}
+
+
+
+
+	function postLanSet(index, mac, ipaddr, clientname) {
+		if(StaticIP_dialog) {
+			StaticIP_dialog.dialog("close");
+		}
+		if(mac != null && mac != '' && mac != '-') mac = mac.replace(/-/g, ":");
+			if(index == -1 && mac == null){
+				//apply
+				SubmitLanSet();
+			}
+			else if(index==11){
+				//add
+				addLanSet(mac,ipaddr,clientname);
+			}
+			else if(mac){
+				//update
+				updateLanSet(index, mac, ipaddr, clientname);
+			}
+			else if(!mac){
+				//delete
+				deleteLanSet(index);
+			}			
+		}
+
+	function applyLanSet(s) {
+		if(s!=seed) return toSelfXSS();
+		if(!checkLanSet()) return;
+		postLanSet(-1, null, null, null);
+	}
+
+	function addStaticIPList(s) {
+		if(s!=seed) return toSelfXSS();
+		var index = -1;
+		for(var i = 0; i < 10; i++) {
+			if(static_ip_list[i] == '-') {
+				index = i;
+				break;
+			}
+		}
+		if(index == -1) {
+			alert("Static IP List Full!");
+			return;
+		}
+		//	updateMac(index);
+
+		updateStaticIP(null, 11);
+	}
+
+
+
+	function deleteStaticIP(obj, index) {
+		var del_index = $(obj).parent().parent().index();
+		postLanSet(del_index, null, null, null);
+	}
+	var curr_index, del_index, update_index;
+
+	function checkcharwidth(str) {
+		var cArr = str.match(/[^\x00-\xff]/ig);
+		return(cArr == null ? false : true);
+	}
+
+function isIPSection(strIP,pos){
+	var patrn =/^\d{1,3}$/;
+	if(strIP=="") return false;
+	if(!patrn.exec(strIP) || parseInt(strIP)>255)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
+
+
+function checkLanSet(){
+	var id_array = ["#start_ip_","#end_ip_"]; 
+	var alert_array = ["Start IP invalid","End IP invalid"]; 
+	for(var i=3;i<=4;i++){
+		for(var j=0;j<id_array.length;j++){
+			var curr_id=id_array[j]+i;
+			var curr_ip_section = $(curr_id).val();
+			if(!isIPSection(curr_ip_section,i)){
+				alert(alert_array[j]);
+				$(curr_id).focus();
+				return false;
+			}
+		}	
+	}
+
+	if($("#start_ip_3").val()!=$("#end_ip_3").val()){
+		alert("End IP must be the same range of start IP.")
+		return false;
+	}
+
+	var start_ip = parseInt($("#start_ip_3").val())*255+parseInt($("#start_ip_4").val());
+	var end_ip = parseInt($("#end_ip_3").val())*255+parseInt($("#end_ip_4").val());
+
+	if(start_ip==0){
+		alert("Start IP cannot be 192.168.0.0");
+		return false;		
+	}
+
+	if(end_ip==65280){
+		alert("End IP cannot be 192.168.255.255");
+		return false;		
+	}
+
+
+
+	if(start_ip > end_ip){
+		alert("Start IP cannot be greater than end IP.")
+		return false;
+	}
+
+	if(end_ip-start_ip<50){
+		alert("Please ensure Starting IP Address and Ending IP address are big enough (At least 50 IP) to handle all the clients to be supported by the JioFi");
+		return false;
+	}
+
+	var host_ip = parseInt($("#host_ip_3").val())*255+parseInt($("#host_ip_4").val());
+	if(start_ip<=host_ip && end_ip>=host_ip){
+		alert("Starting IP Address and Ending IP address cannot contains Host IP Address");
+		return false;	
+	}
+
+
+
+	return true;
+	// var hostip= get_host_ip();
+	// var startip= get_start_ip();
+	// var endip= get_end_ip();
+}
+
+
+function checkInputIpRange(input_ip){
+	if(input_ip=="192.168.0.0" || input_ip=="192.168.255.255"){
+		alert("Static IP cannot be 192.168.0.0 or 192.168.255.255");
+		return false;
+	}
+
+	var input_ip_array = input_ip.split(".");
+	var host_ip = get_host_ip().split(".");
+	for(var i=0;i<2;i++){
+		if(input_ip_array[i]!=host_ip[i]) {
+			alert("Please confirm input IP is in the same range of host IP.");
+			return false;
+		}
+	}
+	if(!isIPSection(input_ip_array[3],4)){
+		alert("Please input valid IP.")
+		return false;
+	}
+	return true;
+}
+
+function checkInputExist(idx, ip, mac){
+	if(ip==get_host_ip()){
+		alert("IP Address cannot be same with Host IP.");
+		$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+		return false;
+	}
+	var dev_mac = "<% get_macaddr_string(); %>";
+	if(mac.replace(/-/g, ":").toUpperCase() == dev_mac.replace(/-/g, ":").toUpperCase()){
+		alert("Primary Mac Id cannot add into Static IPv4 Address Reservation table");
+		$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+		return false;	
+	}
+
+	for(var i = 0; i < 10; i++) {
+		if(i!=idx && ip == static_ip_list[i]) {
+			alert("IP Address Exist!");
+			$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+			return false;
+		}
+		if(i!=idx && mac.toUpperCase() == static_ip_list_mac[i].toUpperCase()) {
+			alert("MAC Address Exist!");
+			$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+			return false;
+		}
+	}
+	return true;
+}
+
+	function updateStaticIP(obj, index) {
+		if(!checkLanSet()) return false;
+
+		if(index >= 0 && index < 10) {
+			update_index = $(obj).parent().parent().index() + 1;
+			$("#lan_input_ip").val(static_ip_list[index] == '-' ? '' : static_ip_list[index]);
+			$("#lan_input_mac").val(static_ip_list_mac[index] == '-' ? '' : $.trim(static_ip_list_mac[index]));
+			$("#lan_input_client_name").val(static_ip_list_dev[index] == '-' ? '' : $.trim(static_ip_list_dev[index]));
+		} else {
+			$("#lan_input_ip").val("");
+			$("#lan_input_mac").val("");
+			$("#lan_input_client_name").val("");
+		}
+
+		curr_index = index;
+		//	if(!StaticIP_dialog){
+
+		var dialogParent = $('#div_static_dialog').parent();
+		var dialogOwn = $('#div_static_dialog').clone().hide();
+
+		StaticIP_dialog = $("#div_static_dialog").dialog({
+			autoOpen: false,
+			height: 380,
+			width: 450,
+			modal: true,
+			buttons: {
+				"Submit": function() {
+					// Check Values
+					if(!Checkmacaddress($("#lan_input_mac"))) {
+						alert(Mac_Error);
+						return false;
+					}
+					var ipaddr =  $.trim($("#lan_input_ip").val());
+					
+					if(!isIP(ipaddr)) {
+						alert("Please input valid IP.");
+						return false;
+					}
+
+					if(!checkInputIpRange(ipaddr)) {
+						return false;
+					}
+
+					// Submit button disabled
+					
+					var macaddr = $.trim($("#lan_input_mac").val());
+					if(macaddr.length == 12) {
+						macaddr = macaddr.replace(/(.{2})/g, "$1:");
+						macaddr = macaddr.substr(0, 17).toUpperCase();
+					}
+					
+					var clientname =  $.trim($("#lan_input_client_name").val());
+					
+
+					if(!checkInputExist(curr_index,ipaddr,macaddr)) {
+						return false;
+					}	
+
+
+					$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", true).addClass("ui-state-disabled");
+					postLanSet(curr_index, macaddr, ipaddr, clientname);
+
+				},
+				Cancel: function() {
+					StaticIP_dialog.dialog("close");
+				}
+			},
+			close: function() {
+				$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+				$('#table_lan_client_list2').hide();
+				$("#table_input_staticip").show();
+				dialogOwn.appendTo(dialogParent);
+				$(this).dialog('destroy').remove();
+			}
+		});
+		//	}
+		StaticIP_dialog.dialog("open");
+		
+		$("#lan_input_ip").focus();
+		if(index < 10) {
+			$("#ui-dialog-title-div_static_dialog").html("Modify Address Reservation")
+		}
+	}
+
+	$("#tbl_user2 tr").die().live('click', function() {
+		var mac = $(this).children("td:eq(2)").text();
+		var ip = $(this).children("td:eq(1)").text();
+		var name = $(this).children("td:eq(0)").text();
+		if(mac) {
+			$("#lan_input_ip").val(ip);
+			$("#lan_input_mac").val(mac);
+			$("#lan_input_client_name").val(name);
+			$('#table_lan_client_list2').hide();
+			$("#table_input_staticip").show();
+			$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+			//add_to_list(mac);
+		}
+	})
+
+	$("#sel_from_user").die().live('click', function() {
+		$.ajax({
+			url: '/st_lan.w.xml',
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: null,
+			success: function(data, status) {
+				var tbl_content = '';
+				$(data).find("user").each(function() {
+					var name = $(this).children('name').text();
+					var ip = $(this).children('ip').text();
+					var mac = $(this).children('mac').text().replace(/-/g, ":"); //.macFormat()
+					var leased_time = $(this).children('leased_time').text();
+					var status = $(this).children('status').text();
+					//<td>'+leased_time+'</td><td>'+status+'</td>
+					if(mac.toUpperCase() == "FC:DE:56:FF:01:06") {
+
+					} else tbl_content += ('<tr><td>' + XSSResolveCannotParseChar(name) + '</td><td>' + ip + '</td><td>' + mac + '</td></tr>');
+
+				});
+
+				$('#tbl_user2').html(tbl_content);
+
+				$('#table_lan_client_list2').show();
+				$("#table_input_staticip").hide();
+				$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", true).addClass("ui-state-disabled");
+			},
+			error: function(x, t, m) {}
+		});
+	})
+
+	var static_ip_list = ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-'];
+	var static_ip_list_mac = ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-'];
+	var static_ip_list_dev = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	//var dhcp_start_ip,dhcp_end_ip;
+	var static_ip_show_index;
+	var gStaticIP_count = -0;
+
+	function load_setting(s) {
+		if(s!=seed) return toSelfXSS();
+		$.ajax({
+			url: "mark_set_lan.w.xml",
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			success: function(data, status) {
+				// var host = $(data).find("host").text();
+				var ip = $(data).find("dhcp_ip").text().split(".");
+				var submask = $(data).find("submask").text().split(".");
+				var start_ip = $(data).find("start_ip").text().split(".");
+				
+				var end_ip = $(data).find("end_ip").text().split(".");
+				// dhcp_start_ip = start_ip;
+				// dhcp_end_ip = end_ip;
+
+
+				for(var i=0;i<4;i++){
+					$("#td_host_ip").children(".ipAddr").eq(i).val(ip[i]);
+					$("#td_submask_ip").children(".ipAddr").eq(i).val(submask[i]);
+					$("#td_start_ip").children(".ipAddr").eq(i).val(start_ip[i]);
+					$("#td_end_ip").children(".ipAddr").eq(i).val(end_ip[i]);					
+				}
+				// var dhcp_state = parseInt($(data).find("dhcp_state").text());
+				// $('input[name=dhcp_state]').eq(dhcp_state).attr('checked', 'checked');
+				//var submask = $(data).find("submask").text();
+				// var mtu = $(data).find("mtu").text();
+				// var mac_mode = parseInt($(data).find("mode").text());
+
+				// // $("#input_host_name").val(host);
+				// $("#input_host_ip_address").val(ip);
+				// $("#input_host_subnet_mask").val(submask);
+				// $("#input_wan_mtu").val(mtu);
+
+				// $("#buton_lan_get").show();
+				// $("#button_lan_set").show();
+				
+				// if(mac_mode == 0) {
+				// 	$("#select_dial_filter_enable").val('DISABLE');
+				// 	static_ip_show_mode = 'DISABLE';
+				// 	$("#tr_status").hide();
+				// 	$("#table_static_ip").hide();
+				// 	$("#button_staticip_add").hide();
+				// } else {
+				// 	$("#select_dial_filter_enable").val('ENABLE');
+				// 	if(mac_mode == 1) {
+				// 		$("#select_status").val('DENY');
+				// 		static_ip_show_mode = 'DENY';
+				// 	} else {
+				// 		$("#select_status").val('ALLOW');
+				// 		static_ip_show_mode = 'ALLOW';
+				// 	}
+				// 	$("#tr_status").show();
+				// 	$("#button_staticip_add").show();
+				// 	$("#table_static_ip").show();				
+				// }
+
+				var tbody_html = '';
+				static_ip_show_index = 0;
+				//<record><mac>FC:DE:56:FF:01:06</mac><comment></comment><enabled>0</enabled></record>
+				$(data).find("record").each(function(index, ele) {
+					static_ip_list[index] = $(this).children('ip').text();
+					static_ip_list_mac[index] = $(this).children('mac').text();
+					var client_name = $(this).children('device').text();
+					static_ip_list_dev[index] = client_name;
+					if(static_ip_list[index] != '-') {
+						static_ip_show_index++;
+
+							// <td>1</td>
+							// <td>192.168.101</td>
+							// <td>Thinkpad-T430</td>
+							// <td>FC:DD:55:11:22:33</td>
+							// <td><img src="img/delete.png" onclick="deleteStaticIP(this,0)">&nbsp;&nbsp;&nbsp;<img src="img/update.jpg" onclick="updateStaticIP(this,0)"></td>
+
+
+
+						tbody_html += ('<tr style="text-align:center;"><td>' + static_ip_show_index + '</td><td>' + static_ip_list[index] + '</td><td>' + XSSResolveCannotParseChar(client_name)  + '</td><td>' +static_ip_list_mac[index] + '</td><td><img src="img/delete.png" onClick="deleteStaticIP(this,' + index + ')">&nbsp;&nbsp;&nbsp;<img src="img/update.jpg" onClick="updateStaticIP(this,' + index + ')"></td>');
+					}
+					
+				});
+				gStaticIP_count = static_ip_show_index;
+				$('#tbody_static_ip').html(tbody_html);
+				reload_compnets(seed);
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+	var Mac_Error;
+
+	function Checkmacaddress(_mac) {
+		var mac_val = _mac.val();
+		if(mac_val.length == 12) {
+			mac_val = mac_val.replace(/(.{2})/g, "$1:");
+			mac_val = mac_val.substr(0, 17);
+		}
+		var i = 0,
+			j = 0;
+		//console.log("length :" + mac_val.length);
+		//console.log(typeof(mac_val));
+
+		if(mac_val.length != 17) {
+			Mac_Error = "The MAC address must be 17 characters.";
+			return false;
+		}
+
+		mac_val = mac_val.replace(/-/g, ":");
+
+		if(mac_val == "00:00:00:00:00:00" || mac_val.toUpperCase() == "FF:FF:FF:FF:FF:FF") {
+			Mac_Error = "Mac address is not allowed";
+			return false;
+		}
+
+		mac_val = mac_val.split(":");
+
+		if(mac_val.length == 6) {
+
+			for(i = 0; i < mac_val.length; i++) {
+				if(mac_val[i].length == 2) {
+					for(j = 0; j < 2; j++) {
+						if((mac_val[i].charCodeAt(j) < 48) || (mac_val[i].charCodeAt(j) > 102) ||
+							((mac_val[i].charCodeAt(j) > 57) && (mac_val[i].charCodeAt(j) < 65)) ||
+							((mac_val[i].charCodeAt(j) > 70) && (mac_val[i].charCodeAt(j) < 97))) {
+							Mac_Error = "Enter only alphanumeric characters (0-9 and A-F).";
+							return false;
+						}
+					}
+
+				} else {
+					Mac_Error = "Enter a MAC address in the correct format (eg: xx:xx:xx:xx:xx:xx).";
+					return false;
+				}
+			}
+		} else {
+			Mac_Error = "Enter a MAC address in the correct format (eg: xx:xx:xx:xx:xx:xx).";
+			return false;
+		}
+
+		return true;
+	}
+
+	
+
+
+
+$("#button_staticip_add").click(function(){
+addStaticIPList(seed);
+})
+$("#buton_lan_get").click(function(){
+	load_setting(seed);
+})
+$("#button_lan_set").click(function(){
+	applyLanSet(seed);
+})
+
+
+
+function enable_start_end_ip(enable){
+	var id_array = ["#start_ip_","#end_ip_"]; 
+	for(var i=1;i<=4;i++){
+		for(var j=0;j<id_array.length;j++){
+			var curr_id=id_array[j]+i;
+			$(curr_id).attr("disabled", enable);
+		}	
+	}
+}
+
+
+// $("input[name=dhcp_state]").change(function(){
+// 	console.log($(this).val());
+// 	if(parseInt($(this).val())==0){
+// 		enable_start_end_ip(true);
+// 	}
+// 	else{
+// 		enable_start_end_ip(false);
+// 	}
+// })
+
+
+
+
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "set_lan.html") {
+		var dsc="<% get_version_dsc(); %>";
+			if(dsc&0x02){
+
+			}
+			else{
+
+			}
+			reload_compnets(seed);
+			load_setting(seed);
+		}
+	}
+
+
+
+
+
+
+
+
+
+	// function check_mtu(mtu_family) {
+	// 	if(mtu_family == 4) {
+	// 		if(($("#input_wan_mtu").val() < 500) || ($("#input_wan_mtu").val() > 1500)) {
+	// 			alert("Enter a value between 500 and 1500 the MTU value.");
+	// 			$("#input_wan_mtu").focus();
+	// 			return true;
+	// 		} else if($("#input_wan_mtu").val().match(/[^0-9]/)) {
+	// 			$("#input_wan_mtu").focus();
+	// 			alert("Enter only numbers for the MTU value.");
+	// 			return true;
+	// 		}
+	// 	} else if(mtu_family == 6) {
+	// 		if(($("#input_wan_IPv6_mtu").val() < 500) || ($("#input_wan_IPv6_mtu").val() > 1280)) {
+	// 			$("#input_wan_IPv6_mtu").focus();
+	// 			alert("Enter a value between 500 and 1280 for the MTU value.");
+	// 			return true;
+	// 		} else if($("#input_wan_IPv6_mtu").val().match(/[^0-9]/)) {
+	// 			$("#input_wan_IPv6_mtu").focus();
+	// 			alert("Enter only numbers for the MTU value.");
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return false;
+
+	// }
+
+
+
+	// function Del_MacFilterEntries(_enable, _status, _address, _serial) {
+	// 	ajax_Setmacfilter(_enable, _status, _address, "", "", "DEL", 0);
+	// }
+
+	// function Update_MacFilterEntries(_enable, _status, _address, _serial) {
+	// 	Add_Mac_Filter("SHOW", "MODIFY", _status, _address, 0);
+	// }
+
+	// function MacfilterGet() {
+	// 	ajax_Getmacfilter();
+	// }
+
+
+
+</script>
+
+<!-- </head> -->
+
+<body  style="margin:0;padding:0;border:0;">
+	<table class="table_main" align="left">
+		<tr>
+			<td>
+				<h3 class="main_menu">LAN IPv4 Setup</h3 > </td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px;padding-bottom: 20px;">
+				<br>
+				<!-- <h4 class="small_menu" style="color:#515151; margin:0;">LAN IP Setup</h4> -->
+					<table style="width:90%;">
+						<tr id="Host_ip_address">
+                            <td width="37%" class="head_top">IP Address</td>
+                            <td width="63%" class="tail_top" id="td_host_ip">
+                                <input class="ipAddr" id="host_ip_1" type="text" value="192" MaxLength="3" readonly="readonly" /><span class="ipAddrSeparator">.</span>
+                                <input class="ipAddr" id="host_ip_2" type="text" value="168" MaxLength="3" readonly="readonly" /><span class="ipAddrSeparator">.</span>
+                                <input class="ipAddr" id="host_ip_3" type="text" value="1" MaxLength="3"  readonly="readonly"/><span class="ipAddrSeparator">.</span>
+                                <input class="ipAddr" id="host_ip_4" type="text" value="1" MaxLength="3" readonly="readonly" />
+                            </td>
+						</tr>
+						<tr id="Host_subnet_mask">
+                            <td width="37%" class="head_top">IP Subnet Mask</td>
+                            <td width="63%" class="tail_top" id="td_submask_ip">
+                                <input class="ipAddr" type="text" value="255" MaxLength="3" readonly="readonly"  /><span class="ipAddrSeparator">.</span>
+                                <input class="ipAddr" type="text" value="255" MaxLength="3" readonly="readonly"  /><span class="ipAddrSeparator">.</span>
+                                <input class="ipAddr" type="text" value="255" MaxLength="3" readonly="readonly"  /><span class="ipAddrSeparator">.</span>
+                                <input class="ipAddr" type="text" value="0" MaxLength="3" readonly="readonly"  />
+                            </td>
+						</tr>
+
+					<!-- <tr>
+						<td width="37%" class="head_top">DHCP Server</td>
+						<td width="63%" class="tail_top" style="font-size: 14px;padding-right: 50px;">
+							<input type="radio" id="dhcp_disable" name="dhcp_state" value="0"/><label class="ui_radio" for="dhcp_disable"></label><label for="dhcp_disable" class="ml5">Disable</label>
+							<input type="radio" id="dhcp_enable" name="dhcp_state" value="1" checked/><label class="ui_radio" for="dhcp_enable"></label><label class="mr20 ml5" for="dhcp_enable">Enable</label>
+						</td>
+					</tr> -->
+
+					<tr id="start_ip_address">
+                            <td width="37%" class="head_top">Starting IP Address</td>
+                            <td width="63%" class="tail_top" id="td_start_ip">
+                                <input class="ipAddr" id="start_ip_1" type="text" value="192" MaxLength="3" readonly="readonly" /><span class="ipAddrSeparator">.</span>
+                                <input class="ipAddr" id="start_ip_2" type="text" value="168" MaxLength="3" readonly="readonly" /><span class="ipAddrSeparator">.</span>
+                                <input class="ipAddr" id="start_ip_3" type="text" value="1" MaxLength="3"  /><span class="ipAddrSeparator">.</span>
+                                <input class="ipAddr" id="start_ip_4" type="text" value="100" MaxLength="3"  />
+                            </td>
+					</tr>
+					<tr id="end_subnet_mask">
+                        <td width="37%" class="head_top">Ending IP Address</td>
+                        <td width="63%" class="tail_top" id="td_end_ip">
+                            <input class="ipAddr" id="end_ip_1" type="text" value="192" MaxLength="3" readonly="readonly" /><span class="ipAddrSeparator">.</span>
+                            <input class="ipAddr" id="end_ip_2" type="text" value="168" MaxLength="3" readonly="readonly" /><span class="ipAddrSeparator">.</span>
+                            <input class="ipAddr" id="end_ip_3" type="text" value="1" MaxLength="3"  /><span class="ipAddrSeparator">.</span>
+                            <input class="ipAddr" id="end_ip_4" type="text" value="200" MaxLength="3"  />
+                        </td>
+					</tr>
+				</table>
+
+
+		        <h4 class="small_menu" style="color:#515151; margin-top: 10px;">Static IPv4 Address Reservation</h4>
+
+					<table id="table_static_ip" width="795" cellspacing="0" border="1" style="width:90%; font-size:12px;border-collapse: collapse;border:1px solid #AAA;margin-top: 10px;">
+						<thead><tr style="text-align:center" >
+							<td class="table_head">No</td>
+							<td class="table_head" >IP Address</td>
+							<td class="table_head" >Device Name</td>
+							<td class="table_head" >MAC Address</td>
+							<td class="table_head" >Delete/Modify</td>
+						</tr></thead>
+						<tbody id="tbody_static_ip">
+						<tr style="text-align:center;">
+							<td>1</td>
+							<td>192.168.101</td>
+							<td>Thinkpad-T430</td>
+							<td>FC:DD:55:11:22:33</td>
+							<td><img src="img/delete.png" onclick="deleteStaticIP(this,0)">&nbsp;&nbsp;&nbsp;<img src="img/update.jpg" onclick="updateStaticIP(this,0)"></td>
+						</tr>
+
+
+						
+
+						</tbody>
+						<!-- table entry will be  here -->
+					</table>
+
+					<table  style="width:90%; font-size:12px;border:none;margin-top: 10px;">
+						<tr>
+							<td colspan="5" style="text-align:right;padding-top: 10px;" height="47px">
+								<button class="btn-Green" id="button_staticip_add" oncut="return false" oncopy="return false" onpaste="return false"><span><em>Add</em></span></button>
+                       		    <!-- <button class="btn-Green" id="buton_lan_get" oncut="return false" oncopy="return false" onpaste="return false"><span><em>Get</em></span></button> -->
+                       		    <button class="btn-Green" id="button_lan_set" oncut="return false" oncopy="return false" onpaste="return false"><span><em>Apply</em></span></button>
+
+							</td>
+						</tr>
+					</table>
+
+
+					<div id="div_static_dialog" title="Add Address Reservation" style="display:none;">
+			            	<table id="table_lan_client_list2" border="1"  cellspacing="0" cellpadding="0" width="100%" style="display:none;cursor:pointer;border-collapse: collapse;border:1px solid #AAA;font-size: 14px;">
+						    <thead>
+						    <tr>
+							    <td class="table_head">
+								    Device Name
+							    </td>
+							    <td class="table_head">
+								    IP Address
+							    </td>
+							    <td class="table_head">
+								    MAC
+							    </td>
+						    </tr>
+						    </thead>
+						    <tbody id="tbl_user2">
+
+						    </tbody>
+
+						    <tfoot>
+
+						    </tfoot>
+					    </table>
+			            <table id="table_input_staticip">
+							<!--
+				            <tr id="tr_dial_status">
+								<td width="50%">
+						            Status
+					            </td>
+					            <td width="50%">
+						            
+							            <select id="select_dial_filter_status" style="width: 130px" style="font-size: 12px;">
+								            <option value="ALLOW">Allow</option>
+								            <option value="DENY">Deny</option>
+							            </select>
+						            
+					            </td>
+				            </tr>
+							-->
+							<tr>
+								<td width="50%"></td>
+								<td width="50%" height="47px">
+									 <button class="btn-Green-small" id="sel_from_user" style="width: 190px;"><span style="width: 170px;"><em>Select From UserList</em></span></button>
+								</td>
+							</tr>
+				            <tr id="tr_lan_input_ip">
+					            <td width="50%">
+						            IP Address
+					            </td>
+					            <td width="50%">
+							        <input type="text"  name="lan_input_ip" id="lan_input_ip" MaxLength="17"/>
+					            </td>
+				            </tr>
+				            <tr id="tr_lan_input_mac">
+					            <td width="50%">
+						            MAC Address
+					            </td>
+					            <td width="50%">
+							        <input type="text"  name="lan_input_mac" id="lan_input_mac" MaxLength="17"/>
+					            </td>
+				            </tr>
+				            
+							<tr>
+								<td width="50%">MAC Address format</td>
+								<td width="50%">xx-xx-xx-xx-xx-xx</td>
+							</tr>
+				            <tr><td></td><td>xx:xx:xx:xx:xx:xx</td></tr>
+
+				            <tr id="tr_lan_input_client_name">
+					            <td width="50%">Device Name</td>
+					            <td width="50%">
+							       <input type="text" oncut="" oncopy="" onpaste="" name="lan_input_client_name" id="lan_input_client_name" MaxLength="20" />
+					            </td>
+				            </tr>
+			            </table>
+		            </div>
+		            
+
+                </td>
+			</tr>
+		</table>
+		<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+	</body>
+<!-- </html> -->

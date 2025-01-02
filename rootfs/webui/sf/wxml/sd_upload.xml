@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<upload>
+<state>sd_upload_state(file_id)</state>
+<path>sd_upload_path(file_id)</path>
+<name>sd_upload_name(file_id)</name>
+<size>sd_upload_size(file_id)</size>
+<progress>sd_upload_progress(file_id)</progress>
+</upload>

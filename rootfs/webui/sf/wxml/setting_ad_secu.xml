@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<advanced_security>
+<anti_ddos>set_anti_ddos(anti_ddos)</anti_ddos>
+<anti_tcp_syn_flood>set_anti_tcp_syn_flood(anti_tcp_syn_flood)</anti_tcp_syn_flood>
+<tcp_syn_flood_threshold>set_tcp_syn_flood_threshold(tcp_threshold)</tcp_syn_flood_threshold>
+<anti_udp_flood>set_anti_udp_flood(anti_udp_flood)</anti_udp_flood>
+<udp_flood_threshold>set_udp_flood_threshold(udp_threshold)</udp_flood_threshold>
+<anti_ip_flagment>set_anti_ip_flagment(anti_ip_flagment)</anti_ip_flagment>
+<anti_ping_flood>set_anti_ping_flood(anti_ping_flood)</anti_ping_flood>
+<anti_smurf_fraggle>set_anti_smurf_fraggle(anti_smurf_fraggle)</anti_smurf_fraggle>
+<commit>firewall_commit()</commit>
+</setting>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mac_filter>
+<dsc><% get_version_dsc(); %></dsc>
+<user_cnt><% get_client_wifi_count(); %></user_cnt>
+<user_list>
+<% get_client_wifi_list("0"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("5"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("10"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("15"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("20"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("25"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("30"); %>
+</user_list>
+<mode><% get_mac_filter_mode(); %></mode>
+<mac_addr><% get_mac_filter_item("0"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("1"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("2"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("3"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("4"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("5"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("6"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("7"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("8"); %></mac_addr>
+<mac_addr><% get_mac_filter_item("9"); %></mac_addr>
+</mac_filter>

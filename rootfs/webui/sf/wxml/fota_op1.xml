@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fota>
+<curr_ver>{"current_version":20150302,"release_note":"1.aaaaaaa\r\n2.aaaaaaa\r\n3.aaaaaaa\r\n"}</curr_ver>
+<check>fota_check(check)</check>
+<note>{"release_version":20150402,"size":"2003","date":"2015-03-26 11:35 AM","release_note":"11.aaaaaaa\r\n12.aaaaaaa\r\n13.aaaaaaa\r\n"}</note>
+<download>fota_download(download)</download>
+<cancel>fota_download_cancel(cancel)</cancel>
+<install>fota_install(install)</install>
+</fota>

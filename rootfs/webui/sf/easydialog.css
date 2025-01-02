@@ -1,0 +1,25 @@
+.easyDialog_wrapper{ width:370px; color:#444; border:3px solid rgba(0,0,0,0); -webkit-border-radius:0px; -moz-border-radius:0px; border-radius:0px; -webkit-box-shadow:0 0 10px rgba(0,0,0,0.4); -moz-box-shadow:0 0 10px rgba(0,0,0,0.4); box-shadow:0 0 10px rgba(0,0,0,0.4); display:none; font-family:helvetica_neuelight,"Microsoft yahei", Arial; }
+
+.easyDialog_wrapper .easyDialog_content{ -webkit-border-radius:0px; -moz-border-radius:0px; border-radius:0px; background:#fff; border:1px solid #e5e5e5; }
+
+.easyDialog_wrapper .easyDialog_title{ height:30px; line-height:30px; overflow:hidden; color:white; padding:0 10px; font-size:14px; border-bottom:1px solid #e5e5e5; background:#00C13F; border-radius:0px 0px 0 0; }
+
+.easyDialog_wrapper .close_btn{ font-family:helvetica_neuelight,Arial,Helvetica,sans-serif; font-size:18px; _font-size:12px; font-weight:700; color:#999; text-decoration:none; float:right; display: none;}
+
+.easyDialog_wrapper .close_btn:hover{ color:#333; }
+
+.easyDialog_wrapper .easyDialog_text{ padding:10px; font-size:13px; line-height:22px; }
+
+.easyDialog_wrapper .easyDialog_footer{ padding:0 10px; *zoom:1;}
+
+.easyDialog_wrapper .easyDialog_footer:after{ content:''; display:block; height:0; overflow:hidden; visibility:hidden; clear:both; }
+
+.easyDialog_wrapper .btn_highlight,
+.easyDialog_wrapper .btn_normal{ border:1px solid; border-radius:0px; cursor:pointer; font-family:helvetica_neuelight,"Microsoft yahei", Arial; float:right; font-size:14px; padding:2px 12px; width:78px; height:34px; line-height:28px; margin-bottom:10px; margin-right:20px;}
+
+.easyDialog_wrapper .btn_highlight{ background:#444444; background:-webkit-gradient(linear,center bottom,center top,from(#444444),to(#444444)); background:-moz-linear-gradient(90deg, #444444, #444444); border-color:#555; color:#fff; }
+.easyDialog_wrapper .btn_highlight:hover{background: #666;}
+
+.easyDialog_wrapper .btn_normal{ margin-left:10px; border-color:#c3c3c3; background:#ececec; color:#333; background:-webkit-gradient(linear,center bottom,center top,from(#ececec),to(#f4f4f4)); background:-moz-linear-gradient(90deg,#ececec,#f4f4f4); }
+
+.easyDialog_wrapper .closex{margin-left:2px;font-size:14px;background:white;color:#e43834;}

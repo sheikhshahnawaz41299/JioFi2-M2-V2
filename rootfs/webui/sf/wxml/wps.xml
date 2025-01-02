@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wps>
+<state>set_wifi_wps_enabled(enable)</state>
+<pbc>set_wifi_wps_startpbc(start)</pbc>
+<stop>set_wifi_wps_stopwsc(stop)</stop>
+</wps>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sd>
+<ruser>set_sd_username(r_user)</ruser>
+<rpwd>set_sd_password(r_pwd)</rpwd>
+<mode>set_sd_mode(mode)</mode>
+<sd_acc>enable_sd_account(sd_acc)</sd_acc>
+<reboot>reboot_device(reboot)</reboot>
+</sd>

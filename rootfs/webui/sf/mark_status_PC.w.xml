@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status>
+<dial_mode>1</dial_mode>
+<netstatus>1</netstatus>
+<active>1</active>
+<auto_mark>1</auto_mark>
+<desc><% get_device_desc %></desc>
+<url>1</url>
+<fota><% fota_check_result("1"); %></fota>
+</status>

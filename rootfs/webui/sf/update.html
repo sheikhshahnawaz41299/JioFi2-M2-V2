@@ -1,0 +1,894 @@
+<div class="line navi" style="display:none;">
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <li class="active"><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+
+
+<div class="line" >
+<div class="div_upd">
+<h4><span style="font-size:2em;">&#228;</span>ONLINE UPDATE</h4>
+    <hr>
+<div class="content">
+<!-- <div class="head">No new update were found</div>
+<p>Current Version: xxxxxxxx</p>
+<div class="tips">
+
+</div>
+    <button id="btn_check" class="btn_check">Check New Update</button> -->
+</div>
+
+</div>
+<img src="img/loading.gif" style="display:none;"> 
+</div>
+
+<style type="text/css">
+.div_upd{width:100%;height:32em;background:#F8883C;}
+h4{padding:1em 0 0.2em 1em;}
+hr{height:1px;border: none;border-top: 2px solid #888;}
+
+.head{background:#7f7f7f;padding:0.4em;color:white;}
+.content p{margin-left:0.4em;margin-top:0.4em;}
+.tips{border:1px solid #7f7f7f;margin:1em;padding-bottom:1em;}
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+
+@media screen and (min-width:801px) {
+.content{margin:0.4em 0 1em 1em;width:80%;background:#FFF;color:black;padding-bottom:1em;}
+}
+@media screen and (max-width:800px) {
+.content{margin:0.4em 1em 1em 1em;background:#FFF;color:black;padding-bottom:1em;}
+.div_upd{width:100%;background:#F8883C;}
+}
+
+
+    .btn_check,.btn_gray,.btn_cancel,.btn_update{
+        margin-left: 1.4em;
+        border: 0 none;
+        color: #FFFFFF;
+        height: 2.0em;
+        line-height: 2.0em;
+        vertical-align: middle;
+        text-align: center;
+        padding: 0;
+        padding:0 1em;
+        cursor:pointer;
+        transition: background 0.20s linear 0s;
+        -o-transition: background 0.20s linear 0s;
+        -ms-transition: background 0.20s linear 0s;
+        -moz-transition: background 0.20s linear 0s;
+        -webkit-transition: background 0.20s linear 0s;
+    }
+    .btn_check{background: #DC3434;}
+    .btn_check:hover {background: #CC3434;}
+    .btn_gray{background: #D0D0D0;}
+    .btn_update{background: #28A4DC;}
+    .btn_update:hover{background: #1884EC;}
+    .btn_cancel{background: #DC3434;}
+    .btn_cancel:hover{background: #CC3434;}
+
+progress {
+    display: inline-block;
+    width: 100%;
+    height: 1.4em;
+    border: 2px solid #CCC;
+    background-color:#e6e6e6;
+    color: #00FF00; /*IE10*/
+}
+/*ie6-ie9*/
+progress ie {
+    display:block;
+    height: 100%;
+    background: #00FF00;
+}
+
+
+progress::-moz-progress-bar { background: #00FF00; }
+progress::-webkit-progress-bar { background: #e6e6e6; }
+progress::-webkit-progress-value  { background: #00FF00; }
+
+.spin{display:inline-block;width:1.2em;height:1.2em;background:url("/img/red-loader.gif") no-repeat no-repeat; }
+#battery_tips{font-family:dinregular;color:red;}
+#batt_per{height:3.2em;line-height:2.4em;font-size:1em;color: rgb(255, 0, 0);margin-left: -3.1em;vertical-align: middle;display:inline-block;width: 3.4em;text-align: center;}
+.align_span{display: inline-block;width: 7em;}
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+function Byte2Format(size){
+if(size<1024) size += 'B ';
+else if(size<1048576) size = (size/1024).toFixed(1)+'KB ';
+else if(size<1073741824) size = (size/1048576).toFixed(1)+'MB ';
+else size = (size/1073741824).toFixed(1)+'GB ';
+return size;
+}
+function s_pop_loading(txt){
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>"+txt+"</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content
+        },
+        fixed : false
+  });
+}
+
+function pop_result(content){
+//  close_pop_diag();
+    var content_div = "<div class='pop_div'><div style='text-align:center;'>"+content+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Message',
+            content : content_div,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+//        callback: refresh_sms,
+        fixed : false
+    });
+  return false;
+}
+
+function show_batt_info(lv,percent){
+var batt_html='';
+if(lv==0) batt_html='<span style="font-size:3em;color:#AAA;">&#248;</span>';
+else if(lv==1) batt_html='<span style="font-size:3em;color:#AAA">&#248;</span><span style="font-size:3em;color:#777;margin-left:-0.905em;">&#246;</span>';
+else if(lv==2) batt_html='<span style="font-size:3em;color:#AAA;">&#248;</span><span style="font-size:3em;color:#777;margin-left:-0.920em;">&#247;</span>';
+else batt_html='<span style="font-size:3em;color:#777;">&#248;</span>';
+if(percent!=undefined) 
+    batt_html+=('<span id="batt_per">'+percent+'%</span>');
+$("#battery_tips").html(batt_html);
+}
+
+
+
+function low_batt_wait(){
+    // var content='Charging...';
+    // $('#battery_tips').html(content);
+
+    // var hi=batt>>>8;
+    // if(hi < 4) show_batt_info(hi);
+    // else if(hi == 4) {
+    //   var lo=(batt&0x0C)/4;
+    //   if(lo==3) lo=0;
+    //   else lo=lo+1;
+    //   show_batt_info(lo,batt_p);
+    //  }
+    $('#battery_tips').show();
+	$('#easyDialogYesBtn').hide();
+    return false;
+}
+
+function pop_result2(content){
+//  close_pop_diag();
+    pop_low_batt=1;
+    var content_div = "<div class='pop_div'><div style='text-align:center;'>"+content+
+                      "<p id='battery_tips' style='display:none;'></p></div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Message',
+            content : content_div,
+            yesText : 'OK',
+            yesFn : low_batt_wait,
+            noText : 'Cancel',
+            noFn : cancel_install
+        },
+//        callback: refresh_sms,
+        fixed : false
+    });
+    $('#easyDialogYesBtn').html('OK').show();
+    $('#easyDialogNoBtn').html('Cancel').show();
+  return false;
+}
+
+
+function refresh_div_upd_height(){
+    var content_height=$('.content').height();
+    var div_upd_height=content_height+120;
+    if(div_upd_height<520) div_upd_height=520;
+    $('.div_upd').height(div_upd_height);
+}
+
+function show_update_details(note){
+upd_size=note.size;
+upd_version=note.release_version;
+var html_content='<div class="head">A Firmware Update is available</div>'+
+ '<p><span class="align_span">New Version</span>: '+note.release_version+
+ '</p><p><span class="align_span">Size</span>: '+ Byte2Format(note.size)+
+ '</p><p><span class="align_span">Release Date</span>: '+note.date.replace(/T/,'  ').replace(/.000Z/,'  ')+
+ '</p><div class="tips">'+
+ '<p>Release Note:</p><p>'+
+note.release_note.replace(/\r\n|\n/g,"</p><p>")+
+ '</p></div>'+
+ '<button class="btn_update">Update Now</button>'+
+ '<button class="btn_cancel">Cancel</button>'+
+        '<p>Do not close the browser or unplug the device when the update is in progress and please ensure your device has enough battery power.</p>';
+
+$('.content').html(html_content);
+refresh_div_upd_height();
+}
+
+var is_paused=0,dl_progress=0,g_dl_result=0,g_install_result=0,install_progress=0,pop_low_batt=0, is_restarting=0;
+var upd_size,upd_version;
+function refresh_progress(state,result,progress){
+if(!init_progress_pop && !pop_low_batt){
+    init_progress_pop=1;
+    //begin download
+    var content_div = '<div class="pop_div"><p id="upd_st_tips">New Update is downloading.</p>' +
+            '<p>Do not close the browser or unplug the device when the update is in progress and please ensure your device has enough battery power.</p>' +
+            '<div id="progress_div"><span>Downloading: 0%</span>'+'<span style="float: right;">0M/'+Byte2Format(upd_size)+'</span>'+
+            '<progress max="100" value="0"><ie style="width:100%;"></ie></progress>'+
+            '</div></div>';
+    if (typeof window.screenX !== "number") {
+        document.createElement("progress");
+        document.createElement("ie");
+    }
+    easyDialog.open({
+        container : {
+            header : '<span class="spin"></span><span id="upd_st_head">Downloading...</span>',
+            content : content_div,
+            yesText : 'Pause',
+            yesFn : pause_download,
+            noText : 'Cancel',
+            noFn : cancel_download
+        },
+//        callback: refresh_sms,
+        fixed : false
+    });
+    $('#closeBtn').hide();
+    $('#easyDialogNoBtn').css({'background':'#DC3434','border':'none','color':'white'});
+    $('#easyDialogYesBtn').css({'background':'#28A4DC','border':'none'}).hide();
+
+	if(state==3){
+	    $('#easyDialogNoBtn').hide();
+	    $('#easyDialogYesBtn').hide();
+	    $('#upd_st_tips').html('Installing the update package');
+	    $('#upd_st_head').html('Installing...');
+	}
+
+	if(state==4){
+	    $('#easyDialogNoBtn').hide();
+	    $('#easyDialogYesBtn').hide();
+	    $('#upd_st_tips').html('Installing the update package');
+	    $('#upd_st_head').html('Installing...');
+	}
+}
+
+if(state==2){
+    var down=progress.split(',');
+    dl_progress=parseInt((parseInt(down[0])*100)/parseInt(down[1]));
+    g_dl_result=result;
+    if(g_dl_result==1 || g_dl_result==2){
+        if(g_dl_result==2){
+            $('#easyDialogYesBtn').hide();
+            $('#easyDialogNoBtn').hide();
+            dl_progress=100;
+            down[0]=down[1];
+        }
+        else if (g_dl_result==1)
+        {
+	$('#easyDialogYesBtn').html('Pause').show();
+        }
+        var content='<span>Downloading: '+dl_progress+'%</span>'+'<span style="float: right;">'+Byte2Format(parseInt(down[0]))+'/'+Byte2Format(parseInt(down[1]))+'</span>'+
+                '<progress max="100" value="'+dl_progress+'"><ie style="width:100%;"></ie></progress>';
+        $('#progress_div').html(content);
+    }
+    else if(g_dl_result==3){
+        var content='Download Fail,Please Retry Later';
+        $('#progress_div').html(content);
+        $('#easyDialogYesBtn').html('Retry').show();
+    }
+    else if(g_dl_result==4){
+        var content='<span>Downloading: '+dl_progress+'%</span>'+'<span style="float: right;">'+Byte2Format(parseInt(down[0]))+'/'+Byte2Format(parseInt(down[1]))+'</span>'+
+                '<progress max="100" value="'+dl_progress+'"><ie style="width:100%;"></ie></progress>';
+        $('#progress_div').html(content);
+        $('#easyDialogYesBtn').html('Resume').show();
+    }
+}
+else if(state==3){
+    $('#upd_st_tips').html('Installing the update package');
+    $('#upd_st_head').html('Installing...');
+
+    g_install_result=result;
+    install_progress=progress;
+    if(g_install_result==1){
+        var content='<span>Installing: '+install_progress+'%</span>'+
+                    '<progress max="100" value="'+install_progress+'"><ie style="width:100%;"></ie></progress>';
+            $('#progress_div').html(content);
+    }
+    else if(g_install_result==2){
+        show_update_result();
+    }
+    else if(g_install_result==3 || g_install_result==4){
+        var content='Install Fail,Please Reboot';
+        $('#progress_div').html(content);
+        $('#easyDialogYesBtn').html('Reboot').show();
+    }
+    else if(g_install_result==5){
+        init_progress_pop=0;
+        var content='Your current battery capacity is not enough!<br>Please charge your battery';
+        if(!pop_low_batt) {
+            pop_result2(content);
+        }
+        else{
+            var hi=batt>>>8;
+            if(hi < 4) show_batt_info(hi);
+            else if(hi == 4) {
+            var lo=(batt&0x0C)/4;
+            if(lo==3) lo=0;
+            else lo=lo+1;
+            //  console.log("v=%d,ind=%d",batt,lo);
+            show_batt_info(lo,batt_p);
+            }
+        }
+    }
+    if(g_install_result==1){
+        pop_low_batt=0; 
+        if(title_timer) {
+            clearInterval(title_timer);
+            title_timer=0;
+        }
+    }
+    else{
+        if(!title_timer) title_timer=setInterval(refresh_title,1000);
+    }
+    }
+else if(state==4){
+    show_update_result();
+}
+
+/*
+    timer1 = setInterval(function(){
+        if(pg_cnt<100)pg_cnt++;
+        if(pg_cnt>=100) {
+            if(timer1) clearInterval(timer1);
+            $('#easyDialogYesBtn').html('Install');
+        }
+        var dl=28.0*pg_cnt/100;
+        var content='<span>Downloading: '+pg_cnt+'%</span>'+'<span style="float: right;">'+dl+'M/28M</span>'+
+                '<progress max="100" value="'+pg_cnt+'"><ie style="width:100%;"></ie></progress>';
+        $('#progress_div').html(content);
+    },50);
+*/
+return;
+}
+
+
+function show_update_result(){
+    $('#upd_st_head').html('Installation Successful');
+    var content = '<div class="pop_div">' +
+            '<p>The software update was successful!</p>' +
+            '<p>Your device has been upgrade to new version:</p><p>'+ upd_version +
+            '</p><p>Need to Restart to Effect</p></div>';
+    $('#easyDialogYesBtn').html('Restart').show();
+    $('.pop_div').html(content);
+}
+
+
+function restart_device(s){
+    if(s!=seed) return toSelfXSS();
+    s_pop_loading('Restarting...');
+    is_restarting = 1;
+  
+  $.ajax({ 
+    url: "/wxml/fota_op.xml",
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: {reboot:1}, 
+    success: function(data, status) {
+//      var ret0 = parseInt($(data).find("restore").text());
+//      if(ret0) pop_submit_result('Setting Apply Success!');
+//      else pop_submit_result('Setting Apply Fail!');
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+
+  return false;
+}
+
+
+function pause_download(){
+
+if(fota_state==2){
+		/*
+		if(g_dl_result==2){
+        //Begin to install
+        start_install();
+    }
+	    else */
+
+	    if(g_dl_result==1){
+        //pause download
+		    $.ajax({ 
+		          url: "/wxml/fota_op.xml",
+		          type: "Post", 
+		          timeout: 8000,
+		          cache: false,
+		          datatype: "xml",
+		          data: {'pause':1}, 
+		          success: function(data, status) {
+		          },
+		          error: function(x, t, m){
+		            if(t==="timeout"){
+
+    }
+}
+		        })
+
+	        $('#easyDialogYesBtn').html('Resume');
+    }
+	    else if(g_dl_result==4){
+	        //resume download
+		    $.ajax({ 
+		          url: "/wxml/fota_op.xml",
+		          type: "Post", 
+		          timeout: 8000,
+		          cache: false,
+		          datatype: "xml",
+		          data: {'resume':1}, 
+		          success: function(data, status) {
+		          },
+		          error: function(x, t, m){
+		            if(t==="timeout"){
+
+		            }  
+		          }
+		        })
+		    
+	        $('#easyDialogYesBtn').html('Pause');
+	    }
+	}
+	else if(fota_state==4){
+        restart_device(seed);
+    }
+
+	if(g_install_result == 3 || g_install_result == 4){
+	     restart_device(seed);
+	}
+    else if(g_install_result==5){
+
+    }
+    else if(g_dl_result==3){
+        //DL fail,must be retry download;
+        if(net_st!=9) {
+            pop_result('No Internet connection');
+        }
+        else{
+            start_download();            
+        }
+
+}
+
+	return false;
+/*
+    //do something
+    if(pg_cnt<100){
+        //pause
+        if(!is_paused){
+            is_paused=1;
+            //to_pause
+            $('#easyDialogYesBtn').html('Resume');
+            if(timer1) clearInterval(timer1);
+        }
+        else{
+            is_paused=0;
+            $('#easyDialogYesBtn').html('Pause');
+            refresh_download_progress();
+        }
+    }
+    else if(pg_cnt==100){
+        $('#easyDialogNoBtn').hide();
+        $('#easyDialogYesBtn').hide();
+        $('#upd_st_tips').html('Installing the update package');
+        $('#upd_st_head').html('Installing...');
+        pg_cnt=0;
+        timer1 = setInterval(function(){
+            pg_cnt++;
+
+            var dl=28.0*pg_cnt/100;
+            var content='<span>Installing: '+pg_cnt+'%</span>'+
+                    '<progress max="100" value="'+pg_cnt+'"><ie style="width:100%;"></ie></progress>';
+            $('#progress_div').html(content);
+            if(pg_cnt>=100) {
+                if(timer1) clearInterval(timer1);
+                pg_cnt++;
+                show_update_result();
+            }
+        },50);
+
+    }
+    else if(pg_cnt==101){
+        pg_cnt=0;
+        have_update=0;
+        close_pop_diag();
+        load_mark('update.html');
+
+    }
+return false;
+*/
+}
+
+function cancel_download(){
+//    if(timer1) clearInterval(timer1);
+    $.ajax({ 
+          url: "/wxml/fota_op.xml",
+          type: "Post", 
+          timeout: 8000,
+          cache: false,
+          datatype: "xml",
+          data: {'cancel_dl':1}, 
+          success: function(data, status) {
+          },
+          error: function(x, t, m){
+            if(t==="timeout"){
+
+            }  
+          }
+        })
+
+    return true;
+}
+
+function cancel_install(){
+//    if(timer1) clearInterval(timer1);
+    pop_low_batt=0;
+    $.ajax({ 
+          url: "/wxml/fota_op.xml",
+          type: "Post", 
+          timeout: 8000,
+          cache: false,
+          datatype: "xml",
+          data: {'cancel_install':1}, 
+          success: function(data, status) {
+          },
+          error: function(x, t, m){
+            if(t==="timeout"){
+
+            }  
+          }
+        })
+
+    return true;
+}
+
+
+function cancel_check(){
+//    if(timer1) clearInterval(timer1);
+    $.ajax({ 
+          url: "/wxml/fota_op.xml",
+          type: "Post", 
+          timeout: 8000,
+          cache: false,
+          datatype: "xml",
+          data: {'uncheck':1}, 
+          success: function(data, status) {
+          },
+          error: function(x, t, m){
+            if(t==="timeout"){
+
+            }  
+          }
+        })
+
+    return true;
+}
+
+$('.btn_cancel').die().live('click',function () {
+//    if(timer1) clearInterval(timer1);
+//s_pop_loading('Waiting...');
+  cancel_check();
+  get_current_version();
+})
+
+
+
+var pg_cnt= 0,timer1;
+
+var init_progress_pop=0;
+
+function start_download(){
+$.ajax({ 
+  url: "/wxml/fota_op.xml",
+  type: "Post", 
+  timeout: 8000,
+  cache: false,
+  datatype: "xml",
+  data: {'download':1}, 
+  success: function(data, status) {
+  },
+  error: function(x, t, m){
+    if(t==="timeout"){
+
+    }  
+  }
+})
+
+}
+
+function start_install(){
+    $('#easyDialogNoBtn').hide();
+    $('#easyDialogYesBtn').hide();
+    $('#upd_st_tips').html('Installing the update package');
+    $('#upd_st_head').html('Installing...');
+    $.ajax({ 
+    url: "/wxml/fota_op.xml",
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: {'install':1}, 
+    success: function(data, status) {
+    },
+    error: function(x, t, m){
+    if(t==="timeout"){
+
+    }  
+    }
+    })
+}
+
+
+
+$('.btn_update').die().live('click',function () {
+    if(net_st!=9) {
+        pop_result('No Internet connection');
+    }
+    else{
+        start_download();            
+    }
+//    $('#easyDialogNoBtn').attr({'class':'btn_cancel'});
+//    $('#easyDialogYesBtn').attr({'class':'btn_update'});
+//    pg_cnt=20;
+//    refresh_download_progress();
+})
+
+
+
+
+
+//var net_st=9;
+//var have_update=1;
+$('#btn_check').die().live('click',function () {
+    $(this).prop({'disabled':true,'class':'btn_gray'});
+    if(net_st!=9) {
+        pop_result('No Internet connection');
+        $(this).prop({'disabled':false,'class':'btn_check'});
+    }
+    else{
+        get_check_result=0;
+        s_pop_loading('Checking for update');
+        $('.head').html('<span class="spin"></span>Checking for update...');
+
+        $.ajax({ 
+          url: "/wxml/fota_op.xml",
+          type: "Post", 
+          timeout: 8000,
+          cache: false,
+          datatype: "xml",
+          data: {'check':1}, 
+          success: function(data, status) {
+          },
+          error: function(x, t, m){
+            if(t==="timeout"){
+
+            }  
+          }
+        })
+
+/*
+        setTimeout(function(){
+            $('#btn_check').prop({'disabled':false,'class':'btn_check'});
+            if(!have_update){
+                $('.head').html('No new update were found');
+            }
+            else{
+                show_update_details();
+            }
+            close_pop_diag();
+
+        },3000);
+*/
+
+    }
+
+});
+
+
+function get_current_version(){
+$.ajax({ 
+  url: "/wxml/fota_op.xml",
+  type: "Post", 
+  timeout: 8000,
+  cache: false,
+  datatype: "xml",
+  data: {'curr':1}, 
+  success: function(data, status) {
+    get_curr_ver=1;
+
+    var curr_ver = jQuery.parseJSON($(data).find("curr_ver").text());
+// No new update were found
+    var content =  ((get_check_result==0)?'<div class="head">Check Version</div>':'<div class="head">No new update were found</div>')+
+            '<p>Current Version: '+curr_ver.current_version+'</p>'+
+    '<div class="tips">'+
+//    curr_ver.release_note.replace(/\r\n|\n/g,"</p><p>")+
+    '<p>Tips:</p><ul style="list-style-type:decimal">'+
+    '<li>A new update package is provided to improve stability of your device.</li>'+
+    '<li>Do not close the browser or unplug the device when the update in progress and please ensure your device has enough battery power</li>'+
+    '<li>Your device may reboot for several times during or after installation process.</li>'+
+    '<li>Download the update package may be charged your balance.</li>'+
+    '<li>Click the button "Check new update" to check the updates by manually.</li>'+
+    '</ul></div>'+
+    '<button id="btn_check" class="btn_check">Check New Update</button>';
+    $('.content').html(content);
+    refresh_div_upd_height();
+  },
+  error: function(x, t, m){
+    if(t==="timeout"){
+
+    }  
+  }
+})
+}
+
+
+
+var fota_state=0,get_curr_ver=0,get_check_result=0,temp_fota_state=0;
+
+function get_fota_state(){
+var post_data='';
+if(fota_state==0){
+    post_data='get=1';
+}
+else if(fota_state==1){
+    post_data='get=1&check_result=1';
+}
+else if(fota_state==2){
+    post_data='get=1&dl_result=1&dl_progress=1';
+}
+else if(fota_state==3){
+    post_data='get=1&install_result=1&install_progress=1';
+}
+else{
+    post_data='get=1';   
+}
+  $.ajax({ 
+  url: "/wxml/fota_state.xml",
+  type: "Post", 
+  // url: "/wxml/fota_state.xml",
+  // type: "Post", 
+  timeout: 8000,
+  cache: false,
+  datatype: "xml",
+  data: post_data, 
+  success: function(data, status) {
+    fota_state = parseInt($(data).find("state").text());
+    if(fota_state==0){
+        if (is_restarting) close_pop_diag();
+        if(!get_curr_ver) get_current_version();
+    }
+    else if(fota_state==1 && get_check_result != 2){
+        var check_result = parseInt($(data).find("check_result").text());
+        if(check_result<2){
+           if(check_result!=get_check_result) {
+            get_check_result=check_result;
+            if(check_result==1) close_pop_diag();
+            get_current_version();
+           }
+        }
+        else if(check_result==2){
+           if(2!=get_check_result) {
+            get_check_result=2;
+            close_pop_diag();
+            fota_show_releasenote();
+          }
+        }
+    }
+    else if(fota_state==2){
+       if(!get_check_result) {
+        get_check_result=2;
+        close_pop_diag();
+        fota_show_releasenote();
+      }
+      var dl_result = parseInt($(data).find("dl_result").text());
+      var dl_progress = $(data).find("dl_progress").text();
+        refresh_progress(fota_state,dl_result,dl_progress);
+//        console.log('dl_result=%d',dl_result);
+    }
+    else if(fota_state==3){
+        
+       if(!get_check_result) {
+        get_check_result=2;
+        fota_show_releasenote();
+      }
+      var install_result = parseInt($(data).find("install_result").text());
+      var install_progress = $(data).find("install_progress").text();
+        refresh_progress(fota_state,install_result,install_progress);
+    }
+    else if(fota_state==4){
+        
+       if(!get_check_result) {
+        get_check_result=2;
+        fota_show_releasenote();
+      }
+      refresh_progress(fota_state,0,0);
+    }
+    if(fota_state!=temp_fota_state && (fota_state==2 || fota_state==3)){
+        init_progress_pop=0;
+//        console.log('init_progress_pop=%d,fota_state=%d',init_progress_pop,fota_state);
+    }
+    if(fota_state!=temp_fota_state && (fota_state==0)){
+        get_curr_ver=0;
+    }
+    if(fota_state!=3 && pop_low_batt){
+        close_pop_diag();
+        pop_low_batt=0;
+    }
+//    console.log('temp_fota_state=%d,init_progress_pop=%d,fota_state=%d',temp_fota_state,init_progress_pop,fota_state);
+    temp_fota_state=fota_state;
+  },
+  error: function(x, t, m){
+    if(t==="timeout"){
+
+    }  
+  }
+})
+return;
+}
+
+
+function fota_show_releasenote(){
+  $.ajax({ 
+  url: "/wxml/fota_op.xml",
+  type: "Post", 
+  timeout: 8000,
+  cache: false,
+  datatype: "xml",
+  data: {'note':1}, 
+  success: function(data, status) {
+     var note = jQuery.parseJSON($(data).find("note").text());
+     $('#btn_check').prop({'disabled':false,'class':'btn_check'});
+    show_update_details(note);
+//    close_pop_diag();
+  },
+  error: function(x, t, m){
+    if(t==="timeout"){
+
+    }  
+  }
+})
+
+}
+
+
+
+function load_mark(url){
+    if(interval_timer) clearInterval(interval_timer);
+    if(url!='update.html') return;
+    get_fota_state();
+    interval_timer=setInterval(get_fota_state,1000);
+
+
+//    s_pop_loading('123');
+    
+}
+</script>

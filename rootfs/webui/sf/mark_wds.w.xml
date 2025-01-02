@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wds>
+<state><% get_wifi_wds_enabled(); %></state>
+<cnt><% get_wifi_wds_list_count(); %></cnt>
+<list>
+<mac><% get_wifi_wds_list_macaddr(page*5+1); %></mac>
+<rate><% get_wifi_wds_list_macaddr(page*5+1); %></rate>
+<comment><% get_wifi_wds_list_comment(page*5+1); %></comment>
+</list>
+<list>
+<mac><% get_wifi_wds_list_macaddr(page*5+2); %></mac>
+<rate><% get_wifi_wds_list_macaddr(page*5+2); %></rate>
+<comment><% get_wifi_wds_list_comment(page*5+2); %></comment>
+</list>
+<list>
+<mac><% get_wifi_wds_list_macaddr(page*5+3); %></mac>
+<rate><% get_wifi_wds_list_macaddr(page*5+3); %></rate>
+<comment><% get_wifi_wds_list_comment(page*5+3); %></comment>
+</list>
+<list>
+<mac><% get_wifi_wds_list_macaddr(page*5+4); %></mac>
+<rate><% get_wifi_wds_list_macaddr(page*5+4); %></rate>
+<comment><% get_wifi_wds_list_comment(page*5+4); %></comment>
+</list>
+<list>
+<mac><% get_wifi_wds_list_macaddr(page*5+5); %></mac>
+<rate><% get_wifi_wds_list_macaddr(page*5+5); %></rate>
+<comment><% get_wifi_wds_list_comment(page*5+5); %></comment>
+</list>
+</wds>

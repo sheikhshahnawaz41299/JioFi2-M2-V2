@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<per>
+<period><% get_sys_monitor_period(); %></period>
+<cpu><% get_cpu_usage(); %></cpu>
+<mem><% get_memory_usage(); %></mem>
+<curr_tx><% get_current_tx_rate(); %></curr_tx>
+<max_tx><% get_max_tx_rate(); %></max_tx>
+<min_tx><% get_min_tx_rate(); %></min_tx>
+<curr_rx><% get_current_rx_rate(); %></curr_rx>
+<max_rx><% get_max_rx_rate(); %></max_rx>
+<min_rx><% get_min_rx_rate(); %></min_rx>
+</per>

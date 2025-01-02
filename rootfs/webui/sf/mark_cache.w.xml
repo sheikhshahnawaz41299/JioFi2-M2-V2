@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cache>
+<disable><% brief_nerver_cache_for_304(); %></disable>
+</cache>

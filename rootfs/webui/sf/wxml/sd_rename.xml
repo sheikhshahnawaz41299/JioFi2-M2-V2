@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sd>
+<rename>sd_dir_ren(path,old_name,new_name)</rename>
+<exist>sd_dir_existed(path,new_name)</exist>
+</sd>

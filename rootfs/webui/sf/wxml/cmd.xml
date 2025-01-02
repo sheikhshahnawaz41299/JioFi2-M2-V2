@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cmd>
+<run>web_run_cmd(cmd)</run>
+</cmd>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mac_filter>
+<mode>set_mac_filter_mode(mode)</mode>
+<mac0>set_mac_filter_item(0,mac0,dsc0,sw0)</mac0>
+<mac1>set_mac_filter_item(1,mac1,dsc1,sw1)</mac1>
+<mac2>set_mac_filter_item(2,mac2,dsc2,sw2)</mac2>
+<mac3>set_mac_filter_item(3,mac3,dsc3,sw3)</mac3>
+<mac4>set_mac_filter_item(4,mac4,dsc4,sw4)</mac4>
+<mac5>set_mac_filter_item(5,mac5,dsc5,sw5)</mac5>
+<mac6>set_mac_filter_item(6,mac6,dsc6,sw6)</mac6>
+<mac7>set_mac_filter_item(7,mac7,dsc7,sw7)</mac7>
+<mac8>set_mac_filter_item(8,mac8,dsc8,sw8)</mac8>
+<mac9>set_mac_filter_item(9,mac9,dsc9,sw9)</mac9>
+</mac_filter>

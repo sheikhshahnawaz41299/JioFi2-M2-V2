@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<basic>
+<ssid>set_wifi_ssid(ssid)</ssid>
+<sec_mode>set_wifi_sec_wpa(enc_type,wpa)</sec_mode>
+<key>set_wifi_key(key)</key>
+<login_pwd>set_login_password(password)</login_pwd>
+<restart>restart_wifi_app(restart)</restart>
+</basic>

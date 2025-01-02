@@ -1,0 +1,1178 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a>Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys" class="active-item "><a href="javascript:;">Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" style="display:none;"><a>PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">ADMIN SETTING</h3>
+<div class="line" style="padding:0em 0.6em;">
+  <form class="customform" action="#">
+  <div class="margin">
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Login Username</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="user" name="user" title="user" placeholder="USER" maxlength="32"/>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Login Password</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="password" id="pwd" name="pwd" title="password" placeholder="PASSWORD" maxlength="32"/>
+  </div>
+  <div class="s-12 l-4">
+    <div class="show_pwd" for="pwd">
+    <label class="check">&#238;</label><label class="after">Show Password</label> <input class="show_pwd_st" type="hidden" value="0" />
+    </div>
+  </div>
+  </div>
+
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Login Timeout</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="timeout" id="timeout">
+    <option value="1">1 Min</option>
+<!--    <option value="3">3 Min</option>-->
+    <option value="5">5 Min</option>
+    <option selected value="10">10 Min</option>
+    <option value="15">15 Min</option>
+    </select>
+  </div>
+  </div>
+
+<div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Device Power Save</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="save">
+    <option value="0">OFF</option>
+    <option value="10">10 min</option>
+    <option value="20">20 min</option>
+    <option value="30">30 min</option>
+    <option value="40">40 min</option>
+    </select>
+  </div>
+  </div> 
+
+
+<div style="display:none;">
+  <div class="line">
+  <div class="s-12 l-3">
+  &nbsp;
+  </div>
+  <div class="s-12 l-5">
+    <div class="s-12 l-2">Day</div><div class="s-12 l-2">Mon</div><div class="s-12 l-2">Year</div><div class="s-12 l-2">Hour</div><div class="s-12 l-2">Min</div><div class="s-12 l-2">Sec</div>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Current Time</label>
+  </div>
+  <div class="s-12 l-5">
+<div class="s-12 l-2"><input type="text" id='day' name="day" value="" size="2" maxlength="2"></div>
+<div class="s-12 l-2"><input type="text" id="month" name="month" value="" size="2" maxlength="2"></div>
+<div class="s-12 l-2"><input type="text" id="year" name="year" value="" size="4" maxlength="4"></div>
+<div class="s-12 l-2"><input type="text" id='hour' name="hour" value="" size="2" maxlength="2"></div>
+<div class="s-12 l-2"><input type="text" id='minute' name="minute" value="" size="2" maxlength="2"></div>
+<div class="s-12 l-2"><input type="text" id='second' name="second" value="" size="2" maxlength="2"></div>
+  </div>
+  <div class="s-12 l-2">
+  <div class="button" id="set_curr_time">COPY TIME</div>
+  </div>
+  </div>
+
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Time Zone</label>
+  </div>
+  <div class="s-12 l-5">
+  <select name="timezone" id="timezone" >
+  <option selected value="-7 1">(GMT+07:00)Bangkok, Hanoi, Jakarta</option>
+  </select>
+  </div>
+  </div>
+
+
+  <div class="line" >
+  <div class="s-12 l-3 line_form">
+  <label class="name">Daylight Saving</label>
+  </div>
+  <div class="s-12 l-5 line_form">
+    <input type="radio" name="dst" value="0" /><label class="radio">Disable</label>
+    <input type="radio" name="dst" value="1" /><label class="radio">Enable</label>
+  </div>
+  </div>
+
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Ntp Client</label>
+  </div>
+  <div class="s-12 l-5 line_form">
+    <input type="radio" name="ntp" value="0" /><label class="radio">Disable</label>
+    <input type="radio" name="ntp" value="1" /><label class="radio">Enable</label>
+  </div>
+  </div>
+
+
+  <div class="line" id="ntp_srv">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Ntp Server</label>
+  </div>
+  <div class="s-12 l-5">
+  <select name="sel_ntp_srv" id="sel_ntp_srv">
+  <option selected value="131.188.3.220">131.188.3.220  - Europe</option>
+  <option value="130.149.17.8">130.149.17.8   - Europe</option>
+  <option value="203.117.180.36"> 203.117.180.36 - Asia Pacific</option>
+  <option value="0.0.0.0"> User Define</option>
+  </select>
+  </div>
+  </div>
+
+  <div class="line" id="ud_ntp_srv" style="display:none;">
+  <div class="s-12 l-3 line_form">
+  <label class="name">&nbsp;</label>
+  </div>
+  <div class="s-12 l-5">
+  <input name="input_ntp_srv" id="input_ntp_srv" maxlength="32" type="text" >
+  </div>
+  </div>
+</div>
+
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit">APPLY</div>
+  </div>
+  </div>
+
+<div class="s-12 l-10">
+  <hr>
+</div>
+
+
+  <div class="s-12 l-10">
+  <div class="s-12 l-4">
+  <div class="button" id="to_reset" style="">RESET SETTING</div>
+  </div>
+  <div class="s-12 l-2">
+  &nbsp;
+  </div>
+  <div class="s-12 l-6">
+  <div class="button" id="to_fac" style="">FACTORY DEFAULT SETTING</div>
+  </div>
+  </div>
+
+  <div class="s-12 l-10">
+  <div class="s-12 l-8" id="fac_errHint">
+  &nbsp;
+  </div>
+  </div>
+
+
+
+
+
+  </div>
+  </form>
+  <div class="s-12 l-10">
+  <hr>
+</div>
+
+<div class="s-12 l-10">
+  <div class="s-12 l-4">
+  <div class="button" id="to_export" style="">EXPORT CONFIG</div>
+  </div>
+  <div class="s-12 l-2">
+  &nbsp;
+  </div>
+  <div class="s-12 l-6">
+  <div class="button" id="to_import" style="">
+  <form id="upload_form">
+    <span class="up_btn_name">IMPORT CONFIG</span>
+    <input name="path" id="ie_hide_path" type="hidden" value="nv/"/>
+    <input name="upload_file_id" id="upload_file_id" type="hidden" value=""/>
+    <input name="files" id="up_file" class="upload" type="file" multiple="multiple" />
+  </form> 
+
+
+  </div>
+  </div>
+  </div>
+</div>
+</div>
+<img src="img/loading.gif" style="display:none;"> 
+</div>
+<style type="text/css">
+
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+
+.customform label.name_center{font-size: 1.2em;padding-left:2em;margin-top:2em;border: 1px solid red;}
+
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+
+
+@media screen and (min-width:801px) {
+#aside{height:37.8em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:42em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+#to_fac,#to_reset,#to_export,#to_import{font-size:1.2em;margin-top:1em;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+#to_fac{font-size:1.8em;margin-top:0em;}
+#to_reset{font-size:1.8em;margin-top:0.6em;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+}
+
+#set_curr_time{margin-left: 1em;}
+#errHint,#fac_errHint{color: red;text-align: center;}
+/*#waiting_tips{width:100%;height:100%;text-align: center;}*/
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+
+/*.input-file {position: relative;margin-left:5px;margin-top:10px;width: 120px;height: 30px;background: #ddd;border: 1px solid gray;text-align: center;cursor: pointer;display: inline-block;*display:inline;zoom:1}*/
+.upload {display: block;position: absolute;margin: 0;padding: 0;top: 14px;left: 0;opacity: 0;-moz-opacity: 0;filter: alpha(opacity=0);cursor: pointer;}
+
+#upload_form{margin: 0;padding: 0;}
+
+</style>
+<script type="text/javascript">
+
+var ntp_zone_index=47;
+
+function ntp_entry(name, value) { 
+  this.name = name ;
+  this.value = value ;
+} 
+
+var ntp_zone_array=new Array(65);
+ntp_zone_array[0]=new ntp_entry("(GMT-12:00)Eniwetok, Kwajalein","12 1");
+ntp_zone_array[1]=new ntp_entry("(GMT-11:00)Midway Island, Samoa","11 1");
+ntp_zone_array[2]=new ntp_entry("(GMT-10:00)Hawaii", "10 1");
+ntp_zone_array[3]=new ntp_entry("(GMT-09:00)Alaska", "9 1");
+ntp_zone_array[4]=new ntp_entry("(GMT-08:00)Pacific Time (US & Canada); Tijuana", "8 1");
+ntp_zone_array[5]=new ntp_entry("(GMT-07:00)Arizona", "7 1");
+ntp_zone_array[6]=new ntp_entry("(GMT-07:00)Mountain Time (US & Canada)", "7 2");
+ntp_zone_array[7]=new ntp_entry("(GMT-06:00)Central Time (US & Canada)", "6 1");
+ntp_zone_array[8]=new ntp_entry("(GMT-06:00)Mexico City, Tegucigalpa", "6 2");
+ntp_zone_array[9]=new ntp_entry("(GMT-06:00)Saskatchewan", "6 3");
+ntp_zone_array[10]=new ntp_entry("(GMT-05:00)Bogota, Lima, Quito", "5 1");
+ntp_zone_array[11]=new ntp_entry("(GMT-05:00)Eastern Time (US & Canada)", "5 2");
+ntp_zone_array[12]=new ntp_entry("(GMT-05:00)Indiana (East)", "5 3");
+ntp_zone_array[13]=new ntp_entry("(GMT-04:00)Atlantic Time (Canada)", "4 1");
+ntp_zone_array[14]=new ntp_entry("(GMT-04:00)Caracas, La Paz", "4 2");
+ntp_zone_array[15]=new ntp_entry("(GMT-04:00)Santiago", "4 3");
+ntp_zone_array[16]=new ntp_entry("(GMT-03:30)Newfoundland", "3 1");
+ntp_zone_array[17]=new ntp_entry("(GMT-03:00)Brasilia", "3 2");
+ntp_zone_array[18]=new ntp_entry("(GMT-03:00)Buenos Aires, Georgetown", "3 3");
+ntp_zone_array[19]=new ntp_entry("(GMT-02:00)Mid-Atlantic", "2 1");
+ntp_zone_array[20]=new ntp_entry("(GMT-01:00)Azores, Cape Verde Is.", "1 1");
+ntp_zone_array[21]=new ntp_entry("(GMT)Casablanca, Monrovia", "0 1");
+ntp_zone_array[22]=new ntp_entry("(GMT)Greenwich Mean Time: Dublin, Edinburgh, Lisbon, London", "0 2");
+ntp_zone_array[23]=new ntp_entry("(GMT+01:00)Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna", "-1 1");
+ntp_zone_array[24]=new ntp_entry("(GMT+01:00)Belgrade, Bratislava, Budapest, Ljubljana, Prague", "-1 2");
+ntp_zone_array[25]=new ntp_entry("(GMT+01:00)Barcelona, Madrid", "-1 3");
+ntp_zone_array[26]=new ntp_entry("(GMT+01:00)Brussels, Copenhagen, Madrid, Paris, Vilnius", "-1 4");
+ntp_zone_array[27]=new ntp_entry("(GMT+01:00)Paris", "-1 5");
+ntp_zone_array[28]=new ntp_entry("(GMT+01:00)Sarajevo, Skopje, Sofija, Warsaw, Zagreb", "-1 6");
+ntp_zone_array[29]=new ntp_entry("(GMT+02:00)Athens, Istanbul, Minsk", "-2 1");
+ntp_zone_array[30]=new ntp_entry("(GMT+02:00)Bucharest", "-2 2");
+ntp_zone_array[31]=new ntp_entry("(GMT+02:00)Cairo", "-2 3");
+ntp_zone_array[32]=new ntp_entry("(GMT+02:00)Harare, Pretoria", "-2 4");
+ntp_zone_array[33]=new ntp_entry("(GMT+02:00)Helsinki, Riga, Tallinn", "-2 5");
+ntp_zone_array[34]=new ntp_entry("(GMT+02:00)Jerusalem", "-2 6");
+ntp_zone_array[35]=new ntp_entry("(GMT+03:00)Baghdad, Kuwait, Riyadh", "-3 1");
+ntp_zone_array[36]=new ntp_entry("(GMT+03:00)Moscow, St. Petersburg, Volgograd", "-3 2");
+ntp_zone_array[37]=new ntp_entry("(GMT+03:00)Mairobi", "-3 3");
+ntp_zone_array[38]=new ntp_entry("(GMT+03:30)Tehran", "-3 4");
+ntp_zone_array[39]=new ntp_entry("(GMT+04:00)Abu Dhabi, Muscat", "-4 1");
+ntp_zone_array[40]=new ntp_entry("(GMT+04:00)Baku, Tbilisi", "-4 2");
+ntp_zone_array[41]=new ntp_entry("(GMT+04:30)Kabul", "-4 3");
+ntp_zone_array[42]=new ntp_entry("(GMT+05:00)Ekaterinburg", "-5 1");
+ntp_zone_array[43]=new ntp_entry("(GMT+05:00)Islamabad, Karachi, Tashkent", "-5 2");
+ntp_zone_array[44]=new ntp_entry("(GMT+05:30)Bombay, Calcutta, Madras, New Delhi", "-5 3");
+ntp_zone_array[45]=new ntp_entry("(GMT+06:00)Astana, Almaty, Dhaka", "-6 1");
+ntp_zone_array[46]=new ntp_entry("(GMT+06:00)Colombo", "-6 2");
+ntp_zone_array[47]=new ntp_entry("(GMT+07:00)Bangkok, Hanoi, Jakarta", "-7 1");
+ntp_zone_array[48]=new ntp_entry("(GMT+08:00)Beijing, Chongqing, Hong Kong, Urumqi", "-8 1");
+ntp_zone_array[49]=new ntp_entry("(GMT+08:00)Perth", "-8 2");
+ntp_zone_array[50]=new ntp_entry("(GMT+08:00)Singapore", "-8 3");
+ntp_zone_array[51]=new ntp_entry("(GMT+08:00)Taipei", "-8 4");
+ntp_zone_array[52]=new ntp_entry("(GMT+09:00)Osaka, Sapporo, Tokyo", "-9 1");
+ntp_zone_array[53]=new ntp_entry("(GMT+09:00)Seoul", "-9 2");
+ntp_zone_array[54]=new ntp_entry("(GMT+09:00)Yakutsk", "-9 3");
+ntp_zone_array[55]=new ntp_entry("(GMT+09:30)Adelaide", "-9 4");
+ntp_zone_array[56]=new ntp_entry("(GMT+09:30)Darwin", "-9 5");
+ntp_zone_array[57]=new ntp_entry("(GMT+10:00)Brisbane", "-10 1");
+ntp_zone_array[58]=new ntp_entry("(GMT+10:00)Canberra, Melbourne, Sydney", "-10 2");
+ntp_zone_array[59]=new ntp_entry("(GMT+10:00)Guam, Port Moresby", "-10 3");
+ntp_zone_array[60]=new ntp_entry("(GMT+10:00)Hobart", "-10 4");
+ntp_zone_array[61]=new ntp_entry("(GMT+10:00)Vladivostok", "-10 5");
+ntp_zone_array[62]=new ntp_entry("(GMT+11:00)Magadan, Solomon Is., New Caledonia", "-11 1");
+ntp_zone_array[63]=new ntp_entry("(GMT+12:00)Auckland, Wllington", "-12 1");
+ntp_zone_array[64]=new ntp_entry("(GMT+12:00)Fiji, Kamchatka, Marshall Is.", "-12 2");
+
+
+
+var i;
+for(i=0;i<ntp_zone_array.length;i++){
+if (i == ntp_zone_index)
+$('#timezone').append('<option value="'+ntp_zone_array[i].value+'" selected>'+ntp_zone_array[i].name+'</option>');
+else
+$('#timezone').append('<option value="'+ntp_zone_array[i].value+'">'+ntp_zone_array[i].name+'</option>');
+}
+
+
+
+var upload_alloc_id_start,upload_alloc_id_cnt;
+function ie_fileUpload(form) {
+uploaded_size = 0;
+var iframe = document.createElement("iframe");
+iframe.setAttribute("id", "upload_iframe");
+iframe.setAttribute("name", "upload_iframe");
+iframe.setAttribute("width", "0");
+iframe.setAttribute("height", "0");
+iframe.setAttribute("border", "0");
+iframe.setAttribute("style", "width: 0; height: 0; border: none;");
+form.parentNode.appendChild(iframe);
+window.frames['upload_iframe'].name = "upload_iframe";
+
+iframeId = document.getElementById("upload_iframe");
+var eventHandler = function () {
+
+if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
+else iframeId.removeEventListener("load", eventHandler, false);
+
+var content;
+
+if (iframeId.contentDocument) {
+content = iframeId.contentDocument.body.innerHTML;
+} else if (iframeId.contentWindow) {
+content = iframeId.contentWindow.document.body.innerHTML;
+} else if (iframeId.document) {
+content = iframeId.document.body.innerHTML;
+}
+reset_form();
+if(content=='upload OK') {
+  pop_upload_config_succ();
+}
+else{
+if(content=='upload fail')
+  pop_submit_result("Import Config File Fail");
+}
+setTimeout(function remove_iframe(){if(iframeId.parentNode) iframeId.parentNode.removeChild(iframeId)}, 250);
+}
+
+if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
+if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+
+var action_url = "http://"+document.domain+":61726/upload";
+
+form.setAttribute("target", "upload_iframe");
+form.setAttribute("action", action_url);
+form.setAttribute("method", "post");
+form.setAttribute("enctype", "multipart/form-data");
+form.setAttribute("encoding", "multipart/form-data");
+form.submit();
+}
+
+function reset_form(){
+  $('#upload_form')[0].reset();
+}
+
+function send_files(index){
+  var form = new FormData();
+  var files = $('#up_file')[0].files;
+  form.append("path", 'nv/');
+  form.append("upload_file_id", upload_alloc_id_start+index);
+  form.append("files", files[index]);
+  xhr = new XMLHttpRequest();
+
+
+  xhr.onError=function(){
+      pop_submit_result("Import Config File Fail");
+  }
+
+
+xhr.onreadystatechange=function()
+{
+if (xhr.readyState==4 && xhr.status==0)
+{
+//  if(xhr) xhr.abort();
+    reset_form();
+    pop_submit_result("Import Config File Fail");
+}
+
+if (xhr.readyState==4 && xhr.status==200)
+{
+  reset_form();
+  if(xhr.responseText=="upload OK")
+  {
+    pop_upload_config_succ();
+  }
+  else if(xhr.responseText=="upload busy")
+  {
+    pop_submit_result("Import Config File Fail");
+  }
+  else if(xhr.responseText=="upload fail")
+  {
+    pop_submit_result("Import Config File Fail");
+  }
+  else if(xhr.responseText=="upload fail, file exists")
+  {
+    pop_submit_result("Import Config File Fail");
+  }
+  else if(xhr.responseText=="upload fail, invalid request")
+  {
+    pop_submit_result("Import Config File Fail");
+  }
+  else if(xhr.responseText=="upload fail, name too long")
+  {
+    pop_submit_result("Import Config File Fail");
+  }
+
+  }
+}
+
+
+xhr.open("post", "http://"+location.hostname+":61726/upload", true);
+xhr.send(form);
+
+}
+
+
+if ($.browser.msie && parseInt($.browser.version)<10)
+{
+  function getFileSize(fileObj)
+  {
+  var image=new Image();
+  image.src=fileObj.value;
+  }
+    // IE suspends timeouts until after the file dialog closes
+    $('#up_file').click(function(event)
+    {
+        setTimeout(function()
+        {
+            if($('#up_file').val().length > 0) {
+//              alert($('#up_file').val());
+                var path = $('#up_file').val();
+                var file_name = path.substring(path.lastIndexOf('\\')+1,path.length);
+                getFileSize($('#up_file').val());
+
+// var list='<div style="border:1px solid gray;background:#ddd;"><span class="file_list_name">Name</span><span class="file_list_size">Size</span>Status</div>';
+
+//               list += ('<div style="border:1px solid gray;border-top:none;"><span class="file_list_name">'+file_name+'</span><span class="file_list_size">-</span><span class="file_list_del_span"><a title="cancel upload this file" class="file_list_del"><img src="/img/default.gif" /></a></span></div>');
+             
+//              $('#file_list').html(list);
+//              $('#upload_state_tips').html('');
+
+// $('#start_upload').hide();
+// $.blockUI({ 
+// message: $('#upload_progress'), 
+// css: { 
+// top:        '50%',
+// left:       '50%',
+// textAlign:  'left',
+// marginLeft:     '-320px', 
+// marginTop:      '-145px', 
+// width: '600px',
+// background:'none'
+// } 
+// }); 
+
+  pop_waiting();
+
+  $.ajax({ 
+    url: "/wxml/sd_upload_state.xml",
+    type: "Post", 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: {count: '1'}, 
+    success: function(data, status) {
+      var state = parseInt($(data).find("state").text());
+      var count = parseInt($(data).find("count").text());
+      if(!state && !count) //$('#start_upload').show();
+      {
+        if($.browser.msie && parseInt($.browser.version)<10){
+          $('#ie_hide_path').val('nv/');
+          $('#upload_file_id').val(upload_alloc_id_start);
+          ie_fileUpload($('#upload_form')[0]);
+//          import_result_timer = setInterval("upload_result()",3000);
+       }
+      }
+      else {
+        // $('#upload_state_tips').html('Another upload instance found,please wait...');
+        // upload_state_interval=setInterval(refresh_upload_state,1000);
+        pop_submit_result("Import Config File Fail");
+      }
+      upload_alloc_id_start=parseInt($(data).find("alloc_id").text());
+      upload_alloc_id_cnt=1;
+
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_submit_result('Please check your network!');
+    }
+    })
+
+            }
+        }, 0);
+    });
+}
+
+else
+{
+
+  $('#up_file').live('change',function(){
+    if(typeof FileReader !='undefined' && typeof FormData !='undefined'){
+    var files=this.files;
+    if(files.length!=1) return;
+    
+    if( (files[0].size) > 4*1024*1024*1024){
+      $('#upload_form')[0].reset();
+      alert('Support for file uploads less than 4GB!');
+      return;
+    }
+
+
+
+/*
+    file_upload_list_flag.length=0;
+    var list='<div style="border:1px solid gray;background:#ddd;"><span class="file_list_name">Name</span><span class="file_list_size">Size</span>Status</div>';
+
+    if(files.length>12) list += '<div style="height:310px;overflow-y:auto;">';
+    var all_size =0;
+for (var i=0;i<files.length;i++){
+ if( (files[i].size) > 4*1024*1024*1024){
+  $('#upload_form')[0].reset();
+  alert('Support for file uploads less than 4GB!');
+  return;
+ }  
+  var up_file_name = files[i].name;
+  if(up_file_name.length>30) up_file_name = up_file_name.substr(0,27)+'...';
+  list +=('<div style="border:1px solid gray;border-top:none;"><span class="file_list_name">'+up_file_name+'</span><span class="file_list_size">'+Byte2Format(files[i].size)+'</span><span class="file_list_del_span"><a title="cancel upload this file" class="file_list_del"><img src="/img/default.gif" /></a></span></div>');
+file_upload_list_flag[i]=1;
+all_size+=files[i].size;
+} 
+
+if( (parseInt(all_size/1048576)+2) > free_size){
+  $('#upload_form')[0].reset();
+  alert('The remaining space is not enough!');
+  return;
+}
+
+if(files.length>12) list+="</div>";
+
+$('#file_list').html(list);
+$('#upload_state_tips').html('');
+$('#start_upload').hide();
+//$('#start_upload').show();
+$.blockUI({ 
+message: $('#upload_progress'), 
+css: { 
+top:        '50%',
+left:       '50%',
+textAlign:  'left',
+marginLeft:     '-320px', 
+marginTop:      '-175px', 
+width: '600px',
+background:'none'
+} 
+}); 
+$('.blockOverlay').click(function(){
+
+}); 
+
+$('#close_upload_div').attr('title','Click to close').click(function(){
+  $('#upload_form')[0].reset();
+  if(xhr) xhr.abort();
+  if(_interval) clearInterval(_interval);
+  if(time_s) clearInterval(time_s);
+  $.unblockUI();
+  $.ajax({ 
+    url: "/wxml/sd_show_curr.xml",
+    type: "Post", 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: { path:curr_path,page:curr_page,filter:filter_num }, 
+    success: function(data, status) {
+    show_table(data,0);
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_BlockUI_normal('Please check your network!');
+    }
+    })
+  }
+  
+  );
+*/
+
+  $.ajax({ 
+    url: "/wxml/sd_upload_state.xml",
+    type: "Post", 
+    cache: false,
+    timeout: 20000,
+    datatype: "xml",
+    data: {count: files.length}, 
+    success: function(data, status) {
+      var state = parseInt($(data).find("state").text());
+      var count = parseInt($(data).find("count").text());
+      if(!state && !count) {
+//        $('#start_upload').show();
+        send_files(0);
+      }
+      else {
+        pop_submit_result("Import Config File Fail");
+        // $('#upload_state_tips').html('Another upload instance found,please wait...');
+        // upload_state_interval=setInterval(refresh_upload_state,1000);
+      }
+      upload_alloc_id_start=parseInt($(data).find("alloc_id").text());
+      upload_alloc_id_cnt=files.length;
+    },
+    error: function(x, t, m){
+      if(t==="timeout")
+      pop_submit_result('Please check your network!');
+    }
+    })
+}
+else
+{
+  alert("Your Browser does not support html5,please setup the latest Chrome/Firefox!");
+}
+});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+function load_mark_set(){
+
+}
+
+
+function effective_config(){
+  pop_waiting();
+  $.ajax({ 
+    url: "/config_restore.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: {}, 
+    success: function(data, status) {
+      locking=0;
+     var ret0 = parseInt($(data).find("restore").text());
+     if(ret0) pop_submit_result('Config Restore Success!');
+     else pop_submit_result('Config Restore Fail!');
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+        locking=0;
+      }  
+    }
+  })
+  return false;
+}
+
+function pop_upload_config_succ(){
+  var content = "<div class='pop_div'><div style='text-align:center;'>Import File Success,Click \"Effective\" to Effective</div></div>";
+  easyDialog.open({
+          container : {
+              header : 'Message',
+              content : content,
+              yesText : 'Effective',
+              yesFn : effective_config,
+              noText : 'Cancel',
+              noFn : close_pop_diag
+          },
+          fixed : true
+    });
+}
+
+
+
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+
+function pop_waiting(){
+  close_pop_diag();
+  // var content = "<div class='pop_div'><div id='waiting_tips'>Please Waiting...</div></div>";
+    var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>Please Waiting...</span></div></div>";
+  easyDialog.open({
+        container : {
+//            header : 'Sending',
+            content : content,
+//            yesText : 'Cancel',
+//            yesFn : cancel_send_sms
+        },
+        autoClose:5000,
+        overlay: true,
+        lock:true,
+        fixed : true,
+        callback:load_setting
+  });
+  return false;
+}
+
+
+function restore_setting(){
+  pop_waiting();
+  $.ajax({ 
+    url: "/wxml/set_restore.xml",
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: {restore:1}, 
+    success: function(data, status) {
+      locking=0;
+//      var ret0 = parseInt($(data).find("restore").text());
+//      if(ret0) pop_submit_result('Setting Apply Success!');
+//      else pop_submit_result('Setting Apply Fail!');
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+        locking=0;
+      }  
+    }
+  })
+
+  return false;
+}
+
+$('#to_fac').click(function(event){
+  event.preventDefault();
+  var content = "<div class='pop_div'><div style='text-align:center;'>All the device setting will be reset to factory default setting,Do you want to continue?</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Message',
+            content : content,
+            yesText : 'OK',
+            yesFn : restore_setting,
+            noText : 'Cancel',
+            noFn : close_pop_diag
+        },
+        fixed : true
+    });
+
+
+});
+
+function reset_device(){
+  pop_waiting();
+  
+  $.ajax({ 
+    url: "/wxml/set_restore.xml",
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: {reset:1}, 
+    success: function(data, status) {
+//      var ret0 = parseInt($(data).find("restore").text());
+//      if(ret0) pop_submit_result('Setting Apply Success!');
+//      else pop_submit_result('Setting Apply Fail!');
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+
+  return false;
+}
+
+
+$('#to_reset').click(function(event){
+  event.preventDefault();
+  var content = "<div class='pop_div'><div style='text-align:center;'>The device will be reset,Do you want to continue?</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Message',
+            content : content,
+            yesText : 'OK',
+            yesFn : reset_device,
+            noText : 'Cancel',
+            noFn : close_pop_diag
+        },
+        fixed : true
+    });
+
+
+});
+
+
+function download_config_file(){
+  close_pop_diag();
+  window.open("http://andromax.m2y/nv/config_bak.ww","download_url","width=0,height=0")
+}
+
+$('#close_dialog_btn').die().live("click",function(event){
+  close_pop_diag();
+});
+
+$('#dl_config_btn').die().live("click",function(event){
+  setTimeout(function(){
+    close_pop_diag();
+  },3000);
+});
+
+
+$('#to_export').click(function(event){
+  event.preventDefault();
+    $.ajax({ 
+    url: "/config.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: {}, 
+    success: function(data, status) {
+     var gen = parseInt($(data).find("gen").text());
+     if(gen==1){
+      close_pop_diag();
+
+      var content = "<div class='pop_div'><div style='text-align:center;'>Config File Generate Success.<br >Click \"Download\" to Save.</div></div><div class=\"easyDialog_footer\"><button class=\"btn_normal\" id=\"close_dialog_btn\">Close</button> <a id=\"dl_config_btn\" href=\"http://andromax.m2y/nv/config_bak.ww\" target=\"_blank\"><button class=\"btn_highlight\">Download</button></a></div>";
+      easyDialog.open({
+          container : {
+              header : 'Message',
+              content : content,
+              // yesText : 'Download',
+              // yesFn : download_config_file,
+              // noText : 'Cancel',
+              // noFn : close_pop_diag
+          },
+          fixed : true
+      });
+     }
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+  pop_waiting();
+});
+
+
+
+
+
+$('#to_submit').click(function(event){
+  event.preventDefault();
+
+  var username=$('#user').val();
+  var pwd=$('#pwd').val();
+  var timeout=$('#timeout').val();
+  var save = $('select[name=save]').val();
+
+  if(username.length<5){
+    $("#errHint").html("Username too short");
+    return false;
+  }
+
+  if(pwd.length<5){
+    $("#errHint").html("Password too short");
+    return false;
+  }
+
+var timezone = $('#timezone').val();
+var daylight = $('input[name=dst]:checked').val();
+
+var time = $('#year').val()+'-'+$('#month').val()+'-'+$('#day').val()+' '+$('#hour').val()+':'+$('#minute').val()+':'+$('#second').val();
+
+var ntp_enabled = $('input[name=ntp]:checked').val();
+
+var ip1= $("#sel_ntp_srv").val();
+var ntp_id=0;
+if(ip1=='0.0.0.0'){
+  ip1=org_ntp_srv_ip;
+  ntp_id = 1;
+}
+var ip2 = $("#input_ntp_srv").val();
+
+
+var post_data='username='+esc(username)+'&password='+esc(pwd)+'&timeout='+esc(timeout)+'&save='+esc(save)+'&timezone='+esc(timezone)+'&daylight='+esc(daylight)+'&time='+esc(time)+'&ntp_enabled='+ntp_enabled+'&ntp_id='+ntp_id+'&ip1='+esc(ip1)+'&ip2='+esc(ip2);
+//ajax_post('/wxml/set_sys.xml',data);
+
+$("#errHint").html('');
+    $.ajax({ 
+      url: "/wxml/set_sys.xml",
+      type: "Post", 
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+
+        var ret0 = parseInt($(data).find("user").text());
+        var ret1 = parseInt($(data).find("pwd").text());
+        var ret2 = parseInt($(data).find("timeout").text());
+
+        if(ret0&& ret1 &&ret2) pop_submit_result('Setting Apply Success!');
+        else pop_submit_result('Setting Apply Fail!');
+        load_setting();
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+
+});
+
+
+
+$('#sel_ntp_srv').die().live('change',function(){
+  if($(this).val()=='0.0.0.0'){
+    $('#ud_ntp_srv').show();
+  }
+  else {
+    $('#ud_ntp_srv').hide(); 
+  }
+})
+
+
+$('#set_curr_time').die().live('click',function(){
+  var date = new Date();
+  $('#year').val(date.getFullYear());
+  $('#month').val(date.getMonth()+1);
+  $('#day').val(date.getDate());
+  $('#hour').val(date.getHours());
+  $('#minute').val(date.getMinutes());
+  $('#second').val(date.getSeconds());
+})
+
+
+function clearApplyInfo(type){
+   setTimeout(function(){
+      $('#errHint').html("&nbsp;");
+      $('#err_reset').html("&nbsp;");        
+   },3000);
+
+  if(type==1 ||type==2) {
+    $.ajax({ 
+    url: "/wxml/login_exit.xml",
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: { logout:'1'  }, 
+    success: function(data, status) {
+      },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+        }  
+      }
+    })
+  }
+}
+
+
+var login_username,login_pwd,org_ntp_srv_ip,server_id;
+
+function load_setting(){
+  $("#errHint").html('');
+  $.ajax({ 
+    url: "mark_set_sys.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+      var dsc = $(data).find("dsc").text();
+      if(dsc&0x01) $('#to_set_pin').show();
+
+    if(!login_username) login_username=$(data).find("login_username").text();
+    if(!login_pwd) login_pwd=$(data).find("login_pwd").text();
+
+    if(login_username!=$(data).find("login_username").text() || login_pwd!=$(data).find("login_pwd").text()) {
+      login_username=$(data).find("login_username").text();
+      login_pwd=$(data).find("login_pwd").text();
+      clearApplyInfo(1);
+    }
+    else{
+      clearApplyInfo(0);
+    }
+    var login_timeout=$(data).find("login_timeout").text();
+
+    $('#user').val(login_username);
+    $('#pwd').val(login_pwd);
+    $('#timeout').val(login_timeout);
+
+      var save = parseInt($(data).find("save").text());
+      $('select[name=save]').val(save);
+
+    var timezone = $(data).find("timezone").text();
+    var daylight = parseInt($(data).find("daylight").text());
+    var ntp_enabled = parseInt($(data).find("ntp_enabled").text());
+    server_id = parseInt($(data).find("server_id").text());
+    var server_ip1 = $(data).find("server_ip1").text();
+    var server_ip2 = $(data).find("server_ip2").text();
+    if(ntp_enabled){
+      $('#ntp_srv').show();
+      if(server_id) $('#ud_ntp_srv').show();
+      else $('#ud_ntp_srv').hide();
+    }
+    else{
+      $('#ntp_srv').hide();
+      $('#ud_ntp_srv').hide();
+    }
+
+
+    $('#timezone').val(timezone);
+
+    $('input[name=dst]').eq(daylight).attr('checked','true');
+    $('input[name=ntp]').eq(ntp_enabled).attr('checked','true');
+
+    if(server_id==1){
+      $('#sel_ntp_srv').val('0.0.0.0');
+      org_ntp_srv_ip=server_ip1;
+      if(server_ip2=='-') server_ip2='';
+      $('#input_ntp_srv').val(server_ip2).show();
+    }
+    else{
+      org_ntp_srv_ip=server_ip1;
+      $('#sel_ntp_srv').val(server_ip1); 
+      $('#input_ntp_srv').val(server_ip2).hide();
+    }
+
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+}
+
+
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="sys.html"){
+    load_setting();
+  }
+}
+
+
+$('input[name=ntp],input[name=ntp]+label').die().live('click',function(){
+var ntp_enabled = parseInt($('input[name=ntp]:checked').val());
+if(ntp_enabled){
+  $('#ntp_srv').show();
+  if(server_id) $('#ud_ntp_srv').show();
+  else $('#ud_ntp_srv').hide();
+}
+else{
+  $('#ntp_srv').hide();
+  $('#ud_ntp_srv').hide();
+}
+})
+
+
+</script>
+

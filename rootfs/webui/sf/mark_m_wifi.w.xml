@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wifi>
+<ssid><% get_wifi_ssid(); %></ssid>
+<ch><% get_wifi_channel(); %></ch>
+<enc_type><% get_wifi_sec_wpa(); %></enc_type>
+<key><% get_wifi_key(); %></key>
+<brd><% get_wifi_ssid_broadcast(); %></brd>
+</wifi>

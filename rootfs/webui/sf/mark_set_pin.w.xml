@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<dsc><% get_version_dsc(); %></dsc>
+<state><% get_ruim_pin_state(); %></state>
+<pin><% get_ruim_pin_count(); %></pin>
+<puk><% get_ruim_puk_count(); %></puk>
+<apn_mode><% get_get_apn_mode(); %></apn_mode>
+<apn_active><% get_apn_list_acitve(); %></apn_active>
+<apn_name><% get_apn_list_name("1"); %></apn_name>
+<user><% get_apn_list_user("1"); %></user>
+<pwd><% get_apn_list_password("1"); %></pwd>
+<apn_apn><% get_apn_list_apn("1"); %></apn_apn>
+<number><% get_apn_list_number("1"); %></number>
+<ip_mode><% get_ppp_mode(); %></ip_mode>
+</setting>

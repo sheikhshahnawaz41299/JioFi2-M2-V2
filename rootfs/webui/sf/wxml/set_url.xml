@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<url_filter>
+<enable>set_url_filter_enable(enable)</enable>
+<url0>set_url_filter_item(0,url0)</url0>
+<url1>set_url_filter_item(1,url1)</url1>
+<url2>set_url_filter_item(2,url2)</url2>
+<url3>set_url_filter_item(3,url3)</url3>
+<url4>set_url_filter_item(4,url4)</url4>
+<url5>set_url_filter_item(5,url5)</url5>
+<url6>set_url_filter_item(6,url6)</url6>
+<url7>set_url_filter_item(7,url7)</url7>
+<url8>set_url_filter_item(8,url8)</url8>
+<url9>set_url_filter_item(9,url9)</url9>
+<commit>firewall_commit()</commit>
+</url_filter>

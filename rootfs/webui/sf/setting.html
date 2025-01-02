@@ -1,0 +1,328 @@
+
+<div class="line navi" >
+<nav>
+  <div class="line navi" >
+
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_setting">Home</a></li>
+    <li><a class="to_info">Infomation</a></li>
+    <li><a class="to_sms">SMS</a></li>
+    <li><a class="to_pb">Phonebook</a></li>
+    <li><a class="to_ussd">USSD</a></li>
+    <li class="active"><a class="to_setting">Settings</a></li>
+    </ul>
+  </div>
+</div>
+</nav>
+</div>
+
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting" class="active-item "><a href="javascript:;">Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" style="display:none;"><a>PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    <li id="to_ussd"><a>USSD</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">Quick Setting</h3>
+<div class="line" style="padding:0em 0.6em;">
+  <form class="customform" action="#">
+  <div class="margin">
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> Wi-Fi SSID</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="ssid" name="ssid" title="ssid" placeholder="SSID" maxlength="32"/>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> Security Mode</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="sec" id="sec">
+    <option value="0">Open</option>
+    <option value="1" selected>Secure</option>
+    </select>
+  </div>
+  </div>
+
+  <div class="line" id="wifi_key">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> Wi-Fi Key</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="password" id="pwd" name="pwd" title="WIFI KEY" placeholder="WIFI KEY" value="12345678" maxlength="32"/> 
+  </div>
+  <div class="s-12 l-4">
+    <div class="show_pwd" for="pwd">
+    <label class="check">&#238;</label><label class="after">Show WiFi Key</label> <input class="show_pwd_st" type="hidden" value="0" />
+    </div>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> Login Password</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="password" id="login_pwd" name="login_pwd" title="PASSWORD" placeholder="PASSWORD" value="admin" maxlength="32"/> 
+  </div>
+  <div class="s-12 l-4">
+    <div class="show_pwd" for="login_pwd">
+    <label class="check">&#238;</label><label class="after">Show Password</label> <input class="show_pwd_st" type="hidden" value="0" />
+    </div>
+  </div>
+  </div>
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit">APPLY</div>
+  </div>
+  </div>
+  </div>
+  </form>
+  
+</div>
+</div>
+</div>
+<style type="text/css">
+
+
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+.width_100{width:100%;margin-left:0;font-size:1em;}
+@media screen and (min-width:1001px) {
+  .width_100{width:76%;margin-left:12%;font-size:1em;}
+}
+
+@media screen and (min-width:801px) {
+#aside{height:30em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:33.4em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+}
+
+#errHint{color: red;text-align: center;}
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+function load_mark_set(){
+
+}
+
+
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+$('#to_submit').click(function(event){
+  event.preventDefault();
+
+  var ssid=$("#ssid").val();
+  var wfkey=$("#pwd").val();
+  var wflogin=$("#login_pwd").val();
+  var enc_type=parseInt($("#sec").val());
+  var post_data;
+  if(enc_type==0){
+  if(ssid.length>=3 && wflogin.length>4) {
+    post_data = "ssid="+esc(ssid)+"&enc_type=0&wpa=0"+"&key="+esc(wfkey)+"&password="+esc(wflogin);
+    }
+  }
+  else{
+    if(ssid.length>3 && wfkey.length>7 && wflogin.length>4){
+    post_data = "ssid="+esc(ssid)+"&enc_type=4&wpa=3"+"&key="+esc(wfkey)+"&password="+esc(wflogin);
+    }
+  }
+
+  var errInfo="";
+  if(wflogin.length<5)  errInfo = "login password length at least 5";
+  else if(wfkey.length<8 && enc_type!=0) errInfo = "wifi key length at least 8";
+  else if(ssid.length<=3)  errInfo = "ssid too short"; 
+  
+  if(errInfo.length){
+    $("#errHint").html(errInfo);
+  }
+  else{
+    if(ssid!=get_ssid || enc_type!=get_sec_mode || wfkey!=get_wifikey){
+      post_data +='&restart=1';
+      if(!confirm('The Wi-Fi module will be restart, it will cause the Wi-Fi disconnection.')){
+        return false;
+      }
+    }
+    $("#errHint").html('');
+    $.ajax({ 
+      url: "/wxml/setting_basic.xml",
+      type: "Post", 
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+        var ssid = parseInt($(data).find("ssid").text());
+        var sec_mode = parseInt($(data).find("sec_mode").text());
+        var key = parseInt($(data).find("key").text());
+        var login_pwd = parseInt($(data).find("login_pwd").text());
+        if(ssid&& sec_mode&&key&&login_pwd) pop_submit_result('Setting Apply Success!');
+        else pop_submit_result('Setting Apply Fail!');
+
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+  }
+
+
+
+//  pop_submit_result();
+});
+
+
+$('select[name=sec]').die().live('change',function(){
+if(parseInt($(this).val())){
+  $('#wifi_key').show();
+}
+else $('#wifi_key').hide();
+});
+
+var loginpwd,get_ssid,get_sec_mode,get_wifikey;
+function load_setting(){
+  $("#errHint").html('');
+  $.ajax({ 
+    url: "mark_set_basic.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+      var dsc = $(data).find("dsc").text();
+      if(dsc&0x01) $('#to_set_pin').show();
+
+      get_ssid =$(data).find("ssid").text();
+      get_sec_mode =$(data).find("sec_mode").text();
+      get_wifikey =$(data).find("wifikey").text();
+      if(!loginpwd) loginpwd =$(data).find("loginpwd").text();
+      else {
+        if(loginpwd!=$(data).find("loginpwd").text()) {
+          loginpwd = $(data).find("loginpwd").text();
+//          ajax_post("/wxml/login_exit.xml",'logout=1');
+          $.ajax({ 
+            url: "/wxml/login_exit.xml",
+            type: "Post", 
+            timeout: 8000,
+            cache: false,
+            datatype: "xml",
+            data: { logout:'1'  }, 
+            success: function(data, status) {
+            },
+            error: function(x, t, m){
+            if(t==="timeout"){
+
+            }  
+          }
+          })
+        }
+      }
+
+      $("#ssid").val(get_ssid);
+
+      var enc_type=get_sec_mode.split(',');
+      if(enc_type[0]=='-') enc_type[0]=0;
+      if(enc_type[1]=='-') enc_type[1]=0;
+      if(enc_type[0]==0 && enc_type[1]==0) get_sec_mode=0;
+      else get_sec_mode = 1;
+
+      //setSelectOption('enc_type',sec_mode);
+      $('#sec').val(get_sec_mode);
+      if(get_sec_mode==0) $('#wifi_key').hide();
+      else $('#wifi_key').show();
+
+      if(get_wifikey=="-") $("#pwd").val("");
+      else $("#pwd").val(get_wifikey);
+      $("#login_pwd").val(loginpwd);
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+    })
+}
+
+
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="setting.html"){
+    load_setting();
+  }
+}
+
+
+</script>
+

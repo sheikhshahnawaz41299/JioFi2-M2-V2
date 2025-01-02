@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sd>
+<del>sd_dir_del(path1,file1)</del>
+<del>sd_dir_del(path2,file2)</del>
+<del>sd_dir_del(path3,file3)</del>
+<del>sd_dir_del(path4,file4)</del>
+<del>sd_dir_del(path5,file5)</del>
+</sd>

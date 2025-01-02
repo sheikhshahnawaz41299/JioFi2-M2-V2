@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="telephone=no" name="format-detection" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>MF800 Web Admin</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<script type="text/javascript">
+if(window==top) location.href="index.htm";
+<!-- 
+document.oncontextmenu=function(e){return false;} 
+// -->
+document.onmousedown=function(e){
+var e=e||window.event;
+if(e.button&2)
+{
+document.oncontextmenu=function(e){return false;}
+return false;
+}	
+}
+
+var xmlpost;
+function $(id){return document.getElementById(id);}
+function x_v(tag){return xmlpost.responseXML.getElementsByTagName(tag)[0].childNodes[0].nodeValue;}
+
+function createXMLHttpRequest()
+{
+if(window.ActiveXObject)
+{
+xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+else if (window.XMLHttpRequest)
+{
+xmlHttp = new XMLHttpRequest();
+}
+}
+
+function startRequest(xmlurl)
+{
+createXMLHttpRequest();
+xmlHttp.onreadystatechange = handleStateChange;
+xmlHttp.open("GET", xmlurl, true);
+xmlHttp.setRequestHeader("If-Modified-Since","0");
+xmlHttp.send(null);
+}
+
+function handleStateChange()
+{
+if(xmlHttp.readyState == 4)
+{
+if(xmlHttp.status == 200)
+{
+GetHandler();
+}
+}
+}
+
+</script>
+</head>
+<body>
+<div id="container">
+<div id="navi"><li><a class="navi" href="home.html">Home</a></li><li><a class="navi" href="connection.html">Connection</a></li><li><a class="sel">SMS</a></li><li><a class="navi" href="setting.html">Setting</a></li><li><a class="navi" href="statistics.html">Statistics</a></li><li><a class="navi" href="about.html">About</a></li></div>
+<div id="mainContent">
+<div id="sidebar">
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu"><a class="sidesel" id='inbox_side' >Inbox</a></div>
+<div id="sidemenu"><a class="side" id='outbox_side' >Outbox</a></div>
+<div id="sidemenu"><a class="side" href="setting_sms.html" >Setting</a></div>
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu_df78a">MF800</div>
+</div>
+<div id="content">
+<script type="text/javascript">
+var para_str;
+var page_num;
+var box_type;
+window.onload =function()
+{
+var href=window.location.href;
+var peek=href.indexOf('?');
+if(peek>-1) para_str = href.substring(peek);
+else para_str='';
+
+peek = para_str.search(/href=/i);
+if(peek>-1) box_type = parseInt(para_str.substring(peek+5));
+else box_type = 0;
+
+peek = para_str.search(/page=/i);
+if(peek>-1) page_num = parseInt(para_str.substring(peek+5));
+else page_num = 0;
+para_str = 'href='+box_type+'&page='+page_num;
+//startRequest('sms_box.xml'+para_str);
+ajax_post('/wxml/sms_box.xml',para_str);
+$('title').innerHTML = box_type?'Outbox':'Inbox';
+$('inbox_side').className = box_type?'side':'sidesel';
+$('outbox_side').className = box_type?'sidesel':'side';
+if(box_type) $('inbox_side').href = 'sms_box.html';
+else $('outbox_side').href = 'sms_box.html?href=1';
+
+checkboxinit();
+}	
+
+function GetHandler(url)
+{
+$("1x_open").value =x_v('net_mode'); 
+var sms_count = x_v('sms_count');
+var page_cnt =Math.ceil(sms_count/5);
+$('table_foot').innerHTML='';
+if(page_num!=0 && page_cnt>0) $('table_foot').innerHTML += '<a href="sms_box.html'+'?href='+box_type+'&page='+(page_num-1)+'">'+ 'Prev' +'</a>&nbsp;&nbsp';
+for (i=0;i<page_cnt;i++) {
+if(i==page_num)  $('table_foot').innerHTML += ''+(i+1)+'&nbsp;&nbsp';
+else $('table_foot').innerHTML += '<a href="sms_box.html'+'?href='+box_type+'&page='+i+'">'+ (i+1) +'</a>&nbsp;&nbsp';
+}
+
+if(page_num<page_cnt-1) $('table_foot').innerHTML += '<a href="sms_box.html'+'?href='+box_type+'&page='+(page_num+1)+'">'+ 'Next' +'</a>&nbsp;&nbsp';
+
+for (var i=0;i<5;i++)
+{
+var src=xmlpost.responseXML.getElementsByTagName('sms_src')[i].childNodes[0].nodeValue;
+var tr_id="tr_0"+(i+1);
+if(src!='-')
+{
+//var id=xmlpost.responseXML.getElementsByTagName('sms_id')[i].childNodes[0].nodeValue;	
+var body=xmlpost.responseXML.getElementsByTagName('sms_body')[i].childNodes[0].nodeValue;
+var time=xmlpost.responseXML.getElementsByTagName('sms_time')[i].childNodes[0].nodeValue;
+time = time.replace(/ /, "<br \>");
+var sms_status=xmlpost.responseXML.getElementsByTagName('sms_status')[i].childNodes[0].nodeValue;
+
+$(tr_id).cells[2].innerHTML=src;
+$(tr_id).cells[3].innerHTML=body;
+$(tr_id).cells[4].innerHTML=time;
+//$(tr_id).cells[5].innerHTML=id;
+$(tr_id).style.display="";
+
+if(box_type==0 && sms_status=='8') {
+$(tr_id).style.fontWeight = "Bold";
+$(tr_id).cells[1].innerHTML='<img src="flash_sms.gif" />'
+//$(tr_id).cells[1].innerHTML='F&#198';
+$(tr_id).cells[1].style.color='#1cd4ff';
+}
+else if(box_type==0 && sms_status=='3') {
+ $(tr_id).style.fontWeight = "Bold";
+// $(tr_id).cells[1].innerHTML='<img src="new_sms.gif" />'
+$(tr_id).cells[1].innerHTML='&#198';
+$(tr_id).cells[1].style.color='#1cd4ff';
+}
+else if(box_type==1 && sms_status=='7') {
+ $(tr_id).style.fontWeight = "Bold";
+ $(tr_id).cells[1].innerHTML='&#198';
+ $(tr_id).cells[1].style.color='#ff6800';
+}
+}
+else
+{
+$(tr_id).style.display="none";
+}
+}
+
+
+
+
+}	
+
+function open_smsnew_dlg()
+{
+if($("1x_open").value!="2")
+{window.location = "sms_send.html?href=0&type=0&page="+page_num;}
+else{alert("EVDO only can not send sms,please select 1x/evdo hybrid mode in net setting");}
+}
+
+function checkboxinit()
+{
+var rownum=$("content_table").rows.length-1;
+var check_id;
+for (var i=1; i<=rownum;i++)
+{
+//check_id= "check_"+$("content_table").rows[i].cells[5].innerHTML;
+check_id = "check_0"+i;
+$(check_id).checked=false;
+}
+$("chk_all").checked=false;
+}
+
+function showsms(obj)
+{
+var peek=obj.id.search('tr_');
+if(peek>-1) var row_number=parseInt(obj.id.substring(peek+3));
+else return;
+window.location = 'sms_show.html?href='+box_type+'&page='+page_num + '&no='+row_number;
+}
+
+var checked_count=0;
+
+function checkboxstatus(id,row_index)
+{
+if($(id).checked==true)
+{
+$(id).checked=false;
+checked_count--;
+}
+else
+{
+$(id).checked=true;
+checked_count++;
+}
+if(checked_count==-1) checked_count=0;
+changedelbutton(checked_count);
+}
+
+function clickhandle(obj)
+{
+if(obj.cellIndex==0)
+{
+/*	
+var arr = new Array();
+for (var i=0; i<obj.parentNode.childNodes.length; i++)
+{
+if (obj.parentNode.childNodes[i].nodeType != 3)
+arr[arr.length] = obj.parentNode.childNodes[i].innerHTML;
+}
+*/
+var checkid=obj.childNodes[0].id;
+checkboxstatus(checkid,obj.parentNode.rowIndex);
+}
+else showsms(obj.parentNode);
+}
+
+function stopBubble(e)
+{
+if (e && e.stopPropagation)
+e.stopPropagation()  //not IE
+else
+window.event.cancelBubble=true; //IE
+}
+
+function changedelbutton(checkcount)
+{
+if(checkcount)
+{
+$("DelSMS").className="button";
+$("DelSMS").disabled=false;
+}
+else
+{
+$("DelSMS").className="button_gray";
+$("DelSMS").disabled=true;
+$("chk_all").checked=false;
+}
+}
+
+function checkboxclick(obj,evt)
+{
+if (window.event)
+{
+event.cancelBubble = true;
+}
+else if (evt)
+{
+evt.stopPropagation();
+}
+if(obj.checked==true)
+checked_count++;
+else checked_count--;
+if(checked_count==-1) checked_count=0;
+//alert(checked_count);
+changedelbutton(checked_count);
+}
+
+function checkboxchangebyall(form)
+{
+for (var i=0;i<form.elements.length;i++)
+{
+var e = form.elements[i];
+if (e.Name != 'ChkAll'&&e.disabled==false)
+e.checked = form.ChkAll.checked;
+}
+if(form.ChkAll.checked==true)
+{
+checked_count=$("content_table").rows.length-1;
+$("DelSMS").className="button";
+$("DelSMS").disabled=false;
+/*
+for (var i=1; i<=rownum;i++)
+{
+check_id= "chk_"+$("content_table").rows[i].cells[5].innerHTML;
+$(check_id).checked=true;
+}
+*/
+}
+else
+{
+checked_count=0;
+$("DelSMS").className="button_gray";
+$("DelSMS").disabled=true;
+/*
+for (var i=1; i<=rownum;i++)
+{
+check_id= "chk_"+$("content_table").rows[i].cells[5].innerHTML;
+$(check_id).checked=false;
+}
+*/
+}
+}
+
+function ajax_post(url,form_data)
+{
+if (window.XMLHttpRequest){
+xmlpost=new XMLHttpRequest();
+}
+else{
+xmlpost=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlpost.onreadystatechange=function()
+{
+if (xmlpost.readyState==4 && xmlpost.status==200){
+GetHandler(url);
+}
+}
+xmlpost.open("POST",url,true);
+xmlpost.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlpost.send(form_data);
+}
+
+function open_smsdel()
+{
+var rowlen=$("content_table").rows.length-1;
+var check_id;
+var url="sms_del.html?href="+box_type+'&page='+page_num;
+
+for (var i=1; i<=rowlen;i++)
+{
+//check_id= "chk_"+$("content_table").rows[i].cells[5].innerHTML;
+check_id = "check_0"+i;
+if($(check_id).checked)
+{
+url+='&no'+i+'='+i;
+//url=url.concat(",");
+}
+}
+window.location = url;
+}
+</script>
+<h2 class="title" id='title'></h2>
+<hr size=1 style="color:#C0C0C0">
+&nbsp;&nbsp;<button id="NewSMS" name="NewSMS" class="button" onclick="open_smsnew_dlg()"><span><em>New Message</em></span></button>
+<input id="1x_open" type="hidden" value="0" />
+&nbsp;&nbsp;<button id="DelSMS" name="DelSMS" class="button_gray" disabled="true" onclick="open_smsdel()"><span><em>Delete</em></span></button>
+<form>
+<table align=center width=95% border=1 id=content_table cellspacing=0 cellpadding=0>
+<tr height=30>
+<th align=center width=5%><input type="checkbox" name="ChkAll" id="chk_all" onclick="checkboxchangebyall(this.form)" /></th>
+<th width=25% colspan=2>Number</th>
+<th width=55%>Content</th>
+<th width=15%>Date</th>
+<th style="display:none">ID</th>
+</tr>
+<tr style="cursor:pointer;font-weight:normal;font-size:18px;height:100px;display:none;" id="tr_01">
+<td align=center id="check" onclick="clickhandle(this)"><input type="checkbox" id="check_01"  onclick="checkboxclick(this,event)" /></td>
+<td style="border-right-style:none;font-size:20px;" align=right onclick="clickhandle(this)">&nbsp;</td>
+<td style="border-left-style:none" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td id="sms_content" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td align=center id="sms_date" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"></td>
+<td id="sms_id" style="display:none"></td>
+</tr>
+<tr style="cursor:pointer;font-weight:normal;font-size:18px;height:100px;display:none;" id="tr_02">
+<td align=center id="check" onclick="clickhandle(this)"><input type="checkbox" id="check_02"  onclick="checkboxclick(this,event)" /></td>
+<td style="border-right-style:none;font-size:18px;" align=right onclick="clickhandle(this)">&nbsp;</td>
+<td style="border-left-style:none" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td id="sms_content" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td align=center id="sms_date" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"></td>
+<td id="sms_id" style="display:none"></td>
+</tr>
+<tr style="cursor:pointer;font-weight:normal;font-size:18px;height:100px;display:none;" id="tr_03">
+<td align=center id="check" onclick="clickhandle(this)"><input type="checkbox" id="check_03"  onclick="checkboxclick(this,event)" /></td>
+<td style="border-right-style:none" align=right onclick="clickhandle(this)">&nbsp;</td>
+<td style="border-left-style:none" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td id="sms_content" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td align=center id="sms_date" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"></td>
+<td id="sms_id" style="display:none"></td>
+</tr>
+<tr style="cursor:pointer;font-weight:normal;font-size:18px;height:100px;display:none;" id="tr_04">
+<td align=center id="check" onclick="clickhandle(this)"><input type="checkbox" id="check_04"  onclick="checkboxclick(this,event)" /></td>
+<td style="border-right-style:none" align=right onclick="clickhandle(this)">&nbsp;</td>
+<td style="border-left-style:none" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td id="sms_content" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td align=center id="sms_date" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"></td>
+<td id="sms_id" style="display:none"></td>
+</tr>
+<tr style="cursor:pointer;font-weight:normal;font-size:18px;height:100px;display:none;" id="tr_05">
+<td align=center id="check" onclick="clickhandle(this)"><input type="checkbox" id="check_05"  onclick="checkboxclick(this,event)" /></td>
+<td style="border-right-style:none" align=right onclick="clickhandle(this)">&nbsp;</td>
+<td style="border-left-style:none" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td id="sms_content" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"> </td>
+<td align=center id="sms_date" style="word-wrap:break-word; word-break:break-all" onclick="clickhandle(this)"></td>
+<td id="sms_id" style="display:none"></td>
+</tr>
+</table>
+</form>
+<table align=center width=95% border=0 cellspacing=0 cellpadding=0>
+<tr><td align=center id='table_foot'></td></tr></table>
+</div>
+</div>
+<div id="footer">Copyright &copy; 2014. Kalimat Telecom All Rights Reserved.</div>
+</div></body></html>
+

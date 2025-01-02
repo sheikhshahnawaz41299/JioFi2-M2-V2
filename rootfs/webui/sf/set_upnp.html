@@ -1,0 +1,636 @@
+<script>
+	if(top.location.pathname != "/index.htm") top.location.href = "./index.htm";
+
+	$(document).ready(function() {});
+
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "set_upnp.html") {
+
+
+var inited = 0,
+		dev_mac, remote_enable, g_wan_ip = '';
+
+	function refresh_data(data, mask) {
+		if(!mask) mask = 7;
+		if(mask & 0x01) {
+			var upnp = parseInt($(data).find("upnp").text());
+			//			$('input[name=upnp]').eq(upnp?0:1).removeAttr("checked");
+			$('input[name=upnp]').eq(upnp).attr('checked', "true");
+		}
+
+		if(mask & 0x02) {
+			dev_mac = $(data).find("dev_mac").text();
+			var sw_pf = parseInt($(data).find("pf_enable").text());
+			g_new_status = sw_pf;
+			$("#sw_pf").val(sw_pf);
+
+			if(sw_pf) {
+				$("#div_pf").show();
+				$("#pf_addr_list").show();
+			} else {
+				$("#div_pf").hide();
+				$("#pf_addr_list").hide();
+			}
+
+			$(data).find("pf_list").each(function(index, ele) {
+				var cfg_name = $(ele).children('cfg_name').text();
+				var mac_addr = $(ele).children('mac_addr').text(); //.macFormat()
+				var um = $(ele).children('um').text();
+				var rm = $(ele).children('rm').text();
+
+				if(cfg_name == -1) cfg_name = "-";
+				if(mac_addr == -1) mac_addr = "-";
+				if(um == -1) um = "-";
+				if(rm == -1) rm = "-";
+				if(mac_addr != '-') mac_addr = mac_addr.replace(/:/g, "-").toUpperCase();
+
+				if(index < 10) {
+					var obj_id = '#pf0' + index;
+					$(obj_id + ' input.config').val(cfg_name == '-' ? '' : cfg_name);
+					$(obj_id + ' input.mac').val(mac_addr == '-' ? '' : mac_addr);
+					$(obj_id + ' input.lan_port').val(rm == '-' ? '' : rm);
+					$(obj_id + ' input.wan_port').val(um == '-' ? '' : um);
+				}
+			})
+		}
+		var wan_ip = $(data).find("wan_ip").text();
+		var note_content;
+		if((mask & 0x02) || !g_wan_ip || g_wan_ip != wan_ip) {
+			if(wan_ip == '-1' || wan_ip == '-' || !sw_pf) {
+				note_content = '';
+			} else {
+				note_content = '<tr><th width=300>Config Name</th><th width=300>Address</th></tr>';
+
+				g_wan_ip = wan_ip;
+				$(data).find("pf_list").each(function(index, ele) {
+					var cfg_name = $(ele).children('cfg_name').text();
+					//      if(cfg_name==0) cfg_name="-";
+					var um = $(ele).children('um').text();
+					if(index < 10) {
+						if(um != '-' && um != -1) {
+							var href = (wan_ip + ':' + um);
+							note_content += ('<tr><td><pre>' + XSSResolveCannotParseChar(cfg_name) + '</pre></td><td><a href="//' + href + '" target="_blank">' + href + '</a></td></tr>');
+						}
+					}
+
+				})
+			}
+			$('#pf_addr_list').html(note_content);
+			
+			$("#upnp_btn_table").show();
+		}
+
+		if(mask & 0x04) {
+			var tbl_content = '';
+			$(data).find("user").each(function() {
+				var mac = $(this).children('mac').text(); //.macFormat()
+				if(mac != '-') {
+					//              mac=mac.toLowerCase().replace(/-/g,":");
+					var name = $(this).children('name').text().substr(0, 20);
+					name = unescape(name.replace(/\\/g, "%"));
+					var ip = $(this).children('ip').text();
+					tbl_content += ('<tr align=center><td>' + XSSResolveCannotParseChar(name) + '</td><td>' + ip + '</td><td>' + mac + '</td><td style="display:none;"></td></tr>');
+				}
+
+			});
+			$('#tbl_user1').html(tbl_content);
+		}
+
+	}
+
+	$("select[name='sw_pf']").die().live("change", function() {
+		var sw_pf = parseInt($('#sw_pf').val());
+		if(sw_pf) {
+			$("#div_pf").show();
+			$("#pf_addr_list").show();
+		} else {
+			$("#div_pf").hide();
+			$("#pf_addr_list").hide();
+		}
+
+	});
+
+	function load_setting(mask) {
+
+		$.ajax({
+			url: "mark_upnp.w.xml",
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+			success: function(data, status) {
+				refresh_data(data, mask);
+				reload_compnets(seed);
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+	function showQtip(id, msg) {
+		//  $("#"+id).focus();
+		$("#errhint").html(msg);
+	}
+
+	function add_to_list1(mac) {
+		$('input.mac').each(function(index, element) {
+			if(!parseInt($("#sw_pf").val())) return false;
+
+			if($(this).val().length == 0) {
+				$(this).val(mac);
+				$(this).focus();
+				return false;
+			}
+		});
+	}
+	$('#tbl_user1 tr').die().live('click', function() {
+		var mac = $(this).children("td:eq(2)").html();
+		if(mac) {
+			add_to_list1(mac);
+		}
+	});
+	$(".del_item").die().live("click", function() {
+		var index = $(".del_item").index(this);
+		if(index) $(this).parent().parent().find('input').val('');
+		else $(this).parent().parent().parent().find('input').val('');
+	})
+
+	function mac_check(macaddr) {
+		if(macaddr.length != 12 && macaddr.length != 17) return false;
+		var reg = /^[A-Fa-f0-9]{12}$/
+		var reg1 = /^[A-Fa-f0-9]{1,2}\-[A-Fa-f0-9]{1,2}\-[A-Fa-f0-9]{1,2}\-[A-Fa-f0-9]{1,2}\-[A-Fa-f0-9]{1,2}\-[A-Fa-f0-9]{1,2}$/;
+		var reg2 = /^[A-Fa-f0-9]{1,2}\:[A-Fa-f0-9]{1,2}\:[A-Fa-f0-9]{1,2}\:[A-Fa-f0-9]{1,2}\:[A-Fa-f0-9]{1,2}\:[A-Fa-f0-9]{1,2}$/;
+		if(reg.test(macaddr)) {
+			return true;
+		} else if(reg1.test(macaddr)) {
+			return true;
+		} else if(reg2.test(macaddr)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function isRepeat(arr, val, len) {
+		for(var i = 0; i < len; i++) {
+			if(arr[i] == val)
+				return true;
+		}
+		return false;
+	}
+
+	function isRepeat_mac_port(mac, port, max) {
+		for(var i = 0; i < max; i++) {
+			if((mac[i] == mac[max]) && (port[i] == port[max]))
+				return true;
+		}
+		return false;
+	}
+
+	$("#submit_pf").die().live("click", function() {
+
+		$("#errhint").html("&nbsp;");
+
+		var sw_pf = $('#sw_pf').val();
+
+		var post_data = "enable=" + sw_pf;
+
+		var cfg_name = new Array(10);
+		var local_port = new Array(10);
+		var wan_port = new Array(10);
+		var mac_addr = new Array(10);
+		for(i = 0; i < 10; i++) {
+			var id = '#pf0' + i;
+			cfg_name[i] = $.trim($(id + ' input.config').val());
+			mac_addr[i] = $(id + ' input.mac').val();
+			local_port[i] = $(id + ' input.lan_port').val();
+			wan_port[i] = $(id + ' input.wan_port').val();
+
+			//    console.log("i="+i+",cfg="+cfg_name[i]+",mac="+mac_addr[i]+",lan="+local_port[i]+",wan="+wan_port[i])
+
+			if(cfg_name[i].length > 16) {
+				//      $('#errHint').html("Config name too long (Less than 17)!");
+				showQtip("pf0" + i + " input.config", "Config name too long (Less than 17)!");
+				$("#pf0" + i + " input.config").focus();
+				break;
+			}
+
+			// mac_addr[i]=$("#input_mac_0"+i).val();
+			// local_port[i]=$("#input_rm_0"+i).val();
+			// wan_port[i]=$("#input_um_0"+i).val();
+
+			if(mac_addr[i] == dev_mac) {
+				showQtip("pf0" + i + " input.mac", "Reserved for WiFi Disk!");
+				$("#pf0" + i + " input.mac").focus();
+				break;
+			}
+			if(mac_addr[i] != "" && !mac_check(mac_addr[i])) {
+				showQtip("pf0" + i + " input.mac", "Please Input Valid MAC Address!");
+				$("#pf0" + i + " input.mac").focus();
+				break;
+			}
+			if(wan_port[i] == '61726' || wan_port[i] == '80') {
+				showQtip("pf0" + i + " input.wan_port", "WAN Port reserved for WiFi Disk!");
+				$("#pf0" + i + " input.wan_port").focus();
+				break;
+			}
+			if(i > 0 && local_port[i].length && isRepeat_mac_port(mac_addr, local_port, i)) {
+				showQtip("pf0" + i + " input.lan_port", "Local Port duplicate!");
+				$("#pf0" + i + " input.lan_port").focus();
+				break;
+			}
+
+			if(i > 0 && wan_port[i].length && isRepeat(wan_port, wan_port[i], i)) {
+				showQtip("pf0" + i + " input.wan_port", "WAN Port duplicate!");
+				$("#pf0" + i + " input.wan_port").focus();
+				break;
+			}
+
+			var integrity = (local_port[i].length ? 1 : 0) + (wan_port[i].length ? 1 : 0) + (mac_addr[i].length ? 1 : 0);
+			if(integrity != 0) {
+				if(local_port[i].length == 0) {
+					showQtip("pf0" + i + " input.lan_port", "Please Input Local Port!");
+					$("#pf0" + i + " input.lan_port").focus();
+					break;
+				}
+				if(wan_port[i].length == 0) {
+					showQtip("pf0" + i + " input.wan_port", "Please Input Wan Port!");
+					$("#pf0" + i + " input.wan_port").focus();
+					break;
+				}
+				if(mac_addr[i].length == 0) {
+					showQtip("pf0" + i + " input.mac", "Please Input MAC Address!");
+					$("#pf0" + i + " input.mac").focus();
+					break;
+				}
+				if(local_port[i].length && !(parseInt(local_port[i]) > 0 && parseInt(local_port[i]) < 65535)) {
+					showQtip("pf0" + i + " input.lan_port", "please input a integer number(0-65535)!");
+					$("#pf0" + i + " input.lan_port").focus();
+					break;
+				}
+				if(wan_port[i].length && !(parseInt(wan_port[i]) > 0 && parseInt(wan_port[i]) < 65535)) {
+					showQtip("pf0" + i + " input.wan_port", "please input a integer number(0-65535)!");
+					$("#pf0" + i + " input.wan_port").focus();
+					break;
+				}
+			}
+		}
+		if(i != 10) {
+			return false;
+		}
+
+		for(i = 0; i < 10; i++) {
+			if(cfg_name[i].length) post_data += "&name" + i + '=' + esc(cfg_name[i]);
+			else post_data += "&name" + i + '=';
+			if(wan_port[i].length) post_data += "&um" + i + '=' + wan_port[i];
+			else post_data += "&um" + i + '=0';
+			if(local_port[i].length) post_data += "&rm" + i + '=' + local_port[i];
+			else post_data += "&rm" + i + '=0';
+
+			if(mac_addr[i].length == 12) {
+				mac_addr[i] = mac_addr[i].replace(/(.{2})/g, "$1:");
+				mac_addr[i] = mac_addr[i].substr(0, 17);
+			}
+
+			if(mac_addr[i].length) post_data += "&mac" + i + '=' + mac_addr[i];
+			else post_data += "&mac" + i + '=';
+		}
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		show_tips(seed,"waiting...");
+		$.ajax({
+			url: "/wxml/set_pf.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: post_data,
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+
+				var enable = parseInt($(data).find("enable").text());
+				var set = 1;
+
+				for(var i = 0; i < 10; i++) {
+					var ret_id = "set" + i;
+					if(!parseInt($(data).find(ret_id).text())) {
+						set = 0;
+						break;
+					}
+				}
+
+				inited = 0;
+				setTimeout(function() {
+					hide_tips(seed);
+					if(enable && set) $("#errhint").html("Setting Apply Success.");
+					else $("#errhint").html("Setting Apply Fail.");
+					setTimeout(function() {
+						$("#errhint").html("&nbsp;");
+					}, 5000);
+					load_setting(2);
+				}, 3000);
+			},
+			error: function(x, t, m) {
+				hide_tips(seed);
+				if(t === "timeout") {}
+			}
+		})
+
+	})
+
+
+$('#submit_upnp').die().live('click', function(event) {
+		event.preventDefault();
+		var enable = $('input[name=upnp]:checked').val();
+		var post_data = 'upnp=' + enable;
+
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: "/wxml/set_upnp.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: post_data,
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				var ret0 = parseInt($(data).find("upnp").text());
+
+				if(ret0) $('#errHint').html('Setting Apply Success!');
+				else $('#errHint').html('Setting Apply Fail!');
+				setTimeout(function() {
+					$('#errHint').html('&nbsp;')
+				}, 5000);
+				load_setting(1);
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+
+		//  pop_submit_result();
+	});
+
+	$("#refresh_user_list").die().live('click', function() {
+		load_setting(4);
+	})
+
+	$("#update_pf").die().live('click', function() {
+		load_setting(2);
+	})
+	$("#update_upnp").die().live('click', function() {
+		load_setting(1);
+	})
+
+
+			load_setting(7);
+		}
+	}
+
+	
+</script>
+<!-- </head> -->
+
+<body style="margin:0;padding:0;border:0;">
+	<table id="table_main" class="table_main" align="left" style="border: 0px;width: 500px">
+		<tr>
+			<td style="padding-left: 50px">
+				<h3 class="main_menu" style="text-indent: 0">Gaming & Apps Management</h3><br>
+
+				<p>
+					Your JioFi M2 has been enabled with certain security features to prevent malicious programs or hackers accessing the device and network. However certain end user applications like Playstation, Xbox, DVR and so on may need access to certain ports over the internet to support online multiplayer gaming and other services. To cater to such needs, this page with port forwarding and UPnP features can be used.</p>
+				<p>You can configure such settings here.</p>
+				<p>For more help refer
+					<a href="help_upnp.html" target="_blank">here</a>. </p>
+				<br>
+
+				<h4 class="small_menu" style="color:#515151; margin:0;">UPnP Setting</h4>
+
+				<table style="width:100%;">
+					<tr>
+						<td class="head_top">UPnP</td>
+						<td class="tail_top">
+							<!-- <input type="radio" id="select_rec_disable" name="select_rec_status" value="0" required><label class="ui_radio" for="select_rec_disable"></label><label for="select_rec_disable" class="ml5">Disable</label>
+            <input type="radio" id="select_rec_enable" name="select_rec_status" value="1" checked><label class="ui_radio" for="select_rec_enable"></label><label class="mr20 ml5" for="select_rec_enable">Enable</label> -->
+
+							<input type="radio" id="upnp_disable" name="upnp" value="0" checked/><label class="ui_radio" for="upnp_disable"></label><label for="upnp_disable" class="ml5">Disable</label>
+							<input type="radio" id="upnp_enable" name="upnp" value="1" /><label class="ui_radio" for="upnp_enable"></label><label class="mr20 ml5" for="upnp_enable">Enable</label>
+						</td>
+					</tr>
+					<tr>
+				</table>
+				<table style="width: 600px;">
+					<td width="50%" style="color: red;text-align:center" id="errHint"></td>
+					<td align="right" width="50%">
+
+						<button class="btn-Green" id="submit_upnp"><span><em>Apply</em></span></button>
+						<button class="btn-Green" id="update_upnp" oncut="return false" oncopy="return false" onpaste="return false"><span><em>Update</em></span></button>
+
+						<!--           <input type="button" value = "Apply" id= "submit_upnp">
+          <input type="button" value = "Update" onClick="load_setting(1)"> -->
+					</td>
+					</tr>
+				</table>
+
+				<br>
+
+				<h4 class="small_menu" style="color:#515151; margin:0;">Port Forward</h4>
+
+				<table style="width:100%;">
+					<tr>
+						<td class="head_top">Port Forward</td>
+						<td class="tail_top">
+							<select id="sw_pf" name="sw_pf">
+								<option value="0" selected="selected">Disabled</option>
+								<option value="1">Enable</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+
+				<div id="div_pf" style="width: 600px;margin-bottom: 16px;margin-top:16px;display: none;">
+					<table class="bottom_table clr_gray_bottom_table_td" cellpadding="0" cellspacing="0" style="border:1px solid  #dbdbdb;font-size: 14px;width: 600px; border-color: #dbdbdb;cursor: pointer;border-collapse: collapse;">
+						<thead>
+							<tr align=left style="background: #bababa;height: 24px;">
+								<th colspan=4 style="text-align: center;">User List
+									<a style="margin-left:12px;" href="javascript:void(0);" id="refresh_user_list">Refresh</a>
+								</th>
+							</tr>
+							<tr align=center id="pf_tb1_ctr">
+								<th width=35%>Host Name</th>
+								<th width=30%>IP</th>
+								<th width=35%>MAC</th>
+								<th width=20% style="display:none">Link Time</th>
+							</tr>
+						</thead>
+						<tbody id="tbl_user1">
+						</tbody>
+					</table>
+
+					<table cellpadding="0" cellspacing="0" border="1" style="margin-top:12px;font-size: 14px;width: 600px; border-collapse: collapse;text-align: center;" id="service_list">
+						<tr>
+							<th width="84" height="30">
+								ID
+							</th>
+							<th>
+								Config name
+							</th>
+							<th>
+								MAC
+							</th>
+							<th>
+								Local port
+							</th>
+							<th>
+								WAN port
+							</th>
+
+							<th width="98" class="center">
+								<a href="javascript:void(0);" class="del_item">Delete All</a>
+							</th>
+						</tr>
+						<tr id="pf00">
+							<td class="center">1</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+						<tr id="pf01">
+							<td class="center">2</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+						<tr id="pf02">
+							<td class="center">3</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+						<tr id="pf03">
+							<td class="center">4</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+						<tr id="pf04">
+							<td class="center">5</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+						<tr id="pf05">
+							<td class="center">6</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+						<tr id="pf06">
+							<td class="center">7</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+						<tr id="pf07">
+							<td class="center">8</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+						<tr id="pf08">
+							<td class="center">9</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+						<tr id="pf09">
+							<td class="center">10</td>
+							<td style='word-break: break-all;'><input type="text" class="config" maxlength="16" /></td>
+							<td><input type="text" class="mac" maxlength="17" /></td>
+							<td><input type="text" class="lan_port" maxlength="5" /></td>
+							<td><input type="text" class="wan_port" maxlength="5" /></td>
+							<td class="center">
+								<a href="javascript:void(0);" class="del_item">Delete</a>
+							</td>
+						</tr>
+
+					</table>
+
+				</div>
+
+				<table style="width: 600px;display: none;" id="upnp_btn_table">
+					<tr>
+						<td width="50%" style="color: red;text-align:center" id="errhint"></td>
+						<td width="50%" align="right">
+							<button class="btn-Green" id="submit_pf"><span><em>Apply</em></span></button>
+							<button class="btn-Green" id="update_pf" oncut="return false" oncopy="return false" onpaste="return false"><span><em>Update</em></span></button>
+						</td>
+					</tr>
+				</table>
+
+				<table cellpadding="0" cellspacing="0" border="1" style="margin-top:12px; border:1px solid  #dbdbdb;font-size: 14px;width: 600px; border-color: #dbdbdb;border-collapse: collapse" id="pf_addr_list">
+				</table>
+
+			</td>
+		</tr>
+	</table>
+
+	<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+</body>

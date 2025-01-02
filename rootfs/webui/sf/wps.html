@@ -1,0 +1,548 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a>Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" style="display:none;"><a>PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps" class="active-item "><a href="javascript:;">WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">WPS</h3>
+<div class="line" style="padding:0em 0.6em;">
+  <form class="customform" action="#">
+  <div class="margin">
+  <div class="s-12 l-8">
+  <p id="p_note">Wi-Fi Protected Setup(WPS) is a special way to connect WiFi,the AP and the client can automatically for security settings, you can simply press the button or enter the PIN.</p>
+  </div>
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> WPS</label>
+  </div>
+  <div class="s-12 l-5 line_form" >
+    <input type="radio" name="state" value="0" /><label class="radio" >Disable</label>
+    <input type="radio" name="state" value="1" /><label class="radio">Enable</label>
+  </div>
+  </div>
+
+  <div class="s-12 l-8">
+  <p id="p_note">Notice:The function of WPS only support the Wireless Security as follows:Disabled,WPA2-PSK,WPA-PSK/WPA2-PSK and only support the Wireless Encryption Type as follows:AES,AES+TKIP, and ensure SSID broadcast is enabled. </p>
+  </div>
+
+  
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit">APPLY</div>
+  </div>
+  </div>
+
+
+  <div class="s-12 l-8">
+  <hr>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> PBC</label>
+  </div>
+  <div class="s-12 l-6 line_form" >
+    Click Button to Start/Stop PBC,Duration:120s
+  </div>
+  </div>
+  
+  <div class="s-12 l-8">
+  <div class="s-12 l-3 right">
+  <div class="button_gray" id="start_pbc" disabled="disabled">START</div>
+  </div>
+  </div>
+  <div class="s-12 l-8">
+  <hr>
+  </div>  
+  
+  
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> PIN</label>
+  </div>
+  <div class="s-12 l-5 line_form" >
+    <input type="text" id="pin" name="pin" title="pin" placeholder="PIN" />
+  </div>
+  </div>
+  <div class="s-12 l-8">
+    <div class="s-12 l-9" id="pin_errHint">
+	  </div>
+  <div class="s-12 l-3 right">
+  <div class="button_gray" id="start_pin" disabled="disabled">START</div>
+  </div>
+  </div>
+  
+  
+  
+  
+  </div>
+  </form>
+<img src="img/loading.gif" style="display:none;">  
+</div>
+</div>
+</div>
+<style type="text/css">
+
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+
+
+@media screen and (min-width:801px) {
+#aside{height:30em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:33.4em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+#p_note{padding-left:2em;margin-bottom:0.4em;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+#p_note{padding-left:2em;margin-bottom:0.4em;}
+}
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+#errHint,#pin_errHint{color: red;text-align: center;}
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+if(timer_count) clearInterval(timer_count);
+//return false;
+}
+
+function load_mark_set(){
+
+}
+function pop_confirm(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : submit_op,
+            noText : 'Cancel',
+            noFn : close_pop_diag
+        },
+        fixed : false
+    });
+  return true;
+}
+
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+function pop_waiting(){
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>Please Waiting...</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content,
+        },
+        fixed : true
+  });
+}
+
+function submit_op(){
+  var enable = $('input[name=state]:checked').val();
+    var post_data = 'enable='+enable;
+
+    pop_waiting();
+    locking=1;
+    $.ajax({ 
+      url: "/wxml/wps.xml",
+      type: "Post", 
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+        locking=0;
+        var ret = parseInt($(data).find("state").text());
+        if(ret) pop_submit_result('Setting Apply Success!');
+        else pop_submit_result('Setting Apply Fail!');
+
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+          locking=0;
+          close_pop_diag();
+        }  
+      }
+    })
+    return false;
+}
+
+
+$('#to_submit').click(function(event){
+  event.preventDefault();
+
+ return pop_confirm("The Wi-Fi module will be restart, it will cause the Wi-Fi disconnection.");
+
+//  pop_submit_result();
+});
+
+var state;
+function load_setting(){
+  $.ajax({ 
+    url: "mark_wps.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+      var dsc = $(data).find("dsc").text();
+      if(dsc&0x01) $('#to_set_pin').show();
+      state= parseInt($(data).find("state").text());
+      $('input[name=state]').eq(state).attr('checked','true');
+      if(state){
+        $('#start_pbc').attr({disabled:false,class:'button'});
+        // $('#start_pin').attr({disabled:false,class:'button'});
+        $('#pin').attr('disabled',false);
+      }
+      else {
+        $('#start_pbc').attr({disabled:true,class:'button_gray'});
+        $('#start_pin').attr({disabled:true,class:'button_gray'});
+        $('#pin').attr('disabled',true);
+      }
+    },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+}
+
+
+var wps_timer;
+function get_wps_state(){
+  wps_timer=setInterval(function(){
+    $.ajax({ 
+      url: "wps_end.w.xml",
+      type: "Get", 
+      timeout: 8000,
+      cache: false,
+      datatype: "xml", 
+      success: function(data, status) {
+        var end=parseInt($(data).find("end").text());
+        if(end){
+          clearInterval(wps_timer);
+          close_pop_diag();
+        }
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+  },1000);
+}
+
+
+function load_mark(url){
+if(interval_timer) clearInterval(interval_timer);
+  if(url=="wps.html"){
+    load_setting();
+  }
+}
+
+var count=120,timer_count;
+$('#start_pbc').click(function(event){
+  event.preventDefault();
+  if($(this).attr('disabled')){
+    return;
+  }
+	count=120;
+
+  $.ajax({ 
+    url: "/wxml/wps.xml",
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: {start:1}, 
+    success: function(data, status) {
+      get_wps_state();
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+
+  var content = "<div class='pop_div'><div style='text-align:center;'>Please Press The WPS Key Of Your Device</div><div style='text-align:center;' id='count_down'>120s</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Count',
+            content : content,
+            yesText : 'Stop',
+            yesFn : stop_pbc_op
+//            noText : 'STOP',
+//            noFn : close_pop_diag
+        },
+//        callback: clear_timer,
+				lock: true,
+        fixed : false
+});
+    $('#closeBtn').hide();
+
+    timer_count=setInterval(function(){
+    	count--;
+
+//    	.ajax
+    	
+    	if(count) $('#count_down').html(count+'s');
+    	else close_pop_diag();
+    	},1000);	
+	});
+
+
+
+
+
+function stop_pbc_op(){
+  $.ajax({ 
+    url: "/wxml/wps.xml",
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: {stop:1}, 
+    success: function(data, status) {
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+	close_pop_diag();
+}  
+
+
+function pop_start_pin(){
+  var content = "<div class='pop_div'><div style='text-align:center;'>Please waiting...</div></div>";
+  easyDialog.open({
+    container : {
+      header : 'Wait',
+      content : content,
+//      yesText : 'OK',
+//    yesFn : close_pop_diag
+//            noText : 'STOP',
+//            noFn : close_pop_diag
+    },
+//        callback: clear_timer,
+//    autoClose:3000,
+    lock: true,
+    fixed : false
+});
+  $('#closeBtn').hide();
+}
+
+
+$('#start_pin').click(function(event){
+	 event.preventDefault();
+	 if($(this).attr('disabled')){
+    if(!state) $('#pin_errHint').html('Enable WPS First!');
+		return;
+	}
+	if(setPinClicked($('#pin'))){
+
+  // pop_start_pin();
+  pop_waiting();
+
+  var post_data='pin='+$('#pin').val();
+  $.ajax({ 
+      url: "/wxml/wps.xml",
+      type: "Post", 
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+        get_wps_state();
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+  }
+
+})
+
+
+
+$('#pin').bind('input propertychange', function() {
+	$('#pin_errHint').html('');
+ if($(this).val().length >= 4){
+ 	$('#start_pin').attr({disabled:false,class:'button'});
+        }
+ 	else{
+ 		$('#start_pin').attr({disabled:true,class:'button_gray'});
+      }
+});
+
+
+
+function setPinClicked(obj)
+{
+	var ret;
+	ret = check_pin_code(obj.val());
+	if (ret == 1) {
+		$('#pin_errHint').html('Invalid PIN length!<br> The device PIN is usually four or eight digits long.');
+		obj.focus();		
+		return false;
+	}
+	else if (ret == 2) {
+		$('#pin_errHint').html('Invalid PIN!  <br>PIN must be in numeric digits.');
+		obj.focus();
+		return false;
+	}
+	else if (ret == 3) {
+		if ( !confirm('Checksum failed! Use PIN anyway? ') ) {
+			obj.focus();
+			return false;
+  		}
+	}
+	return true;
+}
+
+function validate_pin_code(code)
+{
+	var accum=0;
+
+	accum += 3 * (parseInt(code / 10000000) % 10); 
+	accum += 1 * (parseInt(code / 1000000) % 10); 
+	accum += 3 * (parseInt(code / 100000) % 10); 
+	accum += 1 * (parseInt(code / 10000) % 10);
+	accum += 3 * (parseInt(code / 1000) % 10);
+	accum += 1 * (parseInt(code / 100) % 10);
+	accum += 3 * (parseInt(code / 10) % 10); 
+	accum += 1 * (parseInt(code / 1) % 10);
+	return (0 == (accum % 10));	
+      }  
+
+// modify for WPS2DOTX  test case 4.2.4  ; PIN input can filter whitespace and dash
+function check_pin_code(str)
+{
+	var i;
+	var code_len;
+	code_len = str.length;
+
+	var codestr="";		
+
+	for (i=0; i<str.length; i++) {
+
+		if ((str.charAt(i) == ' ') || (str.charAt(i) == '-')){
+			code_len --;
+			continue ;
+		}else{
+			codestr += str.charAt(i);
+    }
+					
+		if ((str.charAt(i) < '0') || (str.charAt(i) > '9'))
+			return 2;
+			
+}
+
+
+	
+	if (code_len != 8 && code_len != 4)
+		return 1;
+		
+	if (code_len == 8) {
+		var code = parseInt(codestr, 10);
+		if (!validate_pin_code(code))
+			return 3;
+		else
+			return 0;
+  }
+	else
+		return 0;
+}
+
+
+
+
+
+
+
+</script>
+

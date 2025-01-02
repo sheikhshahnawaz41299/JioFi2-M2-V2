@@ -1,0 +1,1 @@
+define("./Checkbox",["jquery-1.8.2.min.js","./Radio"],function(a,b,c){a("jquery-1.8.2.min.js");var d=a("./Radio");c.exports={init:function(){if(!window.addEventListener&&!window.initedCheckbox){var a="input[type=checkbox]";$(document.body).delegate(a,"click",function(){d.match($(this))}),d.match($(a)),window.initedCheckbox=!0}}}});

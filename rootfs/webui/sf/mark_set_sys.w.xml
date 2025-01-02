@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<lang>2</lang>
+<dsc><% get_version_dsc(); %></dsc>
+<sys>
+<cfg>1,1</cfg>
+<login_username><% get_login_username(); %></login_username>
+<login_pwd><% get_login_password(); %></login_pwd>
+<refresh><% get_gui_refresh_time(); %></refresh>
+<login_timeout><% get_login_timeout(); %></login_timeout>
+<save><% get_system_sleep_time(); %></save>
+<timezone><% get_ntp_timezone(); %></timezone>
+<daylight><% get_daylight_save(); %></daylight>
+<ntp_enabled><% get_ntp_enabled(); %></ntp_enabled>
+<server_id><% get_ntp_server_id(); %></server_id>
+<server_ip1><% get_ntp_server_ip1(); %></server_ip1>
+<server_ip2><% get_ntp_server_ip2(); %></server_ip2>
+<ntp_state><% get_ntp_state(); %></ntp_state>
+</sys>
+<retval>1</retval>
+</setting>

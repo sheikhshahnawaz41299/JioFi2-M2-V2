@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ip_filter>
+<enable>set_ip_filter_enable(enable)</enable>
+<ip0>set_ip_filter_item(0,ip0)</ip0>
+<ip1>set_ip_filter_item(1,ip1)</ip1>
+<ip2>set_ip_filter_item(2,ip2)</ip2>
+<ip3>set_ip_filter_item(3,ip3)</ip3>
+<ip4>set_ip_filter_item(4,ip4)</ip4>
+<ip5>set_ip_filter_item(5,ip5)</ip5>
+<ip6>set_ip_filter_item(6,ip6)</ip6>
+<ip7>set_ip_filter_item(7,ip7)</ip7>
+<ip8>set_ip_filter_item(8,ip8)</ip8>
+<ip9>set_ip_filter_item(9,ip9)</ip9>
+<commit>firewall_commit()</commit>
+</ip_filter>

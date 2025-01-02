@@ -1,0 +1,14 @@
+Info:indication lock init
+Info:calling qmi init
+Info:pdc_qmi_init: Initiallizing QMI 
+Info:calling qmi notifier init
+Info:calling qmi notifieer init done
+Info:calling qmi get service list
+Info:pdc_qmi_init: qmi_client_get_service_list returned 0num_services 1
+Info:calling qmi pdc client init
+Info:calling qmi pdc init success initial
+Info:pdc indication register success
+Info:calling qmi pdc init success
+Info:returning to main
+Info:wait thread create
+Info:calling wait thread join

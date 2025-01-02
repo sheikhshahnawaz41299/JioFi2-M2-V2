@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="telephone=no" name="format-detection" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>MF800 Web Admin</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<script type="text/javascript" src="until.js" charset="utf-8"></script>
+</head>
+<body onLoad="onloadinit()">
+<div id="container">
+<div id="navi"><li><a class="navi" href="home.html">Home</a></li><li><a class="navi" href="connection.html">Connection</a></li><li><a class="navi" href="sms_box.html">SMS</a></li><li><a class="navi" href="setting.html">Setting</a></li><li><a class="sel">Statistics</a></li><li><a class="navi" href="about.html">About</a></li></div>
+<div id="mainContent">
+<div id="sidebar">
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu"><a class="sidesel" >Statistics</a></div>
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu_df78a">MF800</div>
+</div>
+<div id="content">
+<script type="text/javascript">
+if(window==top) location.href="index.htm";
+function GetHandler()
+{
+var xmlDoc = xmlHttp.responseXML;
+if(xmlDoc.getElementsByTagName("ts")[0]!=null)
+{
+var ts_rx =x_v('rx');
+var ts_tx =x_v('tx');
+var ts_all =x_v('all');
+var ts_time =x_v('active_time');
+
+var t_ts_rx =x_v('t_rx');
+var t_ts_tx =x_v('t_tx');
+var t_ts_all =x_v('t_all');
+var t_ts_time =x_v('t_active_time');
+
+$('ts_rx').innerHTML=ts_rx;
+$('ts_tx').innerHTML=ts_tx;
+$('ts_all').innerHTML=ts_all;
+$('ts_time').innerHTML=ts_time;
+
+$('t_ts_rx').innerHTML=t_ts_rx;
+$('t_ts_tx').innerHTML=t_ts_tx;
+$('t_ts_all').innerHTML=t_ts_all;
+$('t_ts_time').innerHTML=t_ts_time;
+}
+}
+
+function onloadinit()
+{
+startRequest('mark_ts.w.xml');
+timer = window.setInterval("startRequest('mark_ts.w.xml')",1000);
+}
+
+function clear_ts_history()
+{
+  ajax_post('/wxml/clear_ts.xml','clear_ts=1');
+}
+</script>
+<h2 class="title">Statistics</h2>
+<hr size=1 style="color:#C0C0C0">
+<div id="content_error">
+<div style="width:620px;text-align:center;margin-top:20px;margin-left:30px;height:128px;">
+<ul class="ts_head" ><li class="type">Type</li><li class="cv">Current Volume</li><li class="tv">Total Volume</li></ul>
+<ul class="ts"><li class="type">Download</li><li id="ts_rx"   class="cv"></li><li id="t_ts_rx"  class="tv"></li></ul>
+<ul class="ts"><li class="type">Upload  </li><li id="ts_tx"   class="cv"></li><li id="t_ts_tx"  class="tv"></li></ul>
+<ul class="ts"><li class="type">Total   </li><li id="ts_all"  class="cv"></li><li id="t_ts_all"  class="tv"></li></ul>
+<ul class="ts"><li class="type">Duration</li><li id="ts_time" class="cv"></li><li id="t_ts_time" class="tv"></li></ul>
+</div>
+<div  style="width:620px;text-align:left;margin-top:10px;margin-left:30px;font-size:12px;">
+Volume statistics provided here are approximate.For accurate statistics and details of charges refer to your bills. 
+<HR SIZE=1 width=620 />
+<button style="margin-left:460px;" id="clear_ts" name="clear_ts" type="submit" class="button" onclick="clear_ts_history()"><span><em>Clear History</em></span></button>
+</div></div>
+
+</div></div>
+<div id="footer">Copyright &copy; 2014 We-wins Inc. All Rights Reserved.</div>
+</div></body></html>

@@ -1,0 +1,500 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a>Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net" class="active-item"><a href="javascript:;">Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" style="display:none;"><a>PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">NETWORK SETTING</h3>
+<div class="line" style="padding:0em 0.6em;">
+  <form class="customform" action="#">
+  <div class="margin">
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> Connect Mode</label>
+  </div>
+  <div class="s-12 l-5 line_form">
+    <input type="radio" name="conn_mode" value="0" /><label class="radio">Auto</label>
+    <input type="radio" name="conn_mode" value="1" /><label class="radio">Manual</label>
+  </div>
+  </div>
+
+  <div class="line" >
+  <div class="s-12 l-3 line_form">
+  <label class="name">Network Mode</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="network_mode">
+    <option value="0">AUTO</option>
+    <option value="1">LTE Only</option>
+    <option value="2">WCDMA Only</option>
+    <option value="3">GSM Only</option>
+    </select>
+  </div>
+  </div>
+
+<!--   <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">Network Mode</label>
+  </div>
+  <div class="s-12 l-5">
+    <input type="text" disabled value="LTE Only" />
+  </div>
+  </div> -->
+
+<div class="line">
+<div class="s-12 l-8">
+<fieldset style="">
+<legend>Profile</legend>
+  <div class="line">
+    <div class="s-12 l-4 line_form">
+    <label class="name">APN List</label>
+    </div>
+    <div class="s-12 l-8">
+      <select name="apn_list" id="apn_list" >
+
+      </select>
+    </div>
+  </div>
+
+  <div class="line">
+    <div class="s-12 l-4 line_form">
+    <label class="name">Name</label>
+    </div>
+    <div class="s-12 l-8">
+      <input type="text" name="apn_name" title="apn" placeholder="APN NAME" value="" maxlength="32"/>
+    </div>
+  </div>
+  <div class="line">
+    <div class="s-12 l-4 line_form">
+    <label class="name">User</label>
+    </div>
+    <div class="s-12 l-8">
+      <input type="text" name="dial_user" title="USER" placeholder="USER" value="" maxlength="32"/>
+    </div>
+  </div>
+
+    <div class="line">
+    <div class="s-12 l-4 line_form">
+    <label class="name">Password</label>
+    </div>
+    <div class="s-12 l-8">
+      <input type="password" name="dial_pwd" title="PASSWORD" placeholder="PASSWORD" value="" maxlength="32"/>
+    </div>
+  </div>
+
+  <div class="line">
+    <div class="s-12 l-4 line_form">
+    <label class="name">APN</label>
+    </div>
+    <div class="s-12 l-8">
+      <input type="text" name="apn_apn" title="APN" placeholder="APN" value="" maxlength="32"/>
+    </div>
+  </div>
+
+  <div class="line" style="display:none;">
+    <div class="s-12 l-4 line_form">
+    <label class="name">Number</label>
+    </div>
+    <div class="s-12 l-8">
+      <input type="text" name="dial_number" title="NUMBER" placeholder="NUMBER" value="" maxlength="32"/>
+    </div>
+  </div>
+</fieldset>
+</div>
+</div>
+  <div class="line">
+  <div class="s-12 l-4 line_form">
+  <label class="name"> DNS Mode</label>
+  </div>
+  <div class="s-12 l-5 line_form">
+    <input type="radio" name="dns_mode" value="0" /><label class="radio">Auto</label>
+    <input type="radio" name="dns_mode" value="1" /><label class="radio">Manual</label>
+  </div>
+  </div>
+
+<div id="dns_input" style="display:none;">
+  <div class="line">
+  <div class="s-12 l-4 line_form">
+  <label class="name"> Primary DNS</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="pri_dns" name="pri_dns" title="PRIMARY DNS" placeholder="PRIMARY DNS" />
+  </div>
+  </div>
+  <div class="line">
+  <div class="s-12 l-4 line_form">
+  <label class="name"> Secondary DNS</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="sec_dns" name="sec_dns" title="SECONDARY DNS" placeholder="SECONDARY DNS" />
+  </div>
+  </div>
+</div>
+
+
+  <div class="line" style="display:none;">
+  <div class="s-12 l-4 line_form">
+  <label class="name">IPv4/IPv6</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="ip_mode" id="ip_mode">
+    <option value="2">IPv4/IPv6</option>
+    <option selected value="0">IPv4</option>
+    <option value="1">IPv6</option>
+    </select>
+  </div>
+  </div>
+
+
+  <div class="line">
+  <div class="s-12 l-4 line_form">
+  <label class="name"> UPNP</label>
+  </div>
+  <div class="s-12 l-5 line_form">
+    <input type="radio" name="upnp" value="0" /><label class="radio">Disable</label>
+    <input type="radio" name="upnp" value="1" /><label class="radio">Enable</label>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-4 line_form">
+  <label class="name">Ping From Wan</label>
+  </div>
+  <div class="s-12 l-5 line_form">
+    <input type="radio" name="ping_acc" value="0" /><label class="radio">Disable</label>
+    <input type="radio" name="ping_acc" value="1" /><label class="radio">Enable</label>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-4 line_form">
+  <label class="name">Admin From Wan</label>
+  </div>
+  <div class="s-12 l-5 line_form">
+    <input type="radio" name="admin_wan" value="0" /><label class="radio">Disable</label>
+    <input type="radio" name="admin_wan" value="1" /><label class="radio">Enable</label>
+  </div>
+  </div>
+
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit">APPLY</div>
+  </div>
+  </div>
+  </div>
+  </form>
+  
+</div>
+</div>
+<img src="img/loading.gif" style="display:none;">
+</div>
+<style type="text/css">
+
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+
+fieldset{border:1px solid #999;margin-left:2em; margin-bottom:1.6em;font-size:1em;}
+legend{font-size:1.2em;border:0px solid #999;padding:0.2em 0.4em;background:#2088B0;color:white;}
+@media screen and (min-width:801px) {
+#aside{height:55em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:61em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+fieldset{border:1px solid #999;margin-left:1em; margin-bottom:1.6em;margin-right: 1em;font-size:1em;}
+legend{font-size:1.4em;padding:0.2em 0.4em;}
+}
+#errHint{color: red;text-align: center;}
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+function load_mark_set(){
+
+}
+
+function pop_waiting(txt){
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>"+txt+"</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content,
+        },
+        fixed : true
+  });
+}
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+$('#to_submit').click(function(event){
+  event.preventDefault();
+
+  var dial_mode = $('input[name=conn_mode]:checked').val();
+  var net_mode = $('select[name=network_mode]').val();
+  var index = $('select[name=apn_list]').val();
+  var apn_name=$('input[name=apn_name]').val(); 
+  var user=$('input[name=dial_user]').val();
+  var pwd=$('input[name=dial_pwd]').val();
+  var apn_apn=$('input[name=apn_apn]').val();
+  var number=$('input[name=dial_number]').val();
+
+  var upnp = $('input[name=upnp]:checked').val();
+  var ping = $('input[name=ping_acc]:checked').val();
+  var wan_access =$('input[name=admin_wan]:checked').val();
+
+  var dns_mode=$('input[name=dns_mode]:checked').val();
+  var pri_dns=$('#pri_dns').val();
+  var sec_dns=$('#sec_dns').val();
+
+  if(dns_mode==1 && (!isIP(pri_dns) || !isIP(sec_dns) || pri_dns=="255.255.255.255" || pri_dns=="0.0.0.0" || sec_dns=="255.255.255.255" || sec_dns=="0.0.0.0")){
+    $('#errHint').html('Please Input Valid DNS Address');
+    return false;
+  }
+  var ip_mode = $('select[name=ip_mode]').val();
+
+  if(apn_name.length==0) apn_name = 'APN '+index;
+
+  var post_data='dial_mode='+esc(dial_mode)+'&net_mode='+esc(net_mode)+'&apn_index='+esc(index)+'&apn_name='+esc(apn_name)+'&user='+esc(user)+'&pwd='+esc(pwd)+'&apn='+esc(apn_apn)+'&number='+esc(number)+'&upnp='+esc(upnp)+'&ping='+esc(ping)+'&wan_access='+esc(wan_access)+'&dns_mode='+dns_mode+'&pri_dns='+esc(pri_dns)+'&sec_dns='+esc(sec_dns)+'&ip_mode='+esc(ip_mode);
+  
+
+  $("#errHint").html('');
+  pop_waiting('Waiting');
+  locking=1;
+    $.ajax({ 
+      url: "/wxml/set_net.xml",
+      type: "Post", 
+      timeout: 20000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+        locking=0;
+        var ret0 = parseInt($(data).find("dial_mode").text());
+        var ret1 = parseInt($(data).find("net_mode").text());
+        var ret2 = parseInt($(data).find("apn").text());
+
+        if(ret0&& ret1 &&ret2) pop_submit_result('Setting Apply Success!');
+        else pop_submit_result('Setting Apply Fail!');
+
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+          locking=0;
+          close_pop_diag();
+        }  
+      }
+    })
+
+});
+
+
+var apn_obj= new Array;
+
+function create_apn_obj(id,obj){
+  apn_obj[id]=new Object(obj);
+}
+
+function enable_apn(id,enable){
+  $('input[name=apn_name]').attr('disabled',enable);
+  $('input[name=dial_user]').attr('disabled',enable);
+  $('input[name=dial_pwd]').attr('disabled',enable);
+  $('input[name=apn_apn]').attr('disabled',enable);
+  $('input[name=dial_number]').attr('disabled',enable);
+}
+
+function set_apn(apn){
+  $('input[name=apn_name]').val(apn.apn_name!='-'?apn.apn_name:'');
+  $('input[name=dial_user]').val(apn.user!='-'?apn.user:'');
+  $('input[name=dial_pwd]').val(apn.pwd!='-'?apn.pwd:'');
+  $('input[name=apn_apn]').val(apn.apn_apn!='-'?apn.apn_apn:'');
+  $('input[name=dial_number]').val(apn.number!='-'?apn.number:'');
+}
+
+
+$('#apn_list').die().live('change',function(){
+  var sel=$(this).val();
+  set_apn(apn_obj[sel])
+  if(sel==0) enable_apn(0,true);
+  else enable_apn(0,false);
+})
+
+
+
+function load_setting(){
+  $("#errHint").html('');
+  $.ajax({ 
+    url: "mark_set_net.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+      var dsc = $(data).find("dsc").text();
+      if(dsc&0x01) $('#to_set_pin').show();
+
+      var lpm = parseInt($(data).find("lpm").text());  
+      var dial_mode = $(data).find("dial_mode").text();
+      var net_mode = $(data).find("mode").text();
+      var upnp_mode = $(data).find("upnp").text();
+      var ping = $(data).find("ping").text();
+      var wan_access = $(data).find("wan_access").text();
+      var apn_active=$(data).find("apn_active").text();
+
+      var dns_mode=parseInt($(data).find("dns_mode").text());
+      if(dns_mode){
+        $('#dns_input').show();
+      }
+      else $('#dns_input').hide();
+
+      var pri_dns = $(data).find("dns1").text();
+      var sec_dns = $(data).find("dns2").text();
+      if(pri_dns!='-' &&pri_dns!='0'){
+        $('#pri_dns').val(pri_dns);
+      }
+      if(sec_dns!='-' &&sec_dns!='0'){
+        $('#sec_dns').val(sec_dns);
+      }
+
+      var ip_mode=parseInt($(data).find("ip_mode").text());
+      $('select[name=ip_mode]').val(ip_mode);
+
+      var netstatus = parseInt($(data).find("netstatus").text());
+
+      var index=0;
+      $(data).find("apn").each(function(){
+        var apn = new Object();
+        apn.apn_name = $(this).children('apn_name').text();
+        apn.user = $(this).children('user').text();
+        apn.pwd = $(this).children('pwd').text();
+        apn.apn_apn = $(this).children('apn_apn').text();
+        apn.number = $(this).children('number').text();
+
+        if(apn.apn_name=='-') apn.apn_name='APN '+index;
+        create_apn_obj(index,apn);
+        $('#apn_list')[0].options[index]=new Option(apn.apn_name,index);
+        if(index==apn_active){
+          set_apn(apn);
+          $('#apn_list')[0].options[apn_active].selected=true;
+        }
+        if(apn_active==0) enable_apn(0,true);
+        index++;
+      });
+
+      $('input[name=conn_mode]').eq(dial_mode).attr('checked','true');
+      $('select[name=network_mode]').val(net_mode);
+      $('input[name=dns_mode]').eq(dns_mode).attr('checked','true');
+      $('input[name=upnp]').eq(upnp_mode).attr('checked','true');
+      $('input[name=ping_acc]').eq(ping).attr('checked','true');
+      $('input[name=admin_wan]').eq(wan_access).attr('checked','true');
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+}
+
+
+
+
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="net.html"){
+    load_setting();
+  }
+}
+
+
+$('input[name=dns_mode],input[name=dns_mode]+label').die().live('click',function(){
+var dns_manual = parseInt($('input[name=dns_mode]:checked').val());
+if(dns_manual){
+  $('#dns_input').show(); 
+}
+else{
+  $('#dns_input').hide();
+}
+})
+
+</script>
+

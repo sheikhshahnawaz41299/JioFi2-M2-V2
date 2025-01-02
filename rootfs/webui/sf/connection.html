@@ -1,0 +1,314 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li class="active"><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon">&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<div class="s-12 l-3 center" style="margin-top:2em;">
+<div style="text-align:center;"><h3>CONNECTION</h3></div>
+</div>
+</div>
+
+<div class="line width_100" >
+<div class="s-12 l-3 center" style="margin-top:1em;">
+<div style="text-align:center;"><h3>&#205;</h3></div>
+</div>
+</div>
+
+<div class="line width_100" >
+<div class="s-12 l-3 center" style="margin-top:1em;">
+<div style="text-align:center;">
+<form class="customform" action="#">
+  <div class="button_gray" id="btn_connect" disabled=true></div>
+</form>
+<div id="net_tips">The Mifi is work on LTE 4G</div>
+</div>
+</div>
+</div>
+
+
+<div class="line width_100" >
+<div class="s-12 l-8 center" style="margin-top:1em;">
+<div style="text-align:left;">
+<div style="width:100%">
+<ul class="ts_head" ><li class="type">Type</li><li class="cv">Current Volume</li><li class="tv">Total Volume</li></ul>
+<ul class="ts"><li class="type">Download</li><li id="ts_rx" class="cv"></li><li id="t_ts_rx"  class="tv"></li></ul>
+<ul class="ts"><li class="type">Upload  </li><li id="ts_tx" class="cv"></li><li id="t_ts_tx"  class="tv"></li></ul>
+<ul class="ts"><li class="type">Total   </li><li id="ts_all" class="cv"></li><li id="t_ts_all"  class="tv"></li></ul>
+<ul class="ts"><li class="type">Duration</li><li id="ts_time" class="cv"></li><li id="t_ts_time" class="tv"></li></ul>
+</div>
+</div>
+<div style="font-size:0.6em;text-align:left;margin:0.8em 0;">Volume statistics provided here are approximate.For accurate statistics and details of charges refer to your bills. </div>
+<div class="s-12 l-4 right">
+  <form class="customform" action="#">
+    <div class="button" style="font-size:1em;" id="btn_clear_history">CLEAR HISTORY</div>
+  </form>
+</div>
+</div>
+<img src="img/loading.gif" style="display:none;"> 
+</div>
+
+<style type="text/css">
+ul.ts{
+list-style:none;
+display:inline-block;
+width:100%;
+border:1px solid #888; border-top:none; 
+word-wrap:break-word;word-break:break-all;
+cursor:pointer;
+text-align:left;
+height: 1.6em;
+line-height: 1.6em;
+vertical-align: middle;
+background: #ddd;
+color: #222;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+   ul.ts{
+    border:1px solid #888;
+   }
+} 
+
+ul li.type{width:26%;float:left;height: 1.55em;border-right:1px solid #888;}
+ul li.cv{width:36%;float:left;height: 1.55em;border-right:1px solid #888;padding-left:1em;}
+ul li.tv{width:36%;float:left;height: 1.55em;padding-left:1em;}
+.ts_head{
+list-style:none;
+display:inline-block;
+width:100%;
+background:#34485C;border:1px solid #34485C;
+line-height:  1.6em;;
+text-align:left;
+vertical-align: middle;
+}
+
+.width_100{width:100%;font-size:1em;}
+
+
+@media screen and (max-width:800px) {
+
+ul.ts{
+border:1px solid #888;
+}
+
+.width_100{width:100%;font-size: 1em;}
+}
+
+
+@media screen and (max-width:400px) {
+.ts_head{margin: 0;padding: 0;font-size: 0.8em;}
+ul.ts{margin: 0;padding: 0;font-size: 0.8em;}
+ul li.type{padding-left: 4px;}
+ul li.cv{padding-left: 4px;}
+ul li.tv{padding-left: 4px;}
+
+}
+
+
+
+#net_tips{font-size:0.8em;margin-top:-1em;}
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+</style>
+
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+
+
+function send_clear_post(){
+close_pop_diag();
+  $.ajax({ 
+    url: '/wxml/clear_ts.xml',
+    type: "Post", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    data: { clear_ts:1}, 
+    success: function(data, status) {
+//      location.reload(true);
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+    })
+}
+
+var pop_waiting_ind=0,pop_waiting_cnt=0;
+function pop_waiting(txt){
+  pop_waiting_ind=1;
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>"+txt+"</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content,
+        },
+        fixed : true
+  });
+}
+
+
+function pop_clear_confirm(){
+  var content = "<div class='pop_div'><div style='text-align:center;'>Do you want to clear history record?</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : send_clear_post,
+            noText : 'Cancel',
+            noFn : close_pop_diag
+        },
+        fixed : false
+    });
+}
+
+$('#btn_clear_history').die().live('click',function(event){
+  event.preventDefault();
+  pop_clear_confirm();
+});
+
+
+$('#btn_connect').die().live('click',function(event){
+  event.preventDefault();
+  if($(this).prop('disabled')==true) return false;
+  disableButton('btn_connect');
+  var post_data,pop_content;
+  if(netstatus==8){
+    pre_netstatus=0;
+    post_data="conn=0";
+    pop_content='Connecting';
+  }
+  else{
+    pre_netstatus=1;
+    post_data="conn=1";
+    pop_content='Disconnecting'; 
+  }
+//  var post_data = (netstatus==8)?'conn=0':'conn=1';
+//  ajax_post('/wxml/conn.xml',data);
+    pop_waiting(pop_content);
+    locking=1;
+    $.ajax({ 
+    url: '/wxml/conn.xml',
+    type: "Post", 
+    timeout: 20000,
+    cache: false,
+    datatype: "xml",
+    data: post_data, 
+    success: function(data, status) {
+      // pop_waiting_ind=0;
+      // locking=0;
+      // close_pop_diag();
+      // enableButton('btn_connect');
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+        locking=0;
+        close_pop_diag();
+      }  
+    }
+    })
+});
+
+var netstatus,pre_netstatus,m=0,n=0;
+var str_netstatus=['static ip disconnected','static ip connected','dhcp client disconnected','dhcp client connected','pppoe disconnected','pppoe connected','modem initializing','modem dialing','modem disconnected','modem connected'];
+function load_interval(){
+  $.ajax({ 
+    url: "mark_conn.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    success: function(data, status) {
+    var dial_mode = parseInt($(data).find("dial_mode").text());
+    var opmode = $(data).find("op_mode").text();
+    netstatus = parseInt($(data).find("netstatus").text());
+    if (pop_waiting_ind){
+      pop_waiting_cnt++;
+      if(((pre_netstatus==0 && netstatus==9) ||  (pre_netstatus==1 && netstatus==8)) || (pop_waiting_cnt>20)){
+        pop_waiting_cnt=0;
+        close_pop_diag();
+        locking=0;
+        pop_waiting_ind=0;
+        enableButton('btn_connect');
+      }
+
+    }
+
+  if(dial_mode) $('#btn_connect').show()
+  else $('#btn_connect').hide();
+  if(netstatus==8) $("#btn_connect").html('&#237;&nbsp;CONNECT');
+  else $("#btn_connect").html('&#236;&nbsp;DISCONNECT');
+
+  if(opmode=='-') $("#net_tips").html(str_netstatus[netstatus]);
+  else if(opmode!='NO SERVICE') $("#net_tips").html(opmode +' '+str_netstatus[netstatus]);
+  else {
+    $('#btn_connect').hide();
+    $("#net_tips").html(opmode);
+  }
+
+  if(mod_sig==undefined ||mod_sig>=6 ||mod_sig<=0 || pop_waiting_ind){
+    disableButton('btn_connect');
+  }
+  else{
+   enableButton('btn_connect'); 
+  }
+
+  var ts_rx =$(data).find('rx').text();
+  var ts_tx =$(data).find('tx').text();
+  var ts_all =$(data).find('all').text();
+  var ts_time =$(data).find('active_time').text();
+
+  var t_ts_rx =$(data).find('t_rx').text();
+  var t_ts_tx =$(data).find('t_tx').text();
+  var t_ts_all =$(data).find('t_all').text();
+  var t_ts_time =$(data).find('t_active_time').text();
+
+  $('#ts_rx').html(ts_rx);
+  $('#ts_tx').html(ts_tx);
+  $('#ts_all').html(ts_all);
+  $('#ts_time').html(ts_time);
+
+  $('#t_ts_rx').html(t_ts_rx);
+  $('#t_ts_tx').html(t_ts_tx);
+  $('#t_ts_all').html(t_ts_all);
+  $('#t_ts_time').html(t_ts_time);
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+    })
+}
+
+
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="connection.html"){
+    load_interval();
+    interval_timer=setInterval(load_interval,1000);
+  }
+}
+
+
+</script>

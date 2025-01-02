@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ddns>
+<dsc><% get_version_dsc(); %></dsc>
+<ddns_enable><% get_ddns_enable(); %></ddns_enable>
+<server><% get_ddns_server(); %></server>
+<domain><% get_ddns_domain(); %></domain>
+<ddns_user><% get_ddns_username(); %></ddns_user>
+<ddns_pwd><% get_ddns_password(); %></ddns_pwd>
+<ddns_state><% get_ddns_state(); %></ddns_state>
+<ddns_ip_addr><% get_ddns_ipaddr(); %></ddns_ip_addr>
+</ddns>

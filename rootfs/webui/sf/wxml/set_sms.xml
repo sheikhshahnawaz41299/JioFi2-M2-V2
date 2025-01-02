@@ -1,0 +1,5 @@
+<sms>
+<report>set_sms_need_ack(report)</report>
+<move>set_sms_auto_move(move)</move>
+<del>set_sms_auto_del(del)</del>
+</sms>

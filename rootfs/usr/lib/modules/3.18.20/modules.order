@@ -1,0 +1,12 @@
+kernel/crypto/ansi_cprng.ko
+kernel/block/test-iosched.ko
+kernel/drivers/spi/spidev.ko
+kernel/drivers/net/ethernet/qualcomm/emac/qcom_emac.ko
+kernel/drivers/input/misc/gpio_event.ko
+kernel/drivers/input/misc/gpio_matrix.ko
+kernel/drivers/input/misc/gpio_input.ko
+kernel/drivers/input/misc/gpio_output.ko
+kernel/drivers/input/misc/gpio_axis.ko
+kernel/drivers/mmc/card/mmc_test.ko
+kernel/drivers/mmc/card/mmc_block_test.ko
+kernel/drivers/platform/msm/msm_bus/msm-buspm-dev.ko

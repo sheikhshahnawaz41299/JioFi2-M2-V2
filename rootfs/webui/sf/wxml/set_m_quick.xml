@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<set>
+<dial_mode>set_dial_mode(dial_mode)</dial_mode>
+<apn>set_apn_list(apn_index,apn_name,user,pwd)</apn>
+<ssid>set_wifi_ssid(ssid)</ssid>
+<enc_type>set_wifi_sec_wpa(enc_type,wpa)</enc_type>
+<key>set_wifi_key(key)</key>
+<brd>set_wifi_ssid_broadcast(brd)</brd>
+<restart>restart_wifi_app(restart)</restart>
+<commit>net_set_commit()</commit>
+</set>

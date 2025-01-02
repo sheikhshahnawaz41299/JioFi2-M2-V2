@@ -1,0 +1,516 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a>Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" class="active-item" style="display:none;"><a href="javascript:;">PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    </ul>
+
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">PIN SETTING</h3>
+<div class="line" id="pin_all" style="padding:0em 0.6em;">
+  
+  <form class="customform" action="#" id="form1" style="display:none;">
+  <div class="margin">
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">PIN Operation</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="form1_select">
+    <option value="0" selected>Enable PIN</option>
+    </select>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> PIN Code</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="form1_pin" name="form1_pin" title="PIN" placeholder="PIN" />
+  </div>
+  </div>
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint1">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit1">APPLY</div>
+  </div>
+  </div>
+
+  </div>
+  </form>
+
+  <form class="customform" action="#" id="form2" style="display:none;">
+  <div class="margin">
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">PIN Operation</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="form2_select">
+    <option value="1" selected>Disable PIN</option>
+    <option value="2">Change PIN</option>
+    </select>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> PIN Code</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="form2_pin" name="form2_pin" title="PIN" placeholder="PIN" />
+  </div>
+  </div>
+
+  <div class="line" id="form2_new_pin_div">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> New PIN Code</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="form2_new_pin" name="form2_new_pin" title="PIN" placeholder="PIN" />
+  </div>
+  </div>
+
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint2">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit2">APPLY</div>
+  </div>
+  </div>
+
+  </div>
+  </form>
+
+
+  <form class="customform" action="#" id="form3" style="display:none;">
+  <div class="margin">
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">PIN Operation</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="form3_select">
+    <option value="0" selected>Verify PIN</option>
+    </select>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> PIN Code</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="form3_pin" name="form3_pin" title="PIN" placeholder="PIN" />
+  </div>
+  </div>
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint3">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit3">APPLY</div>
+  </div>
+  </div>
+
+  </div>
+  </form>
+
+
+<form class="customform" action="#" id="form4" style="display:none;">
+  <div class="margin">
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">PIN Operation</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="form4_select">
+    <option value="0" selected>Unlock By PUK</option>
+    </select>
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> PUK Code</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="form4_puk" name="form4_puk" title="PUK" placeholder="PUK" />
+  </div>
+  </div>
+
+  <div class="line">
+  <div class="s-12 l-3 line_form">
+  <label class="name">New PIN Code</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="form4_pin" name="form4_pin" title="PIN" placeholder="PIN" />
+  </div>
+  </div>
+
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint4">
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit4">APPLY</div>
+  </div>
+  </div>
+
+  </div>
+  </form>
+
+
+<form class="customform" action="#" id="form5" style="display:none;">
+  <div class="margin">
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint5">
+  </div>
+  </div>
+  </div>
+</form>
+
+
+  
+</div>
+</div>
+</div>
+<style type="text/css">
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+
+
+@media screen and (min-width:801px) {
+#aside{height:33.3em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:37em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+}
+#errHint1,#errHint2,#errHint3,#errHint4,#errHint5{color: red;text-align: center;}
+
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+
+function ajax_post(target,post_data){
+  $.ajax({ 
+      url: target,
+      type: "Post", 
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+        var result = parseInt($(data).find("result").text());
+
+        if(!result) pop_submit_result('Setting Apply Success!');
+        else pop_submit_result('Setting Apply Fail!');
+
+        op_is_change_pin=  op_is_change_pin &&result;
+
+
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+}
+
+
+$('input[name=form1_pin],input[name=form2_pin],input[name=form2_new_pin],input[name=form3_pin],input[name=form4_puk],input[name=form4_pin]').on('input',function(){
+  var str=$(this).val();
+  $(this).val(str.replace(/[^0-9]/g,''));
+  if(str.length>8) $(this).val(str.substr(0,8));
+});
+
+
+
+var op_is_change_pin=0;
+$('#to_submit1').click(function(event){
+  event.preventDefault();
+  var pin=$("#form1_pin").val();
+  if(pin.length<4){
+    $("#errHint1").html("PIN too short");
+    return false;
+  }
+  var data= 'action=0'+'&arg1='+pin;
+  $("#form1_pin").val('');
+  ajax_post('/wxml/set_pin.xml',data);
+  return true;
+})
+
+
+$('#to_submit2').click(function(event){
+  event.preventDefault();
+  var operate=$('select[name=form2_select]').val();
+  var pin=$("#form2_pin").val();
+  if(pin.length<4)
+  {
+    $("#errHint2").html("Pin too short");
+    return false;
+  }
+  if(operate==1){
+    var data= 'action=1'+'&arg1='+pin;
+    $("#form2_pin").val('');
+    ajax_post('/wxml/set_pin.xml',data);
+    return true;
+  }
+  if(operate==2){
+    var new_pin=$("#form2_new_pin").val();
+    
+    if(new_pin.length<4)
+    {
+      $("#errHint2").html("Pin too short");
+      return false;
+    }
+
+    var data='action=2'+'&arg1='+pin + '&arg2='+new_pin;
+    op_is_change_pin=1;
+    ajax_post('/wxml/set_pin.xml',data);
+    return true;
+  }
+})
+
+
+$('#to_submit3').click(function(event){
+  event.preventDefault();
+  var pin=$("#form3_pin").val();
+  if(pin.length<4){
+    $("#errHint3").html("PIN too short");
+    return false;
+  }
+  var data= 'action=3'+'&arg1='+pin;
+  $("#form3_pin").val('');
+  ajax_post('/wxml/set_pin.xml',data);
+  return true;
+})
+
+$('#to_submit4').click(function(event){
+  event.preventDefault();
+
+  var puk=$("#form4_puk").val();
+  if(puk.length!=8){
+    $("#errHint4").html("PUK length error");
+    return false;
+  }
+  var pin=$("#form4_pin").val();
+  if(pin.length<4){
+    $("#errHint4").html("PIN too short");
+    return false;
+  }
+  var data= 'action=4'+'&arg1='+puk+'&arg2='+pin;
+  $("#form4_puk").val('');
+  $("form4_pin").val('');
+  ajax_post('/wxml/set_pin.xml',data);
+  return true;
+})
+
+
+$('select[name=form2_select]').die().live('change',function(){
+if(parseInt($(this).val())>1){
+  $('#form2_new_pin_div').show();
+}
+else $('#form2_new_pin_div').hide();
+$('#form2_pin').focus();
+});
+
+function set_form_display(id){
+  for(i=1;i<6;i++){
+    $("#form"+i).hide();  
+  }
+  $('#'+id).show();
+}
+
+function load_setting(){
+  $.ajax({ 
+    url: "mark_set_pin.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    success: function(data, status) {
+      var dsc = $(data).find("dsc").text();
+      if(dsc&0x01) $('#to_set_pin').show();
+
+      var state = parseInt($(data).find("state").text());
+      var pin_cnt = parseInt($(data).find("pin").text());
+      var puk_cnt = parseInt($(data).find("puk").text());
+
+      switch (state) {
+        case 0:
+        case 1:
+        case 2:
+          var errhint_id="#errHint"+(parseInt(state)+1);
+          $(errhint_id).html("Remaining of attempts:"+pin_cnt);
+          break;
+        case 3:
+          $("#errHint4").html("Remaining of attempts:"+puk_cnt);
+          if(parseInt(puk_cnt)==0)
+          {
+            $("#form4_puk").attr('disabled',true);
+            $("#form4_pin").attr('disabled',true);
+            disableButton('to_submit4');
+          }
+          else{
+            $("#form4_puk").attr('disabled',false);
+            $("#form4_pin").attr('disabled',false);
+            enableButton('to_submit4');
+          }
+          break;
+        case 4:
+        default: //'-' parseInt to NaN
+          $("#errHint5").html("SIM card dose not exist,please check it");
+        break;
+        }
+        if(isNaN(state)) {
+          set_form_display('form5');
+        }
+        else 
+        {
+          var form_id="form"+(state+1);
+          set_form_display(form_id);
+          if(state==3 && parseInt(puk_cnt)){
+            $("#form4_puk").focus();
+          }
+          else{
+            if(state==1){
+              if(op_is_change_pin){
+                op_is_change_pin=0;
+                $('#form2_new_pin_div').show();
+              }
+              else{
+                $("#form2_pin").val('');
+                $("#form2_new_pin").val('');
+                $('select[name=form2_select]').val('1');
+                $('#form2_new_pin_div').hide();
+              }
+              
+            }
+            var input_id="#form"+(parseInt(state)+1)+"_pin";
+            $(input_id).focus();            
+          }
+        }
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+  })
+}
+
+
+$('#pin_all>input[type=text]').die().live('keypress',function(e){
+  var k = window.event ? e.keyCode : e.which;
+  if (((k >= 48) && (k <= 57)) || k == 8 || k == 0){
+
+  }
+  else{
+    if (window.event){
+      window.event.returnValue = false;
+    }else{
+      e.preventDefault();
+    }
+  }
+})
+
+function load_mark(url){
+if(interval_timer) clearInterval(interval_timer);
+  if(url=="pin.html"){
+    load_setting();
+  }
+}
+
+
+</script>
+

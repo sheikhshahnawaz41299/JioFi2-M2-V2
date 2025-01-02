@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ddns>
+<enable>set_ddns_enable(enable)</enable>
+<set0>set_ddns_server(server)</set0>
+<set1>set_ddns_domain(domain)</set1>
+<set2>set_ddns_username(username)</set2>
+<set3>set_ddns_password(password)</set3>
+<commit>ddns_commit()</commit>
+</ddns>

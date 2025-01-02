@@ -1,0 +1,1225 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>Network Setting</title>-->
+<script>
+	if(top.location.pathname != "/index.htm") top.location.href = "./index.htm";
+
+	var STR_MAC_FILTER_DENY_NOTI = "If you have your MAC address registered on Deny entry list, you can't connect to your router. Are you sure you want to add a new MAC address to Deny entry?";
+	var STR_MAC_FILTER_DENY_DEL_NOTI = "If you have your MAC address registered on Deny entry list, you can't connect to your router. If you really want to change the policy status to Deny, please make sure your device is not in the list. Are you sure you want to change?";
+	var STR_MAC_FILTER_ALLOW_NOTI = "If you do not have your MAC address registered on Allow entry list, you can't connect to your router. Are you sure you want to add a new MAC address to Allow entry?";
+	var STR_MAC_FILTER_ALLOW_APPLY_NOTI = "If you do not have your MAC address registered on Allow entry list, you can't connect to your router. If you really want to change the policy status to Allow, please make sure your device is in the list. Are you sure you want to change?";
+
+	$(document).ready(function() {	
+
+	});
+
+	
+	//var str_filter_mode = ["DISABLE", "DENY", "ALLOW"];
+	//var str_filter_st = ["Disabled", "Enabled"];
+
+
+
+	function getFilterMode(s) {
+		if(s!=seed) return toSelfXSS();
+		if($("#select_dial_filter_enable").val() == 'DISABLE') return 0;
+		if($("#select_status").val() == 'DENY') return 1;
+		if($("#select_status").val() == 'ALLOW') return 2;
+		return 0;
+	}
+
+	function commitMac(s) {
+		if(s!=seed) return toSelfXSS();
+
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: "/wxml/set_mac_apply.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 20000,
+			cache: false,
+			datatype: "xml",
+			data: null,
+			success: function(data, status) {
+
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				hide_tips(seed);
+				load_setting(seed);
+				var ret0 = parseInt($(data).find("commit").text());
+				if(ret0) alert("Setting Apply Success!");
+				else alert("Setting Apply Fail");
+
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {}
+			}
+		})
+	}
+
+	function postMac(index, mac, comment, swswsw) {
+		var filter_mode = getFilterMode(seed);
+		if(mac != null && mac != '' && mac != '-') mac = mac.replace(/-/g, ":");
+
+		if(filter_mode==0){
+			postMacData(seed);
+		}
+		else if(filter_mode == 1) {
+			function checkUSBMac(type,mac){
+				if(type==0){
+					for (var i = 0; i < mac_filter_list.length; i++) {
+						if(mac_filter_list[i].toUpperCase() == "FC:DE:56:FF:01:06") {
+							alert("USB user can not be added in Deny List!");
+							$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+							return false;
+						}
+					}					
+				}
+				else if(type==1){
+					if(mac.toUpperCase() == "FC:DE:56:FF:01:06") {
+						alert("USB user can not be added in Deny List!");
+						$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+						return false;
+					}
+				}
+
+				return true;
+			}
+
+			if(index == -1){
+				confirm(STR_MAC_FILTER_DENY_DEL_NOTI,checkUSB_postmacdata,function(){});
+			}
+			if(index>=0){
+				checkUSB_postmacdata(index,mac);
+//				confirm(STR_MAC_FILTER_DENY_NOTI,checkUSB_postmacdata,function(){
+//					$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+//				});
+			}
+
+
+
+		} else if(filter_mode == 2) {
+			if(index == -1){
+				confirm(STR_MAC_FILTER_ALLOW_APPLY_NOTI,function (){
+					postMacData(seed);
+
+				},function(){
+				});
+			}
+			if(index >= 0){				
+				postMacData(seed);
+//				confirm(STR_MAC_FILTER_ALLOW_NOTI,postMacData,function(){
+//					$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+//				})
+			}
+
+		}
+
+
+		function checkUSB_postmacdata(index,mac){
+			if(index>=0){
+				if(mac.length>0){
+					//modify
+					if(checkUSBMac(1,mac)){
+						postMacData(seed);
+					}
+				}
+				else{
+					//del
+					postMacData(seed);
+				}
+			}
+			else{
+				//apply
+				if(checkUSBMac(0,'')){
+					postMacData(seed);
+				}
+			}
+
+		}
+
+
+		function postMacData(s){
+			if(s!=seed) return toSelfXSS();
+			var str_filter_st = ["Disabled", "Enabled"];
+			var post_data = 'mode=' + filter_mode;
+
+			var j = 0;
+
+			if(index == 11) {
+				for(var i = 0; i < 10; i++) {
+					if(mac_filter_list[i] != '' && mac_filter_list[i] != '-') {
+						post_data += ('&mac' + j + '=' + esc(mac_filter_list[i]));
+						post_data += ('&dsc' + j + '=' + esc(mac_filter_list_dsc[i]));
+						post_data += ('&sw' + j + '=' + esc(mac_filter_list_sw[i]));
+						j++;
+					}
+					if(mac.toUpperCase() == mac_filter_list[i].toUpperCase()) {
+						alert("MAC Address Exist!");
+						$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+						return;
+					}
+				}
+
+				post_data += ('&mac' + j + '=' + esc(mac));
+				post_data += ('&sw' + j + '=' + esc(sw));
+				post_data += ('&dsc' + j + '=' + esc(comment));
+				j++;
+
+				for(var i = j; i < 10; i++) {
+					post_data += ('&mac' + j + '=');
+					j++;
+				}
+			} else {
+				for(var i = 0; i < 10; i++) {
+					if(index == i) {
+						if(mac == "") {
+							post_data += ('&mac' + index + '=&sw' + index + '=&dsc' + index + "=");
+						} else {
+							post_data += ('&mac' + index + '=' + esc(mac));
+							post_data += ('&sw' + index + '=' + esc(swswsw));
+							post_data += ('&dsc' + index + '=' + esc(comment));
+						}
+
+					} else {
+						if(mac == mac_filter_list[i]) {
+							alert("MAC Address Exist!");
+							$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+							return;
+						}
+						post_data += ('&mac' + i + '=' + esc(mac_filter_list[i]));
+						post_data += ('&sw' + i + '=' + esc(mac_filter_list_sw[i]));
+						post_data += ('&dsc' + i + '=' + esc(mac_filter_list_dsc[i]));
+					}
+				}
+			}
+
+			if(Macfilter_dialog) {
+				Macfilter_dialog.dialog("close");
+			}
+
+			if(index == -1 && mac == null) {
+				//	apply
+				post_data = 'mode=' + filter_mode;
+				for(var i = 0; i < 10; i++) {
+					if(i < ($("#table_mac_address_filter tr").length - 1)) {
+						post_data += ('&mac' + i + '=' + esc($("#table_mac_address_filter tr").eq(i + 1).children("td").eq(2).html()));
+						var sw = (($("#table_mac_address_filter tr").eq(i + 1).children("td").eq(1).html() == "Enabled") ? "1" : "0");
+
+						post_data += ('&sw' + i + '=' + esc(sw));
+						post_data += ('&dsc' + i + '=' + esc($("#table_mac_address_filter tr").eq(i + 1).children("td").eq(3).text()));
+					} else {
+						post_data += ('&mac' + i + '=' + '&sw' + i + '=' + '&dsc' + i + '=');
+					}
+				}
+				show_tips(seed,"waiting...")
+				var headers = {};
+				headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+				$.ajax({
+					url: "/wxml/set_mac.xml",
+					type: "Post",
+					headers: headers,
+					timeout: 20000,
+					cache: false,
+					datatype: "xml",
+					data: post_data,
+					success: function(data, status) {
+						var new_token = $(data).find("token").text();
+						if(new_token == "-1") {
+							top.location.reload(true);
+							return false;
+						}
+						$("#csrf_token2").val(new_token);
+						//    var ret0 = parseInt($(data).find("mode").text());
+						commitMac(seed);
+					},
+					error: function(x, t, m) {
+						if(t === "timeout") {}
+					}
+				})
+
+			} else if(index == 11) {
+				//	add
+				//alert("add::"+mac);
+				var new_id = $("#table_mac_address_filter tr").length;
+				var real_id = -1;
+				for(var i = 0; i < 10; i++) {
+					if(mac_filter_list[i] == "-") {
+						real_id = i;
+						break;
+					}
+				}
+
+				var tr_html = ('<tr style="text-align:center;"><td>' + new_id + '</td><td>' + str_filter_st[swswsw] + '</td><td>' + mac + '</td><td>' + XSSResolveCannotParseChar(comment) + '</td><td><img src="img/delete.png" onClick="deleteMac(this,' + real_id + ')">&nbsp;&nbsp;&nbsp;<img src="img/update.jpg" onClick="updateMac(this,' + real_id + ')"></td>');
+
+				var obj = $("#table_mac_address_filter tr:last");
+				if(obj.parent().is('thead')) {
+					$("#tbody_mac_filter").html(tr_html);
+				} else $("#table_mac_address_filter tr:last").after(tr_html);
+
+				mac_filter_list[real_id] = mac;
+				mac_filter_list_dsc[real_id] = comment;
+				mac_filter_list_sw[real_id] = swswsw;
+			} else if(mac) {
+				//	update
+				//alert("update::"+index);
+
+				$("#table_mac_address_filter tr").eq(update_index).children("td").eq(1).html(str_filter_st[swswsw]);
+				$("#table_mac_address_filter tr").eq(update_index).children("td").eq(2).html(mac);
+				$("#table_mac_address_filter tr").eq(update_index).children("td").eq(3).html(XSSResolveCannotParseChar(comment));
+				mac_filter_list[index] = mac;
+				mac_filter_list_dsc[index] = comment;
+				mac_filter_list_sw[index] = swswsw;
+			} else if(!mac) {
+				//	delete
+				//alert("delete:"+index);
+				$("#table_mac_address_filter tr").eq(del_index).remove();
+				mac_filter_list[index] = "-";
+				mac_filter_list_dsc[index] = "-";
+				mac_filter_list_sw[index] = "0";
+				//update the all table
+
+				for(var i = del_index; i < $("#table_mac_address_filter tr").length; i++) {
+					$("#table_mac_address_filter tr").eq(i).children("td").eq(0).html(i);
+				}
+
+			}
+		}
+
+
+
+
+
+	}
+
+
+	function applyMac(s) {
+		if(s!=seed) return toSelfXSS();
+		var filter_mode = getFilterMode(seed);
+
+		if(filter_mode>0 && mac_filter_list.toString() == "-,-,-,-,-,-,-,-,-,-" )
+		{
+			confirm("No item in the MAC filter table, Mac filter mode will be set to \"Disable\"",function(){
+				$("#select_dial_filter_enable").val('DISABLE');
+				postMac(-1, null, null, null);
+			},function(){});
+		}
+		else postMac(-1, null, null, null);
+	}
+
+	function addMac(s) {
+		if(s!=seed) return toSelfXSS();
+		var index = -1;
+		for(var i = 0; i < 10; i++) {
+			if(mac_filter_list[i] == '-') {
+				index = i;
+				break;
+			}
+		}
+		if(index == -1) {
+			alert("MAC Filter Full!");
+			return;
+		}
+		//	updateMac(index);
+
+		updateMac(null, 11);
+	}
+
+
+
+	function deleteMac(obj, index) {
+		del_index = $(obj).parent().parent().index() + 1;
+		postMac(index, '', null, null);
+	}
+	var curr_index, del_index, update_index;
+
+	function checkcharwidth(str) {
+		var cArr = str.match(/[^\x00-\xff]/ig);
+		return(cArr == null ? false : true);
+	}
+
+	function updateMac(obj, index) {
+		if(index >= 0 && index < 10) {
+			update_index = $(obj).parent().parent().index() + 1;
+			$("#input_dial_filter_mac").val(mac_filter_list[index] == '-' ? '' : mac_filter_list[index]);
+//			$("input[name=select_rec_status]").eq(parseInt(mac_filter_list_sw[index])).attr("checked","checked");;
+			$("#input_dial_filter_comment").val(mac_filter_list_dsc[index] == '-' ? '' : $.trim(mac_filter_list_dsc[index]));
+		} else {
+			$("#input_dial_filter_mac").val("");
+//			$("input[name=select_rec_status]").eq(1).attr("checked","checked");;
+			$("#input_dial_filter_comment").val("");
+		}
+
+		curr_index = index;
+		//	if(!Macfilter_dialog){
+
+		var dialogParent = $('#div_mac_filter_dialog').parent();
+		var dialogOwn = $('#div_mac_filter_dialog').clone().hide();
+
+		Macfilter_dialog = $("#div_mac_filter_dialog").dialog({
+			autoOpen: false,
+			height: 380,
+			width: 450,
+			modal: true,
+			buttons: {
+				"Submit": function() {
+
+					// Check Values
+					if(!Checkmacaddress($("#input_dial_filter_mac"))) {
+						alert(Mac_Error);
+						return false;
+					}
+
+					// Submit button disabled
+					
+					var macaddr = $("#input_dial_filter_mac").val();
+					if(macaddr.length == 12) {
+						macaddr = macaddr.replace(/(.{2})/g, "$1:");
+						macaddr = macaddr.substr(0, 17);
+					}
+					var comment = $.trim($("#input_dial_filter_comment").val());
+					var sw = $("input[name=select_rec_status]:checked").val();
+
+					if(checkcharwidth(comment)) {
+						alert("Description must be ASCII character.");
+						return false;
+					}
+					$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", true).addClass("ui-state-disabled");
+					postMac(curr_index, macaddr, comment, sw);
+
+				},
+				Cancel: function() {
+					Macfilter_dialog.dialog("close");
+
+				}
+			},
+			close: function() {
+				$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+				$('#table_lan_client_list1').hide();
+				$("#table_input_mac").show();
+				dialogOwn.appendTo(dialogParent);
+				$(this).dialog('destroy').remove();
+			}
+		});
+		//	}
+		Macfilter_dialog.dialog("open");
+		setTimeout(function(){
+			if(index >= 0 && index < 10) {
+				$("input[name=select_rec_status]").eq(parseInt(mac_filter_list_sw[index])).attr("checked","checked");;
+			} else {
+				$("input[name=select_rec_status]").eq(1).attr("checked","checked");;
+			}
+		},50);
+		$("#input_dial_filter_mac").focus();
+		if(index < 10) {
+			$("#ui-dialog-title-div_mac_filter_dialog").html("Modify MAC Filter Dialog")
+		}
+	}
+
+	$("#tbl_user1 tr").die().live('click', function() {
+		var mac = $(this).children("td:eq(2)").html();
+		if(mac) {
+			$("#input_dial_filter_mac").val(mac);
+			$('#table_lan_client_list1').hide();
+			$("#table_input_mac").show();
+			$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", false).removeClass("ui-state-disabled");
+			//add_to_list(mac);
+		}
+	})
+
+	$("#sel_from_user").die().live('click', function() {
+		$.ajax({
+			url: '/st_lan.w.xml',
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: null,
+			success: function(data, status) {
+				var tbl_content = '';
+				$(data).find("user").each(function() {
+					var name = $(this).children('name').text();
+					var ip = $(this).children('ip').text();
+					var mac = $(this).children('mac').text().replace(/-/g, ":"); //.macFormat()
+					var leased_time = $(this).children('leased_time').text();
+					var status = $(this).children('status').text();
+					//<td>'+leased_time+'</td><td>'+status+'</td>
+					if(mac.toUpperCase() == "FC:DE:56:FF:01:06") {
+
+					} else tbl_content += ('<tr><td>' +  XSSResolveCannotParseChar(name) + '</td><td>' + ip + '</td><td>' + mac + '</td></tr>');
+
+				});
+
+				$('#tbl_user1').html(tbl_content);
+
+				$('#table_lan_client_list1').show();
+				$("#table_input_mac").hide();
+				$(".ui-dialog-buttonpane button:contains('Submit')").attr("disabled", true).addClass("ui-state-disabled");
+			},
+			error: function(x, t, m) {}
+		});
+	})
+
+	var mac_filter_list = ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-'];
+	var mac_filter_list_dsc = ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-'];
+	var mac_filter_list_sw = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	var mac_filter_show_index, mac_filter_show_mode;
+	var gMacFilter_count = -0;
+
+	function load_setting(s) {
+		if(s!=seed) return toSelfXSS();
+		$.ajax({
+			url: "mark_network.w.xml",
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			success: function(data, status) {
+				// var host = $(data).find("host").text();
+				var ip = $(data).find("ip").text();
+				var submask = $(data).find("submask").text();
+				var mtu = $(data).find("mtu").text();
+				var mac_mode = parseInt($(data).find("mode").text());
+
+				// $("#input_host_name").val(host);
+				$("#input_host_ip_address").val(ip);
+				$("#input_host_subnet_mask").val(submask);
+				$("#input_wan_mtu").val(mtu);
+
+				$("#button_mac_filter_get").show();
+				$("#button_mac_filter_apply").show();
+				
+				if(mac_mode == 0) {
+					$("#select_dial_filter_enable").val('DISABLE');
+					mac_filter_show_mode = 'DISABLE';
+					$("#tr_status").hide();
+					$("#table_mac_address_filter").hide();
+					$("#button_mac_filter_add").hide();
+				} else {
+					$("#select_dial_filter_enable").val('ENABLE');
+					if(mac_mode == 1) {
+						$("#select_status").val('DENY');
+						mac_filter_show_mode = 'DENY';
+					} else {
+						$("#select_status").val('ALLOW');
+						mac_filter_show_mode = 'ALLOW';
+					}
+					$("#tr_status").show();
+					$("#button_mac_filter_add").show();
+					$("#table_mac_address_filter").show();				
+				}
+
+				var tbody_html = '';
+				mac_filter_show_index = 0;
+				//<record><mac>FC:DE:56:FF:01:06</mac><comment></comment><enabled>0</enabled></record>
+				$(data).find("record").each(function(index, ele) {
+					mac_filter_list[index] = $(this).children('mac').text();
+					mac_filter_list_sw[index] = $(this).children('enabled').text();
+					var comment = $(this).children('comment').text();
+					var rec_status = (mac_filter_list_sw[index] == "0" ? "Disabled" : "Enabled");
+					mac_filter_list_dsc[index] = comment;
+					if(mac_filter_list[index] != '-') {
+						mac_filter_show_index++;
+						tbody_html += ('<tr style="text-align:center;"><td>' + mac_filter_show_index + '</td><td>' + rec_status + '</td><td>' + mac_filter_list[index] + '</td><td>' + XSSResolveCannotParseChar(comment) + '</td><td><img src="img/delete.png" onClick="deleteMac(this,' + index + ')">&nbsp;&nbsp;&nbsp;<img src="img/update.jpg" onClick="updateMac(this,' + index + ')"></td>');
+
+					}
+					// var input_id="#filter0"+index+"_mac";
+					// if($(ele).text()!='-'){
+					//   $(input_id).val($(ele).text().macFormat());
+					// }
+					// else $(input_id).val('');
+				});
+				gMacFilter_count = mac_filter_show_index;
+				$('#tbody_mac_filter').html(tbody_html);
+				reload_compnets(seed);
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+var Mac_Error;
+
+	function Checkmacaddress(_mac) {
+		var mac_val = _mac.val();
+		if(mac_val.length == 12) {
+			mac_val = mac_val.replace(/(.{2})/g, "$1:");
+			mac_val = mac_val.substr(0, 17);
+		}
+		var i = 0,
+			j = 0;
+		//console.log("length :" + mac_val.length);
+		//console.log(typeof(mac_val));
+
+		if(mac_val.length != 17) {
+			Mac_Error = "The MAC address must be 17 characters.";
+			return false;
+		}
+
+		mac_val = mac_val.replace(/-/g, ":");
+
+		if(mac_val == "00:00:00:00:00:00" || mac_val.toUpperCase() == "FF:FF:FF:FF:FF:FF") {
+			Mac_Error = "Mac address is not allowed";
+			return false;
+		}
+
+		mac_val = mac_val.split(":");
+
+		if(mac_val.length == 6) {
+
+			for(i = 0; i < mac_val.length; i++) {
+				if(mac_val[i].length == 2) {
+					for(j = 0; j < 2; j++) {
+						if((mac_val[i].charCodeAt(j) < 48) || (mac_val[i].charCodeAt(j) > 102) ||
+							((mac_val[i].charCodeAt(j) > 57) && (mac_val[i].charCodeAt(j) < 65)) ||
+							((mac_val[i].charCodeAt(j) > 70) && (mac_val[i].charCodeAt(j) < 97))) {
+							Mac_Error = "Enter only alphanumeric characters (0-9 and A-F).";
+							return false;
+						}
+					}
+
+				} else {
+					Mac_Error = "Enter a MAC address in the correct format (eg: xx:xx:xx:xx:xx:xx).";
+					return false;
+				}
+			}
+		} else {
+			Mac_Error = "Enter a MAC address in the correct format (eg: xx:xx:xx:xx:xx:xx).";
+			return false;
+		}
+
+		return true;
+	}
+
+	$("#select_dial_filter_enable").die().live("change", function(){
+
+		if($("#select_dial_filter_enable").val() == "ENABLE") {
+			//hide
+
+			//show
+			$("#tr_status").show();
+			$("#button_mac_filter_add").show();
+			$("#button_mac_filter_apply").show();
+			$("#table_mac_address_filter").show();
+			//optional
+			if((gMacFilter_count < 10))
+				$("#button_mac_filter_add").show();
+			else
+				$("#button_mac_filter_add").hide();
+		} else {
+			//hide
+			$("#tr_status").hide();
+			$("#button_mac_filter_add").hide();
+			$("#table_mac_address_filter").hide();
+			//show
+			$("#button_mac_filter_apply").show();
+		}
+	});
+
+	function check_macfilter_table(s) {
+		if(s!=seed) return toSelfXSS();
+		if($("#select_dial_filter_enable").val() == "ENABLE") {
+			$("#table_mac_address_filter").show();
+		} else
+			$("#table_mac_address_filter").hide();
+	}
+
+
+
+$("#button_mac_filter_add").click(function(){
+addMac(seed);
+})
+$("#button_mac_filter_get").click(function(){
+	load_setting(seed);
+})
+$("#button_mac_filter_apply").click(function(){
+	applyMac(seed);
+})
+
+
+
+
+
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "set_net.html") {
+		var dsc="<% get_version_dsc(); %>";
+			if(dsc&0x02){
+				$("#input_host_name").val("http://jiofi.local.html");
+			}
+			else{
+				$("#input_host_name").val("http://jiodongle.local.html");
+			}
+			load_setting(seed);
+		}
+	}
+
+
+
+
+
+
+
+
+
+	// function check_mtu(mtu_family) {
+	// 	if(mtu_family == 4) {
+	// 		if(($("#input_wan_mtu").val() < 500) || ($("#input_wan_mtu").val() > 1500)) {
+	// 			alert("Enter a value between 500 and 1500 the MTU value.");
+	// 			$("#input_wan_mtu").focus();
+	// 			return true;
+	// 		} else if($("#input_wan_mtu").val().match(/[^0-9]/)) {
+	// 			$("#input_wan_mtu").focus();
+	// 			alert("Enter only numbers for the MTU value.");
+	// 			return true;
+	// 		}
+	// 	} else if(mtu_family == 6) {
+	// 		if(($("#input_wan_IPv6_mtu").val() < 500) || ($("#input_wan_IPv6_mtu").val() > 1280)) {
+	// 			$("#input_wan_IPv6_mtu").focus();
+	// 			alert("Enter a value between 500 and 1280 for the MTU value.");
+	// 			return true;
+	// 		} else if($("#input_wan_IPv6_mtu").val().match(/[^0-9]/)) {
+	// 			$("#input_wan_IPv6_mtu").focus();
+	// 			alert("Enter only numbers for the MTU value.");
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return false;
+
+	// }
+
+
+
+	// function Del_MacFilterEntries(_enable, _status, _address, _serial) {
+	// 	ajax_Setmacfilter(_enable, _status, _address, "", "", "DEL", 0);
+	// }
+
+	// function Update_MacFilterEntries(_enable, _status, _address, _serial) {
+	// 	Add_Mac_Filter("SHOW", "MODIFY", _status, _address, 0);
+	// }
+
+	// function MacfilterGet() {
+	// 	ajax_Getmacfilter();
+	// }
+
+
+
+
+	
+
+
+</script>
+
+<!-- </head> -->
+
+<body  style="margin:0;padding:0;border:0;">
+	<table class="table_main" align="left">
+		<tr>
+			<td>
+				<h3 class="main_menu">Network Mode</h3 > </td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px;padding-bottom: 20px;">
+				<br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">Internet Protocol Settings</h4>
+					<table style="width:90%;">
+						<tr id="Operation_mode"  style="display:none;">
+                            <td width="37%" class="head_top">Operation mode</td>
+                            <td width="63%" class="tail_top">
+                                <select name="select_operation_mode" id="select_operation_mode"  onchange="">
+	                                <option value = "1" selected="selected">NAT</option>
+                                    <option value = "0">Bridge</option>
+
+                                </select>
+                            </td>
+						</tr>
+						<tr id="Connection_mode"  style="display:none;">
+                          	<td width="37%" class="head_top">Connection Mode</td>
+                            <td width="63%" class="tail_top">
+                                <label id="Label_Connection_mode_DHCP">DHCP</label>
+                                <!--
+                                    <select name="select_connection_mode" id="select_connection_mode" onchange="">
+                                        <option vlaue="Static" selected="selected">Static</option>
+                                        <option value="DHCP">DHCP</option>
+                                    </select>
+
+                                -->
+                           </td>
+						</tr>
+						<tr id="Multiple_pdn" style="display:none;">
+                            <td width="37%" class="head_top">Multiple PDN</td>
+                            <td width="63%" class="tail_top">
+                                <select name="select_multiple_pdn" id="select_multiple_pdn" onchange="">
+                                    <option value="1" selected="selected">Enable</option>
+                                    <option value="0">Disable</option>
+                                </select>
+                            </td>
+						</tr>
+						<tr id="Channel" style="display:none;">
+                            <td width="37%" class="head_top">Channel</td>
+                            <td width="63%" class="tail_top" class="tail_top">
+                                <select name="select_channel" id="select_channel" onchange="">
+                                    <option value="automatic" selected="selected">Auto</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+ <!--                           <option value="12">12</option>   AR5510 supported channel is from 0 to 11 channel -->
+ <!--                           <option value="13">13</option>  -->
+
+                                </select>
+                            </td>
+						</tr>
+						<tr id="Host_name">
+                            <td width="37%" class="head_top">Host Name</td>
+                            <td width="63%" class="tail_top">
+                                <input type="text" value="" oncut="" oncopy="" onpaste="" name="input_host_name" id="input_host_name" MaxLength="16"  readonly="readonly" unselectable="on"/>
+								<!--
+		                        <script type="text/javascript">
+		                            document.getElementById("input_host_name").value = "AR5510";
+		                        </script>
+								-->
+                            </td>
+						</tr>
+						<tr id="Host_ip_address">
+                            <td width="37%" class="head_top">Host IP Address</td>
+                            <td width="63%" class="tail_top">
+                                <input type="text" oncut="" oncopy="" onpaste="" name="input_host_ip_address" id="input_host_ip_address" MaxLength="16"  readonly="readonly" unselectable="on"/>
+								<!--
+		                        <script type="text/javascript">
+		                            document.getElementById("input_host_ip_address").value = "192.168.225.1";
+		                        </script>
+								-->
+                            </td>
+						</tr>
+						<tr id="Host_subnet_mask">
+                            <td width="37%" class="head_top">Host Subnet Mask</td>
+                            <td width="63%" class="tail_top">
+                                <input type="text" oncut="" oncopy="" onpaste="" name="input_host_subnet_mask" id="input_host_subnet_mask" MaxLength="16"  readonly="readonly" unselectable="on"/>
+								<!--
+		                        <script type="text/javascript">
+		                            document.getElementById("input_host_subnet_mask").value = "255.255.255.0";
+		                        </script>
+								-->
+                            </td>
+						</tr>
+						<tr id="Wan_mtu">
+                        <td width="37%" class="head_top">WAN MTU</td>
+                        <td width="63%" class="tail_top">
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_mtu" id="input_wan_mtu" MaxLength="16" readonly="readonly" unselectable="on"/></td> 
+                    	    <!-- <input id="button_mtu_apply" type="button"  value="Apply" />-->
+                        </tr>
+                        <!--<tr id="Wan_mtu_v6">
+                        <td width="37%" class="head_top">IPv6 WAN MTU</td>
+                        <td width="63%" class="tail_top">
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_mtu" id="input_wan_IPv6_mtu" MaxLength="16"/>
+                    	    <input id="button1" type="button"  value="Apply" onClick="RefreshWWANSTATS(2)" /></td>
+                        </tr>-->
+						<tr>
+							 <td class="button_table" align="right" colspan ="3" style="display:none">
+									<input id="BTN_HOST_INFO_APPLY" type="button" value="Apply" onclick="UpdateINetValues()" />
+									<input id="BTN_HOST_INFO_GET" type="button" value="Refresh" onclick="RefreshINetInfo()" />
+							  </td>
+						</tr>
+                      </table>
+                <br />
+				<!--<h4 class="small_menu" style="color:#515151; margin:0;">WAN Info</h4>-->
+					<table style="width:90%;">
+                     <!--<tr>
+                        <td class="small_menu" style="color:#515151; margin:0;"align="left">IPv4 WAN Info</td>
+                    </tr>-->
+                    <tr id="Wan_ip_address" style="display:none;">
+                        <td width="37%" class="head_top">WAN IP Address</td>
+                        <td width="63%" class="tail_top"><label id="Label_WAN_IP_ADDR"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_ip_address" id="input_wan_ip_address" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_wan_ip_address").value = "121.121.121.121";
+                            </script>
+                            --></td>
+                    </tr>
+                    <tr id="Wan_subnet_mask"  style="display:none;">
+                        <td width="37%" class="head_top">WAN Subnet Mask</td>
+                        <td width="63%" class="tail_top"><label id="Label_WAN_Subnet_Mask"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_subnet_mask" id="input_wan_subnet_mask" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_wan_subnet_mask").value = "255.255.0.0";
+                            </script>
+                                    --></td>
+                    </tr>
+                    <tr id="Wan_gateway_address"  style="display:none;">
+                        <td width="37%" class="head_top">WAN Gateway Address</td>
+                        <td width="63%" class="tail_top"><label id="Label_WAN_Gateway_Address"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_gateway_address" id="input_wan_gateway_address" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_wan_gateway_address").value = "121.121.1.1";
+                            </script>
+                                    --></td>
+                    </tr>
+                    <!--<tr id="Wan_mtu">
+                        <td width="37%" class="head_top">WAN MTU</td>
+                        <td width="63%" class="tail_top">
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_mtu" id="input_wan_mtu" MaxLength="16"/>
+                    	    <input id="button_mtu_apply" type="button"  value="Apply" onClick="RefreshWWANSTATS(1)" /></td>
+                    </tr>-->
+                    <tr id="Dns1"  style="display:none;">
+                        <td width="37%" class="head_top">DNS1</td>
+                        <td width="63%" class="tail_top"><label id="Label_WAN_DNS1"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_dns1" id="input_dns1" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_dns1").value = "";
+                            </script>
+                            --></td>
+                    </tr>
+                    <tr id="Dns2"  style="display:none;">
+                        <td width="37%" class="head_top">DNS2 </td>
+                        <td width="63%" class="tail_top"><label id="Label_WAN_DNS2"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_dns2" id="input_dns2" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_dns2").value = "";
+                            </script>
+                            --></td>
+                    </tr>
+                    <!--<tr>
+                    <td class="small_menu" style="color:#515151; margin:0;"align="left">IPv6 WAN Info</td>
+                    </tr> -->
+                    <tr id="Tr1"  style="display:none;">
+                        <td width="37%" class="head_top">IPv6 WAN IP Address</td>
+                        <td width="63%" class="tail_top"><label id="Label_IPv6_WAN_IP_ADDR"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_ip_address" id="input_wan_ip_address" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_wan_ip_address").value = "121.121.121.121";
+                            </script>
+                            --></td>
+                    </tr>
+                    <tr id="Tr2"  style="display:none;">
+                        <td width="37%" class="head_top">IPv6 WAN Prefix Length</td>
+                        <td width="63%" class="tail_top"><label id="Label_IPv6_WAN_Subnet_Mask"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_subnet_mask" id="input_wan_subnet_mask" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_wan_subnet_mask").value = "255.255.0.0";
+                            </script>
+                                    --></td>
+                    </tr>
+                    <tr id="Tr3"  style="display:none;">
+                        <td width="37%" class="head_top">IPv6 WAN Gateway Address</td>
+                        <td width="63%" class="tail_top"><label id="Label_IPv6_WAN_Gateway_Address"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_gateway_address" id="input_wan_gateway_address" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_wan_gateway_address").value = "121.121.1.1";
+                            </script>
+                                    --></td>
+                    </tr>
+                    <!--<tr id="Tr4">
+                        <td width="37%" class="head_top">IPv6 WAN MTU</td>
+                        <td width="63%" class="tail_top">
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_wan_mtu" id="input_wan_IPv6_mtu" MaxLength="16"/>
+                    	    <input id="button1" type="button"  value="Apply" onClick="RefreshWWANSTATS(2)" /></td>
+                    </tr>-->
+                    <tr id="Tr5"  style="display:none;">
+                        <td width="37%" class="head_top">IPv6 DNS1</td>
+                        <td width="63%" class="tail_top"><label id="Label_IPv6_WAN_DNS1"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_dns1" id="input_dns1" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_dns1").value = "";
+                            </script>
+                            --></td>
+                    </tr>
+                    <tr id="Tr6"  style="display:none;">
+                        <td width="37%" class="head_top">IPv6 DNS2 </td>
+                        <td width="63%" class="tail_top"><label id="Label_IPv6_WAN_DNS2"></label>
+                          <!--
+                            <input type="text" oncut="" oncopy="" onpaste="" name="input_dns2" id="input_dns2" MaxLength="16"/>
+                            <script type="text/javascript">
+                                document.getElementById("input_dns2").value = "";
+                            </script>
+                            --></td>
+                    </tr>
+                    <!--<tr>
+                    	<td align="right" colspan="3">
+                    	    &nbsp;<input id="BTN_WAN_STAT" type="button"  value="Get WAN Statistics" onClick="RefreshWWANSTATS(0)" />
+                    	</td>
+                        <!--
+                        <td align="left" style="width: 250px">
+                            <input id="BTN_WAN_RESET" type="button" value="Refrsh" onclick="RefreshWWANSTATS(1);"/>
+                        </td>
+
+                    </tr>-->
+				</table>
+
+
+
+
+
+
+
+
+		        <h4 class="small_menu" style="color:#515151; margin:0;">MAC Addresses Filter </h4>
+		        	<table style="width:90%;">
+	        	        <tr>
+				            <td width="37%" class="head_top">MAC Address Filter</td>
+				            <td width="63%" class="tail_top">
+					            
+						            <select id="select_dial_filter_enable" style="width: 130px">
+							            <option value="ENABLE">Enable</option>
+							            <option value="DISABLE">Disable</option>
+						            </select>
+					            
+				            </td>
+			            </tr>
+			            <tr id ="tr_status" style="display:none;">
+			                <td width="37%" class="head_top">MAC Address Filter Mode</td>
+			            	<td width="63%" class="tail_top">
+					            
+						            <select id="select_status" style="width: 130px">
+							            <option value="ALLOW">Allow</option>
+							            <option value="DENY">Deny</option>
+						            </select>
+					            
+				            </td>
+				        </tr>
+			            <tr>
+							<td colspan="3" style="text-align:right;padding-top: 10px;" height="47px">
+								<button class="btn-Green" id="button_mac_filter_add" oncut="return false" oncopy="return false" onpaste="return false" style="display: none;"><span><em>Add</em></span></button>
+                       		    <button class="btn-Green" id="button_mac_filter_get" oncut="return false" oncopy="return false" onpaste="return false" style="display: none;"><span><em>Get</em></span></button>
+                       		    <button class="btn-Green" id="button_mac_filter_apply" oncut="return false" oncopy="return false" onpaste="return false" style="display: none;"><span><em>Apply</em></span></button>
+
+							</td>
+						</tr>
+					</table>
+					<table id="table_mac_address_filter" width="795" cellspacing="0" border="1" style="width:90%; font-size:12px;border-collapse: collapse;border:1px solid #AAA;margin-top: 10px;display: none;">
+						<thead><tr style="text-align:center" >
+							<td class="table_head">No</td>
+							<td class="table_head" >Status</td>
+							<td class="table_head" >MAC Address</td>
+							<td class="table_head" >Description</td>
+							<td class="table_head" >Delete/Modify</td>
+						</tr></thead>
+						<tbody id="tbody_mac_filter">
+
+						</tbody>
+						<!-- table entry will be  here -->
+					</table>
+					<div id="div_mac_filter_dialog" title="Add MAC Filter Dialog" style="display:none;">
+			            	<table id="table_lan_client_list1" border="1"  cellspacing="0" cellpadding="0" width="100%" style="display:none;cursor:pointer;border-collapse: collapse;border:1px solid #AAA;">
+						    <thead>
+						    <tr>
+							    <td class="table_head">
+								    Name
+							    </td>
+							    <td class="table_head">
+								    IP
+							    </td>
+							    <td class="table_head">
+								    MAC
+							    </td>
+							    <!-- <td class="table_head" >
+								    Leased Time
+							    </td>
+							    <td class="table_head">
+								    Status
+							    </td> -->
+						    </tr>
+						    </thead>
+						    <tbody id="tbl_user1">
+
+						    </tbody>
+
+						    <tfoot>
+
+						    </tfoot>
+					    </table>
+			            <table id="table_input_mac">
+							<!--
+				            <tr id="tr_dial_status">
+								<td width="50%">
+						            Status
+					            </td>
+					            <td width="50%">
+						            
+							            <select id="select_dial_filter_status" style="width: 130px" style="font-size: 12px;">
+								            <option value="ALLOW">Allow</option>
+								            <option value="DENY">Deny</option>
+							            </select>
+						            
+					            </td>
+				            </tr>
+							-->
+				            <tr id="tr_dial_filter_mac">
+					            <td width="50%">
+						            MAC Address
+					            </td>
+					            <td width="50%">
+							        <input type="text" oncut="" oncopy="" onpaste="" name="input_dial_filter_mac" id="input_dial_filter_mac" MaxLength="17"/>
+					            </td>
+				            </tr>
+				            <tr>
+								<td width="50%"></td>
+								<td width="50%" height="47px">
+									 <button class="btn-Green-small" id="sel_from_user" style="width: 190px;"><span style="width: 170px;"><em>Select From UserList</em></span></button>
+								</td>
+							</tr>
+							<tr>
+								<td width="50%">MAC Address format</td>
+								<td width="50%">xx-xx-xx-xx-xx-xx</td>
+							</tr>
+				            <tr><td></td><td>xx:xx:xx:xx:xx:xx</td></tr>
+				            <tr id="tr_dial_filter_status">
+					            <td width="50%">Status</td>
+					            <td width="50%">
+<!-- 						            <select id="select_rec_status" style="width: 130px">
+							            <option value="1">Enable</option>
+							            <option value="0">Disable</option>
+						            </select> -->
+
+            <input type="radio" id="select_rec_disable" name="select_rec_status" value="0" ><label class="ui_radio" for="select_rec_disable"></label><label for="select_rec_disable" class="ml5">Disable</label>
+            <input type="radio" id="select_rec_enable" name="select_rec_status" value="1" ><label class="ui_radio" for="select_rec_enable"></label><label class="mr20 ml5" for="select_rec_enable">Enable</label>
+
+
+					            </td>
+				            </tr>
+				            <tr id="tr_dial_filter_comment">
+					            <td width="50%">Description</td>
+					            <td width="50%">
+						            
+							            <input type="text" oncut="" oncopy="" onpaste="" name="input_dial_filter_comment" id="input_dial_filter_comment" MaxLength="20" />
+						            
+					            </td>
+				            </tr>
+			            </table>
+		            </div>
+		            <div id="div_check_allow_status" style="display:none; font-size:12px">
+		            <p>If you do not have ALLOW MAC entry, You can't connected router. Are you sure you want to add the MAC entry?</p>
+		            </div>
+		            <div id="div_pba" style="display:none;">
+				    <br>
+				        <h4 class="small_menu" style="color:#515151; margin:0;">Port Block Allocation</h4>
+					    <table style="width:90%;">
+					        <tr id="tr_pba_status">
+                                <td width="37%" class="head_top">Status</td>
+                                <td width="63%" class="tail_top">
+                                    <select name="select_pba_status" size="1" id="select_pba_status" onchange="Change_pba()" style="font-size: 12px;">
+                                        <option value="1">Enable</option>
+                                        <option value="0">Disable</option>
+                                    </select>
+                                </td>
+						    </tr>
+						    <tr>
+                       		    <td colspan ="3" align="right" height="47px">
+
+                       		    <button class="btn-Green" id="button_pba_add" oncut="return false" oncopy="return false" onpaste="return false" onClick="Pba_add()"><span><em>Add</em></span></button>
+                       		    <button class="btn-Green" id="button_pba_apply" oncut="return false" oncopy="return false" onpaste="return false" onClick="Pba_apply()"><span><em>Add</em></span></button>
+                       		    <button class="btn-Green" id="button_pba_update" oncut="return false" oncopy="return false" onpaste="return false" onClick="Pba_update()"><span><em>Add</em></span></button>
+                                </td>
+                            </tr>
+					    </table>
+					    <table id="table_pba" width="795" cellspacing="0" border="1" style="width:90%; font-size:12px">
+						    <tr style="text-align:center" >
+							    <td class="table_head" style="border:solid 1px #81C8DE;text-indent: 7px;background:#64ADC3;color:#FFFFFF;height:30px;font-size:12px;">IP</td>
+							    <td class="table_head" style="border:solid 1px #81C8DE;text-indent: 7px;background:#64ADC3;color:#FFFFFF;height:30px;font-size:12px;">Start Port</td>
+							    <td class="table_head" style="border:solid 1px #81C8DE;text-indent: 7px;background:#64ADC3;color:#FFFFFF;height:30px;font-size:12px;">End Port</td>
+							    <td class="table_head" style="border:solid 1px #81C8DE;text-indent: 7px;background:#64ADC3;color:#FFFFFF;height:30px;font-size:12px;">Protocol</td>
+							    <td class="table_head" style="border:solid 1px #81C8DE;text-indent: 7px;background:#64ADC3;color:#FFFFFF;height:30px;font-size:12px;">Delete/Modify</td>
+						    </tr>
+					    </table>
+					    <br>
+				        <h4 class="small_menu" style="color:#515151; margin:0;">Binding Time out</h4>
+					    <table style="width:90%;">
+						    <tr id="tr_binding_tcp">
+                                <td width="37%" class="head_top">TCP Time</td>
+                                <td width="63%" class="tail_top">
+                                    <input type="text" oncut="" oncopy="" onpaste="" name="input_binding_tcp" id="input_binding_tcp" MaxLength="100" />
+                                </td>
+						    </tr>
+						    <tr id="tr_binding_udp">
+                                <td width="37%" class="head_top">UDP Time</td>
+                                <td width="63%" class="tail_top">
+                                    <input type="text" oncut="" oncopy="" onpaste="" name="input_binding_udp" id="input_binding_udp" MaxLength="100" />
+                                </td>
+						    </tr>
+						    <tr>
+                       		    <td colspan ="3" align="right">
+                            	    <input type="button" oncut="return false" oncopy="return false" onpaste="return false" value = "Apply" id= "button_binding_apply" onClick="Binding_apply()" >
+                            	    <input type="button" oncut="return false" oncopy="return false" onpaste="return false" value = "Update" id= "button_binding_update" onClick="Binding_update()" >
+                                </td>
+                            </tr>
+					    </table>
+					    <div id="div_pba_dialog" title="Add PBA Dialog" style="display:none;">
+			                <table>
+			            	    <tr id="tr_dial_protocol">
+					                <td width="50%">
+						                Protocol
+					                </td>
+					                <td width="50%">
+						                
+							                <select id="select_dial_protocol" style="width: 130px" >
+								                <option value="0">TCP</option>
+								                <option value="1">UDP</option>
+							                </select>
+						                
+					                </td>
+				                </tr>
+				                <tr id="tr_dial_ip">
+					                <td width="50%">
+						                IP Address
+					                </td>
+					                <td width="50%">
+
+							                <input type="text" oncut="" oncopy="" onpaste="" name="input_dial_ip" id="input_dial_ip" MaxLength="15"  placeholder="xxx.xxx.xxx.xxx"/>
+						                
+					                </td>
+				                </tr>
+			                </table>
+		                </div>
+		            </div>
+		            <div id="div_sip_algs" style="display:none;">
+				    <br>
+				        <h4 class="small_menu" style="color:#515151; margin:0;">SIP Algs</h4>
+					    <table style="width:90%;">
+					        <tr id="tr_sip_algs_status">
+                                <td width="37%" class="head_top">Status</td>
+                                <td width="63%" class="tail_top">
+                                    <select name="select_sip_algs_status" size="1" id="select_sip_algs_status"  >
+                                        <option value="1">Enable</option>
+                                        <option value="0">Disable</option>
+                                    </select>
+                                </td>
+						    </tr>
+						    <tr>
+                       		    <td colspan ="2" align="right">
+                            	    <input type="button" oncut="return false" oncopy="return false" onpaste="return false" value = "Apply" id= "button_sip_algs_apply" onClick="Sip_algs_apply()" >
+                            	    <input type="button" oncut="return false" oncopy="return false" onpaste="return false" value = "Update" id= "button_sip_algs_update" onClick="Sip_algs_update()" >
+                                </td>
+                            </tr>
+					    </table>
+					    <br>
+		            </div>
+                </td>
+			</tr>
+		</table>
+		<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+	</body>
+<!-- </html> -->

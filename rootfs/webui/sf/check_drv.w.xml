@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<drv>
+<check_drv><% get_xp_norndisdrv(); %></check_drv>
+</drv>

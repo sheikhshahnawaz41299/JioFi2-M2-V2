@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<advanced_security>
+<anti_ddos><% get_anti_ddos(); %></anti_ddos>
+<anti_tcp_syn_flood><% get_anti_tcp_syn_flood(); %></anti_tcp_syn_flood>
+<tcp_syn_flood_threshold><% get_tcp_syn_flood_threshold(); %></tcp_syn_flood_threshold>
+<anti_udp_flood><% get_anti_udp_flood(); %></anti_udp_flood>
+<udp_flood_threshold><% get_udp_flood_threshold(); %></udp_flood_threshold>
+<anti_ip_flagment><% get_anti_ip_flagment(); %></anti_ip_flagment>
+<anti_ping_flood><% get_anti_ping_flood(); %></anti_ping_flood>
+<anti_smurf_fraggle><% get_anti_smurf_fraggle(); %></anti_smurf_fraggle>
+</advanced_security>

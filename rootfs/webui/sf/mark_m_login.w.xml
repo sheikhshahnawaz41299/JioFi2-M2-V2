@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mark>	
+<login><% get_login(); %></login>
+<lpm><% is_lpm_mode(); %></lpm>
+<sd><% sd_is_present(); %></sd>
+<st><% get_sdst(); %></st>
+</mark>

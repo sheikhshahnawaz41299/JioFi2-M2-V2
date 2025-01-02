@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sms_del>
+<set_box>sms_box_select(href)</set_box>
+<no5>sms_del(page*5+no5)</no5>
+<no4>sms_del(page*5+no4)</no4>
+<no3>sms_del(page*5+no3)</no3>
+<no2>sms_del(page*5+no2)</no2>
+<no1>sms_del(page*5+no1)</no1>
+<del_done>sms_del_done()</del_done>
+</sms_del>

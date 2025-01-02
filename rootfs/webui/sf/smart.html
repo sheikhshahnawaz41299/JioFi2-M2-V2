@@ -1,0 +1,144 @@
+<html>
+<head>
+<style type="text/css">
+.width_100{width:100%;}
+#smart_iframe{
+width:100%;
+height:27em;
+border:none;
+background: #d3d3d3;
+}
+#waiting{text-align: center;vertical-align: middle;height: 2em;line-height: 2em;}
+#waiting_txt{height: 2em;line-height: 2em;vertical-align: top;display: inline-block;}
+</style>
+</head>
+<body>
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <li class="active"><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+
+<form id="smart_form" name="smart_form" style="display:none;">
+    <input type="hidden" name="imsi" value="" />
+    <input type="hidden" name="token" value="" />
+    <input type="hidden" name="device_type" value="" />
+    <input type="hidden" name="sw_version" value="" />
+    <input type="hidden" name="browser" value="" />
+</form>
+<div class="line width_100" >
+<iframe id="smart_iframe" name="smart_iframe"></iframe>
+</div>
+<img src="img/loading.gif" style="display:none;"> 
+</body>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+function s_pop_loading(txt){
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>"+txt+"</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content,
+        },
+        fixed : false,
+        autoClose:12000
+  });
+}
+
+function pop_result(content){
+//  close_pop_diag();
+    var content = "<div class='pop_div'><div style='text-align:center;'>"+content+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Message',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+//        callback: refresh_sms,
+        fixed : false
+    });
+  return false;
+}
+
+function load_smart(){
+    s_pop_loading('Loading');
+
+  $.ajax({ 
+    url: "mark_about.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    success: function(data, status) {
+        close_pop_diag()
+      var imsi =$(data).find("imsi").text();
+      if(imsi!='-') {
+        $('input[name=imsi]').val(imsi);
+        var md=hex_md5(imsi.substr(5)+'sm4rtfren');
+        $('input[name=token]').val(md);
+      }
+      else{
+        pop_result('SIM not found');
+        return;
+      }
+      var uiver=$(data).find("uiver").text();
+      var swver =$(data).find("swver").text();
+      var hwver =$(data).find("hwver").text();
+      $('input[name=device_type]').val(hwver);
+      $('input[name=sw_version]').val(swver);
+      $('input[name=browser]').val(navigator.userAgent);
+
+    var form = document.forms["smart_form"];
+    var ifm = document.getElementById("smart_iframe");
+    form.action = "https://my.smartfren.com/api/device/profile.php";
+//    form.action = "http://www.we-wins.com/smart/get_imsi.php";
+    form.target = "smart_iframe";
+    form.method="Post";
+    form.submit();
+    if(ifm.attachEvent){
+        ifm.attachEvent("onload", function(){ 
+            close_pop_diag(); 
+        });
+    }
+    else{
+            ifm.onload = function(){ 
+            close_pop_diag();
+        }
+    } 
+    
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+        
+      }  
+    }
+  })
+}
+
+
+
+
+function load_mark(url){
+if(interval_timer) clearInterval(interval_timer);
+if(url!='smart.html') return;
+load_smart();
+}
+</script>
+</html>

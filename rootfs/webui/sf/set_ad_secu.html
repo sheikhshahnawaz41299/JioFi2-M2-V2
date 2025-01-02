@@ -1,0 +1,339 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>Advanced Security</title>-->
+<script>
+if(top.location.pathname!="/index.htm") top.location.href="./index.htm";
+$(document).ready(function() {
+
+});
+
+var anti_ddos,anti_tcp_syn_flood,anti_udp_flood,anti_ip_flagment,anti_ping_flood,anti_smurf_fraggle;
+var tcp_syn_flood_threshold,udp_flood_threshold;
+
+function load_setting(){
+  $.ajax({
+    url: "mark_ad_secu.w.xml",
+    type: "Get",
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+    success: function(data, status) {
+    	anti_ddos = $(data).find("anti_ddos").text();
+    	anti_tcp_syn_flood = $(data).find("anti_tcp_syn_flood").text();
+    	tcp_syn_flood_threshold = $(data).find("tcp_syn_flood_threshold").text();
+		anti_udp_flood = $(data).find("anti_udp_flood").text();
+		udp_flood_threshold = $(data).find("udp_flood_threshold").text();
+		anti_ip_flagment = $(data).find("anti_ip_flagment").text();
+		anti_ping_flood = $(data).find("anti_ping_flood").text();
+		anti_smurf_fraggle = $(data).find("anti_smurf_fraggle").text();
+
+		page_init();
+		reload_compnets(seed);
+},
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }
+    }
+  })
+}
+
+function page_init()
+{
+	$("#select_anti_ddos_enable").val(anti_ddos);
+
+	if($("#select_anti_ddos_enable").val()=="1")
+	{
+
+    	$("#tcp_flood_threshold").val(tcp_syn_flood_threshold);
+		$("#udp_flood_threshold").val(udp_flood_threshold);
+		$("#select_anti_tcp_syn_enable").val(anti_tcp_syn_flood);
+		$("#select_anti_udp_enable").val(anti_udp_flood);
+    	$("#select_anti_ip_flagment_enable").val(anti_ip_flagment);
+		$("#select_anti_ping_flood_enable").val(anti_ping_flood);
+		$("#select_anti_smurf_fraggle_enable").val(anti_smurf_fraggle);
+
+		$("#tbl_ddos").show();
+		if( anti_tcp_syn_flood == "1" )
+			$("#tr_tcp_flood_threshold").show();
+		else
+			$("#tr_tcp_flood_threshold").hide();
+
+		if( anti_udp_flood == "1" )
+			$("#tr_udp_flood_threshold").show();
+		else
+			$("#tr_udp_flood_threshold").hide();
+	}
+	else
+	{
+		$("#tbl_ddos").hide();
+	}
+}
+
+function load_mark(url){
+if(interval_timer) clearInterval(interval_timer);
+  if(url=="set_ad_secu.html"){
+    load_setting();
+  }
+}
+
+function check_tcp_syn_selectbox() {
+    if ($("#select_anti_tcp_syn_enable").val() == "1") {
+		//show
+		$("#tr_tcp_flood_threshold").show();
+    }
+    else
+	{
+		//hide
+        $("#tr_tcp_flood_threshold").hide();
+	}
+}
+
+function check_udp_selectbox() {
+    if ($("#select_anti_udp_enable").val() == "1") {
+		//show
+		$("#tr_udp_flood_threshold").show();
+    }
+    else
+	{
+		//hide
+        $("#tr_udp_flood_threshold").hide();
+	}
+}
+
+$('#select_anti_ddos_enable').die().live('change',function(){
+	if($("#select_anti_ddos_enable").val()=="1")
+		anti_ddos = 1;
+	else
+		anti_ddos = 0;
+
+	page_init();
+})
+
+$("#submit_ad_secu").die().live('click',function(){
+
+	$("#errHint").html('&nbsp;');
+
+	var ddos=0,tcp_syn_flood=0,tcp_threshold=20,udp_flood=0,udp_threshold=100,ip_flagment=0,ping_flood=0,smurf_fraggle=0;
+	ddos = parseInt($('#select_anti_ddos_enable').val());
+
+	if( ddos == 1 )
+	{
+		tcp_syn_flood = parseInt($('#select_anti_tcp_syn_enable').val());
+		tcp_threshold = parseInt($('#tcp_flood_threshold').val());
+		udp_flood = parseInt($('#select_anti_udp_enable').val());
+		udp_threshold = parseInt($('#udp_flood_threshold').val());
+		ip_flagment = parseInt($('#select_anti_ip_flagment_enable').val());
+		ping_flood = parseInt($('#select_anti_ping_flood_enable').val());
+		smurf_fraggle = parseInt($('#select_anti_smurf_fraggle_enable').val());
+
+		var reg = /^([1-9][0-9]{0,4}|0)$/;
+
+		if( tcp_syn_flood == 1 )
+		{
+			if( !reg.test($("#tcp_flood_threshold").val()) || tcp_threshold < 5 || tcp_threshold > 3600 )
+			{
+				$("#errHint").html("TCP SYN Flood Threshold must between 5 and 3600");
+		    	$('#tcp_flood_threshold').focus();
+		    	retrun;
+	    	}
+		}
+		else
+		{
+			tcp_threshold = tcp_syn_flood_threshold;
+		}
+
+		if( udp_flood == 1 )
+		{
+			if( !reg.test($("#udp_flood_threshold").val()) || udp_threshold < 5 || udp_threshold > 3600 )
+			{
+				$("#errHint").html("UDP Flood Threshold must between 5 and 3600");
+		    	$('#udp_flood_threshold').focus();
+		    	retrun;
+	    	}
+		}
+		else
+		{
+			udp_threshold = udp_flood_threshold;
+		}
+
+		post_data = 'anti_ddos='+ddos+'&anti_tcp_syn_flood='+tcp_syn_flood+'&tcp_threshold='+tcp_threshold
+					+'&anti_udp_flood='+udp_flood+'&udp_threshold='+udp_threshold+'&anti_ip_flagment='+ip_flagment
+					+'&anti_ping_flood='+ping_flood+'&anti_smurf_fraggle='+smurf_fraggle;
+	}
+	else
+	{
+		post_data = "anti_ddos=0";
+	}
+
+    $("#errHint").html('&nbsp;');
+    show_tips(seed,"Waiting...");
+    var headers={};
+    headers["__RequestVerificationToken"]=$("#csrf_token2").val();
+    $.ajax({
+      url: "/wxml/setting_ad_secu.xml",
+      type: "Post",
+      headers: headers,
+      timeout: 20000,
+      cache: false,
+      datatype: "xml",
+      data: post_data,
+      success: function(data, status) {
+      	var new_token=$(data).find("token").text();
+      if(new_token=="-1"){
+        top.location.reload(true);
+        return false;
+      }
+    	$("#csrf_token2").val(new_token);
+        var ddos = parseInt($(data).find("anti_ddos").text());
+        var tcp_syn_flood = parseInt($(data).find("anti_tcp_syn_flood").text());
+        var tcp_threshold = parseInt($(data).find("tcp_syn_flood_threshold").text());
+        var udp_flood = parseInt($(data).find("anti_udp_flood").text());
+        var udp_threshold = parseInt($(data).find("udp_flood_threshold").text());
+        var ip_flagment = parseInt($(data).find("anti_ip_flagment").text());
+        var ping_flood = parseInt($(data).find("anti_ping_flood").text());
+        var smurf_fraggle = parseInt($(data).find("anti_smurf_fraggle").text());
+		var commit = parseInt($(data).find("commit").text());
+
+      	hide_tips(seed);
+
+        if(ddos && tcp_syn_flood && tcp_threshold && udp_flood && udp_threshold && ip_flagment && ping_flood && smurf_fraggle && commit)
+        	$("#errHint").html('Setting Apply Success!');
+        else
+        	$("#errHint").html('Setting Apply Fail!');
+        load_setting();
+        setTimeout(function(){$("#errHint").html('&nbsp;');},5000);
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }
+      }
+    })
+});
+
+
+        </script>
+	<!-- </head> -->
+	<body>
+	    <table id="table_main" class="table_main" align="left">
+			<tr>
+				<td>
+				<h3 class="main_menu">Advanced Security</h3>
+				</tr>
+				<tr>
+			<td class="_td" style="padding-left: 50px; padding-bottom: 25px;">
+				</br>
+				    <h4 class="small_menu" align="left" style="color:#515151; margin:0;">Security Management</h4>
+					<table style="width:90%;">
+	        	        <tr>
+				            <td width="37%" class="head_top">Anti DDOS</td>
+				            <td width="63%" class="tail_top">
+					            <font face="Arial">
+						            <select id="select_anti_ddos_enable">
+							            <option value=1>Enable</option>
+							            <option value=0>Disable</option>
+						            </select>
+					            </font>
+				            </td>
+			            </tr></table>
+
+<!-- 			            <tr>
+                            <td colspan="3" class="head_top" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;color:red;height:18px;">&nbsp;</td>
+						</tr> -->
+						<table id="tbl_ddos" style="width:90%;" style="display:none;">
+			            <tr id="tc_anti_tcp_flood">
+				            <td width="37%" class="head_top">anti TCP SYN Flooding</td>
+				            <td width="63%" class="tail_top">
+					            <font face="Arial">
+						            <select id="select_anti_tcp_syn_enable" onchange="check_tcp_syn_selectbox()">
+							            <option value=1>Enable</option>
+							            <option value=0>Disable</option>
+						            </select>
+					            </font>
+				            </td>
+			            </tr>
+			            <tr id="tr_tcp_flood_threshold" style="display:none;">
+                            <td width="37%" class="head_top">&nbsp;&nbsp;&nbsp;&nbsp;TCP SYN Flood Threshold</td>
+                            <td width="63%" class="tail_top">
+                                <input id="tcp_flood_threshold" maxlength="4" style="ime-mode:disabled;" onpaste="return false;" size="4" type="number">pkts/s (5~3600)
+                            </td>
+						</tr>
+			             <tr id="tc_anti_udp_flood">
+				            <td width="37%" class="head_top">anti UDP Flooding</td>
+				            <td width="63%" class="tail_top">
+					            <font face="Arial">
+						            <select id="select_anti_udp_enable" onchange="check_udp_selectbox()">
+							            <option value=1>Enable</option>
+							            <option value=0>Disable</option>
+						            </select>
+					            </font>
+				            </td>
+			            </tr>
+			            <tr id="tr_udp_flood_threshold" style="display:none;">
+                            <td width="37%" class="head_top">&nbsp;&nbsp;&nbsp;&nbsp;UDP Flood Threshold</td>
+                            <td width="63%" class="tail_top">
+                                <input id="udp_flood_threshold" maxlength="4" size="4" type="number"/>pkts/s (5~3600)
+                            </td>
+						</tr>
+			            <tr id="tc_anti_ip_flagment">
+				            <td width="37%" class="head_top">anti IP Fragmentation</td>
+				            <td width="63%" class="tail_top">
+					            <font face="Arial">
+						            <select id="select_anti_ip_flagment_enable">
+							            <option value=1>Enable</option>
+							            <option value=0>Disable</option>
+						            </select>
+					            </font>
+				            </td>
+			            </tr>
+			            <tr id="tc_anti_ping_flood">
+				            <td width="37%" class="head_top">anti Ping of Death/Ping Flood</td>
+				            <td width="63%" class="tail_top">
+					            <font face="Arial">
+						            <select id="select_anti_ping_flood_enable">
+							            <option value=1>Enable</option>
+							            <option value=0>Disable</option>
+						            </select>
+					            </font>
+				            </td>
+			            </tr>
+			            <tr id="tc_anti_smurf_fraggle">
+				            <td width="37%" class="head_top">anti Smurf & Fraggle</td>
+				            <td width="63%" class="tail_top">
+					            <font face="Arial">
+						            <select id="select_anti_smurf_fraggle_enable">
+							            <option value=1>Enable</option>
+							            <option value=0>Disable</option>
+						            </select>
+					            </font>
+				            </td>
+			            </tr>
+
+				        <tr>
+                        	<td colspan ="3" id="errHint" style="padding:4px 20px 4px 212px;color: red;">&nbsp;</td>
+		                </tr>
+
+
+					</table>
+				    <table style="width:90%;">
+				    <tr>
+						    <td align = "right" colspan="3">
+
+							<button id="submit_ad_secu" class="btn-Green"><span><em>Apply</em></span></button>
+							<button class="btn-Green" id="input_default_ad_secu_refresh" oncut="return false" oncopy="return false" onpaste="return false" onclick="load_setting()"><span><em>Update</em></span></button>
+
+                            </td>
+                        </tr>
+
+					</table>
+			    </td>
+			</tr>
+		</table>
+			    </td>
+			</tr>
+		</table>
+		<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+	</body>
+<!-- </html>
+ -->

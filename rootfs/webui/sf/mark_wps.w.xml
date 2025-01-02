@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wps>
+<dsc><% get_version_dsc(); %></dsc>
+<sw><% get_wifi_ind(); %></sw>
+<brd><% get_wifi_ssid_broadcast(); %></brd>
+<state><% get_wifi_wps_enabled(); %></state>
+<enc_type><% get_wifi_sec_wpa(); %></enc_type>
+</wps>

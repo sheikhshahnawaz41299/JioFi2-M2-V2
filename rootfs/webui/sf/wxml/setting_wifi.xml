@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<wifi>
+<ssid>set_wifi_ssid(ssid)</ssid>
+<ch>set_wifi_channel(ch)</ch>
+<wmm>set_wmm_enable(wmm)</wmm>
+<power>set_wifi_power_percent(power)</power>
+<enc_type>set_wifi_sec_wpa(enc_type,wpa)</enc_type>
+<key>set_wifi_key(key)</key>
+<brd>set_wifi_ssid_broadcast(brd)</brd>
+<bgn>set_wifi_bgn_mode(bgn)</bgn>
+<sw>set_wifi_enable(sw)</sw>
+<mode>set_wifi_mode(mode)</mode>
+<max>set_wifi_max_users(max)</max>
+<restart>restart_wifi_app(restart)</restart></wifi>
+</setting>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<get>
+<lang><% get_lang(); %></lang>
+<rand><% get_rand_code(); %></rand>
+
+<target><% url_get_target_test(); %></target>
+
+</get>

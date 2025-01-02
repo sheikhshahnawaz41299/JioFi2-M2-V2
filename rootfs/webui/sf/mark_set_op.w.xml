@@ -1,0 +1,3 @@
+<op>
+<mode><% get_router_op_mode(); %></mode>
+</op>

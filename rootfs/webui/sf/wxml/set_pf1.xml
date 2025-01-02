@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pf>
+<enable>set_pf_enable(enable)</enable>
+<set4>set_pf_item(4,name4,um4,rm4,mac4)</set4>
+<set5>set_pf_item(5,name5,um5,rm5,mac5)</set5>
+<set6>set_pf_item(6,name6,um6,rm6,mac6)</set6>
+<ip_sms>set_ipsms_enable(notify)</ip_sms>
+<send_to>set_ipsms_home_number(number)</send_to>
+<done>set_pf_config_done()</done>
+</pf>

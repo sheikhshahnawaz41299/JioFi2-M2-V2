@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mark_pf>
+<dsc><% get_version_dsc(); %></dsc>
+<user_cnt><% get_client_count(); %></user_cnt>
+<user_list>
+<% get_client_rndis_list("0"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("0"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("5"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("10"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("15"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("20"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("25"); %>
+</user_list>
+<user_list>
+<% get_client_wifi_list("30"); %>
+</user_list>
+<pf_enable><% get_pf_enable(); %></pf_enable>
+<pf_list>
+<cfg_name><% get_pf_item_name("0"); %></cfg_name>
+<mac_addr><% get_pf_item_mac("0"); %></mac_addr>
+<um><% get_pf_item_um_port("0"); %></um>
+<rm><% get_pf_item_rm_port("0"); %></rm>
+</pf_list>
+<pf_list>
+<cfg_name><% get_pf_item_name("1"); %></cfg_name>
+<mac_addr><% get_pf_item_mac("1"); %></mac_addr>
+<um><% get_pf_item_um_port("1"); %></um>
+<rm><% get_pf_item_rm_port("1"); %></rm>
+</pf_list>
+<pf_list>
+<cfg_name><% get_pf_item_name("2"); %></cfg_name>
+<mac_addr><% get_pf_item_mac("2"); %></mac_addr>
+<um><% get_pf_item_um_port("2"); %></um>
+<rm><% get_pf_item_rm_port("2"); %></rm>
+</pf_list>
+<pf_list>
+<cfg_name><% get_pf_item_name("3"); %></cfg_name>
+<mac_addr><% get_pf_item_mac("3"); %></mac_addr>
+<um><% get_pf_item_um_port("3"); %></um>
+<rm><% get_pf_item_rm_port("3"); %></rm>
+</pf_list>
+<pf_list>
+<cfg_name><% get_pf_item_name("4"); %></cfg_name>
+<mac_addr><% get_pf_item_mac("4"); %></mac_addr>
+<um><% get_pf_item_um_port("4"); %></um>
+<rm><% get_pf_item_rm_port("4"); %></rm>
+</pf_list>
+<pf_list>
+<cfg_name><% get_pf_item_name("5"); %></cfg_name>
+<mac_addr><% get_pf_item_mac("5"); %></mac_addr>
+<um><% get_pf_item_um_port("5"); %></um>
+<rm><% get_pf_item_rm_port("5"); %></rm>
+</pf_list>
+<pf_list>
+<cfg_name><% get_pf_item_name("6"); %></cfg_name>
+<mac_addr><% get_pf_item_mac("6"); %></mac_addr>
+<um><% get_pf_item_um_port("6"); %></um>
+<rm><% get_pf_item_rm_port("6"); %></rm>
+</pf_list>
+<dev_mac><% get_macaddr_string(); %></dev_mac>
+<sms_notify><% get_ipsms_enable(); %></sms_notify>
+<netstatus><% get_network_status(); %></netstatus>
+<net_mode><% get_network_mode(); %></net_mode>
+<home_num><% get_ipsms_home_number(); %></home_num>
+<wan_ip><% get_wan_ip(); %></wan_ip>
+</mark_pf>

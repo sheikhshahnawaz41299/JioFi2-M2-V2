@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<title>
+<timeout><% timeout_check(); %></timeout>
+<login><% get_login(); %></login>
+<login_cnt><% get_login_count(); %></login_cnt>
+<sd_st><% get_sdst(); %></sd_st>
+<refresh><% get_gui_refresh_time(); %></refresh>
+<fota><% fota_check_result("1"); %></fota>
+<dsc><% get_version_dsc(); %></dsc>
+<batt_per><% get_batt_percent(); %></batt_per>
+</title>

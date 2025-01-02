@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<log>
+<enable><% get_syslog_enable();%></enable>
+<line7><%get_syslog_log("7");%></line7>
+<line6><%get_syslog_log("6");%></line6>
+<line5><%get_syslog_log("5");%></line5>
+<line4><%get_syslog_log("4");%></line4>
+<line3><%get_syslog_log("3");%></line3>
+<line2><%get_syslog_log("2");%></line2>
+<line1><%get_syslog_log("1");%></line1>
+<line0><%get_syslog_log("0");%></line0>
+</log>

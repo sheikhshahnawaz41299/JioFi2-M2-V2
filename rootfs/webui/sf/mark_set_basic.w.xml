@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quickset>
+<dsc><% get_version_dsc();%></dsc>
+<ssid><% get_wifi_ssid();%></ssid>
+<sec_mode><% get_wifi_sec_wpa();%></sec_mode>
+<wifikey><% get_wifi_wpa2_key();%></wifikey>
+<loginpwd><% get_login_password();%></loginpwd>
+<retval>0</retval>
+</quickset>

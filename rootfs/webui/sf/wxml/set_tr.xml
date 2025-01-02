@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tr>
+<stop>stop_cwmpc(stop)</stop>
+<acs_url>set_cwmpc_acsurl(acs_url)</acs_url>
+<acs_username>set_cwmpc_username(acs_username)</acs_username>
+<acs_pwd>set_cwmpc_userpassword(acs_pwd)</acs_pwd>
+<inform>set_enable_cwmpc_periodic_inform(inform)</inform>
+<interval>set_cwmpc_periodic_informinterval(interval)</interval>
+<req_username>set_cwmpc_request_username(req_username)</req_username>
+<req_pwd>set_cwmpc_request_userpassword(req_pwd)</req_pwd>
+<restart>restart_cwmpc(restart)</restart>
+</tr>

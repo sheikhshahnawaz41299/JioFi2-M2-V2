@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<title>
+<timeout><% timeout_check(); %></timeout>
+<login><% get_login(); %></login>
+<sd_st><% get_sdst(); %></sd_st>
+<fota><% fota_check_result("1"); %></fota>
+<dsc><% get_version_dsc(); %></dsc>
+<batt_per><% get_batt_percent(); %></batt_per>
+<batt_st><% get_battery_ind(); %></batt_st>
+<attach><% get_attach_status(); %></attach>
+<cspn><% get_cspn_string(); %></cspn>
+<user_cnt><% get_client_count(); %></user_cnt>
+<onex><% get_sig_ind(); %></onex>
+</title>

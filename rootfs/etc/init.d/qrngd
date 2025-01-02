@@ -1,0 +1,26 @@
+#! /bin/sh
+
+set -e
+
+case "$1" in
+start)
+    echo -n "Starting qrngd: "
+    start-stop-daemon -S -b -a /usr/bin/qrngd
+    echo "done"
+    ;;
+  stop)
+    echo -n "Stopping qrngd: "
+    start-stop-daemon -K -n qrngd
+    echo "done"
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    echo "Usage qrngd{ start | stop | restart }" >&2
+    exit 1
+    ;;
+esac
+
+exit 0

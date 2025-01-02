@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<srv_ip>set_dhcp_ip(srv_ip)</srv_ip>
+<submask>set_dhcp_mask(submask)</submask>
+<enable>set_dhcp_server_enabled(enable)</enable>
+<start>set_dhcp_start_ip(start)</start>
+<end>set_dhcp_end_ip(end)</end>
+<time>set_dhcp_lease_time(time)</time>
+<commit>set_dhcp_commit()</commit>
+</setting>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<url_filter>
+<dsc><% get_version_dsc(); %></dsc>
+<enable><% get_url_filter_enable(); %></enable>
+<url><% get_url_filter_item("0"); %></url>
+<url><% get_url_filter_item("1"); %></url>
+<url><% get_url_filter_item("2"); %></url>
+<url><% get_url_filter_item("3"); %></url>
+<url><% get_url_filter_item("4"); %></url>
+<url><% get_url_filter_item("5"); %></url>
+<url><% get_url_filter_item("6"); %></url>
+<url><% get_url_filter_item("7"); %></url>
+<url><% get_url_filter_item("8"); %></url>
+<url><% get_url_filter_item("9"); %></url>
+</url_filter>

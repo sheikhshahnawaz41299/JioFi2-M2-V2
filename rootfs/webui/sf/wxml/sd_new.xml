@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sd>
+<new>sd_dir_new(path,name)</new>
+<exist>sd_dir_existed(path,name)</exist>
+</sd>

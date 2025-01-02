@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Help</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+li{outline: none;}
+</style>
+
+
+<style type="text/css">
+
+#to_top{position:fixed;bottom:30px;right:30px;border:1px solid #888;text-align:center;vertical-align:middle;background:#ccc;cursor:pointer;width:60px;height:60px;line-height:60px;background: #CCC; filter:alpha(opacity=80);-moz-opacity:0.8;-khtml-opacity: 0.8;opacity: 0.8;}
+#to_top:hover{color: red;background: #ddd;}
+
+table{border-spacing:0;border-collapse: collapse;}
+
+ .help01_01,.help01_03,.help01_07,.help01_14,.help01_16,.help01_18,.help01_21,.help01_23,.help01_26,.help01_27,.help01_28{
+    background: url(img/help01.png) no-repeat top left;
+}
+.help01_01{ background-position: 0 0; width: 86px; height: 135px; } 
+.help01_03{ background-position: 0 -185px; width: 344px; height: 175px; } 
+
+ .help01_05{
+    background: url(img/help05.png) no-repeat top left;
+    width: 400px;height: 160px;
+    background-position: 0 0;
+}
+
+.help01_07{ background-position: 0 -410px; width: 16px; height: 15px; display: inline-block;margin-left: 4px;margin-right: 4px;} 
+ .help01_08{
+    background: url(img/help08.png) no-repeat top left;
+    width: 286px;height: 538px;
+    background-position: 0 0;
+}
+ .help01_10{
+    background: url(img/help10.png) no-repeat top left;
+    width: 293px;height: 538px;
+    background-position: 0 0;
+}
+ .help01_12{
+    background: url(img/help12.png) no-repeat top left;
+    width: 332px;height: 538px;
+    background-position: 0 0;
+}
+.help01_14{ background-position: 0 -475px; width: 24px; height: 24px; display: inline-block;margin-left: 4px;margin-right: 4px} 
+.help01_16{ background-position: 0 -571px; width: 220px; height: 340px; } 
+.help01_18{ background-position: 0 -960px; width: 24px; height: 24px; display: inline-block;margin-left: 4px;margin-right: 4px} 
+.help01_21{ background-position: 0 -1065px; width: 24px; height: 24px; display: inline-block;margin-left: 4px;margin-right: 4px} 
+.help01_23{ background-position: 0 -1171px; width: 24px; height: 24px; display: inline-block;margin-left: 4px;margin-right: 4px} 
+.help01_26{ background-position: 0 -1271px; width: 385px; height: 259px; } 
+.help01_27{background-position: 0 -1224px; width: 24px; height: 24px; display: inline-block;margin-left: 4px;margin-right: 4px
+}
+
+.help01_28{background-position: 0 -1100px; width: 24px; height: 24px; display: inline-block;margin-left: 4px;margin-right: 4px
+}
+
+
+.img_padding{padding: 12px 0;}
+
+
+#back_to_web{position: fixed;left: 10px;top: 4px}
+
+
+
+</style>
+
+<script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="jquery.ztree_toc.js"></script>
+
+</head>
+<body>
+<a id="back_to_web" href="index.htm">&lt;&lt;&lt;BACK</a>
+
+
+<div id="to_top" onclick="scroll_top()">
+Top
+</div>
+
+
+<ul id="tree" class="ztree"></ul>
+
+
+
+<div  class="markdown-body">
+
+
+
+<h3>Getting Started</h3>
+<p>Thank you for choosing M2 works in Reliance JIO LTE network. M2 allows you to access a wireless network at high speed.</p>
+
+<h3>Installing and Removing USIM/SD Card </h3>
+<ol>
+  <li>Open the back cover and locate SIM card and SD card slot. </li>
+  <li>For SIM card , insert it in the slot directly. For SD card , slide the SD tray downwards (Open) to lift the tray then insert SD card, then slide the tray upwards (LOCK) to secure the tray. Make sure they are placed properly with the chip facing down.</li>
+</ol>
+
+<h4>Nano USIM Card</h4>
+<img src="/img/help_usim.png">
+
+<h4>Micro SD Card</h4>
+<div>
+<img src="/img/help_sd.png">
+</div>
+<div>
+<img src="/img/help_dev.png">
+</div>
+
+
+<h2>Logging In to the Management Page</h2>
+<p>Login in to the management page where you can set the parameters of M2.</p>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Open a browser and enter <a href="http://192.168.1.1" title="http://192.168.1.1">http://192.168.1.1</a> or <a href="http://jiofi.local.html" title="http://jiofi.local.html">http://jiofi.local.html</a> in the address bar.</li>
+<li>With Enter Key to open the web management page.</li>
+<li>Click Login button on top right or any place on web page will pop-up login window. Enter the Username and Password and click Log In button.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> The default <strong>username</strong> and <strong>password</strong> of the web management page both are administrator.</p>
+</blockquote>
+<!-- <h2>Connection</h2>
+<p>To use the M2 to access the Internet, you must create a network profile or set the default network profile and operator's network.</p>
+<h3>Creating a Network Profile</h3>
+<p>You can access the internet with default profile, and you also can create a new profile manually as follow steps.</p>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Click Setting &gt; Network Setting.</li>
+<li>Click APN1 from APN drop list.</li>
+<li>Input the profile-associated parameters.</li>
+<li>Click Apply button.</li>
+</ol>
+<h3>Accessing the Internet Using the Cellular Data Network</h3>
+<p>Use the following method to connect the M2 to the Internet.</p>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Click Setting &gt; Network setting.</li>
+<li>
+Select Connect Mode
+<ul>
+<li>Auto</li>
+<li>Manual</li>
+</ul>
+</li>
+<li>Click APPLY button.</li>
+<li>Access the Internet.</li>
+</ol>
+<table>
+<thead>
+<tr>
+	<th>Option</th>
+	<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>Auto connection</td>
+	<td>Refresh the page and view the current network connection status.</td>
+</tr>
+<tr>
+	<td>Manual connection</td>
+	<td>a. Go to Connection page.<br>b.Click CONNECT button to setup a connection to the Internet.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong>: The default <strong>Connect Mode</strong> is Auto.</p>
+</blockquote>
+<h3>Traffic Statistics</h3>
+<p>Traffic statistics function records the network traffic and duration of the current connection as well as that since you last restored the M2 to its default settings.</p>
+<h4>Viewing Traffic Statistics</h4>
+<p>Traffic statistics provide the network connection duration and traffic generated.</p>
+<blockquote>
+<p><strong>Note:</strong> Traffic statistics are provided for your reference only. Accurate traffic records can be obtained from the bill provided by your operator.</p>
+</blockquote>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Click CONNECTION in the Home page.</li>
+<li>View the traffic data.</li>
+</ol>
+<h4>Clearing Traffic Statistics</h4>
+<p>This section describes how to clear the recorded traffic statistics.</p>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Click CONNECTION in the Home page.</li>
+<li>Click <strong>Clear History</strong> to clear the recorded traffic statistics.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Volume statistics provided here are approximate. For accurate statistics and details of charges refer to your bills.</p>
+</blockquote> -->
+<h2>Setting</h2>
+
+
+<h3>LTE</h3>
+<h4>PIN</h4>
+<p>PIN Settings provides PIN security settings to prevent unauthorized use of the USIM card.</p>
+
+<h5>Turning On or Off PIN Verification</h5>
+<p>If PIN verification is turned on, you need to enter the PIN only when the M2 is turned on. If PIN verification is turned off, no PIN is required.</p>
+<p>Choose Settings > LTE > PIN , you can enable or disable the PIN verification.</p>
+<p><strong>Context</strong></p>
+<ul>
+<li>If a PIN is required, enter the correct PIN.</li>
+<li>If you enter your PIN incorrectly three times consecutively, the USIM card is locked and you must enter the PIN unlock key (PUK).</li>
+<li>If you enter the PUK incorrectly ten times consecutively, the USIM card is locked permanently. If you cannot enter the correct PIN or PUK, network-associated functions are unavailable.</li>
+<li>The PIN and the PUK are provided with the USIM card. If you did not receive them or forgot them, contact your service provider.</li>
+</ul>
+
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Click Setting &gt; LTE &gt; PIN Setting.</li>
+<li>From PIN operation, select: 
+<ul>
+<li>Enable: to turn on PIN verification.</li>
+<li>Disable: to turn off PIN verification. </li>
+</ul>
+</li>
+<li>Enter the correct PIN.</li>
+<li>Click APPLY button.</li>
+</ol>
+
+
+
+<h5>Changing the PIN</h5>
+<p>If PIN verification is turned on, you can change the PIN.</p>
+
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Click Setting &gt; LTE &gt; PIN Setting.</li>
+<li>From PIN operation, select Change.</li>
+<li>Enter the current PIN.</li>
+<li>Enter a new PIN.</li>
+<li>Click APPLY button.</li>
+</ol>
+
+
+<h4>Default PDN Connection</h4>
+<p>To use the M2 to access the Internet, you must create a network profile or set the default network profile and operator's network.</p>
+<h5>Creating a Network Profile</h5>
+<p>You can access the internet with default profile, and you also can create a new profile manually as follow steps.</p>
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Click Setting &gt; LTE &gt; Default APN.</li>
+<li>Click Manual from APN for network attach drop list.</li>
+<li>Input APN.</li>
+<li>Click APPLY button.</li>
+</ol>
+
+
+<h3>Network</h3>
+<h4>MAC addresses filter</h4>
+<p>You can control and manage the clients that access the wireless local area network (WLAN) to improve the security performance of the WLAN.</p>
+
+<ol>
+<li>Choose Settings &gt; Network &gt; MAC addresses filter</li>
+<li>
+  From MAC Filter Mode to select a Media Access Control (MAC) filtering mode.
+  <ul>
+  <li>Disable: To disable the function of filtering MAC addresses.</li>
+  <li>Enable &gt; Allow : If the MAC address of a client is listed in MAC address, the client is allowed to connect to the M2 over the WLAN.</li>
+  <li>Enable &gt; Deny : If the MAC address of a client is listed in MAC Address, the client is prohibited from connection to the M2 over the WLAN.</li>
+  </ul>
+</li>
+<li>Fill in the MAC addresses of the clients from user list or manually.</li>
+<li>Click APPLY button.</li>
+</ol>
+
+<blockquote>
+<p><strong>Note: </strong> any filtering mode to be selected, please make sure yourself can through the filter.</p>
+</blockquote>
+
+
+<h3>Wi-Fi </h3>
+<p>The service set identifier (SSID) is a name that identifies a wireless local area network (WLAN). A wireless client (for example, a computer) can communicate with the M2 properly only when they are using the same SSID. To ensure the WLAN security, do not use the default SSID. You can define an SSID as required.</p>
+
+<h4>Setting Wi-Fi SSID</h4>
+
+
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Click Setting &gt; Wi-Fi .</li>
+<li>You will see the factory default SSID mentioned above on the device.</li>
+<li>Input new SSID and Click APPLY button.</li>
+</ol>
+<blockquote>
+<p><strong>Note: </strong> Wi-Fi will be restarted after setting success.</p>
+</blockquote>
+
+
+
+<h4>Setting Channel</h4>
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Click Setting&gt; Wi-Fi.</li>
+<li>You will see the default Channel is Auto.</li>
+<li>Click Manual from channel mode drop list..</li>
+<li>Select the appropriate channel for your network from Channel Selection drop list.</li>
+<li>Click APPLY button.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Wi-Fi will be restarted after setting success.</p>
+</blockquote>
+
+
+<h4>Security Mode</h4>
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Click Setting&gt; Wi-Fi.</li>
+<li>
+<p>The default Security mode value is WPA2-PSK.</p>
+<p>Other security mode introduction:</p>
+<table>
+<thead>
+<tr>
+  <th>Option</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<!-- <tr>
+  <td>WEP</td>
+  <td>This  is  stands  for  Wired  Equivalent  Privacy,  and  support  ASCII,  you  can  input  5  or  13 characters.</td>
+</tr> -->
+<tr>
+  <td style="padding:0;"><div style="border-bottom:1px solid #ccc;padding:6px 13px;">WPA-PSK</div><div style="border-bottom:1px solid #ccc;padding:6px 13px;">WPA-PSK/<br>WPA2-PSK</div><div style="padding:6px 13px;">WPA2-PSK</div></td>
+  <td>These three security modes are the encryption method with keys changing automatically.</td>
+</tr>
+<tr>
+  <td>WPA Option</td>
+  <td>You can select TKIP, AES &amp; TKIP+AES for WPA and WPA2. You can input at least 8 digits, 32 digits at most.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Input the KEY with right rule.</li>
+<li>Click APPLY button.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Wi-Fi will be restarted after setting success.</p>
+</blockquote>
+
+<h4>Wi-Fi Module</h4>
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Click Setting&gt; Wi-Fi.</li>
+<li>
+Set Wi-Fi Module.
+<ul>
+<li>Enable: to enable the Wi-Fi Module.</li>
+<li>Disable: to disable the Wi-Fi Module. </li>
+</ul>
+</li>
+<li>Click APPLY button.</li>
+</ol>
+
+
+
+<h4>SSID Broadcast</h4>
+<p>If the service set identifier (SSID) broadcast function is enabled, the M2 broadcasts the SSID of the wireless local area 
+network (WLAN) facilitating clients' access to the WLAN. The disadvantage is that unauthorized clients can also access the WLAN. If the 
+SSID broadcast is disabled, the M2 does not broadcast the SSID of the WLAN. So the SSID must be entered manually and 
+correctly from a client before the client accesses the WLAN. This improves the security of the WLAN.</p>
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Click Setting &gt; Wi-Fi.</li>
+<li>
+Set SSID Broadcast.
+<ul>
+<li>Enable: to enable the SSID broadcast.</li>
+<li>Disable: to disable the SSID broadcast.</li>
+</ul>
+</li>
+<li>Click APPLY button.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> During the process of setting up the WLAN,you can set the SSID broadcast to Enable to facilitate the access from clients.After the WLAN is set up, set the SSID broadcast to Disable to improve the security of the WLAN.</p>
+</blockquote>
+
+
+<h4>WMM Mode</h4>
+<p>WMM functionality is enabled in the router for providing Qos to Wi-Fi traffic.</p>
+
+
+<h4>802.11 Mode</h4>
+<p>The M2 supports 2.4GHz （B+G+N）.</p>
+
+
+
+<h3>Storage</h3>
+<!-- <h4>Storage Username and Password</h4>
+<p>Here you can get Storage User name and Password. Select “Show Password” check box to display Storage password.</p>
+<p>You can input new value in textbox and click APPLY button to change User name and Password.</p> -->
+<h4>Storage Mode</h4>
+<ul>
+<li>Local Storage: SD card will set as USB drive and be access for local PC only.</li>
+<li>Wi-Fi Storage: SD card can be access over Wi-Fi.</li>
+<!-- <li>Internet Storage: SD card can be access over Internet.  </li> -->
+</ul>
+
+
+
+<h3>User Management</h3>
+<h4>Account Management</h4>
+<h5>Login Username and Password</h5>
+<p>Here you can input new value in textbox and Click APPLY button to change User name and Password.</p>
+
+<h4>Device Setting</h4>
+<h5>Management Session Timeout</h5>
+<p>Here you can set the Login timeout, the default value is 5 Min that means the management page will logout automatically in 5min if you don’t do anything. You have to login again if you want to set the parameters of M2. </p>
+<p>To increase or decrease the Login timeout, user has as to select the values from Management session timeout if it required.</p>
+
+
+<h5>GUI Refresh Time</h5>
+<p>Here you can set GUI refresh time, the default value is 10 seconds that means GUI will refresh device setting status information automatically.</p>
+<h5>Restore Default Settings</h5>
+<p>After you restore the M2 to its default settings, your personal information will be deleted, and parameters will be restored to factory default values.</p>
+
+<h3>Firmware Upgrade</h3>
+<h4>Software Upgrade</h4>
+
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Obtain new firmware file from operator and save it in the host computer.</li>
+<li>Click Setting &gt; Firmware Upgrade &gt; Software Upgrade</li>
+<li>Click Choose File button to select the new firmware file stored in the host computer , then click "upgrade" button .</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> When upgrade is done, device need to re-start to use.</p>
+</blockquote>
+
+
+
+<h4>Configuration Backup and Configuration Restore</h4>
+<p>It provides options for taking Backup of the Current Router configuration and restore the configuration with a saved backup and provides option for resetting the device back to factory default configuration values for all parameters.</p>
+
+
+<h4>Gaming & Apps Management</h4>
+
+<h5>UPnP</h5>
+<p>The Universal Plug and Play (UPnP) service realizes intelligent connection between two UPnP devices using port forwarding. UPnP devices can obtain IP addresses automatically and access the Internet dynamically.</p>
+
+
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Choose Setting &gt; Gaming & Apps Management &gt; UPnP.</li>
+<li>Select:
+<ul>
+  <li>Enable: to enable the UPnP service.</li>
+  <li>Disable: to disable the UPnP service.</li>
+</ul>
+</li>
+<li>Click APPLY button.</li>
+
+<p><strong>Post requisites</strong></p>
+
+<p>A computer that runs the Windows XP operating system is used as an example to describe how to enable the UPnP service on a client.</p>
+<ol>
+<li>Choose Start &gt; Control Panel &gt; Add or Remove Programs &gt; Add/Remove Windows Components.</li>
+<li>Select Networking Services and click Details.</li>
+<li>Select UPnP User Interface to enable the UPnP service.</li>
+<li>Click OK.</li>
+</ol>
+
+<h5>Port Forwarding</h5>
+<p>It allows remote computers (for example, computers on the Internet) to connect to a specific computer or service within a private local-area network.</p>
+
+<ol>
+<li>Choose Setting &gt; Gaming & Apps Management &gt; Port Forward.</li>
+<li>Select the check box on the left of Enable Port Forward.</li>
+<li>Select the user info from user list, that Host name and MAC address will add to port forwarding list, but you still have to input Config Name, Local and Wan Port by manually. Or you can input all of info by manually.
+<blockquote>
+<p><strong>Note:</strong> Local Port can be repeated, WAN port cannot be repeated.</p>
+</blockquote>
+</li>
+<li>Click APPLY button.</li>
+<li>Start the server on the device that added the port forwarding list.
+<blockquote>
+<p><strong>Note:</strong> Local Port can be repeated, WAN port cannot be repeated.</p>
+</blockquote>
+</li>
+<li>Access the device started server with the other terminal connected Internet through WAN IP address with WAN port to the device started server. Such as: http://183.42.114.82:8080</li>
+<li>The server can be accessed successfully.</li>
+</ol>
+
+
+
+<h3>WPS</h3>
+<p>Wi-Fi Protected Setup(WPS) is a special way to connect Wi-Fi,the AP and the client can automatically for security settings, you can simply press the button.</p>
+<blockquote>
+<p><strong>Note:</strong>The function of WPS only support the Wi-Fi Security Mode as follows: Disabled,WPA2-PSK,WPA-PSK/WPA2-PSK and only support the WPA Option as follows:AES,AES+TKIP.</p>
+</blockquote>
+
+
+<h3>Advance</h3>
+<h4>Device Power Save</h4>
+<p>M2 disable the WLAN when all the following conditions are met: The M2 is powered by only the battery; the WLAN is enabled; no clients access the WLAN for a period of time; the idle time exceeds the defined value of Device power save . To click power key on device then enable the WLAN.</p>
+
+
+<p><strong>Procedure</strong></p>
+<ol>
+<li>Click Setting &gt; Advance.</li>
+<li>You will see the default Wi-Fi power save setting is 30mins.</li>
+<li>Select the appropriate time from the list.</li>
+<li>Click APPLY button.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Wi-Fi will be restarted after setting success.</p>
+</blockquote>
+
+
+
+
+
+<h3>Status</h3>
+<h4>LTE Status</h4>
+<p>Here display details on LTE connection status and associated parameters like Operation mode, Operation Band, Bandwidth, APN in use, signal levels etc.</p>
+
+
+<h4>LAN Info</h4>
+<p>LAN Information: Here display details on various configured Wi-Fi parameters like SSID (the configured service), LAN Operating Mode  Subnet Mask, Gateway IP,  MAC Address,  Wi-Fi Channel，Bandwidth, Security Mode etc.</p>
+<p>LAN Client List: Here displays the information related to Network Layer connection details like the IP address of the router as seen on the LAN, the number of clients connect, DHCP lease information of various connected clients.</p>
+
+<h4>WAN Info</h4>
+<p>WAN Status: here displays details of various WAN statistics like Total Data used in Upload/Download, Packet Loss, Host name.</p>
+<p>WAN IPv4: here displays details the WAN (LTE) IP connectivity details.</p>
+<p>WAN IPv6: here displays details the WAN (LTE) IP connectivity details.</p>
+
+<h4>Device Details</h4>
+<p>Here displays device (Router) related details like Serial Number, IMEI, IMSI , Firmware version, Hardware version, etc.</p>
+
+<h4>System Performance</h4>
+<p>Here displays details on system performance parameters like CPU Utilization, Memory Utilization , Data Rates etc.</p>
+
+
+
+
+<h2>Wi-Fi Disk</h2>
+<p>It allows the other wireless devices (such as mobile phone) can be connected to M2 using Wi-Fi, and access to the SD card content.</p>
+<p>In order to make sure you enjoy this feature better, we recommend strongly you use it with Google Chrome, Fire fox, and Safari browser.</p>
+<p>The file format Wi-Fi Disk supports</p>
+<table>
+<thead>
+<tr>
+  <th>File Items</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Document</td>
+  <td>&quot;.doc&quot;,&quot; .txt&quot;,&quot;.ppt&quot;,&quot;.xls',&quot;pdf&quot;</td>
+</tr>
+<tr>
+  <td>Image</td>
+  <td>&quot;.jpg&quot;,&quot;.bmp&quot;,&quot;.png&quot;</td>
+</tr>
+<tr>
+  <td>Audio</td>
+  <td>&quot;.wav&quot;,&quot;mp3&quot;</td>
+</tr>
+<tr>
+  <td>Video</td>
+  <td>&quot;.avi&quot;,&quot;.mp4&quot;,&quot;.rmvb&quot;</td>
+</tr>
+<tr>
+  <td>Package</td>
+  <td>&quot;.rar&quot;,&quot;.zip&quot;</td>
+</tr>
+</tbody>
+</table>
+<h4>Upload File</h4>
+<p>You can upload file to SD card from computer or mobile phone.</p>
+<ol>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Press the Upload button.</li>
+<li>Select the file you want to upload to SD card.</li>
+<li>Press the Start button on the pop up window to start uploading the file.</li>
+<li>You can find the file in the corresponding directory.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong>
+The file will be uploaded to the folder created automatically with named rule Year. Month in All Files directory if you are locating root directory or you are locating other directory now, such as: Document, Audio, Video, Image, or Package. </p>
+</blockquote>
+
+<h4>Download File</h4>
+<p>You can download file from SD card.</p>
+<ol>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Select the file you want to download.</li>
+<li>Press the down arrow on the right of the file selected to download it.</li>
+</ol>
+<h4>New Folder</h4>
+<p>To New a folder in SD card.</p>
+<ol>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Find New Folder button.</li>
+<li>Input the name of file, and move the mouse to other place.</li>
+<li>It will pop up to prompt &quot;New Folder Success!&quot;</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong>
+The new folder created will locate in the folder created automatically with named rule Year. Month in <strong>All Files</strong> root directory if you are locating other directory currently to new a folder, such as: Document, Audio, Video, Image, or Package.</p>
+</blockquote>
+<h4>Search the file</h4>
+<p>You can find the file you want to get quickly with this feature.</p>
+<ol>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Find the search Icon on the right of New Folder button.</li>
+<li>Input the file name in the textbox.</li>
+<li>Press Enter Key on PC to get the file you wanted.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>You can search the file with Fuzzy query rule. For example: </p>
+<ul>
+<li>Input the search condition in textbox with *.txt, then all .txt files will be displayed.</li>
+<li>Input the search condition in textbox with 1*23. To meet this combination rule records will be displayed. </li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong>  * code indicates one or more characters, and it can be placed anywhere in search condition.</p>
+</blockquote>
+<ul>
+<li>Input the search condition in textbox with 1?23. To meet this combination rule records will be displayed.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> &quot;?&quot;code indicates one character, and it can be placed anywhere in search condition.</p>
+</blockquote>
+
+<ul>
+<li> Input the search condition in the textbox with keyword such as 1234, then all files that contain 1234 characters will be displayed.</li>
+</ul>
+</blockquote>
+
+
+
+<h4>Rename the File or Folder</h4>
+<p>To rename the file or folder you selected.</p>
+<ol>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Select the file or folder you want to rename.</li>
+<li>With the right key or go to the drop list on the right of file or folder to select Rename item to rename the file or folder.</li>
+</ol>
+<h4>Delete the File or Folder</h4>
+<p>To delete the file or folder you selected.</p>
+<ol>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Select the file or folder you want to delete.</li>
+<li>With the right key or go to the drop list on the right of file or folder to select Delete item to delete the file or folder.</li>
+</ol>
+<h4>Check the SD capacity status</h4>
+<p>To check your SD card capacity status currently.</p>
+<ol>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Click the System on the left button corner. It will pop up a window.</li>
+<li>It displays the SD System status including SD capacity and Free capacity.</li>
+</ol>
+<h4>Format SD Card</h4>
+<p>To format your SD card.</p>
+<ol>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Click the System on the left button corner. It will pop up a window.</li>
+<li>Click Format card button, it will pop up a Prompt window.</li>
+<li>Select &quot;OK&quot;to format SD card. Otherwise cancel the operation.</li>
+<li>It will prompt &quot;Format success&quot; if format SD card successfully.</li>
+</ol>
+<h2>Access the Wi-Fi Disk on IOS and Android system device</h2>
+<blockquote>
+<p><strong>Note:</strong> Behavior depends upon the browser version used on IOS/Android.</p>
+</blockquote>
+<ol>
+<li>Connect the IOS/Android system device to the M2 via Wi-Fi.</li>
+<li>Input the <a href="http://192.168.1.1" title="http://192.168.1.1">http://192.168.1.1</a> or <a href="http://jiofi.local.html" title="http://jiofi.local.html">http://jiofi.local.html</a> in the browser address bar go to web management page with default username and password both are admin.</li>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Click <span class="help01_14"> </span> button on Home Page to display others directory.</li>
+<div class="help01_16"></div>
+</ol>
+<p><strong>The function introduction for Wi-Fi Disk on IOS and Android system device</strong></p>
+<h3>Upload File</h3>
+<p>You can upload file to SD card from IOS and Android system device, and share the file to others user that connected to M2 via Wi-Fi. </p>
+<ol>
+<li>Click Wi-Fi Disk icon on the Home page to enter Wi-Fi Disk page.</li>
+<li>Click &quot;Upload&quot; button on Home Page.</li>
+<li>Select the file you want to upload to SD card.</li>
+<li>Press the Start button on the pop up window to start uploading the file.</li>
+<li>You can find the file in the corresponding directory.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong></p>
+<ul>
+<li>The file will be uploaded to the folder created automatically with named rule Year. Month in <strong>All Files</strong> directory if you are locating root directory or you are locating other directory now, such as: Document, Audio, Video, Image, or Package. </li>
+<li>IOS7 system have two upload button that are Upload and Upload(mov)<span class="help01_27"></span>.  Upload button only for uploading one picture file. Upload(mov) IOS7<span class="help01_27"></span> for uploading Multiple Video or picture files. </li>
+</ul>
+</blockquote>
+
+<h3>Download File</h3>
+<p>You can download file from SD card.</p>
+<blockquote>
+<p><strong>Note: </strong>Audio, video, document can not be downloaded, only online play On IOS and Android system device. </p>
+</blockquote>
+
+<p>Follow steps is for downloading picture on IOS and Android system device.</p>
+<ol>
+<li>Click Wi-Fi Disk icon on the Home page to enter Wi-Fi Disk page.</li>
+<li>Select the file you want to download.</li>
+<li>Open it and Slide your finger to down.</li>
+<li>Press and hold your finger on the picture.</li>
+<li>Select &quot;Save Image&quot; on the pop up window to save picture. </li>
+</ol>
+<h3>New Folder</h3>
+<p>To New a folder in SD card.</p>
+<ol>
+<li>Click Wi-Fi Disk icon on the Home page to enter Wi-Fi Disk page.</li>
+<li>Click <span class="help01_14"> </span> button on Home Page.</li>
+<li>Find <span class="help01_18"> </span>  button and click it.</li>
+<li>Input the name of file, and Click OK button to finish it.</li>
+<li>It will pop up to prompt &quot;New Folder Success!&quot;</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> </p>
+<p>The new folder created will locate in the folder created automatically with named rule Year. Month in <strong>All Files</strong> root directory if you are locating other directory currently to new a folder, such as: Document, Audio, Video, Image, or Package.</p>
+</blockquote>
+
+<h3>Search the file</h3>
+<p>You can find the file you want to get quickly with this feature.</p>
+<ol>
+<li>Click Wi-Fi Disk icon on the Home page to enter Wi-Fi Disk page.</li>
+<li>Click <span class="help01_14"> </span>  button on Home Page.</li>
+<li>Find  <span class="help01_21"> </span> button and click it.</li>
+<li>Input the file name in the textbox.</li>
+<li>Press Enter Key to get the file you wanted.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>You can search the file with Fuzzy query rule. For example: </p>
+<ul>
+<li>Input the search condition in textbox with *.txt, then all .txt files will be displayed.</li>
+<li>Input the search condition in textbox with 1*23. To meet this combination rule records will be displayed. </li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong>  * code indicates one or more characters, and it can be placed anywhere in search condition.</p>
+</blockquote>
+<ul>
+<li>Input the search condition in textbox with 1?23. To meet this combination rule records will be displayed.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> &quot;?&quot;code indicates one character, and it can be placed anywhere in search condition.</p>
+</blockquote>
+<ul>
+<li>Input the search condition in the textbox with keyword such as 1234, then all files that contain 1234 characters will be displayed.</li>
+</ul>
+
+</blockquote>
+
+<h3>Rename the File or Folder</h3>
+<p>To rename the file or folder you selected.</p>
+<ol>
+<li>Click Wi-Fi Disk icon on the Home page to enter Wi-Fi Disk page.</li>
+<li>Select the file or folder you want to rename.</li>
+<li>Slide your finger to the right.</li>
+<li>Input the new file name or folder name and press &quot;Yes&quot; button to finish it.</li>
+<li>It will pop up to prompt &quot;Rename Success!&quot;</li>
+</ol>
+<h3>Delete the File or Folder</h3>
+<p>To delete the file or folder you selected.</p>
+<ol>
+<li>Click Wi-Fi Disk icon on the Home page to enter Wi-Fi Disk page.</li>
+<li>Select the file or folder you want to delete.</li>
+<li>Slide your finger to the left.</li>
+<li>Press &quot;Yes&quot; button to delete the file or folder on the pop up window.</li>
+</ol>
+<h3>Check the SD capacity status</h3>
+<p>To check your SD card capacity status currently.</p>
+<ol>
+<li>Click Wi-Fi Disk icon on the Home page to enter Wi-Fi Disk page.</li>
+<li>Click <span class="help01_14"> </span> button on Home Page.</li>
+<li>Find <span class="help01_23"> </span>  button and click it.</li>
+<li>It displays the SD System status including SD capacity and Free capacity on pop up window.</li>
+</ol>
+<h3>Format SD Card</h3>
+<p>To format your SD card.</p>
+<ol>
+<li>Click Wi-Fi Disk icon on the Home page to enter Wi-Fi Disk page.</li>
+<li>Click <span class="help01_14"> </span> button on Home Page.</li>
+<li>Find  <span class="help01_23"> </span> button and click it.</li>
+<li>Click Format card button, it will pop up a Prompt window.</li>
+<li>Select &quot;Yes&quot;to format SD card. Otherwise cancel the operation.</li>
+<li>It will prompt &quot;Format success&quot; if format SD card successfully.</li>
+</ol>
+
+
+<h3>Help Page</h3>
+<p>To know more about how to operate Wi-Fi Disk on IOS.</p>
+<ol>
+<li>Click Wi-Fi Disk on the Home page to enter Wi-Fi Disk page.</li>
+<li>Click <span class="help01_14"> </span> button on Home Page.</li>
+<li>Find  <span class="help01_28"> </span> button and click it.</li>
+<li>It will jump to help page.</li>
+</ol>
+
+<h2>FAQs</h2>
+<h3>Clients Cannot Access the Internet Properly</h3>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Check that clients are connected to the M2 properly.</li>
+<li>Check that the M2 is powered on properly.</li>
+<li>Check that the M2 is in a location covered by communication networks and that the signal strength is strong.</li>
+<li>When the M2 is used for Internet access, the Point-to-Point Protocol (PPP) user name and password must be set correctly. Check that the PPP user name and password are correct. For details, see <a href="#1090102" title="Setting &gt; LTE &gt; Default PDN Connection">Setting &gt; LTE &gt; Default PDN Connection</a>.</li>
+<li>Check that the network adapters of the clients are working properly.</li>
+<li>Contact your service provider if the problem persists.</li>
+</ol>
+<h3>Clients Cannot Access the WLAN Properly</h3>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Check whether there are potential interference sources or shielding objects near the M2. If any, adjust the placement of the M2</li>
+<li>Check and record the settings of the following parameters on the clients and the M2: SSID, Encryption mode, and security key. The encryption mode and the security key on the clients must match those set on the M2. Otherwise, change the setting on the clients</li>
+<li>If the Media Access Control (MAC) address filtering in the wireless local area network (WLAN) is enabled on M2, check that the MAC addresses of the clients are not in the Black list. For details, see <a href="#1090201" title="MAC addresses filter "> Settings &gt; Network &gt; MAC addresses filter </a>.</li>
+</ol>
+<!-- <h3>Login IP Address for the Management Page Is Forgotten</h3>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Restore the default settings.</li>
+<li>Enter the following default login IP address: 192.168.1.1.</li>
+</ol> -->
+<h3>Login username and password is forgotten</h3>
+<ol>
+<li>Long press Reset button for 3 seconds to restore the default setting</li>
+<li>Enter the default username and password both are admin to login web management.</li>
+</ol>
+<h3>Wi-Fi Key Is Forgotten</h3>
+<ul>
+<li>Log in to the management page and obtain the current Wi-Fi key. For details, see Setting the WLAN Key.</li>
+<li>Long press Reset button for 1 seconds to restore the default settings. Check the relevant label on the M2 to obtain the default Wi-Fi key.</li>
+</ul>
+<h3>Multi-Network IP Address Conflict Occurs</h3>
+<p>When multiple types of Internet connections are used simultaneously on the client, such as physical network adapter and Wi-Fi, inserting the <strong>M2</strong> into the client may result in IP address conflict across multiple networks.</p>
+<p>
+<strong>Solution:</strong> Disable other network devices or disconnect other Internet connections from the client, and then restart <strong>M2</strong>.</p>
+<h3>M2's Data Services Are Blocked by Some Antivirus Software</h3>
+<p>Some antivirus software (for example, Bitdefender 2010) will block the M2's RNDIS port.</p>
+<p><strong>Solution:</strong> Upgrade the relevant antivirus software to its latest version. If the problem persists, disable the software's firewall. </p>
+<h3>What Can I Do If the Network Connection Is Frequently Interrupted?</h3>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Check the network signal strength. If the signal is weak, move the M2 somewhere with better reception. </li>
+<li>Visit other websites to check whether the issue lies within a particular site.</li>
+<li>Close all other applications that require network connections. </li>
+<li>Contact your Internet service provider if the problem persists. </li>
+</ol>
+<h3>What Can I Do If I Cannot Open Web Pages After a Network Connection Is Set Up?</h3>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Re-set up a dial-up Internet connection.</li>
+<li>Check that the computer is not infected with viruses. </li>
+<li>Check that the APN user name and password in the profile management settings are correct. For details, contact your Internet service provider.</li>
+<li>Check that network connection has not been blocked by a firewall.</li>
+<li>Restart your computer, and re-set up a dial-up Internet connection.</li>
+</ol>
+<h3>What Can I Do If the Icons That Indicate No Signals and No Service Are Displayed?</h3>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Check that the M2 is in an area with good reception. For details, contact your Internet service provider.</li>
+<li>Check that you have subscribed to network services for your USIM card, and that there is no outstanding balance. For details, contact your Internet service provider.</li>
+</ol>
+<h3>What Can I Do If the Network Access Rate Is Low?</h3>
+<p><strong>Procedure:</strong></p>
+<ol>
+<li>Check that the M2 is in an area with good reception. For details, contact your Internet service provider.</li>
+<li>Check the network standard used by the Mobile Wi-Fi. The available network access rate varies by the network standard. For details, contact your Internet service provider.</li>
+</ol>
+<h3>Cannot login Web management Page</h3>
+<ul>
+<li>Disconnect other network connections, such as an Ethernet or Wireless Fidelity (Wi-Fi) connection.</li>
+<li>Clear the cookies and caches of IE browsers.</li>
+<li>Close all IE browsers and Open again.</li>
+<li>Check the name and password of administrator is correct.</li>
+<li>Remove and then insert the M2, or restart the computer.</li>
+</ul>
+<h3>The file display 0 B after finish uploading on some Android device</h3>
+<p>If you find the file name change to follow format with % 20 automatically, and the file size is 0 B on some Android device.</p>
+<p><strong>For example:</strong> the original file name is &quot;IMG 20130219 135238.jpg&quot;,</p>
+<p>It is changed the file named &quot;IMG%2020130219%20135238.jpg&quot; after finish uploading to Wi-Fi Disk.</p>
+<blockquote>
+<p><strong>Note:</strong> it usually occur in the file name with the space.</p></blockquote>
+
+<p><strong>Solution:</strong> Please change the file name without the space, and try to upload again.</p>
+<div class="help01_26"> </div>
+
+<h3>How Can I Use M2 on XP OS?</h3>
+<p>M2 support XP sp3, but in the case of XP sp3 without RNDIS driver, then need to do following steps to install it:</p>
+<ul>
+<li>Connect the M2 through Wi-Fi and connect the USB to the PC/laptop as well.</li>
+<li>Download the RNDIS driver from WebGui: Setting -> User Management (the link will be displayed only if M2 detect the OS is XP meanwhile USB and Wi-Fi connection are both used, normally it is invisible. If M2 connect to PC/laptop only through Wi-Fi, it is also invisible).
+<div> <img src="/img/help_xp.jpg"></div>
+</li>
+<li> Install the driver on PC then the user can start using the USB connection.For XP sp2 need to upgrade to sp3 then do the same.</li>
+</ul>
+
+<h3>How to add a port forwarding rule?</h3>
+<p><strong>Procedure:</strong></p>
+<ul>
+<li>Record wan IP of your M2 from Web GUI
+<div class="img_padding"><img src="/img/help_pf_01.jpg"></div>
+</li>
+<li>Choose IP address you want the M2 to forward to, you can get the IP info either from CMD terminal
+<div class="img_padding"><img src="/img/help_pf_02.jpg"></div>
+or just simply choose from User list on 'Gaming &amp; Apps Management' page.
+<div class="img_padding"><img src="/img/help_pf_03.jpg"></div>
+</li>
+<li>Go to Setting -> Gaming &amp; Apps Management page, Enable Port Forward function
+<div class="img_padding"><img src="/img/help_pf_04.jpg"></div>
+</li>
+<li>Fill in all fields for your port forwarding rule
+<ol>
+<li>Click the 'ip' which you want to forward to, it will fill the Mac filed automatically.
+<div class="img_padding"><img src="/img/help_pf_05.jpg"></div>
+</li>
+<li>Fill Config name (rule name) and Local port/WAN port
+<div class="img_padding"><img src="/img/help_pf_06.jpg"></div>
+</li>
+</ol>
+</li>
+<li>Click "Apply" button to apply
+<div class="img_padding"><img src="/img/help_pf_07.jpg"></div>
+</li>
+<li>Now the UDP traffic reach M2 WAN IP(ex: 10.72.125.90)/port 3560 will be redirect to IP of your PC(ex: 192.168.1.101/port 3500).
+<br>
+(In this example, 3500 is 'Local port' and 3560 is 'Wan port')
+</li>
+
+</ul>
+
+
+
+
+</div>
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
+
+
+
+<script type="text/javascript">
+function display_top_button(){
+  var top = document.body.scrollTop | document.documentElement.scrollTop;
+  if(top>500){
+    document.getElementById('to_top').style.display="";
+  }
+  else document.getElementById('to_top').style.display="none";
+}
+
+window.onscroll = function(){ 
+  display_top_button();
+}
+
+
+function scroll_top(){
+  document.body.scrollTop=0;
+  document.documentElement.scrollTop=0;
+}
+
+
+
+
+$(document).ready(function(){
+  display_top_button();
+$('#tree').ztree_toc({
+  is_auto_number:true,
+  documment_selector:'.markdown-body',
+  ztreeStyle: {
+    width:'100%'
+  },
+  _header_nodes: [{ id:1, pId:0, name:"Help Index",open:true}],
+  debug: false
+});
+// location.hash="";
+});
+
+
+
+</script>

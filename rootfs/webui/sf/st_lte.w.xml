@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<title>
+<cspn><% get_cspn_string(); %></cspn>
+<pin><% get_ruim_pin_state(); %></pin>
+<pin_cnt><% get_ruim_pin_count(); %></pin_cnt>
+<puk><% get_ruim_puk_count(); %></puk>
+<attach><% get_attach_status(); %></attach>
+<hplmn><% get_hplmn_status(); %></hplmn>
+<update><% stats_update(); %></update>
+<time><% get_time(); %></time>
+<freq_info><% get_freq_info(); %></freq_info>
+<cell_info><% get_cell_info(); %></cell_info>
+<apn><% get_apn_inuse(); %></apn>
+<rssi_info><% get_rssi_info(); %></rssi_info>
+</title>

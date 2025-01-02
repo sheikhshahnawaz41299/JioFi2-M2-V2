@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lan>
+<dhcp_ip><% get_dhcp_ip(); %></dhcp_ip>
+<submask><% get_dhcp_mask(); %></submask>
+<start_ip><% get_dhcp_start_ip(); %></start_ip>
+<end_ip><% get_dhcp_end_ip(); %></end_ip>
+<dhcp_state><% get_dhcp_server_enabled(); %></dhcp_state>
+<static>
+<static_ip><% get_static_lease("0"); %></static_ip>
+<static_ip><% get_static_lease("1"); %></static_ip>
+<static_ip><% get_static_lease("2"); %></static_ip>
+<static_ip><% get_static_lease("3"); %></static_ip>
+<static_ip><% get_static_lease("4"); %></static_ip>
+<static_ip><% get_static_lease("5"); %></static_ip>
+<static_ip><% get_static_lease("6"); %></static_ip>
+<static_ip><% get_static_lease("7"); %></static_ip>
+<static_ip><% get_static_lease("8"); %></static_ip>
+<static_ip><% get_static_lease("9"); %></static_ip>
+</static>
+</lan>

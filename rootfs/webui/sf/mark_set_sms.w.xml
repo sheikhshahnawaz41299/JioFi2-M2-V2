@@ -1,0 +1,6 @@
+<sms>
+<dsc><% get_version_dsc(); %></dsc>
+<report><% get_sms_need_ack(); %></report>
+<move><% get_sms_auto_move(); %></move>
+<del><% get_sms_auto_del(); %></del>
+</sms>

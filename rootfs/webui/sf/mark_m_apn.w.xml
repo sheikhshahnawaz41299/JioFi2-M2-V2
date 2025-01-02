@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net>
+<apn_active><% get_apn_list_acitve(); %></apn_active>
+<apn>
+<apn_name><% get_apn_list_name("0"); %></apn_name>
+<user><% get_apn_list_user("0"); %></user>
+<pwd><% get_apn_list_password("0"); %></pwd>
+<apn_apn><% get_apn_list_apn("0"); %></apn_apn>
+<number><% get_apn_list_number("0"); %></number>
+</apn>
+<apn>
+<apn_name><% get_apn_list_name("1"); %></apn_name>
+<user><% get_apn_list_user("1"); %></user>
+<pwd><% get_apn_list_password("1"); %></pwd>
+<apn_apn><% get_apn_list_apn("1"); %></apn_apn>
+<number><% get_apn_list_number("1"); %></number>
+</apn>
+<apn>
+<apn_name><% get_apn_list_name("2"); %></apn_name>
+<user><% get_apn_list_user("2"); %></user>
+<pwd><% get_apn_list_password("2"); %></pwd>
+<apn_apn><% get_apn_list_apn("2"); %></apn_apn>
+<number><% get_apn_list_number("2"); %></number>
+</apn>
+<dial_mode><% get_dial_mode(); %></dial_mode>
+</net>

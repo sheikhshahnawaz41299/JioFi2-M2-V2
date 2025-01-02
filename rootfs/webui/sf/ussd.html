@@ -1,0 +1,341 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li class="active"><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li id="to_setting"><a href="javascript:;">Quick Setting</a></li>
+  <li id="to_wifi"><a>WiFi Setting</a></li>
+  <li id="to_net"><a>Network Setting</a></li>
+  <li id="to_op"><a>Network Operators</a></li>
+  <li id="to_sys"><a>Admin Setting</a></li>
+  <li id="to_set_sd"><a>Storage Setting</a></li>
+  <li><a>Advance </a>
+    <ul>
+    <li id="to_dhcp"><a>DHCP</a></li>
+    <!--<li id="to_set_sms"><a>SMS Setting</a></li>-->
+    <li id="to_set_pin" style="display:none;"><a>PIN Setting</a></li>
+    <li id="to_set_mac"><a>MAC Filter</a></li>
+    <li id="to_set_ip"><a>IP Filter</a></li>
+    <li id="to_set_url"><a>URL Filter</a></li>
+    <li id="to_set_port"><a>Port Filter</a></li>
+    <li id="to_pf"><a>Port Forward</a></li>
+    <li id="to_ddns"><a>DDNS</a></li>
+    <li id="to_wps"><a>WPS</a></li>
+    <li id="to_wds"><a>WDS</a></li>
+    <li id="to_ussd" class="active-item"><a href="javascript:;">USSD</a></li>
+    </ul>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">USSD</h3>
+<div class="line" style="padding:0em 0.6em;">
+  <form class="customform" action="#">
+  <div class="margin">
+  <div class="line">
+<!--   <div class="s-12 l-3 line_form">
+  <label class="name"> Wi-Fi SSID</label>
+  </div>
+  <div class="s-12 l-5">
+  <input type="text" id="ssid" name="ssid" title="ssid" placeholder="SSID" maxlength="32"/>
+  </div> -->
+  <div class="s-12 l-8">
+  <div id="div_textarea">
+  <textarea name="recv" id="recv" disabled="true"></textarea>
+  </div>
+  </div>
+  </div>
+
+  <div class="line" id="div_ussd_select" style="display:none;">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> Select</label>
+  </div>
+  <div class="s-12 l-5">
+    <select name="ussd_cmd" id="ussd_cmd">
+    <option value="*121*2#">Check balance</option>
+    <option value="*282#">Check my number</option>
+    <option value="*123*11#">Check Usage of 3G pack</option>
+    <option value="*125*7#">Check Usage of flexishield plan</option>
+    <option value="*123#">Check account balance</option>
+    <option value="*123*10#">Check Usage of 2G plan</option>
+    </select>
+  </div>
+  </div>
+
+  <div class="line" id="div_ussd_input">
+  <div class="s-12 l-3 line_form">
+  <label class="name"> Input</label>
+  </div>
+  <div class="s-12 l-5">
+    <input type="text" name="ussd_cmd_input" id="ussd_cmd_input">
+  </div>
+  </div>
+
+  <div class="s-12 l-8">
+  <div class="s-12 l-9" id="errHint">
+
+  </div>
+  <div class="s-12 l-3 right">
+  <div class="button" id="to_submit">SEND</div>
+  </div>
+  </div>
+  </div>
+  </form>
+  <img src="img/loading.gif" style="display:none;">  
+</div>
+</div>
+</div>
+<style type="text/css">
+
+.width_100{width:100%;font-size:1em;}
+
+.customform label.name{font-size: 1.2em;padding-left:2em;}
+.customform label.check{font-size: 1.8em; }
+.customform label.after{font-size: 1em; }
+.customform .show_pwd{height:2.7em;line-height:2.7em;vertical-align:middle;margin-left:1.6em;}
+
+
+@media screen and (min-width:801px) {
+#aside{height:30em;background:#F0F0F0;}
+#main_content{background:#EEE;color:#444;font-size:0.9em;height:33.4em;
+filter:alpha(opacity=95);  
+-moz-opacity:0.95;  
+-khtml-opacity: 0.95;  
+opacity: 0.95;  
+}
+#main_content h3{padding:1em;color:#444;}
+#div_textarea{padding-left: 2em;resize:none;}
+}
+
+@media screen and (max-width:800px) {
+.width_100{width:100%;font-size: 1em;}
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#EEE;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+.customform label.name{font-size: 1.2em;padding-left:1em;}
+}
+
+#errHint{color: red;text-align: center;}
+
+
+
+textarea{height: 10em;}
+
+
+</style>
+<script type="text/javascript">
+
+function close_pop_diag(){
+easyDialog.close();
+//return false;
+}
+
+function load_mark_set(){
+
+}
+
+function setCaretPosition(ctrl, pos) {
+  if (ctrl.setSelectionRange) {
+    ctrl.focus();
+    ctrl.setSelectionRange(pos, pos);
+  }
+  else if (ctrl.createTextRange) {
+    var range = ctrl.createTextRange();
+    range.collapse(true);
+    range.moveEnd('character', pos);
+    range.moveStart('character', pos);
+    range.select();
+  }
+}
+
+
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+
+function pop_waiting(){
+  var content = "<div class='pop_div'><div id='waiting'><img src='/img/loading.gif' style='height:2em;width:2em;'><span id='waiting_txt'>Please Waiting...</span></div></div>";
+  easyDialog.open({
+        container : {
+            content : content,
+        },
+        fixed : true
+  });
+}
+function pop_submit_result(txt){
+  var content = "<div class='pop_div'><div style='text-align:center;'>"+txt+"</div></div>";
+  easyDialog.open({
+        container : {
+            header : 'Setting',
+            content : content,
+            yesText : 'OK',
+            yesFn : close_pop_diag
+        },
+        callback: load_setting,
+        fixed : false
+    });
+  return false;
+}
+function close_pop_diag(){
+easyDialog.close();
+//if(timer_count) clearInterval(timer_count);
+//return false;
+}
+
+var is_ussd_select=0;
+$('#to_submit').click(function(event){
+  event.preventDefault();
+  var ussd_cmd="";
+
+  if($("#ussd_cmd_input").val()=="op=airtel"){
+    is_ussd_select=1;
+    $("#div_ussd_input").hide();
+    $("#div_ussd_select").show();
+    return false;
+  }
+
+  if($('#to_submit').attr("disabled")) return false;
+  if(is_ussd_select) ussd_cmd = $("#ussd_cmd").val();
+  else ussd_cmd = $("#ussd_cmd_input").val();
+  pop_waiting();
+  locking=1;
+  ussd_recv_cnt=0;
+  $('#to_submit').attr({disabled:true,class:'button_gray'});
+  
+  $('#recv')[0].value += ('-------------------------\nSend: '+ussd_cmd+'\n');
+  var post_data;
+    $.ajax({ 
+      url: "/wxml/ussd_send.xml",
+      type: "Post", 
+      timeout: 20000,
+      cache: false,
+      datatype: "xml",
+      data: {"send": ussd_cmd }, 
+      success: function(data, status) {
+        pre_recv="";
+//        var ssid = parseInt($(data).find("ssid").text());
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+          locking=0;
+          pop_submit_result("Send USSD Command Timeout!");
+//          clearInterval(interval_timer);
+          load_setting();
+        }
+        else if(t==="error"){
+          locking=0;
+          pop_submit_result("Send USSD Command Fail!");
+//          clearInterval(interval_timer);
+          load_setting();
+        }
+      }
+    });
+
+    
+//  pop_submit_result();
+});
+
+
+
+
+
+
+function load_setting(){
+  if(mod_sig>0 && mod_sig<6){
+    $('#to_submit').attr({disabled:false,class:'button'});
+  }
+  else{
+    $('#to_submit').attr({disabled:true,class:'button_gray'});
+  }
+}
+
+var pre_recv,ussd_recv_cnt;
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="ussd.html"){
+    load_setting();
+    interval_timer = setInterval(function(){
+      $.ajax({ 
+        url: "ussd_res.w.xml",
+        type: "Get", 
+        timeout: 8000,
+        cache: false,
+        datatype: "xml",
+    //    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+        success: function(data, status) {
+          var recv = $(data).find("res").text();
+          if(recv=='-'){
+            ussd_recv_cnt++;
+            if(ussd_recv_cnt>20){
+              locking=0;
+              ussd_recv_cnt=0;
+              close_pop_diag();
+              load_setting();
+            }
+          }
+          else{
+//           clearInterval(interval_timer);
+           locking=0;
+           ussd_recv_cnt=0;
+          close_pop_diag();
+          load_setting();
+
+          if(pre_recv==recv) return;
+          else pre_recv=recv;
+          var obj=$('#recv')[0];
+          obj.value += ('Receive: '+recv+'\n');
+          setCaretPosition(obj,obj.value.length);
+          obj.scrollTop=obj.scrollHeight;
+//           setTimeout(function(){$("send").focus();},100);
+          }          
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+          locking=0;
+          close_pop_diag();
+        }
+        else if(t==="error"){
+          locking=0;
+          close_pop_diag();
+        } 
+        load_setting();
+      }
+      });
+    },1000);
+  }
+}
+
+
+</script>
+

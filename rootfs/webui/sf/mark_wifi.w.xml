@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wifi>
+<ssid><% get_wifi_ssid(); %></ssid>
+<ssid><% get_wifi_ssid("1"); %></ssid>
+<ssid><% get_wifi_ssid("2"); %></ssid>
+<onex><% get_sig_ind("0"); %></onex>
+<evdo><% get_sig_ind("1"); %></evdo>
+<batt><% get_battery_ind(); %></batt>
+<cspn><% get_cspn_string(); %></cspn>
+<sms_ind><% get_sms_ind(); %></sms_ind>
+<sms_unread><% get_sms_unread_count(); %></sms_unread>
+<sms_from><% get_sms_new_from(); %></sms_from>
+<sms_pri><% get_sms_new_priority(); %></sms_pri>
+<sms_cnt><% sms_get_count(); %></sms_cnt>
+</wifi>

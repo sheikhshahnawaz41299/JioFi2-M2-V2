@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fota>
+<state>3</state>
+<check_result>2</check_result>
+<dl_result>1</dl_result>
+<dl_progress>403,2003</dl_progress>
+<install_result>5</install_result>
+<install_progress>20</install_progress>
+</fota>

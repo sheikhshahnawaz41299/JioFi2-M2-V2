@@ -1,0 +1,1963 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>LTE Setting</title>-->
+<script>
+	if(top.location.pathname != "/index.htm") top.location.href = "./index.htm";
+	var Changevalue_Cell = 0,
+		Changevalue_Pin = 0,
+		Changevalue_Default_Apn = 0,
+		Changevalue_Multi_Apn = 0;
+
+	var options_Current_profile = [];
+	var Current_profile_idx = 0;
+	var first_profile_idx = 100;
+	//CellSection
+	var CELL_SCAN_MODE;
+	var CELL_SCAN_TYPE;
+	var CELL_SCAN_VALUE;
+	var CELL_BAND_SELECTION;
+	var CELL_BANDWIDTH;
+	//PIN
+	var PIN_ENABLE;
+	var PIN_CURRENT
+	var PUK_CODE;
+	var REMAINING_ATTEMPTS;
+	//Default APN
+	var APN_ATTACH_TYPE;
+	var APN_NAME;
+	var APN_AUTH_TYPE;
+	var APN_AUTH_USER;
+	var APN_AUTH_PASSWORD;
+	//Multi APN
+	var MULTI_APN_CELL_ID;
+	var MULTI_APN_NAME;
+	var MULTI_APN_AUTH_TYPE;
+	var MULTI_APN_AUTH_USER;
+	var MULTI_APN_AUTH_PASSWORD;
+
+	
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "set_lte.html") {
+
+function ajax_post(target, post_data) {
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: target,
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: post_data,
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				var result = parseInt($(data).find("result").text());
+				hide_tips(seed);
+				op_is_change_pin = op_is_change_pin && result;
+
+				if(!result) alert('Setting Apply Success!');
+				else alert('Setting Apply Fail!');
+
+				load_setting();
+
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+	$('input[name=form1_pin],input[name=form2_pin],input[name=form2_new_pin],input[name=form3_pin],input[name=form4_puk],input[name=form4_pin]').on('input', function() {
+		var str = $(this).val();
+		$(this).val(str.replace(/[^0-9]/g, ''));
+		if(str.length > 8) $(this).val(str.substr(0, 8));
+	});
+
+	var op_is_change_pin = 0;
+	$('#to_submit1').click(function(event) {
+		event.preventDefault();
+		var pin = $("#form1_pin").val();
+		if(pin.length < 4) {
+			$("#errHint1").html("PIN too short");
+			return false;
+		}
+		var data = 'action=0' + '&arg1=' + pin + '&arg2=';
+		$("#form1_pin").val('');
+		show_tips(seed,"Waiting...");
+		ajax_post('/wxml/set_pin.xml', data);
+		return true;
+	})
+
+	$('#to_submit2').click(function(event) {
+		event.preventDefault();
+		var operate = $('select[name=form2_select]').val();
+		var pin = $("#form2_pin").val();
+		if(pin.length < 4) {
+			$("#errHint2").html("PIN too short");
+			return false;
+		}
+		if(operate == 1) {
+			var data = 'action=1' + '&arg1=' + pin + '&arg2=';
+			$("#form2_pin").val('');
+			show_tips(seed,"Waiting...");
+			ajax_post('/wxml/set_pin.xml', data);
+			return true;
+		}
+		if(operate == 2) {
+			var new_pin = $("#form2_new_pin").val();
+
+			if(new_pin.length < 4) {
+				$("#errHint2").html("PIN too short");
+				return false;
+			}
+
+			var data = 'action=2' + '&arg1=' + pin + '&arg2=' + new_pin;
+			op_is_change_pin = 1;
+			show_tips(seed,"Waiting...");
+			ajax_post('/wxml/set_pin.xml', data);
+			return true;
+		}
+	})
+
+	$('#to_submit3').click(function(event) {
+		event.preventDefault();
+		var pin = $("#form3_pin").val();
+		if(pin.length < 4) {
+			$("#errHint3").html("PIN too short");
+			return false;
+		}
+		var data = 'action=3' + '&arg1=' + pin + '&arg2=';
+		$("#form3_pin").val('');
+		show_tips(seed,"Waiting...");
+		ajax_post('/wxml/set_pin.xml', data);
+		return true;
+	})
+
+	$('#to_submit4').click(function(event) {
+		event.preventDefault();
+
+		var puk = $("#form4_puk").val();
+		if(puk.length < 4) {
+			$("#errHint4").html("PUK length error");
+			return false;
+		}
+		var pin = $("#form4_pin").val();
+		if(pin.length < 4) {
+			$("#errHint4").html("PIN too short");
+			return false;
+		}
+		var data = 'action=4' + '&arg1=' + puk + '&arg2=' + pin;
+		$("#form4_puk").val('');
+		$("#form4_pin").val('');
+		show_tips(seed,"Waiting...");
+		ajax_post('/wxml/set_pin.xml', data);
+		return true;
+	})
+
+	$('#input_default_apn').click(function(event) {
+		if($("#input_apn").val().match(/[^a-zA-Z0-9-.]/)) {
+			$("#input_apn").focus();
+			$("#errHint_Apn").html("Enter only alphanumeric characters, hyphens, and periods for the access point name.");
+			return false;
+		} else if($("#input_username").val().match(/[^a-zA-Z0-9]/)) {
+			$("#input_username").focus();
+			$("#errHint_Apn").html("Enter only alphanumeric characters for the username and password.");
+			return false;
+		} else if($("#input_password").val().match(/[^a-zA-Z0-9]/)) {
+			$("#input_password").focus();
+			$("#errHint_Apn").html("Enter only alphanumeric characters for the username and password.");
+			return false;
+		} else if($("#input_multi_apn_name").val().match(/[^a-zA-Z0-9-.]/)) {
+			$("#input_multi_apn_name").focus();
+			$("#errHint_Apn").html("Enter only alphanumeric characters, hyphens, and periods for the access point name.");
+			return false;
+		} else if($("#input_multi_username").val().match(/[^a-zA-Z0-9]/)) {
+			$("#input_multi_username").focus();
+			$("#errHint_Apn").html("Enter only alphanumeric characters for the username and password.");
+			return false;
+		} else if($("#input_multi_password").val().match(/[^a-zA-Z0-9]/)) {
+			$("#input_multi_password").focus();
+			$("#errHint_Apn").html("Enter only alphanumeric characters for the username and password.");
+			return false;
+		}
+
+		var index = $("#select_apn_network_attach").val();
+		var apn_name = $("#input_name").val();
+		var user = $("#input_username").val();
+		var pwd = $("#input_password").val();
+		var apn_apn = $("#input_apn").val();
+		var number = $("#input_number").val();
+		var ip_mode = $('select[name=ip_mode]').val();
+
+		var post_data = '';
+		if(index == 1) post_data = 'apn_index=' + esc(index) + '&apn_name=' + esc(apn_name) + '&user=' + esc(user) + '&pwd=' + esc(pwd) + '&apn=' + esc(apn_apn) + '&number=' + esc(number) + '&apn_mode=' + 1 + '&ip_mode=' + esc(ip_mode);
+		else post_data = "apn_mode=0" + '&ip_mode=' + esc(ip_mode);
+
+		show_tips(seed,"Waiting...");
+		var headers = {};
+		headers["__RequestVerificationToken"] = $("#csrf_token2").val();
+		$.ajax({
+			url: "/wxml/set_net.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 20000,
+			cache: false,
+			datatype: "xml",
+			data: post_data,
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					top.location.reload(true);
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				var apn = parseInt($(data).find("apn_mode").text());
+				if(apn) $("#errHint_Apn").html('Setting Apply Success!');
+				else $("#errHint_Apn").html('Setting Apply Fail!');
+				load_setting();
+				hide_tips(seed);
+				setTimeout(function() {
+					$("#errHint_Apn").html('')
+				}, 1500)
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+					locking = 0;
+				}
+			}
+		})
+	});
+
+	$('select[name=form2_select]').die().live('change', function() {
+		if(parseInt($(this).val()) > 1) {
+			$('#form2_new_pin_div').show();
+		} else $('#form2_new_pin_div').hide();
+		$('#form2_pin').focus();
+	});
+
+	$('#pin_all>input[type=text]').die().live('keypress', function(e) {
+		var k = window.event ? e.keyCode : e.which;
+		if(((k >= 48) && (k <= 57)) || k == 8 || k == 0) {
+
+		} else {
+			if(window.event) {
+				window.event.returnValue = false;
+			} else {
+				e.preventDefault();
+			}
+		}
+	})
+
+	function set_form_display(id) {
+		for(i = 1; i < 6; i++) {
+			$("#form" + i).hide();
+		}
+		$('#' + id).show();
+	}
+
+	function load_setting() {
+		$.ajax({
+			url: "mark_set_pin.w.xml",
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			success: function(data, status) {
+				var dsc = $(data).find("dsc").text();
+				if(dsc & 0x01) $('#pin_all').show();
+				else $('#pin_all').hide();
+
+				var apn_mode = parseInt($(data).find("apn_mode").text());
+				var apn_active = parseInt($(data).find("apn_active").text());
+				var apn_apn = $(data).find("apn_apn").text();
+				var user = $(data).find("user").text();
+				var pwd = $(data).find("pwd").text();
+				var number = $(data).find("number").text();
+				var apn_name = $(data).find("apn_name").text();
+
+				var ip_mode = parseInt($(data).find("ip_mode").text());
+				$('select[name=ip_mode]').val(ip_mode);
+
+				$("#input_apn").val(apn_apn != '-' ? apn_apn : '');
+				$("#input_username").val(user != '-' ? user : '');
+				$("#input_password").val(pwd != '-' ? pwd : '');
+				$("#input_number").val(number != '-' ? number : '');
+				$("#input_name").val(apn_name != '-' ? apn_name : '');
+				$("#select_apn_network_attach").val(apn_mode);
+				if(apn_mode == 0) {
+					$("#Apn").hide();
+					// $("#Username").hide();
+					// $("#Password").hide();
+					$("#tr_ip_mode").hide();
+				} else {
+					$("#Apn").show();
+					// $("#Username").show();
+					// $("#Password").show();
+					$("#tr_ip_mode").show();
+				}
+
+				var state = parseInt($(data).find("state").text());
+				var pin_cnt = parseInt($(data).find("pin").text());
+				var puk_cnt = parseInt($(data).find("puk").text());
+
+				switch(state) {
+					case 0:
+					case 1:
+					case 2:
+						var errhint_id = "#errHint" + (parseInt(state) + 1);
+						$(errhint_id).html("Remaining of attempts:" + pin_cnt);
+						break;
+					case 3:
+						$("#errHint4").html("Remaining of attempts:" + puk_cnt);
+						if(parseInt(puk_cnt) == 0) {
+							$("#form4_puk").attr('disabled', true);
+							$("#form4_pin").attr('disabled', true);
+							DisableBtn(seed,'to_submit4');
+						} else {
+							$("#form4_puk").attr('disabled', false);
+							$("#form4_pin").attr('disabled', false);
+							EnableBtn(seed,'to_submit4');
+						}
+						break;
+					case 4:
+					default: //'-' parseInt to NaN
+						$("#errHint5").html("SIM card does not exist,please check it");
+						break;
+				}
+				if(isNaN(state)) {
+					set_form_display('form5');
+				} else {
+					var form_id = "form" + (state + 1);
+					set_form_display(form_id);
+					if(state == 3 && parseInt(puk_cnt)) {
+						$("#form4_puk").focus();
+					} else {
+						if(state == 1) {
+							if(op_is_change_pin) {
+								op_is_change_pin = 0;
+								$('#form2_new_pin_div').show();
+							} else {
+								$("#form2_pin").val('');
+								$("#form2_new_pin").val('');
+								$('select[name=form2_select]').val('1');
+								$('#form2_new_pin_div').hide();
+							}
+
+						}
+						var input_id = "#form" + (parseInt(state) + 1) + "_pin";
+						$(input_id).focus();
+					}
+				}
+							
+				$("#H_default_apn").show();	
+				$("#Table_Apn_network").show();
+				$("#Table_MultiAPN").show();
+				
+				reload_compnets(seed);
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+
+			load_setting();
+		}
+	}
+
+	$(document).ready(function() {});
+
+	//Value dependency item
+	//Cell selection
+	$("#select_scan_mode").change(function() {
+		//console.log("Change to " + $("#select_scan_mode").val() );
+		if($("#select_scan_mode").val() == "Dedicated_EARFCN") {
+			$("#Cell_Type").hide();
+			$("#Value_earfcn").hide();
+		} else {
+			$("#Cell_Type").show();
+			$("#Value_earfcn").show();
+		}
+	});
+	//Default Apn
+
+	/*
+				$("#select_apn_network_attach").change(function() {
+					//console.log("Change to " + $("#select_apn_network_attach").val() );
+					if($("#select_apn_network_attach").val()=="2"){
+						$("#Apn").show();
+					}else{
+						$("#Apn").hide();
+						$("#Apn").val("");
+					}
+				});
+	*/
+
+	/*
+	$("#select_authentication_type").change(function() {
+		//console.log("Change to " + $("#select_authentication_type").val() );
+		if($("#select_authentication_type").val()!="0"){
+			$("#Username").show();
+			$("#Password").show();
+		}else{
+			$("#Username").hide();
+			$("#Password").hide();
+			$("#Username").val("");
+			$("#Password").val("");
+		}
+	});
+	*/
+	//Multiple APN
+	$("#select_multi_auth_type").change(function() {
+		//console.log("Change to " + $("#select_multi_auth_type").val() );
+		if($("#select_multi_auth_type").val() != "0") {
+			$("#Multi_username").show();
+			$("#Multi_password").show();
+		} else {
+			$("#Multi_username").hide();
+			$("#Multi_password").hide();
+			$("#Multi_username").val("");
+			$("#Multi_password").val("");
+		}
+	});
+	//user level display
+	function start_level_load() {
+		//Value dependency item
+		//Cell selection
+		/*
+		if($("#select_scan_mode").val()=="Dedicated_EARFCN"){
+			//console.log("Change to " + $("#select_scan_mode").val() );
+			$("#Cell_Type").hide();
+			$("#Value_earfcn").hide();
+		}else{
+			$("#Cell_Type").show();
+			$("#Value_earfcn").show();
+		}
+		*/
+		//Default Apn
+		if($("#select_apn_network_attach").val() == "2") {
+			$("#Apn").show();
+		} else {
+			//console.log("Change to " + $("#select_apn_network_attach").val() );
+			$("#Apn").hide();
+		}
+		if($("#select_authentication_type").val() != "0") {
+			$("#Username").show();
+			$("#Password").show();
+		} else {
+			//console.log("Change to " + $("#select_authentication_type").val() );
+			$("#Username").hide();
+			$("#Password").hide();
+		}
+		//Multiple APN
+		if($("#select_multi_auth_type").val() != "0") {
+			$("#Multi_username").show();
+			$("#Multi_password").show();
+		} else {
+			//console.log("Change to " + $("#select_multi_auth_type").val() );
+			$("#Multi_username").hide();
+			$("#Multi_password").hide();
+		}
+
+		if(session_level == 3) // usr
+		{
+			// cell selection
+			/*
+		            document.getElementById('select_scan_mode').disabled = "true";
+					document.getElementById('select_scan_band_nums').disabled = "true";
+
+					document.getElementById('in_band1_band_id').disabled = "true";
+					document.getElementById('in_band1_start_freq').disabled = "true";
+					document.getElementById('in_band1_end_freq').disabled = "true";
+					document.getElementById('select_bandwidth_selection1').disabled = "true";
+
+					document.getElementById('in_band2_band_id').disabled = "true";
+					document.getElementById('in_band2_start_freq').disabled = "true";
+					document.getElementById('in_band2_end_freq').disabled = "true";
+					document.getElementById('select_bandwidth_selection2').disabled = "true";
+
+					document.getElementById('in_band3_band_id').disabled = "true";
+					document.getElementById('in_band3_start_freq').disabled = "true";
+					document.getElementById('in_band3_end_freq').disabled = "true";
+					document.getElementById('select_bandwidth_selection3').disabled = "true";
+					*/
+
+			// PIN
+			document.getElementById('tr_pin_remaining').style.display = "none";
+			document.getElementById('tr_puk_remaining').style.display = "none";
+
+			//Default APN
+			document.getElementById('H_default_apn').style.display = "none";
+			document.getElementById('Table_Apn_network').style.display = "none";
+			//Multiple APN
+			document.getElementById('H_MultiAPN').style.display = "none";
+			document.getElementById('Table_MultiAPN').style.display = "none";
+		} else if(session_level == 2) // operator
+		{
+			// cell selection
+			/*
+		            document.getElementById('select_scan_mode').disabled = "true";
+					document.getElementById('select_scan_band_nums').disabled = "true";
+
+					document.getElementById('in_band1_band_id').disabled = "true";
+					document.getElementById('in_band1_start_freq').disabled = "true";
+					document.getElementById('in_band1_end_freq').disabled = "true";
+					document.getElementById('select_bandwidth_selection1').disabled = "true";
+
+					document.getElementById('in_band2_band_id').disabled = "true";
+					document.getElementById('in_band2_start_freq').disabled = "true";
+					document.getElementById('in_band2_end_freq').disabled = "true";
+					document.getElementById('select_bandwidth_selection2').disabled = "true";
+
+					document.getElementById('in_band3_band_id').disabled = "true";
+					document.getElementById('in_band3_start_freq').disabled = "true";
+					document.getElementById('in_band3_end_freq').disabled = "true";
+					document.getElementById('select_bandwidth_selection3').disabled = "true";
+					*/
+
+			// Multiple APN (disable)
+			//--document.getElementById('input_multi_cell_id').disabled = "true";
+			document.getElementById('input_multi_apn_name').disabled = "true";
+			document.getElementById('select_multi_auth_type').disabled = "true";
+			document.getElementById('input_multi_username').disabled = "true";
+			document.getElementById('input_multi_password').disabled = "true";
+		} else if(session_level == 1) // admin
+		{
+
+		}
+	}
+	/*
+	//Cell selection
+	function RefreshCellSelection(values)
+	{
+		var error_msg = "";
+
+		if(values == 0 )
+			pagetag = "GetCell";
+		else
+			pagetag = "SetCell";
+
+		//console.log("pagetag :"+pagetag);
+
+		$.ajax(
+		{
+		    type: "POST",
+		    url: "cgi-bin/qcmap_web_cgi",
+		    data:
+			{
+			    Page: pagetag,
+			    Mask: Changevalue_Cell,
+			    result: "0",
+			    cell_scan_mode: $("#select_scan_mode").val(),
+			    cell_scan_band_nums: $("#select_scan_band_nums").val(),
+			    cell_scan_band_1: $("#in_band1_band_id").val(),
+			    cell_scan_start_freq_1: $("#in_band1_start_freq").val(),
+			    cell_scan_end_freq_1: $("#in_band1_end_freq").val(),
+			    cell_band_width_1: $("#select_bandwidth_selection1").val(),
+
+			    cell_scan_band_2: $("#in_band2_band_id").val(),
+			    cell_scan_start_freq_2: $("#in_band2_start_freq").val(),
+			    cell_scan_end_freq_2: $("#in_band2_end_freq").val(),
+			    cell_band_width_2: $("#select_bandwidth_selection2").val(),
+
+			    cell_scan_band_3: $("#in_band3_band_id").val(),
+			    cell_scan_start_freq_3: $("#in_band3_start_freq").val(),
+			    cell_scan_end_freq_3: $("#in_band3_end_freq").val(),
+			    cell_band_width_3: $("#select_bandwidth_selection3").val(),
+
+			    token: session_token
+			},
+		    dataType: "text",
+		    success: function(msgs) {
+		        if (msgs.length > 0) {
+		            var obj = jQuery.parseJSON(msgs);
+		            if (obj.result == "AUTH_FAIL") {
+		                //hide_menu();
+		                //loadpage('status/QCMAP_Default_Status.html');
+		                load_defaultpage(seed);
+		                alert("Device is being configured by a different IP: relogin");
+		                return;
+		            }
+		            /*
+		            if(obj.result != "SUCCESS")
+		            {
+		            error_msg = error_msg + "\nFailed to get Cell Sellection Status.";
+		            }
+		            */
+	/*
+					            if (error_msg.length > 0)
+					                alert(error_msg);
+					            else {
+					                if (obj.Page == "SetCell") {
+					                    Rebooting(seed);
+					                }
+					                else {
+					                    if (Changevalue_Cell == 0) {
+					                        $("#select_scan_mode").val(obj.cell_scan_mode);
+
+					                        $("#select_scan_band_nums").val(obj.cell_scan_band_nums);
+					                        $("#in_band1_band_id").val(obj.cell_scan_band_1);
+					                        $("#in_band1_start_freq").val(obj.cell_scan_start_freq_1);
+					                        $("#in_band1_end_freq").val(obj.cell_scan_end_freq_1);
+					                        $("#select_bandwidth_selection1").val(obj.cell_band_width_1);
+
+					                        $("#in_band2_band_id").val(obj.cell_scan_band_2);
+					                        $("#in_band2_start_freq").val(obj.cell_scan_start_freq_2);
+					                        $("#in_band2_end_freq").val(obj.cell_scan_end_freq_2);
+					                        $("#select_bandwidth_selection2").val(obj.cell_band_width_2);
+
+					                        $("#in_band3_band_id").val(obj.cell_scan_band_3);
+					                        $("#in_band3_start_freq").val(obj.cell_scan_start_freq_3);
+					                        $("#in_band3_end_freq").val(obj.cell_scan_end_freq_3);
+					                        $("#select_bandwidth_selection3").val(obj.cell_band_width_3);
+					                        DisplayScanMode();
+					                    }
+					                    Changevalue_Cell = "0";
+					                }
+					            }
+					        }
+					        else
+					            alert("No response from the server.");
+					    },
+					    error: function(xhr, textStatus, errorThrown) {
+					        //alert("FAIL: " + xhr + " " + textStatus + " " + errorThrown);
+					    }
+					});
+				}
+	            */
+	//PIN
+	/*--------------------------------------------------------------------------*/
+	/* values(apply server)      pin enable(server return)    mask(server apply)
+	/*  0 : get                  0 : disable pin             2  : en/dis
+	/*  1 : en/dis pin           1 : enable pin activate     4  : change pin
+	/*  2 : change pin           2 : pin lock(puk)           8  : pin lock(puk)
+	/*  3 : pin lock(puk)        3 : puk lock                16 : activate pin
+	/*  4 : pin activate         4 : enable pin deactivate
+	/*--------------------------------------------------------------------------*/
+	var change_pin_dialog;
+
+	function RefreshPIN(values) {
+		var error_msg = "";
+		var _pin_code = "";
+		var _pin_new = "";
+		if(values == 0) { // get
+			pagetag = "GetPin";
+		} else if(values == 1) { // en dis set
+			pagetag = "SetPin";
+			_pin_code = $("#input_pin_enables").val();
+			Changevalue_Pin = Changevalue_Pin | 2;
+
+			if($("#select_enable_pin option").index($("#select_enable_pin option:selected")) == parseInt(PIN_ENABLE)) {
+				if(PIN_ENABLE == "1")
+					alert("PIN code is already enabled.");
+				else
+					alert("PIN code is already disabled.");
+				return false;
+			}
+			if(_pin_code.length != 4) {
+				alert("Invalid PIN code. Enter a four-digit number for the PIN code.");
+				$("#input_pin_enables").focus();
+				return false;
+			} else if(_pin_code.match(/[^0-9]/)) {
+				alert("Invalid PIN code. Enter only numbers for the PIN code.");
+				$("#input_pin_enables").focus();
+				return false;
+			}
+		} else if(values == 2) { // change pin
+			pagetag = "SetPin";
+			_pin_code = $("#input_pin_current").val();
+			_pin_new = $("#input_pin_new").val();
+			Changevalue_Pin = Changevalue_Pin | 4;
+			if(_pin_code.length != 4) {
+				alert("Invalid PIN code. Enter a four-digit number for the PIN code.");
+				$("#input_pin_current").focus();
+				return false;
+			} else if(_pin_code.match(/[^0-9]/)) {
+				alert("Invalid PIN code. Enter only numbers for the PIN code.");
+				$("#input_pin_current").focus();
+				return false;
+			} else if(_pin_new.length != 4) {
+				alert("Invalid PIN code. Enter a four-digit number for the PIN code.");
+				$("#input_pin_new").focus();
+				return false;
+			}
+			if(_pin_new.match(/[^0-9]/)) {
+				alert("Invalid PIN code. Enter only numbers for the PIN code.");
+				$("#input_pin_new").focus();
+				return false;
+			}
+		} else if(values == 3) { // pin lock
+			pagetag = "SetPin";
+			_pin_new = $("#input_puk_new").val();
+			Changevalue_Pin = Changevalue_Pin | 8;
+			if(_pin_new.length != 4) {
+				alert("Invalid PIN code. Enter a four-digit number for the PIN code.");
+				$("#input_puk_new").focus();
+				return false;
+			} else if(_pin_new.match(/[^0-9]/)) {
+				alert("Invalid PIN code. Enter only numbers for the PIN code.");
+				$("#input_puk_new").focus();
+				return false;
+			} else if($("#input_puk_code").val().length != 8) {
+				alert("Invalid PUK code. Enter a eight-digit number for the PUK code.");
+				$("#input_puk_code").focus();
+				return false;
+			} else if($("#input_puk_code").val().match(/[^0-9]/)) {
+				alert("Invalid PUK code. Enter only numbers for the PUK code.");
+				$("#input_puk_new").focus();
+				return false;
+			}
+		} else if(values == 4) { // activate pin
+			pagetag = "SetPin";
+			_pin_code = $("#input_activate_pin").val();
+			Changevalue_Pin = Changevalue_Pin | 16;
+			if(_pin_code.length != 4) {
+				alert("Invalid PIN code. Enter a four-digit number for the PIN code.");
+				$("#input_puk_new").focus();
+				return false;
+			} else if(_pin_code.match(/[^0-9]/)) {
+				alert("Invalid PIN code. Enter only numbers for the PIN code.");
+				$("#input_activate_pin").focus();
+				return false;
+			}
+		}
+
+		//console.log("pagetag :" + pagetag);
+		$.ajax({
+			type: "POST",
+			url: "cgi-bin/qcmap_web_cgi",
+			data: {
+				Page: pagetag,
+				Mask: Changevalue_Pin,
+				result: "0",
+				pin_enable: $("#select_enable_pin option:selected").val(),
+				pin_enable_code: _pin_code,
+				pin_code_new: _pin_new,
+				puk_code: $("#input_puk_code").val(),
+				remaining_attempts: $("#td_pin_remaining").val(),
+				token: session_token
+			},
+			dataType: "text",
+			success: function(msgs) {
+				if(msgs.length > 0) {
+					var obj = jQuery.parseJSON(msgs);
+					if(obj.result == "AUTH_FAIL") {
+						//hide_menu();
+						//loadpage('status/QCMAP_Default_Status.html');
+						load_defaultpage(seed);
+						alert("Device is being configured by a different IP: relogin");
+						return;
+					}
+					/*
+					if (obj.result != "SUCCESS") {
+					error_msg = error_msg + "\nFailed to get PIN Status.";
+					}*/
+
+					if(error_msg.length > 0)
+						alert(error_msg);
+					else {
+						if(values == 2)
+							change_pin_dialog.dialog("close");
+
+						PIN_ENABLE = obj.pin_enable;
+						PIN_CURRENT = "";
+						PUK_CODE = "";
+						REMAINING_ATTEMPTS = obj.remaining_attempts;
+
+						$("#input_pin_enables").val("");
+						$("#input_pin_current").val("");
+						$("#input_pin_new").val("");
+						$("#input_puk_code").val("");
+						$("#input_puk_new").val("");
+						$("#td_pin_remaining")[0].innerText = REMAINING_ATTEMPTS;
+						$("#td_puk_remaining")[0].innerText = REMAINING_ATTEMPTS;
+
+						if(PIN_ENABLE == ("0")) { // disable
+							$("#select_enable_pin").val("Disable");
+							$("#table_pin_code").show();
+							$("#table_puk_code").hide();
+							$("#button_change_pin").hide();
+							$("#button_activate_pin").hide();
+						} else if(PIN_ENABLE == "1") { // enable
+							$("#select_enable_pin").val("Enable");
+							$("#table_pin_code").show();
+							$("#table_puk_code").hide();
+							$("#button_change_pin").show();
+							$("#button_activate_pin").hide();
+							//SetPin_confirm(obj.result);
+						} else if(PIN_ENABLE == "2") { // puk
+							$("#table_pin_code").hide();
+							$("#table_puk_code").show();
+							$("#button_change_pin").hide();
+							$("#button_activate_pin").hide();
+							//SetPin_confirm(obj.result);
+						} else if(PIN_ENABLE == "3") { // lock
+							$("#table_pin_code").hide();
+							$("#table_puk_code").hide();
+							$("#button_change_pin").hide();
+							$("#button_activate_pin").hide();
+							//SetPin_confirm(obj.result);
+						} else if(PIN_ENABLE == "4") {
+							$("#select_enable_pin").val("Enable");
+							$("#table_pin_code").show();
+							$("#table_puk_code").hide();
+							$("#button_change_pin").show();
+							$("#button_activate_pin").show();
+						}
+
+						if(obj.Page == "SetPin")
+							alert(obj.Page + " is " + obj.result);
+
+						Changevalue_Pin = "0";
+
+						/*if (obj.Mask == 16)    // activate pin first return invaild sim
+						    RefreshPIN(0);*/
+					}
+				} else
+					alert("No response from the server.");
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				//alert("FAIL: " + xhr + " " + textStatus + " " + errorThrown);
+				if(values == 2)
+					change_pin_dialog.dialog("close");
+			}
+		});
+	}
+	/*
+				function SetPin_confirm(_val) {
+				    if (_val == "0")
+				        alert("Success");
+				    else
+				        alert("Error");
+	            }
+	*/
+	function DialogChangePIN() {
+		change_pin_dialog = $("#div_change_pin").dialog({
+			autoOpen: false,
+			height: 330,
+			width: 450,
+			modal: true,
+			buttons: {
+				"Submit": function() {
+					UpdatePinValues(2);
+				},
+				Cancel: function() {
+					change_pin_dialog.dialog("close");
+				}
+			},
+			close: function() {
+
+			}
+		});
+		change_pin_dialog.dialog("open");
+	}
+
+	function DialogActivatePIN() {
+		activate_pin_dialog = $("#div_activate_pin").dialog({
+			autoOpen: false,
+			height: 330,
+			width: 450,
+			modal: true,
+			buttons: {
+				"Submit": function() {
+					// Check Values
+					//if (!Validata($("#input_pin_current"), "current PIN")) return false;
+					//if (!Validata($("#input_pin_new"), "New Pin")) return false;
+					UpdatePinValues(4);
+				},
+				Cancel: function() {
+					activate_pin_dialog.dialog("close");
+				}
+			},
+			close: function() {
+
+			}
+		});
+		activate_pin_dialog.dialog("open");
+	}
+	/*
+	function Validata(_obj, _text)
+	{
+	if (!_obj.val()) {
+	alert(_text + " no value");
+	_obj.focus();
+	return false;
+	}
+	return true;
+	}
+	*/
+
+	//apn
+	//default
+	function RefreshDefaultAPN(values) {
+		var error_msg = "";
+
+		if(values == 0)
+		//pagetag = "GetDefatulApn";
+			pagetag = "GetLTEStatus";
+		else
+			pagetag = "SetDefatulApn";
+
+		//console.log("pagetag :"+pagetag);
+
+		$.ajax({
+			type: "POST",
+			url: "cgi-bin/qcmap_web_cgi",
+			data: {
+				Page: pagetag,
+				Mask: Changevalue_Default_Apn,
+				result: "0",
+				apn_attach_type: $("#select_apn_network_attach").val(),
+				apn_name: $("#input_apn").val(),
+				apn_auth_type: $("#select_authentication_type").val(),
+				apn_auth_user: $("#input_username").val(),
+				apn_auth_password: $("#input_password").val(),
+				token: session_token
+			},
+			dataType: "text",
+			success: function(msgs) {
+				if(msgs.length > 0) {
+					var obj = jQuery.parseJSON(msgs);
+					if(obj.result == "AUTH_FAIL") {
+						//hide_menu();
+						//loadpage('status/QCMAP_Default_Status.html');
+						load_defaultpage(seed);
+						alert("Device is being configured by a different IP: relogin");
+						return;
+					}
+					/*
+					if(obj.result != "SUCCESS")
+					{
+						error_msg = error_msg + "\nFailed to get Defatult apn Status.";
+					}
+					*/
+					if(error_msg.length > 0)
+						alert(error_msg);
+					else {
+						APN_ATTACH_TYPE = obj.connected_status;
+						APN_NAME = obj.apn_in_use;
+						APN_AUTH_TYPE = obj.apn_auth_type;
+						APN_AUTH_USER = "";
+						APN_AUTH_PASSWORD = "";
+
+						/*
+						APN_ATTACH_TYPE 	= obj.apn_attach_type;
+						APN_NAME 			= obj.apn_name ;
+						APN_AUTH_TYPE 		= obj.apn_auth_type ;
+						APN_AUTH_USER		= obj.apn_auth_user ;
+						APN_AUTH_PASSWORD 	= obj.apn_auth_password;
+						*/
+						if(Changevalue_Default_Apn == 0) {
+							$("#select_apn_network_attach").val(APN_ATTACH_TYPE);
+							$("#input_apn").val(APN_NAME);
+							$("#select_authentication_type").val(APN_AUTH_TYPE);
+							$("#input_username").val(APN_AUTH_USER);
+							$("#input_password").val(APN_AUTH_PASSWORD);
+						}
+						Changevalue_Default_Apn = "0";
+					}
+				} else
+					alert("No response from the server.");
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				//alert("FAIL: " + xhr + " " + textStatus + " " + errorThrown);
+			}
+		});
+	}
+
+	//Multiple APN
+	function RefreshMultiAPN(values) {
+		var error_msg = "";
+
+		if(values == 0)
+			pagetag = "GetMultiApn";
+		else
+			pagetag = "SetMultiApn";
+
+		//console.log("pagetag :"+pagetag);
+
+		$.ajax({
+			type: "POST",
+			url: "cgi-bin/qcmap_web_cgi",
+			data: {
+				Page: pagetag,
+				Mask: Changevalue_Multi_Apn,
+				result: "0",
+				multi_apn_cell_id: 0, //--$("#input_multi_cell_id").val(),
+				multi_apn_name: $("#input_multi_apn_name").val(),
+				multi_apn_auth_type: $("#select_multi_auth_type").val(),
+				multi_apn_auth_user: $("#input_multi_username").val(),
+				multi_apn_auth_password: $("#input_multi_password").val(),
+				token: session_token
+			},
+			dataType: "text",
+			success: function(msgs) {
+				if(msgs.length > 0) {
+					var obj = jQuery.parseJSON(msgs);
+					if(obj.result == "AUTH_FAIL") {
+						//hide_menu();
+						//loadpage('status/QCMAP_Default_Status.html');
+						load_defaultpage(seed);
+						alert("Device is being configured by a different IP: relogin");
+						return;
+					}
+					if(obj.result != "SUCCESS") {
+						error_msg = error_msg + "\nFailed to get Multi apn Status.";
+					}
+
+					if(error_msg.length > 0) {
+						//alert(error_msg);
+						//console.log(error_msg);
+					} else {
+						MULTI_APN_CELL_ID = obj.multi_apn_cell_id;
+						MULTI_APN_NAME = obj.multi_apn_name;
+						MULTI_APN_AUTH_TYPE = obj.multi_apn_auth_type;
+						MULTI_APN_AUTH_USER = obj.multi_apn_auth_user;
+						MULTI_APN_AUTH_PASSWORD = obj.multi_apn_auth_password;
+
+						if(Changevalue_Multi_Apn == 0) {
+							//-- $("#input_multi_cell_id").val(MULTI_APN_CELL_ID);
+							$("#input_multi_apn_name").val(MULTI_APN_NAME);
+							$("#select_multi_auth_type").val(MULTI_APN_AUTH_TYPE);
+							$("#input_multi_username").val(MULTI_APN_AUTH_USER);
+							$("#input_multi_password").val(MULTI_APN_AUTH_PASSWORD);
+						}
+						Changevalue_Multi_Apn = "0";
+					}
+				} else
+					alert("No response from the server.");
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				//alert("FAIL: " + xhr + " " + textStatus + " " + errorThrown);
+			}
+		});
+	}
+
+	function OnBtnGet_AllAPN() {
+		GetLTEStatus();
+		RefreshALLAPN(0);
+	}
+
+	function RefreshALLAPN(values) {
+		var error_msg = "";
+
+		if(values == 0) {
+			pagetag = "GetALLApn";
+		} else {
+			pagetag = "SetALLApn";
+			if($("#input_apn").val().match(/[^a-zA-Z0-9-.]/)) {
+				$("#input_apn").focus();
+				alert("Enter only alphanumeric characters, hyphens, and periods for the access point name.");
+				return false;
+			} else if($("#input_username").val().match(/[^a-zA-Z0-9]/)) {
+				$("#input_username").focus();
+				alert("Enter only alphanumeric characters for the username and password.");
+				return false;
+			} else if($("#input_password").val().match(/[^a-zA-Z0-9]/)) {
+				$("#input_password").focus();
+				alert("Enter only alphanumeric characters for the username and password.");
+				return false;
+			} else if($("#input_multi_apn_name").val().match(/[^a-zA-Z0-9-.]/)) {
+				$("#input_multi_apn_name").focus();
+				alert("Enter only alphanumeric characters, hyphens, and periods for the access point name.");
+				return false;
+			} else if($("#input_multi_username").val().match(/[^a-zA-Z0-9]/)) {
+				$("#input_multi_username").focus();
+				alert("Enter only alphanumeric characters for the username and password.");
+				return false;
+			} else if($("#input_multi_password").val().match(/[^a-zA-Z0-9]/)) {
+				$("#input_multi_password").focus();
+				alert("Enter only alphanumeric characters for the username and password.");
+				return false;
+			}
+		}
+
+		$.ajax({
+			type: "POST",
+			url: "cgi-bin/qcmap_web_cgi",
+			data: {
+				Page: pagetag,
+				Mask: Changevalue_Multi_Apn,
+				result: "0",
+				apn_attach_type: $("#select_apn_network_attach").val(),
+				apn_name: $("#input_apn").val(),
+				apn_auth_type: $("#select_authentication_type").val(),
+				apn_auth_user: $("#input_username").val(),
+				apn_auth_password: $("#input_password").val(),
+				multi_apn_cell_id: 0, //--$("#input_multi_cell_id").val(),
+				multi_apn_name: $("#input_multi_apn_name").val(),
+				multi_apn_auth_type: $("#select_multi_auth_type").val(),
+				multi_apn_auth_user: $("#input_multi_username").val(),
+				multi_apn_auth_password: $("#input_multi_password").val(),
+				token: session_token
+			},
+			dataType: "text",
+			success: function(msgs) {
+				if(msgs.length > 0) {
+					var obj = jQuery.parseJSON(msgs);
+					if(obj.result == "AUTH_FAIL") {
+						//hide_menu();
+						//loadpage('status/QCMAP_Default_Status.html');
+						load_defaultpage(seed);
+						alert("Device is being configured by a different IP: relogin");
+						return;
+					}
+					if(obj.result != "SUCCESS") {
+						if(pagetag == "GetALLApn") {
+							//error_msg = error_msg + "\nFail to get apn";
+						} else if(pagetag == "SetALLApn") {
+							//error_msg = error_msg + "\nFail to set apn.";
+						}
+					}
+					/*
+				            if (error_msg.length > 0)
+				                alert(error_msg);
+				            else {
+				            */
+					if(pagetag == "GetALLApn") {
+						/*Defautl APN*/
+						APN_ATTACH_TYPE = obj.apn_attach_type;
+						APN_NAME = obj.apn_name;
+						APN_AUTH_TYPE = obj.apn_auth_type;
+						APN_AUTH_USER = obj.apn_auth_user;
+						APN_AUTH_PASSWORD = obj.apn_auth_password;
+
+						//-- if(Changevalue_Default_Apn == 0)
+						{
+							$("#select_apn_network_attach").val(APN_ATTACH_TYPE);
+							$("#input_apn").val(APN_NAME);
+							$("#select_authentication_type").val(APN_AUTH_TYPE);
+							$("#input_username").val(APN_AUTH_USER);
+							//--$("#input_password").val(APN_AUTH_PASSWORD);
+							//-- knkim.force display pw-->
+							$("#input_password").val("1234");
+						}
+						Changevalue_Default_Apn = "0";
+
+						/*Multi APN*/
+						MULTI_APN_CELL_ID = obj.multi_apn_cell_id;
+						MULTI_APN_NAME = obj.multi_apn_name;
+						MULTI_APN_AUTH_TYPE = obj.multi_apn_auth_type;
+						MULTI_APN_AUTH_USER = obj.multi_apn_auth_user;
+						MULTI_APN_AUTH_PASSWORD = obj.multi_apn_auth_password;
+
+						//-- if(Changevalue_Multi_Apn  == 0)
+						{
+							//----$("#input_multi_cell_id").val(MULTI_APN_CELL_ID);
+							$("#input_multi_apn_name").val(MULTI_APN_NAME);
+							$("#select_multi_auth_type").val(MULTI_APN_AUTH_TYPE);
+							$("#input_multi_username").val(MULTI_APN_AUTH_USER);
+							//--$("#input_multi_password").val(MULTI_APN_AUTH_PASSWORD);
+							// --knkim.force display pw -->
+							$("#input_multi_password").val("1234");
+						}
+						Changevalue_Multi_Apn = "0";
+
+						/*Expansion Controls*/
+						if($("#select_apn_network_attach").val() == "2") {
+							$("#Apn").show();
+						} else {
+							$("#Apn").hide();
+						}
+
+						if($("#select_authentication_type").val() != "0") {
+							$("#Username").show();
+							$("#Password").show();
+						} else {
+							$("#Username").hide();
+							$("#Password").hide();
+						}
+
+						if($("#select_multi_auth_type").val() != "0") {
+							$("#Multi_username").show();
+							$("#Multi_password").show();
+						} else {
+							$("#Multi_username").hide();
+							$("#Multi_password").hide();
+						}
+
+					} else if(pagetag == "SetALLApn") {
+						//console.log("setallapn");
+						Rebooting(seed);
+					}
+					//}
+				} else
+					alert("No response from the server.");
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				//alert("FAIL: " + xhr + " " + textStatus + " " + errorThrown);
+			}
+		});
+	}
+
+	function GetLTEStatus() {
+		var error_occured = 0;
+		var error_msg = "";
+		pagetag = "GetLTEStatus";
+
+		$.ajax({
+			type: "POST",
+			url: "cgi-bin/qcmap_web_cgi",
+			data: {
+				Page: pagetag,
+				mask: changedvalues,
+				token: session_token
+			},
+			dataType: "text",
+			success: function(msgs) {
+				if(msgs.length > 0) {
+					var obj = jQuery.parseJSON(msgs);
+					if(obj.result == "AUTH_FAIL") {
+						//hide_menu();
+						//loadpage('status/QCMAP_Default_Status.html');
+						load_defaultpage(seed);
+						alert("Device is being configured by a different IP: relogin");
+						return;
+					}
+					if(msgs.length <= 0) {
+						alert("Unable to receive data from the server.");
+					} else {
+						$("#td_cell_id")[0].innerText = obj.eCellid;
+					}
+					if(error_occured == 1)
+						alert(error_msg);
+				} else
+					alert("No response from the server.");
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				//alert("FAIL: " + xhr + " " + textStatus + " " + errorThrown);
+			}
+		});
+	}
+
+	function SetALLApnValues() {
+		Changevalue_Default_Apn = 0;
+		if($("#select_apn_network_attach ").val() != APN_ATTACH_TYPE)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 2;
+		if($("#input_apn").val() != APN_NAME)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 4;
+		if($("#select_authentication_type").val() != APN_AUTH_TYPE)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 8;
+		if($("#input_username ").val() != APN_AUTH_USER)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 16;
+		if($("#input_password").val() != APN_AUTH_PASSWORD)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 32;
+
+		Changevalue_Multi_Apn = 0;
+		//--if($("#input_multi_cell_id ").val() != MULTI_APN_CELL_ID)
+		//--	Changevalue_Multi_Apn  = Changevalue_Multi_Apn  | 2;
+		if($("#input_multi_apn_name").val() != MULTI_APN_NAME)
+			Changevalue_Multi_Apn = Changevalue_Multi_Apn | 4;
+		if($("#select_multi_auth_type").val() != MULTI_APN_AUTH_TYPE)
+			Changevalue_Multi_Apn = Changevalue_Multi_Apn | 8;
+		if($("#input_multi_username ").val() != MULTI_APN_AUTH_USER)
+			Changevalue_Multi_Apn = Changevalue_Multi_Apn | 16;
+		if($("#input_multi_password").val() != MULTI_APN_AUTH_PASSWORD)
+			Changevalue_Multi_Apn = Changevalue_Multi_Apn | 32;
+
+		RefreshALLAPN(1 /*Set*/ );
+	}
+
+	/*
+	function UpdateCellValues()
+	{
+		Changevalue_Pin = 0;
+
+		if($("#select_scan_mode").val() == 0)
+		{
+			RefreshCellSelection(1);
+			return;
+		}
+
+		if($("#select_scan_band_nums").val() == 1)
+		{
+			if(CheckBandRange($("#in_band1_band_id").val(),$("#in_band1_start_freq").val(),$("#in_band1_end_freq").val()))
+			{
+				RefreshCellSelection(1);
+			}
+		}
+		else if($("#select_scan_band_nums").val() == 2)
+		{
+			if(CheckBandRange($("#in_band1_band_id").val(),$("#in_band1_start_freq").val(),$("#in_band1_end_freq").val())
+			&& CheckBandRange($("#in_band2_band_id").val(),$("#in_band2_start_freq").val(),$("#in_band2_end_freq").val()))
+			{
+				RefreshCellSelection(1);
+			}
+		}
+		else
+		{
+			if(CheckBandRange($("#in_band1_band_id").val(),$("#in_band1_start_freq").val(),$("#in_band1_end_freq").val())
+			&& CheckBandRange($("#in_band2_band_id").val(),$("#in_band2_start_freq").val(),$("#in_band2_end_freq").val())
+			&& CheckBandRange($("#in_band3_band_id").val(),$("#in_band3_start_freq").val(),$("#in_band3_end_freq").val()))
+			{
+				RefreshCellSelection(1);
+			}
+		}
+	}
+	*/
+	function UpdatePinValues(_val) {
+		Changevalue_Pin = 0;
+		/*
+				if ($("#select_enable_pin").val() != PIN_ENABLE)
+					Changevalue_Pin  = Changevalue_Pin  | 2;
+	            if ($("#input_pin_current").val() != PIN_CURRENT)
+					Changevalue_Pin  = Changevalue_Pin  | 4;
+	            if ($("#input_puk_code").val() != PUK_CODE)
+					Changevalue_Pin  = Changevalue_Pin  | 8;
+		        */
+		RefreshPIN(_val);
+	}
+
+	function UpdateApnValues() {
+		Changevalue_Default_Apn = 0;
+		if($("#select_apn_network_attach ").val() != APN_ATTACH_TYPE)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 2;
+		if($("#input_apn").val() != APN_NAME)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 4;
+		if($("#select_authentication_type").val() != APN_AUTH_TYPE)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 8;
+		if($("#input_username ").val() != APN_AUTH_USER)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 16;
+		if($("#input_password").val() != APN_AUTH_PASSWORD)
+			Changevalue_Default_Apn = Changevalue_Default_Apn | 32;
+
+		RefreshDefaultAPN(1);
+	}
+
+	function UpdateMultiApnValues() {
+		Changevalue_Multi_Apn = 0;
+		//--if($("#input_multi_cell_id ").val() != MULTI_APN_CELL_ID)
+		//--	Changevalue_Multi_Apn  = Changevalue_Multi_Apn  | 2;
+		if($("#input_multi_apn_name").val() != MULTI_APN_NAME)
+			Changevalue_Multi_Apn = Changevalue_Multi_Apn | 4;
+		if($("#select_multi_auth_type").val() != MULTI_APN_AUTH_TYPE)
+			Changevalue_Multi_Apn = Changevalue_Multi_Apn | 8;
+		if($("#input_multi_username ").val() != MULTI_APN_AUTH_USER)
+			Changevalue_Multi_Apn = Changevalue_Multi_Apn | 16;
+		if($("#input_multi_password").val() != MULTI_APN_AUTH_PASSWORD)
+			Changevalue_Multi_Apn = Changevalue_Multi_Apn | 32;
+
+		RefreshMultiAPN(1);
+	}
+
+	function DisplayScanMode() {
+		var i;
+		var _tell;
+		for(i = 3; i > $("#select_scan_band_nums").val(); i--) {
+			_tell = "#Cell_Type" + i;
+			$(_tell).hide();
+		}
+		for(i = $("#select_scan_band_nums").val(); i > 0; i--) {
+			_tell = "#Cell_Type" + i;
+			$(_tell).show();
+		}
+		if($("#select_scan_mode").val() == 1) {
+			$("#Scan_band_nums").show();
+		} else {
+			$("#Scan_band_nums").hide();
+			$("#Cell_Type1").hide();
+			$("#Cell_Type2").hide();
+			$("#Cell_Type3").hide();
+		}
+	}
+
+	function CheckBandRange(band, start_freq, end_freq) {
+		var check_band_valid = 0;
+		var vStart, vEnd;
+		var diff_value = end_freq - start_freq;
+
+		if(100 > diff_value) {
+			alert("The ending frequency must be greater than the starting frequency by 100 or more.");
+			return false;
+		}
+
+		if(band == 0) {
+			alert("Invalid band ID. Enter a value between 0 and 44.");
+			return false;
+		} else if(band == 1) {
+			vStart = 0;
+			vEnd = 599;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 2) {
+			vStart = 600;
+			vEnd = 1199;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 3) {
+			vStart = 1200;
+			vEnd = 1949;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 4) {
+			vStart = 1950;
+			vEnd = 2399;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 5) {
+			vStart = 2400;
+			vEnd = 2649;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 6) {
+			vStart = 2650;
+			vEnd = 2749;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 7) {
+			vStart = 2750;
+			vEnd = 3449;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 8) {
+			vStart = 3450;
+			vEnd = 3799;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 9) {
+			vStart = 3800;
+			vEnd = 4149;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 10) {
+			vStart = 4150;
+			vEnd = 4749;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 11) {
+			vStart = 4750;
+			vEnd = 4949;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 12) {
+			vStart = 5010;
+			vEnd = 5179;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 13) {
+			vStart = 5180;
+			vEnd = 5279;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 14) {
+			vStart = 5280;
+			vEnd = 5379;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 17) {
+			vStart = 5730;
+			vEnd = 5849;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 18) {
+			vStart = 5850;
+			vEnd = 5999;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 19) {
+			vStart = 6000;
+			vEnd = 6149;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 20) {
+			vStart = 6150;
+			vEnd = 6449;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 21) {
+			vStart = 6450;
+			vEnd = 6599;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 22) {
+			vStart = 6600;
+			vEnd = 7399;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 23) {
+			vStart = 7500;
+			vEnd = 7699;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 24) {
+			vStart = 7700;
+			vEnd = 8039;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 25) {
+			vStart = 8040;
+			vEnd = 8689;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 26) {
+			vStart = 8690;
+			vEnd = 9039;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 27) {
+			vStart = 9040;
+			vEnd = 9209;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 28) {
+			vStart = 9210;
+			vEnd = 9659;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 29) {
+			vStart = 9660;
+			vEnd = 9769;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 31) {
+			vStart = 9870;
+			vEnd = 9919;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 33) {
+			vStart = 36000;
+			vEnd = 36199;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 34) {
+			vStart = 36200;
+			vEnd = 36349;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 35) {
+			vStart = 36350;
+			vEnd = 36949;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 36) {
+			vStart = 36950;
+			vEnd = 37549;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 37) {
+			vStart = 37550;
+			vEnd = 37749;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 38) {
+			vStart = 37750;
+			vEnd = 38249;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 39) {
+			vStart = 38250;
+			vEnd = 38649;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 40) {
+			vStart = 38650;
+			vEnd = 39649;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 41) {
+			vStart = 39650;
+			vEnd = 41589;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 42) {
+			vStart = 41590;
+			vEnd = 43589;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 43) {
+			vStart = 43590;
+			vEnd = 45589;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else if(band == 44) {
+			vStart = 45590;
+			vEnd = 46589;
+			if((start_freq < end_freq) && (start_freq >= vStart) && (start_freq < vEnd) && (end_freq > vStart) && (end_freq <= vEnd))
+				check_band_valid = 1;
+		} else {
+			alert("Invalid band ID. Enter a value between 0 and 44.");
+			return false;
+		}
+
+		if(!check_band_valid) {
+			alert("Invalid frequency range. Enter a value between " + vStart + " and " + vEnd + " for the frequency range of Band " + band);
+			return false;
+		}
+
+		return true;
+	}
+
+	function get_ajax_data() {
+		GetLTEStatus();
+		//RefreshCellSelection(0);
+		RefreshPIN(0);
+		RefreshALLAPN(0);
+
+		start_level_load();
+	}
+
+	$('#select_apn_network_attach').die().live('change', function() {
+		if($("#select_apn_network_attach").val() == "1") {
+			$("#Apn").show();
+			$("#tr_ip_mode").show();
+			//		$("#Username").show();
+			//		$("#Password").show();
+		} else {
+			$("#Apn").hide();
+			//		$("#Username").hide();
+			//		$("#Password").hide();
+			$("#tr_ip_mode").hide();
+		}
+	})
+</script>
+
+<!-- </head> -->
+
+<body onload="start_level_load()" style="margin:0;padding:0;border:0;">
+	<table class="table_main" align="left">
+		<tr>
+			<td>
+				<h3 class="main_menu">LTE Settings </h3></td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px; padding-bottom: 25px;">
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">PIN</h4>
+
+				<div class="line" id="pin_all" style="padding:0em 0em;">
+
+					<table style="width:90%;display:none;" id="form1">
+						<tr>
+							<td width="37%" class="head_top">PIN Operation</td>
+							<td width="63%" class="tail_top">
+								<table width="100%"  style="font-size: 14px;">
+									<tr>
+										<td width="33%">PIN</td>
+										<td width="67%">
+											<select name="form1_select">
+												<option value="0" selected>Enable</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td width="33%">PIN Code</td>
+										<td width="67%">
+											<input type="text" id="form1_pin" name="form1_pin" title="PIN" placeholder="PIN" MaxLength="8" style="margin-bottom:2px;" edit />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr>
+							<td colspan="3" class="head_top" id="errHint1" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;color:red;border:solid 1px #53A9C3;"></td>
+							<!-- <td width="63%" class="tail_top" id="td_pin_remaining">3</td> -->
+						</tr>
+						<tr>
+							<td colspan="3" align="right" style="padding-top: 5px;height: 47px;">
+								<button class="btn-Green" id="to_submit1"><span><em>Apply</em></span></button>
+							</td>
+						</tr>
+					</table>
+
+					<table style="width:90%;display:none;" id="form2">
+						<tr>
+							<td width="37%" class="head_top">PIN Operation</td>
+							<td width="63%" class="tail_top">
+								<table width="100%">
+									<tr>
+										<td width="33%">PIN</td>
+										<td width="67%">
+											<select name="form2_select">
+												<option value="1" selected>Disable</option>
+												<option value="2">Change</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td width="33%">PIN Code</td>
+										<td width="67%">
+											<input type="text" id="form2_pin" name="form2_pin" title="PIN" placeholder="PIN" MaxLength="8" style="margin-bottom:2px;" edit />
+										</td>
+									</tr>
+									<tr id="form2_new_pin_div">
+										<td width="33%">New PIN Code</td>
+										<td width="67%">
+											<input type="text" id="form2_new_pin" name="form2_new_pin" title="PIN" placeholder="PIN" MaxLength="8" style="margin-bottom:2px;" edit />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr>
+							<td colspan="3" class="head_top" id="errHint2" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;color:red;border:solid 1px #53A9C3;">Remaining Attempts</td>
+							<!-- <td width="63%" class="tail_top" id="td_pin_remaining">3</td> -->
+						</tr>
+						<tr>
+							<td colspan="3" align="right" height="47px">
+								<button class="btn-Green" id="to_submit2"><span><em>Apply</em></span></button>
+							</td>
+						</tr>
+					</table>
+
+					<table style="width:90%;display:none;" id="form3">
+						<tr>
+							<td width="37%" class="head_top">PIN Operation</td>
+							<td width="63%" class="tail_top">
+								<table width="100%">
+									<tr>
+										<td width="33%" style="font-size:14px">PIN</td>
+										<td width="67%">
+											<select name="form3_select">
+												<option value="0" selected>Verify</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td width="33%" style="font-size:14px">PIN Code</td>
+										<td width="67%">
+											<input type="text" id="form3_pin" name="form3_pin" title="PIN" placeholder="PIN" MaxLength="8" style="margin-bottom:2px;" edit />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr>
+							<td colspan="3" class="head_top" id="errHint3" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;color:red;border:solid 1px #53A9C3;"></td>
+							<!-- <td width="63%" class="tail_top" id="td_pin_remaining">3</td> -->
+						</tr>
+						<tr>
+							<td colspan="3" align="right" height="47px">
+								<button class="btn-Green" id="to_submit3" oncut="return false" oncopy="return false" onpaste="return false"><span><em>Apply</em></span></button>
+							</td>
+						</tr>
+					</table>
+
+					<table style="width:90%;display:none;" id="form4">
+						<tr>
+							<td width="37%" class="head_top">PIN Operation</td>
+							<td width="63%" class="tail_top">
+								<table width="100%">
+									<tr>
+										<td width="33%">PIN</td>
+										<td width="67%">
+											<select name="form4_select">
+												<option value="0" selected>Unlock By PUK</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td width="33%">PUK Code</td>
+										<td width="67%">
+											<input type="text" id="form4_puk" name="form4_puk" title="PUK" placeholder="PUK" style="margin-bottom:2px;" edit />
+										</td>
+									</tr>
+									<tr>
+										<td width="33%">New PIN Code</td>
+										<td width="67%">
+											<input type="text" id="form4_pin" name="form4_pin" title="PIN" placeholder="PIN" MaxLength="8" style="margin-bottom:2px;" edit />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<tr>
+							<td colspan="3" class="head_top" id="errHint4" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;color:red;border:solid 1px #53A9C3;"></td>
+							<!-- <td width="63%" class="tail_top" id="td_pin_remaining">3</td> -->
+						</tr>
+						<tr>
+							<td colspan="3" align="right" height="47px">
+								<button class="btn-Green" id="to_submit4" oncut="return false" oncopy="return false" onpaste="return false"><span><em>Apply</em></span></button>
+							</td>
+						</tr>
+					</table>
+
+					<table style="width:90%;display:none;" id="form5">
+						<tr>
+							<td colspan="3" class="head_top" id="errHint5" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;color:red;border:solid 1px #53A9C3;"></td>
+							<!-- <td width="63%" class="tail_top" id="td_pin_remaining">3</td> -->
+						</tr>
+					</table>
+
+				</div>
+
+				</br>
+				<h4 id="H_default_apn" class="small_menu Class_default_apn" style="color:#515151; margin:0;display: none;">Default APN(Default PDN Connection)</h4>
+				<table id="Table_Apn_network" class="Class_default_apn"  style="width:90%;display:none">
+					<tr id="Apn_network_attach" class="Class_default_apn">
+						<td width="37%" class="head_top">APN For Network Attach</td>
+						<td width="63%" class="tail_top">
+							<select name="select_apn_network_attach" id="select_apn_network_attach">
+								<option value="0">Automatic</option>
+								<option value="1">Manual</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="Apn">
+						<td width="37%" class="head_top">APN</td>
+						<td width="63%" class="tail_top">
+							<input type="text" oncut="" oncopy="" onpaste="" name="input_apn" id="input_apn" MaxLength="31" />
+							<!--
+		                        <script type="text/javascript">
+		                            document.getElementById("input_apn").value = "www.google.com";
+		                        </script>
+								-->
+						</td>
+					</tr>
+					<tr id="Authentication_type" style="display:none;">
+						<td width="37%" class="head_top">Authentication Type</td>
+						<td width="63%" class="tail_top">
+							<select name="select_authentication_type" id="select_authentication_type" onchange="">
+								<option value="0" selected="selected">NONE</option>
+								<option value="1">PAP</option>
+								<option value="2">CHAP</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="Username" style="display:none;">
+						<td width="37%" class="head_top">Username</td>
+						<td width="63%" class="tail_top">
+							<input type="text" oncut="" oncopy="" onpaste="" name="input_username" id="input_username" MaxLength="100" />
+						</td>
+					</tr>
+					<tr id="Password" style="display:none;">
+						<td width="37%" class="head_top">Password</td>
+						<td width="63%" class="tail_top">
+							<input type="password" oncut="return false" oncopy="return false" onpaste="return false" name="input_password" id="input_password" MaxLength="100" />
+						</td>
+					</tr>
+					<tr style="display:none;">
+						<td width="37%" class="head_top">Name</td>
+						<td width="63%" class="tail_top">
+							<input type="password" oncut="return false" oncopy="return false" onpaste="return false" name="input_name" id="input_name" MaxLength="100" />
+						</td>
+					</tr>
+					<tr style="display:none;">
+						<td width="37%" class="head_top">Number</td>
+						<td width="63%" class="tail_top">
+							<input type="password" oncut="return false" oncopy="return false" onpaste="return false" name="input_number" id="input_number" MaxLength="100" />
+						</td>
+					</tr>
+				</table>
+				<h4 id="H_MultiAPN" style="color:#515151; margin:0; display:none">Multiple APN(Multiple PDN Connection Settings Table)</h4>
+				<table id="Table_MultiAPN" style="width:90%;display: none;">
+					<tr id="Multi_cell_id" style="display:none;">
+						<td width="37%" class="head_top">Cell ID</td>
+						<td width="63%" class="tail_top" id="td_cell_id">
+							<!--
+								<input type="text" oncut="" oncopy="" onpaste="" name="input_multi_cell_id" id="input_multi_cell_id" MaxLength="100" />
+								-->
+						</td>
+					</tr>
+					<tr id="Multi_apn_name" style="display:none;">
+						<td width="37%" class="head_top">APN Name</td>
+						<td width="63%" class="tail_top">
+							<input type="text" oncut="" oncopy="" onpaste="" name="input_multi_apn_name" id="input_multi_apn_name" MaxLength="100" />
+							<!--
+		                        <script type="text/javascript">
+		                            document.getElementById("input_multi_apn_name").value = "www.google.com";
+		                        </script>
+								-->
+						</td>
+					</tr>
+					<tr id="Multi_auth_type" style="display:none;">
+						<td width="37%" class="head_top">Authentication Type</td>
+						<td width="63%" class="tail_top">
+							<select name="select_multi_auth_type" id="select_multi_auth_type" onchange="">
+								<option value="0" selected="selected">NONE</option>
+								<option value="1">PAP</option>
+								<option value="2">CHAP</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="Multi_username" style="display:none;">
+						<td width="37%" class="head_top">Username</td>
+						<td width="63%" class="tail_top">
+							<input type="text" oncut="" oncopy="" onpaste="" name="input_multi_username" id="input_multi_username" MaxLength="100" />
+							<!--
+		                        <script type="text/javascript">
+		                            document.getElementById("input_multi_username").value = "India";
+		                        </script>
+								-->
+						</td>
+					</tr>
+					<tr id="Multi_password" style="display:none;">
+						<td width="37%" class="head_top">Multi Password</td>
+						<td width="63%" class="tail_top">
+							<input type="password" oncut="return false" oncopy="return false" onpaste="return false" name="input_multi_password" id="input_multi_password" MaxLength="100" />
+							<!--
+								<script type="text/javascript">
+		                            document.getElementById("input_multi_password").value = "India";
+		                        </script>
+								-->
+						</td>
+					</tr>
+
+					<tr id="tr_ip_mode" style="display:none;">
+						<td width="37%" class="head_top">IPv4/IPv6 Mode</td>
+						<td width="63%" class="tail_top" style="text-indent: 1px;">
+							<select name="ip_mode" id="ip_mode">
+								<option value="2">IPv4/IPv6</option>
+								<option selected value="0">IPv4</option>
+								<option value="1">IPv6</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="3" class="head_top" id="errHint_Apn" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;color:red;height:18px;border:none;background: transparent;"></td>
+					</tr>
+					<tr>
+						<td colspan="3" align="right" height="47px">
+							<button class="btn-Green" id="input_default_apn" oncut="return false" oncopy="return false" onpaste="return false"><span><em>Apply</em></span></button>
+						</td>
+					</tr>
+				</table>
+				<div class="div_change_pin" id="div_change_pin" style="display:none;">
+					<table style="width:90%">
+						<tr id="Change_pin">
+							<td width="37%" class="head_top" style="padding:4px 20px 4px 8px;font-size:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;">Current PIN</td>
+							<td width="63%" class="tail_top" style="padding:4px 16px 4px 6px;FONT-SIZE:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;">
+								<input type="text" oncut="" oncopy="" onpaste="" name="input_change_pin" id="input_pin_current" MaxLength="8" style="margin-bottom:2px;" edit />
+							</td>
+						</tr>
+						<tr>
+							<td width="37%" class="head_top" style="padding:4px 20px 4px 8px;font-size:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;">New PIN</td>
+							<td width="63%" class="tail_top" style="padding:4px 16px 4px 6px;FONT-SIZE:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;">
+								<input type="text" oncut="" oncopy="" onpaste="" name="input_change_pin" id="input_pin_new" MaxLength="8" style="margin-bottom:2px;" edit />
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="div_activate_pin" id="div_activate_pin" style="display:none;">
+					<table style="width:90%">
+						<tr id="Tr1">
+							<td width="37%" class="head_top" style="padding:4px 20px 4px 8px;font-size:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;">Activate Pin</td>
+							<td width="63%" class="tail_top" style="padding:4px 16px 4px 6px;FONT-SIZE:12px;FONT-FAMILY: Arial;BACKGROUND-COLOR: #FFFFFF;">
+								<input type="text" oncut="" oncopy="" onpaste="" name="input_activate_pin" id="input_activate_pin" MaxLength="8" style="margin-bottom:2px;" edit />
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+</body>
+<!-- </html> -->

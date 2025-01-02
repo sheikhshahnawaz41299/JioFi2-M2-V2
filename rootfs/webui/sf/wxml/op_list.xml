@@ -1,0 +1,14 @@
+<?xm version="1.0" encoding="UTF-8"?>
+<search>
+<cnt>get_operator_num()</cnt>
+<op>get_operator_detail(page*10+0)</op>
+<op>get_operator_detail(page*10+1)</op>
+<op>get_operator_detail(page*10+2)</op>
+<op>get_operator_detail(page*10+3)</op>
+<op>get_operator_detail(page*10+4)</op>
+<op>get_operator_detail(page*10+5)</op>
+<op>get_operator_detail(page*10+6)</op>
+<op>get_operator_detail(page*10+7)</op>
+<op>get_operator_detail(page*10+8)</op>
+<op>get_operator_detail(page*10+9)</op>
+</search>

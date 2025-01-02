@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sd>
+<state>sd_upload_state()</state>
+<count>sd_upload_count()</count>
+<alloc_id>sd_upload_alloc_file_id(count)</alloc_id>
+</sd>

@@ -1,0 +1,175 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+	<head> -->
+		<title>NAT</title>
+		<script>
+   if(top.location.pathname!="/index.htm") top.location.href="./index.htm";
+
+		    $(document).ready(function() {
+		    });
+
+function refresh_data(data){
+  var gen_time  = parseInt($(data).find("gen_time").text());
+  var icmp_time = parseInt($(data).find("icmp_time").text());
+  var tcp_time  = parseInt($(data).find("tcp_time").text());
+  var udp_time  = parseInt($(data).find("udp_time").text());
+
+  $("#generic_time").val(gen_time);
+  $("#icmp_time").val(icmp_time);
+  $("#tcp_time").val(tcp_time);
+  $("#udp_time").val(udp_time);
+}
+
+function load_setting(){
+
+  $.ajax({
+    url: "mark_set_nat.w.xml",
+    type: "Get",
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  },
+    success: function(data, status) {
+      refresh_data(data);
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }
+    }
+  })
+}
+
+function load_mark(url){
+if(interval_timer) clearInterval(interval_timer);
+  if(url=="set_nat.html"){
+    load_setting();
+  }
+}
+
+
+
+$('#submit_nat').click(function(event){
+  event.preventDefault();
+
+  var generic_time=parseInt($("#generic_time").val());
+  var icmp_time=parseInt($("#icmp_time").val());
+  var tcp_time=parseInt($("#tcp_time").val());
+  var udp_time=parseInt($("#udp_time").val());
+
+  if(generic_time<1 || generic_time>21474836){
+    $("#errHint").html("Please input number in Range [1,21474836] ");
+    $("#generic_time").focus();
+    return false;
+  }
+  if(icmp_time<1 || icmp_time>21474836){
+    $("#errHint").html("Please input number in Range [1,21474836] ");
+    $("#icmp_time").focus();
+    return false;
+  }
+  if(tcp_time<1 || tcp_time>21474836){
+    $("#errHint").html("Please input number in Range [1,21474836] ");
+    $("#tcp_time").focus();
+    return false;
+  }
+  if(udp_time<1 || udp_time>21474836){
+    $("#errHint").html("Please input number in Range [1,21474836] ");
+    $("#udp_time").focus();
+    return false;
+  }
+  var post_data='generic_time='+esc(""+generic_time)+'&icmp_time='+esc(""+icmp_time)+'&tcp_time='+esc(""+tcp_time)+'&udp_time='+esc(""+udp_time);
+
+  $("#errHint").html('&nbsp;');
+  var headers={};
+headers["__RequestVerificationToken"]=$("#csrf_token2").val();
+    $.ajax({
+      url: "/wxml/set_nat.xml",
+      type: "Post",
+      headers: headers,
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data,
+      success: function(data, status) {
+        var new_token=$(data).find("token").text();
+      if(new_token=="-1"){
+        top.location.reload(true);
+        return false;
+      }
+        $("#csrf_token2").val(new_token);
+        var ret0 = parseInt($(data).find("generic_time").text());
+        var ret1 = parseInt($(data).find("icmp_time").text());
+        var ret2 = parseInt($(data).find("tcp_time").text());
+        var ret3 = parseInt($(data).find("udp_time").text());
+        if(ret0&& ret1&& ret2&& ret3) $('#errHint').html('Setting Apply Success!');
+        else $('#errHint').html('Setting Apply Fail!');
+        load_setting();
+        setTimeout(function(){
+          if($('#errHint').html().indexOf("Setting Apply")>-1)  $("#errHint").html('&nbsp;');
+        },5000);
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }
+      }
+    })
+
+//  pop_submit_result();
+});
+
+        </script>
+	<!-- </head> -->
+
+	<body style="margin:0;padding:0;border:0;">
+	    <table id="table_main" class="table_main" align="left" style="border: 0px;margin-left:25px;width:650px;">
+			<tr>
+				<td>
+				<h3 class="main_menu" style="padding-top: 10px;color:#3296FF; margin:0;">NAT Configuration</h3>
+				</br>
+<!-- 				    <h4 style="color:#515151; margin:0;">WiFi Settings</h4> -->
+					<table style="width:100%;">
+					<tr>
+					<td class="head_top">NAT entry generic Time Out</td>
+					<td class="tail_top">
+					<input type="number" min="1" max="21474836"  name="generic_time" id="generic_time"  MaxLength="20" style="font-size: 12px;" />
+					</td>
+					</tr>
+
+					<tr>
+					<td class="head_top">NAT entry ICMP Time Out</td>
+					<td class="tail_top">
+					<input type="number" min="1" max="21474836"  name="icmp_time" id="icmp_time"  MaxLength="20" style="font-size: 12px;"/>
+					</td>
+					</tr>
+
+          <tr>
+          <td class="head_top">NAT entry TCP established Time Out</td>
+          <td class="tail_top">
+          <input type="number" min="1" max="21474836"  name="tcp_time" id="tcp_time"  MaxLength="20" style="font-size: 12px;"/>
+          </td>
+          </tr>
+
+          <tr>
+          <td class="head_top">NAT entry UDP Time Out</td>
+          <td class="tail_top">
+          <input type="number" min="1" max="21474836"  name="udp_time" id="udp_time"  MaxLength="20" style="font-size: 12px;"/>
+          </td>
+          </tr>
+
+					<tr>
+					<td colspan ="3" id="errHint" style="padding:4px 20px 4px 20px;text-align:center;font-size:12px;FONT-FAMILY: Arial;color:red;">&nbsp;</td>
+					</tr>
+
+          <tr>
+          <td colspan ="3" align="right">
+          <input type="button" value = "Apply" id= "submit_nat">
+          <input type="button" value = "Update" onClick="load_setting()">
+          </td>
+          </tr>
+					</table>
+     </td>
+     </tr>
+     </table>
+        <input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+	</body>
+<!-- </html> -->

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<dsc><% get_version_dsc(); %></dsc>
+<sd_st><% get_sdst(); %></sd_st>
+<sd_mode><% get_sd_mode(); %></sd_mode>
+<sd_acc><% get_sd_account_enable(); %></sd_acc>
+<usb_st><% get_usbst(); %></usb_st>
+<rlogin_username><% get_sd_username(); %></rlogin_username>
+<rlogin_pwd><% get_sd_password(); %></rlogin_pwd>
+<wan_ip><% get_wan_ip(); %></wan_ip>
+<wan_ipv6><% get_wan_ipv6(); %></wan_ipv6>
+</setting>

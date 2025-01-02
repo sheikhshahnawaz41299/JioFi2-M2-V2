@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operator>
+<roam>set_roam_mode(roam)</roam>
+<mode>set_operator_search_mode(mode)</mode>
+<search>start_operator_search(start)</search>
+<register>register_select_operator(plmn)</register>
+</operator>

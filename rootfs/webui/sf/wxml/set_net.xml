@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net>
+<dial_mode>set_dial_mode(dial_mode)</dial_mode>
+<net_mode>set_modem_network_mode(net_mode)</net_mode>
+<apn>set_apn_list(apn_index,apn_name,user,pwd,apn,number)</apn>
+<upnp>set_upnpEnabled(upnp)</upnp>
+<ping>set_pingWanAccess(ping)</ping>
+<wan_access>set_webWanAccess(wan_access)</wan_access>
+<dns_mode>set_wan_dns_mode(dns_mode)</dns_mode>
+<ip_mode>set_ppp_mode(ip_mode)</ip_mode>
+<pri_dns>set_wan_dns1(pri_dns)</pri_dns>
+<sec_dns>set_wan_dns2(sec_dns)</sec_dns>
+<apn_mode>set_apn_mode(apn_mode)</apn_mode>
+<ip_mode>set_ppp_mode(ip_mode)</ip_mode>
+<commit>net_set_commit()</commit>
+</net>

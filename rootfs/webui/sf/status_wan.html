@@ -1,0 +1,258 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>WAN Infomation</title>-->
+<style type="text/css">
+	input[type="text"],
+	input[type="password"] {
+		width: 290px;
+	}
+</style>
+<script>
+	if(top.location.pathname != "/index.htm" && top.location.pathname != "/") top.location.href = "./index.htm";
+	$(document).ready(function() {
+
+	});
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "status_wan.html") {
+			function load_wan_status() {
+				$.ajax({
+					url: '/st_wan.w.xml',
+					type: "Get",
+					timeout: 8000,
+					cache: false,
+					datatype: "xml",
+					data: null,
+					success: function(data, status) {
+						var st_wan = {
+							t_tx: null,
+							t_rx: null,
+							wan_op_mode: null,
+							wan_conn_mode: null,
+							plps: null,
+							host: null,
+							wan_ip: null,
+							wan_submask: null,
+							wan_gate: null,
+							pri_dns: null,
+							sec_dns: null,
+							ip6_addr: null,
+							ip6_prefix_len: null,
+							ip6_gate: null,
+							ip6_pri_dns: null,
+							ip6_sec_dns: null
+						}
+						st_wan.t_tx = $(data).find("t_tx").text();
+						st_wan.t_rx = $(data).find("t_rx").text();
+						st_wan.wan_op_mode = $(data).find("wan_op_mode").text();
+						st_wan.wan_conn_mode = $(data).find("wan_conn_mode").text();
+						st_wan.plps = $(data).find("plps").text();
+						st_wan.host = $(data).find("host").text();
+						st_wan.wan_ip = $(data).find("wan_ip").text();
+						st_wan.wan_submask = $(data).find("wan_submask").text();
+						st_wan.wan_gate = $(data).find("wan_gate").text();
+						st_wan.pri_dns = $(data).find("pri_dns").text();
+						st_wan.sec_dns = $(data).find("sec_dns").text();
+
+						st_wan.ip6_addr = $(data).find("wan_ipv6").text();
+						st_wan.ip6_prefix_len = $(data).find("ipv6_prefix_len").text();
+						st_wan.ip6_gate = $(data).find("ipv6_gate").text();
+						st_wan.ip6_pri_dns = $(data).find("ipv6_pri_dns").text();
+						st_wan.ip6_sec_dns = $(data).find("ipv6_sec_dns").text();
+
+						if(!isIP(st_wan.wan_ip)) st_wan.wan_ip = "";
+						if(!isIP(st_wan.wan_submask)) st_wan.wan_submask = "";
+						if(!isIP(st_wan.wan_gate)) st_wan.wan_gate = "";
+						if(!isIP(st_wan.pri_dns)) st_wan.pri_dns = "";
+						if(!isIP(st_wan.sec_dns)) st_wan.sec_dns = "";
+						if(st_wan.ip6_addr == -1) st_wan.ip6_addr = "";
+						if(st_wan.ip6_prefix_len == -1) st_wan.ip6_prefix_len = "";
+						if(st_wan.ip6_gate == -1) st_wan.ip6_gate = "";
+						if(st_wan.ip6_pri_dns == -1) st_wan.ip6_pri_dns = "";
+						if(st_wan.ip6_sec_dns == -1) st_wan.ip6_sec_dns = "";
+
+						show_wan_status(st_wan);
+					},
+					error: function(x, t, m) {}
+				});
+			}
+
+			function show_wan_status(st_wan) {
+				$("#input_Total_Data_Used_Ulink").val(st_wan.t_tx);
+				$("#input_Total_Data_Used_Dlink").val(st_wan.t_rx);
+				$("#input_WAN_Operation_Mode").val(st_wan.wan_op_mode);
+				$("#input_WAN_Connection_Mode").val(st_wan.wan_conn_mode);
+
+				$("#input_Host_Name").val(st_wan.host);
+
+				$("#input_IPv4_Addr").val(st_wan.wan_ip);
+				$("#input_IPv4_Subnet_Mask").val(st_wan.wan_submask);
+				$("#input_IPv4_Gateway").val(st_wan.wan_gate);
+				$("#input_IPv4_Primary").val(st_wan.pri_dns);
+				$("#input_IPv4_Secondary").val(st_wan.sec_dns);
+				$("#input_IPv6_Addr").val(st_wan.ip6_addr);
+				$("#input_IPv6_Subnet_Mask").val(st_wan.ip6_prefix_len);
+				$("#input_IPv6_Gateway").val(st_wan.ip6_gate);
+				$("#input_IPv6_Primary").val(st_wan.ip6_pri_dns);
+				$("#input_IPv6_Secondary").val(st_wan.ip6_sec_dns);
+				$("#input_packet_loss_per_session").val(st_wan.plps);
+			}
+
+
+
+			load_wan_status();
+			interval_timer = setInterval(load_wan_status, refresh_time * 1000);
+		}
+	}
+
+	
+</script>
+<!-- </head> -->
+
+<body>
+	<table class="table_main" align="left">
+		<tr>
+			<td><h3 class="main_menu">WAN Information</h3></td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px;">
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">WAN Status</h4>
+				<table style="width:90%;">
+					<!--<tr id="Status">
+                            <td width="37%" class="head_top">Status</td>
+                            <td width="63%" class="tail_top">
+                                <input id="input_WAN_Status" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>-->
+					<tr id="Total_data_used" style="display:none">
+						<td width="37%" class="head_top">Total Data Used</td>
+						<td width="63%" class="tail_top">
+							<input id="input_Total_Data_Used" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<tr id="Total_data_used_ulink">
+						<td width="37%" class="head_top">Total Data Used In UL</td>
+						<td width="63%" class="tail_top">
+							<input id="input_Total_Data_Used_Ulink" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<tr id="Total_data_used_dlink">
+						<td width="37%" class="head_top">Total Data Used In DL</td>
+						<td width="63%" class="tail_top">
+							<input id="input_Total_Data_Used_Dlink" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<tr id="Wan_operating_mode" style="display:none;">
+						<td width="37%" class="head_top">WAN Operation Mode</td>
+						<td width="63%" class="tail_top">
+							<input id="input_WAN_Operation_Mode" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<tr id="Wan_connection_mode" style="display:none;">
+						<td width="37%" class="head_top">WAN Connection Mode</td>
+						<td width="63%" class="tail_top">
+							<input id="input_WAN_Connection_Mode" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<tr id="tr_packet_loss_per_session">
+						<td width="37%" class="head_top">Packet Loss Per Session(DL/UL)</td>
+						<td width="63%" class="tail_top">
+							<input id="input_packet_loss_per_session" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<!--
+						<tr id="Wan_mac">
+                            <td width="37%" class="head_top">WAN MAC</td>
+                            <td width="63%" class="tail_top">
+                                <input id="input_WAN_MAC" maxlength="16" size="16" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>
+						-->
+					<tr id="Host_name">
+						<td width="37%" class="head_top">Host Name</td>
+						<td width="63%" class="tail_top">
+							<input id="input_Host_Name" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<!--<tr id="Multipdn">
+                            <td width="37%" class="head_top">MultiPDN</td>
+                            <td width="63%" class="tail_top">
+                                <input id="input_Multi_PDN" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="font-size: 12px;"/>
+                            </td>
+						</tr>-->
+				</table>
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">WAN IPv4</h4>
+				<table style="width:90%;">
+					<tr id="Ipv4_address">
+						<td width="37%" class="head_top">IPv4 Address</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv4_Addr" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<tr id="Ipv4_subnet_mask">
+						<td width="37%" class="head_top">IPv4 Subnet Mask</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv4_Subnet_Mask" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<tr id="Ipv4_default_gateway">
+						<td width="37%" class="head_top">IPv4 Default Gateway</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv4_Gateway" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<tr id="Ipv4_dns_primary">
+						<td width="37%" class="head_top">IPv4 DNS Server Primary</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv4_Primary" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+					<tr id="Ipv4_dns_secondary">
+						<td width="37%" class="head_top">IPv4 DNS Server Secondary</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv4_Secondary" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 290px;" />
+						</td>
+					</tr>
+				</table>
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">WAN IPv6</h4>
+				<table style="width:90%;">
+					<tr id="Ipv6_address">
+						<td width="37%" class="head_top">IPv6 Address</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv6_Addr" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 360px;" />
+						</td>
+					</tr>
+					<tr id="Ipv6_subnet_mask">
+						<td width="37%" class="head_top">IPv6 Prefix Length</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv6_Subnet_Mask" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 360px;" />
+						</td>
+					</tr>
+					<tr id="Ipv6_default_gateway">
+						<td width="37%" class="head_top">IPv6 Default Gateway</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv6_Gateway" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 360px;" />
+						</td>
+					</tr>
+					<tr id="Ipv6_dns_primary">
+						<td width="37%" class="head_top">IPv6 DNS Server Primary</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv6_Primary" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 360px;" />
+						</td>
+					</tr>
+					<tr id="Ipv6_dns_secondary">
+						<td width="37%" class="head_top">IPv6 DNS Server Secondary</td>
+						<td width="63%" class="tail_top">
+							<input id="input_IPv6_Secondary" maxlength="16" size="38" type="text" readonly="readonly" unselectable="on" style="width: 360px;" />
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+<!-- </html> -->

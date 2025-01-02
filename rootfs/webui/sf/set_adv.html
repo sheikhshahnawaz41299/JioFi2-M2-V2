@@ -1,0 +1,132 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>WiFi</title> -->
+<script>
+if(top.location.pathname!="/index.htm") top.location.href="./index.htm";
+$(document).ready(function() {
+
+});
+
+
+function load_mark(url){
+if(interval_timer) clearInterval(interval_timer);
+  if(url=="set_adv.html"){
+
+    function load_setting(){
+      
+      $.ajax({ 
+        url: "mark_set_adv.w.xml",
+        type: "Get", 
+        timeout: 8000,
+        cache: false,
+        datatype: "xml",
+    //    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+        success: function(data, status) {
+
+          var save=parseInt($(data).find("save").text());
+          $('select[name=save]').val(save);
+          reload_compnets(seed);
+        },
+        error: function(x, t, m){
+          if(t==="timeout"){
+
+          }  
+        }
+      })
+    }
+
+$('#submit_adv').click(function(event){
+  event.preventDefault();
+
+
+var save = $('select[name=save]').val();
+
+var post_data='save='+esc(save);
+
+  $("#errHint").html('&nbsp;');
+    var headers={};
+    headers["__RequestVerificationToken"]=$("#csrf_token2").val();
+    $.ajax({ 
+      url: "/wxml/set_adv.xml",
+      type: "Post", 
+      headers: headers,
+      timeout: 8000,
+      cache: false,
+      datatype: "xml",
+      data: post_data, 
+      success: function(data, status) {
+        var new_token=$(data).find("token").text();
+      if(new_token=="-1"){
+        top.location.reload(true); 
+        return false;
+      }
+        $("#csrf_token2").val(new_token);
+        var ret0 = parseInt($(data).find("save").text());
+      
+        if(ret0) $('#errHint').html('Setting Apply Success!');
+        else $('#errHint').html('Setting Apply Fail!');
+        load_setting();
+        setTimeout(function(){$("#errHint").html('&nbsp;');},5000);
+      },
+      error: function(x, t, m){
+        if(t==="timeout"){
+
+        }  
+      }
+    })
+
+//  pop_submit_result();
+});
+
+    load_setting();
+//    interval_timer=setInterval(load_setting,refresh_time*1000);
+  }
+}
+
+
+
+
+
+        </script>
+	<!-- </head> -->
+
+	<body style="margin:0;padding:0;border:0;">
+	    <table id="table_main" class="table_main" align="left" style="border: 0px;width:650px;">    	
+			<tr>			
+				<td style="padding-left: 50px;">
+				<h3 class="main_menu" style="text-indent: 0;">Advance Settings</h3>
+				</br>
+<!-- 				    <h4 style="color:#515151; margin:0;">WiFi Settings</h4> -->
+					<table style="width:90%;">
+
+
+					<tr id="tr_wifi_mode" class = "tr_wifi_mode">
+					<td width="37%" class="head_top">Power Save</td>
+					<td width="63%" class="tail_top">
+          <select name="save">
+          <option value="0">OFF</option>
+          <option value="10">10 min</option>
+          <option value="20">20 min</option>
+          <option value="30">30 min</option>
+          <option value="60">60 min</option>
+          </select>
+					</td>
+					</tr>
+						
+					<tr>
+					<td colspan ="3" id="errHint" style="padding:4px 20px 4px 212px;font-size:12px;FONT-FAMILY: Arial;color:red;">&nbsp;</td>
+					</tr>
+						
+						<tr>
+                       		<td colspan ="3" align="right">
+                            <button class="btn-Green"  id="submit_adv"><span><em>Apply</em></span></button>
+                            <a class="help" href="help.html#10308" target="_blank">&nbsp;</a>
+                          </td>
+                        </tr>
+					</table>
+     </td>
+     </tr>
+     </table>
+	<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+  </body>
+<!-- </html> -->

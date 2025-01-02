@@ -1,0 +1,1053 @@
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>Firmware Upgrade</title>-->
+<script>
+	if(top.location.pathname != "/index.htm") top.location.href = "./index.htm";
+
+
+	$(document).ready(function() {
+
+	});
+
+	
+
+	function load_mark(url) {
+		if(interval_timer) clearInterval(interval_timer);
+		if(url == "set_firm.html") {
+			var xp_norndisdrv = <% get_xp_norndisdrv(); %>;
+	//var xp_norndisdrv=1;
+			var token_used;
+
+			//    load_setting();
+			if(parseInt(xp_norndisdrv) == 1) {
+				$("#div_dl_drv").show();
+			}
+
+function get_hf_token(id) {
+		var file_id = parseInt(hf_alloc_data.start_id) + id;
+		file_id = file_id.toString();
+		var len = file_id.length;
+		if(len > 6) return hf_alloc_data.token + file_id.substr(-6);
+		else return(hf_alloc_data.token + "000000".substring(len) + file_id);
+
+	}
+
+
+function destroy_firm_dialog(){
+	$('.ui-dialog').remove();
+	//$( "#progressbar" ).progressbar( "destroy" ).die();
+	$('#dlg_upload_file').remove();
+	var content = 
+		'<div id="dlg_upload_file" style="display:none;" title="Upgrade Firmware">'+
+		'<div id="progressbar">'+
+			'<div id="progress_label">Uploading</div>'+
+		'</div>'+
+	'</div>'+
+	'<div id="dlg_effect_firm" style="display:none;" title="Upgrade Firmware">'+
+		'<div>Please do not power off or unplug device during upgrading in any way. The device will reboot when upgrade is done.</div>'+
+		'<div id="progressbar1">'+
+			'<div id="progress_label1"></div>'+
+		'</div>'+
+	'</div>';
+
+	$('#dlg_firm_parent').html(content);
+}
+
+
+
+
+
+$("#btn_dl_drv").click(function(){
+		var iframe;
+		iframe = document.getElementById("iframe_backup");
+		iframe.src = 'Setup.exe?dl=1';
+	});
+
+	var upload_alloc_id_start, upload_alloc_id_cnt, iframeId, xhr, isCancel = false;
+	var hf_alloc_data = {};
+	// var progress_bar = $("#progressbar"),
+	// 	progressLabel = $("#progress_label"),
+		percent = 0;
+
+		need_restart = 0,
+		percent1 = 0;
+
+	function ie_fileUpload(form_id, form) {
+		uploaded_size = 0;
+		var iframe = document.createElement("iframe");
+		iframe.setAttribute("id", "upload_iframe");
+		iframe.setAttribute("name", "upload_iframe");
+		iframe.setAttribute("width", "0");
+		iframe.setAttribute("height", "0");
+		iframe.setAttribute("border", "0");
+		iframe.setAttribute("style", "width: 0; height: 0; border: none;");
+		form.parentNode.appendChild(iframe);
+		window.frames['upload_iframe'].name = "upload_iframe";
+
+		iframeId = document.getElementById("upload_iframe");
+		var eventHandler = function() {
+
+			if(iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
+			else iframeId.removeEventListener("load", eventHandler, false);
+
+			var content;
+
+			if(iframeId.contentDocument) {
+				content = iframeId.contentDocument.body.innerHTML;
+			} else if(iframeId.contentWindow) {
+				content = iframeId.contentWindow.document.body.innerHTML;
+			} else if(iframeId.document) {
+				content = iframeId.document.body.innerHTML;
+			}
+			//reset_form(form_id);
+			if(content == 'upload OK') {
+				if(form_id == 1) {
+					//  	hide_tips(seed);
+					percent = 100;
+					clearInterval(interval_timer);
+					$("#progressbar").progressbar("value", 100);
+					$(".ui-dialog-buttonpane button:contains('Install')").attr("disabled", false).removeClass("ui-state-disabled");
+				} else if(form_id == 2) effective_config();
+			} else {
+				if(content == 'upload fail')
+					upload_fail(form_id);
+			}
+			setTimeout(function remove_iframe() {
+				if(iframeId.parentNode) iframeId.parentNode.removeChild(iframeId)
+			}, 250);
+		}
+
+		if(iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
+		if(iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+
+		var action_url = "http://" + document.domain + ":61726/upload";
+
+		form.setAttribute("target", "upload_iframe");
+		form.setAttribute("action", action_url);
+		form.setAttribute("method", "post");
+		form.setAttribute("enctype", "multipart/form-data");
+		form.setAttribute("encoding", "multipart/form-data");
+		form.submit();
+	}
+
+	function upload_fail(form_id) {
+		if(form_id == 1) {
+			$('#button_upgrade').attr("disabled", true).addClass("disabled");
+			$('#upload_form1')[0].reset();
+			$("#upload_file_name1").html("Choose file");
+			if(xhr) xhr.abort();
+
+			if($.browser.msie && parseInt($.browser.version) < 10) {
+				if(iframeId) iframeId.setAttribute('src', '');
+			}
+
+			if(!isCancel) alert("Import Firmware Fail!");
+			if(dlg_upload_file) {
+				dlg_upload_file.dialog("close");
+				isCancel = 0;
+			}
+
+		} else if(form_id == 2) {
+			$('#upload_form')[0].reset();
+			$("#upload_file_name").html("Choose file");
+			alert("Import Config Fail!");
+		}
+	}
+
+	function reset_form(form_id) {
+		if(form_id == 1) {
+			$('#upload_form1')[0].reset();
+			$("#upload_file_name1").html("Choose file");
+		} else if(form_id == 2) {
+			$('#upload_form')[0].reset();
+			$("#upload_file_name").html("Choose file");
+		}
+	}
+
+	function send_files(form_id, index) {
+		var form = new FormData();
+		var files;
+		if(form_id == 1) {
+			form.append("path", 'firm/');
+			files = $('#up_file1')[0].files
+		} else if(form_id == 2) {
+			form.append("path", 'nv/');
+			files = $('#up_file')[0].files
+		}
+		//  form.append("upload_file_id", upload_alloc_id_start+index);
+		form.append("upload_file_id", hf_alloc_data.start_id + index);
+		form.append("session", hf_alloc_data.session);
+		form.append("token", get_hf_token(index));
+
+		form.append("files", files[index]);
+		xhr = new XMLHttpRequest();
+
+		xhr.onError = function() {
+			alert("Import Config File Fail");
+		}
+
+		xhr.onreadystatechange = function() {
+
+			if(xhr.readyState == 4 && xhr.status == 200) {
+				reset_form(form_id);
+				if(xhr.responseText == "upload OK") {
+					if(form_id == 1) {
+						percent = 100;
+						isCancel = true;
+						clearInterval(interval_timer);
+						$("#progressbar").progressbar("value", 100);
+						$(".ui-dialog-buttonpane button:contains('Install')").attr("disabled", false).removeClass("ui-state-disabled");
+					}
+					if(form_id == 2) effective_config();
+				} else if(xhr.responseText == "upload busy") {
+					upload_fail(form_id);
+				} else if(xhr.responseText == "upload fail") {
+					upload_fail(form_id);
+				} else if(xhr.responseText == "upload fail, file exists") {
+					upload_fail(form_id);
+				} else if(xhr.responseText == "upload fail, invalid request") {
+					upload_fail(form_id);
+				} else if(xhr.responseText == "upload fail, name too long") {
+					upload_fail(form_id);
+				}
+
+			}
+			if(xhr.readyState == 4 && xhr.status == 0) {
+				//  if(xhr) xhr.abort();
+				isCancel = true;
+				upload_fail(form_id);
+			}
+		}
+
+		xhr.open("post", "http://" + location.hostname + ":61726/upload", true);
+		xhr.send(form);
+
+	}
+
+	if($.browser.msie && parseInt($.browser.version) < 10) {
+		function getFileSize(fileObj) {
+			var image = new Image();
+			image.src = fileObj.value;
+		}
+		// IE suspends timeouts until after the file dialog closes
+		$('#up_file').click(function(event) {
+			$('#button_configbackup_upload').attr("disabled", true);
+			setTimeout(function() {
+				if($('#up_file').val().length > 0) {
+					//              alert($('#up_file').val());
+					var path = $('#up_file').val();
+					var file_name = path.substring(path.lastIndexOf('\\') + 1, path.length);
+					$("#upload_file_name").html("Choose file");
+					if(file_name.lastIndexOf(".bin") + 4 != file_name.length) {
+						$('#upload_form')[0].reset();
+						$("#upload_file_name").html("Choose file");
+						alert('File format check fail!');
+						return;
+					}
+					getFileSize($('#up_file').val());
+
+					var headers = {};
+					token_used = $("#csrf_token2").val();
+					headers["__RequestVerificationToken"] = token_used;
+					$.ajax({
+						url: "/wxml/sd_upload_state.xml",
+						type: "Post",
+						headers: headers,
+						cache: false,
+						timeout: 20000,
+						datatype: "xml",
+						data: {
+							count: '1'
+						},
+						success: function(data, status) {
+							var new_token = $(data).find("token").text();
+							if(new_token == "-1") {
+								return false;
+							}
+							$("#csrf_token2").val(new_token);
+							var state = parseInt($(data).find("state").text());
+							var count = parseInt($(data).find("count").text());
+
+							// upload_alloc_id_start=parseInt($(data).find("alloc_id").text());
+							// upload_alloc_id_cnt=1;
+
+							hf_alloc_data.start_id = parseInt($(data).find("alloc_file_id").text());
+							hf_alloc_data.session = $(data).find("session_id").text();
+							hf_alloc_data.token = $(data).find("alloc_token_id").text();
+							hf_alloc_data.id_cnt = 1;
+
+							if(!state && !count) //$('#start_upload').show();
+							{
+								if($.browser.msie && parseInt($.browser.version) < 10) {
+									$('#ie_hide_path').val('nv/');
+									//          $('#upload_file_id').val(upload_alloc_id_start);
+									$('#upload_file_id').val(hf_alloc_data.start_id);
+									$('#ie_hide_session').val(hf_alloc_data.session);
+									$('#ie_hide_token').val(get_hf_token(0));
+
+									//          ie_fileUpload($('#upload_form')[0]);
+									//$('#button_configbackup_upload').removeAttr("disabled");
+//									$("#upload_file_name").html(files[0].name);
+									$("#upload_file_name").html(file_name);
+									$('#button_configbackup_upload').removeAttr("disabled").removeClass("disabled");
+								}
+							} else {
+								$('#button_configbackup_upload').attr("disabled", true).addClass("disabled");
+								alert("Import Config File Fail");
+							}
+						},
+						error: function(x, t, m) {
+							if(t === "timeout")
+								alert('Please check your network!');
+						}
+					})
+
+				}
+			}, 0);
+		});
+
+		$('#up_file1').click(function(event) {
+			$('#button_upgrade').attr("disabled", true).addClass("disabled");
+			setTimeout(function() {
+				if($('#up_file1').val().length > 0) {
+					//              alert($('#up_file').val());
+					var path = $('#up_file1').val();
+					var file_name = path.substring(path.lastIndexOf('\\') + 1, path.length);
+					$("#upload_file_name1").html("Choose file");
+					if(file_name.lastIndexOf(".bin") + 4 != file_name.length) {
+						$('#upload_form1')[0].reset();
+						$("#upload_file_name1").html("Choose file");
+						alert('File format check fail!');
+						return;
+					}
+					getFileSize($('#up_file1').val());
+					var headers = {};
+					token_used = $("#csrf_token2").val();
+					headers["__RequestVerificationToken"] = token_used;
+					$.ajax({
+						url: "/wxml/sd_upload_state.xml",
+						type: "Post",
+						headers: headers,
+						cache: false,
+						timeout: 20000,
+						datatype: "xml",
+						data: {
+							count: '1'
+						},
+						success: function(data, status) {
+							var new_token = $(data).find("token").text();
+							if(new_token == "-1") {
+								return false;
+							}
+							$("#csrf_token2").val(new_token);
+							var state = parseInt($(data).find("state").text());
+							var count = parseInt($(data).find("count").text());
+
+							// upload_alloc_id_start=parseInt($(data).find("alloc_id").text());
+							// upload_alloc_id_cnt=1;
+							hf_alloc_data.start_id = parseInt($(data).find("alloc_file_id").text());
+							hf_alloc_data.session = $(data).find("session_id").text();
+							hf_alloc_data.token = $(data).find("alloc_token_id").text();
+							hf_alloc_data.id_cnt = 1;
+
+							if(!state && !count) //$('#start_upload').show();
+							{
+								if($.browser.msie && parseInt($.browser.version) < 10) {
+									$('#ie_hide_path1').val('firm/');
+									//          $('#upload_file_id1').val(upload_alloc_id_start);
+									$('#upload_file_id1').val(hf_alloc_data.start_id);
+									$('#ie_hide_session1').val(hf_alloc_data.session);
+									$('#ie_hide_token1').val(get_hf_token(0));
+									$("#upload_file_name1").html(file_name);
+									//          ie_fileUpload($('#upload_form')[0]);
+									$('#button_upgrade').removeAttr("disabled").removeClass("disabled");
+								}
+							} else {
+								$('#button_upgrade').attr("disabled", true).addClass("disabled");
+								alert("Import Config File Fail");
+							}
+						},
+						error: function(x, t, m) {
+							if(t === "timeout")
+								alert('Please check your network!');
+						}
+					})
+
+				}
+			}, 0);
+		});
+
+	} else {
+		$('#up_file1').die().live('change', function() {
+			if( /*typeof FileReader !='undefined' && */ typeof FormData != 'undefined') {
+				$('#button_upgrade').attr("disabled", true).addClass("disabled");
+				var files = this.files;
+				if(!files.length) {
+					$("#upload_file_name1").html("Choose file");
+				}
+				if(files.length != 1) return;
+				if(files[0].name.lastIndexOf(".bin") + 4 != files[0].name.length) {
+					$('#upload_form1')[0].reset();
+					$("#upload_file_name1").html("Choose file");
+					alert('File format check fail!');
+					return;
+				}
+				if((files[0].size) > 200 * 1024 * 1024) {
+					$('#upload_form1')[0].reset();
+					$("#upload_file_name1").html("Choose file");
+					alert('Support for file uploads less than 200MB!');
+					return;
+				}
+				var headers = {};
+				token_used = $("#csrf_token2").val();
+				headers["__RequestVerificationToken"] = token_used;
+				$.ajax({
+					url: "/wxml/sd_upload_state.xml",
+					type: "Post",
+					headers: headers,
+					cache: false,
+					timeout: 20000,
+					datatype: "xml",
+					data: {
+						count: files.length
+					},
+					success: function(data, status) {
+						var new_token = $(data).find("token").text();
+						if(new_token == "-1") {
+							return false;
+						}
+						$("#csrf_token2").val(new_token);
+						var state = parseInt($(data).find("state").text());
+						var count = parseInt($(data).find("count").text());
+						// upload_alloc_id_start=parseInt($(data).find("alloc_id").text());
+						// upload_alloc_id_cnt=files.length;
+						hf_alloc_data.start_id = parseInt($(data).find("alloc_file_id").text());
+						hf_alloc_data.session = $(data).find("session_id").text();
+						hf_alloc_data.token = $(data).find("alloc_token_id").text();
+						hf_alloc_data.id_cnt = files.length;
+
+						if(!state && !count) {
+							//        $('#start_upload').show();
+							//        send_files(0);
+							$("#upload_file_name1").html(files[0].name);
+							$('#button_upgrade').removeAttr("disabled").removeClass("disabled");
+						} else {
+							$('#upload_form1')[0].reset();
+							if(xhr) xhr.abort();
+							alert("Import Config File Fail");
+						}
+
+					},
+					error: function(x, t, m) {
+						if(t === "timeout")
+							alert('Please check your network!');
+					}
+				})
+			} else {
+				alert("Your Browser does not support html5,please setup the latest Chrome/Firefox!");
+			}
+		});
+
+		$('#up_file').die().live('change', function() {
+			if( /* typeof FileReader !='undefined' && */ typeof FormData != 'undefined') {
+				$('#button_configbackup_upload').attr("disabled", true).addClass("disabled");
+				var files = this.files;
+				if(!files.length) {
+					$("#upload_file_name").html("Choose file");
+				}
+				if(files.length != 1) return;
+				if(files[0].name.lastIndexOf(".bin") + 4 != files[0].name.length) {
+					$('#upload_form')[0].reset();
+					$("#upload_file_name").html("Choose file");
+					alert('File format check fail!');
+					return;
+				}
+				if((files[0].size) > 8 * 1024) {
+					$('#upload_form')[0].reset();
+					$("#upload_file_name").html("Choose file");
+					alert('Support for file uploads less than 8KB!');
+					return;
+				}
+				var headers = {};
+				token_used = $("#csrf_token2").val();
+				headers["__RequestVerificationToken"] = token_used;
+				$.ajax({
+					url: "/wxml/sd_upload_state.xml",
+					type: "Post",
+					headers: headers,
+					cache: false,
+					timeout: 20000,
+					datatype: "xml",
+					data: {
+						count: files.length
+					},
+					success: function(data, status) {
+						var new_token = $(data).find("token").text();
+						if(new_token == "-1") {
+							return false;
+						}
+						$("#csrf_token2").val(new_token);
+						var state = parseInt($(data).find("state").text());
+						var count = parseInt($(data).find("count").text());
+						// upload_alloc_id_start=parseInt($(data).find("alloc_id").text());
+						// upload_alloc_id_cnt=files.length;
+
+						hf_alloc_data.start_id = parseInt($(data).find("alloc_file_id").text());
+						hf_alloc_data.session = $(data).find("session_id").text();
+						hf_alloc_data.token = $(data).find("alloc_token_id").text();
+						hf_alloc_data.id_cnt = files.length;
+
+						if(!state && !count) {
+							//        $('#start_upload').show();
+							//        send_files(0);
+							$("#upload_file_name").html(files[0].name);
+							$('#button_configbackup_upload').removeAttr("disabled").removeClass("disabled");
+						} else {
+							$('#upload_form')[0].reset();
+							if(xhr) xhr.abort();
+							alert("Import Config File Fail");
+						}
+
+					},
+					error: function(x, t, m) {
+						if(t === "timeout")
+							alert('Please check your network!');
+					}
+				})
+			} else {
+				alert("Your Browser does not support html5,please setup the latest Chrome/Firefox!");
+			}
+		});
+	}
+
+function upload_result() {
+		var headers = {};
+		if(token_used == $("#csrf_token2").val()) return;
+		token_used = $("#csrf_token2").val();
+		headers["__RequestVerificationToken"] = token_used;
+
+		//var post_data = 'file_id='+(hf_alloc_data.start_id);
+
+		$.ajax({
+			url: "/wxml/sd_upload.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: {
+				file_id: hf_alloc_data.start_id
+			},
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				var name = $(data).find("name").text();
+				var progress = parseInt($(data).find("progress").text());
+				var size = parseInt($(data).find("size").text());
+				if(progress && name != '-') {
+					if(progress <= size) {
+						percent = Math.floor((progress * 100) / size);
+						$("#progressbar").progressbar("value", percent || 0);
+					}
+				}
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+	$("#button_upgrade").click(function() {
+		//show_tips(seed,"Uploading...");
+		// if((dsc&0x02) && batt_per<25){
+		// 	alert("Your current battery capacity is not enough (Less than 25%)!\n Please charge your battery")
+		// 	return false;
+		// }
+		dlg_upload_file = $("#dlg_upload_file").dialog({
+			autoOpen: false,
+			resizeable: false,
+			draggable: false,
+			height: 330,
+			width: 450,
+			modal: true,
+			buttons: {
+				Install: function() {
+					dlg_upload_file.dialog("close");
+					effective_firm();
+				},
+				Cancel: function() {
+					if($(".ui-dialog-buttonpane button:contains('Install')").attr("disabled")) {
+						isCancel = true;
+						$('#button_upgrade').attr("disabled", true).addClass("disabled");
+						$('#upload_form1')[0].reset();
+						$("#upload_file_name1").html("Choose file");
+						if(xhr) xhr.abort();
+
+						if($.browser.msie && parseInt($.browser.version) < 10) {
+							if(iframeId) iframeId.setAttribute('src', '');
+						}
+
+						//alert("Cancel upload!!");
+					} else {
+						isCancel = true;
+						dlg_upload_file.dialog("close");
+					}
+
+				}
+			},
+			close: function() {
+				dlg_upload_file = 0;
+				locking = 0;
+				$('#upload_form1')[0].reset();
+				$("#upload_file_name1").html("Choose file");
+				if(xhr) xhr.abort();
+				if(!isCancel) $('#button_upgrade').attr("disabled", false).removeClass("disabled");
+				else $('#button_upgrade').attr("disabled", true).addClass("disabled");
+
+				if($.browser.msie && parseInt($.browser.version) < 10) {
+					if(iframeId) iframeId.setAttribute('src', '');
+				}
+
+				clearInterval(interval_timer);
+				destroy_firm_dialog();
+			}
+		});
+		dlg_upload_file.dialog("open");
+		locking = 1;
+		$(".ui-dialog-buttonpane button:contains('Install')").attr("disabled", true).addClass("ui-state-disabled");
+		percent = 0;
+		if($.browser.msie && parseInt($.browser.version) < 10) {
+			ie_fileUpload(1, $('#upload_form1')[0]);
+		} else {
+			send_files(1, 0);
+		}
+
+			$("#progressbar").progressbar({
+				value: false,
+				change: function() {
+					$("#progress_label").text(percent + "%");
+				},
+				complete: function() {
+					//		progressLabel.text("Upload Complete");
+				}
+			})			
+		$("#progressbar").progressbar("value", 0);
+		interval_timer = setInterval(function(){
+			upload_result();
+		}, 1000);
+		upload_result();
+	});
+
+	
+
+	$("#button_configbackup_upload").click(function() {
+		// if(!confirm("If Restore Sucessful,The Device will reboot.Do you want to Restore?")) {
+		// 	return;
+		// }
+
+		confirm("If Restore Sucessful,The Device will reboot.Do you want to Restore?", function() {
+			show_tips(seed,"Waiting...", 40);
+			if($.browser.msie && parseInt($.browser.version) < 10) {
+				ie_fileUpload(2, $('#upload_form')[0]);
+			} else {
+				send_files(2, 0);
+			}
+		}, function() {
+
+		})
+
+	});
+
+	function get_install_progress() {
+		var headers = {};
+		if(token_used == $("#csrf_token2").val()) return;
+		token_used = $("#csrf_token2").val();
+		headers["__RequestVerificationToken"] = token_used;
+		$.ajax({
+			url: "/wxml/upd_res.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: {
+				install_progress: '1',
+				install_result: '1'
+			},
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				var install_progress = parseInt($(data).find("install_progress").text());
+				var install_result = parseInt($(data).find("install_result").text());
+				if(install_result == 1) {
+					percent1 = install_progress;
+					$("#progressbar1").progressbar("value", install_progress || 0);
+				} else if(install_result == 2) {
+					percent1 = 100;
+					$("#progressbar1").progressbar("value", 100);
+				}
+				if(install_result == 3) {
+					progress_label1.innerHTML = "Install Fail";
+					$("#progress_label1").css("margin-left", "-50px");
+				}
+				if(install_result == 6) {
+					progress_label1.innerHTML = "Version Check Fail";
+					$("#progress_label1").css("margin-left", "-50px");
+				}
+
+				if(install_result >= 2 && install_result < 6) {
+					need_restart = 1;
+					clearInterval(interval_timer);
+					$(".ui-dialog-buttonpane button:contains('OK')").attr("disabled", false).removeClass("ui-state-disabled").text("RESTART");
+				} else if(install_result == 6) {
+					need_restart = -1;
+					clearInterval(interval_timer);
+					$(".ui-dialog-buttonpane button:contains('OK')").attr("disabled", false).removeClass("ui-state-disabled");
+				}
+
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+	}
+
+	function start_install() {
+		$(".ui-dialog-titlebar-close", $(this).parent()).hide();
+		$(".ui-dialog-buttonpane button:contains('OK')").attr("disabled", true).addClass("ui-state-disabled");
+		$(".ui-dialog-buttonpane button:contains('Cancel')").hide();
+		var headers = {};
+		token_used = $("#csrf_token2").val();
+		headers["__RequestVerificationToken"] = token_used;
+		$.ajax({
+				url: "/wxml/upd_ins.xml",
+				type: "Post",
+				headers: headers,
+				timeout: 8000,
+				cache: false,
+				datatype: "xml",
+				data: {
+					effect: '1'
+				},
+				success: function(data, status) {
+					var new_token = $(data).find("token").text();
+					if(new_token == "-1") {
+						return false;
+					}
+					$("#csrf_token2").val(new_token);
+					var ret0 = parseInt($(data).find("upd").text());
+
+					interval_timer = setInterval(function(){
+						get_install_progress();
+					}, 1000);
+					get_install_progress();
+
+				},
+				error: function(x, t, m) {
+					if(t === "timeout") {
+
+					}
+				}
+
+			})
+			// dlg_effect_firm.dialog("close");
+			// show_tips(seed,"Waiting");
+		percent1 = 0;
+		$("#progressbar1").progressbar({
+			value: false,
+			change: function() {
+				$("#progress_label1").text(percent1 + "%");
+			},
+			complete: function() {
+				//    progressLabel.text("Upload Complete");
+			}
+		})
+		$("#progressbar1").progressbar("value", 0);
+	}
+
+	function effective_firm() {
+
+		dlg_effect_firm = $("#dlg_effect_firm").dialog({
+			autoOpen: false,
+			closeOnEscape: false,
+			resizeable: false,
+			draggable: false,
+			height: 330,
+			width: 450,
+			modal: true,
+			dialogClass: "no-close",
+			buttons: {
+				OK: function() {
+					if(need_restart == 1) {
+						need_restart = 0;
+						dlg_effect_firm.dialog("close");
+						restart_device(seed);
+					} else if(need_restart == -1) {
+						dlg_effect_firm.dialog("close");
+						window.location.reload(true);
+					} else {
+						start_install();
+					}
+
+				},
+				Cancel: function() {
+					dlg_effect_firm.dialog("close");
+				}
+			},
+			close: function() {
+				dlg_effect_firm = 0;
+				locking = 0;
+				$('#button_upgrade').attr("disabled", true).addClass("disabled");
+			},
+			open: function() {
+				//          $(".ui-dialog-titlebar-close",$(this).parent()).hide();
+			}
+		});
+		dlg_effect_firm.dialog("open");
+		locking = 1;
+
+	}
+
+	function effective_config() {
+		var headers = {};
+		token_used = $("#csrf_token2").val();
+		headers["__RequestVerificationToken"] = token_used;
+		$.ajax({
+			url: "/wxml/effect_config.xml",
+			type: "Post",
+			headers: headers,
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: {
+				effect: '1'
+			},
+			success: function(data, status) {
+				var new_token = $(data).find("token").text();
+				if(new_token == "-1") {
+					return false;
+				}
+				$("#csrf_token2").val(new_token);
+				var ret0 = parseInt($(data).find("restore").text());
+				if(ret0) alert('Config Restore Success!');
+				else alert('Config Restore Fail!');
+			},
+			error: function(x, t, m) {
+				// if(t==="timeout"){
+				// 	alert('Config Restore Fail!');
+				// }
+			}
+		})
+	}
+
+
+$("#button_configbackup_save").click(function(){
+
+		$.ajax({
+			url: "/config.w.xml",
+			type: "Get",
+			timeout: 8000,
+			cache: false,
+			datatype: "xml",
+			data: {},
+			success: function(data, status) {
+				var gen = parseInt($(data).find("gen").text());
+				var back_url = $(data).find("back_url").text()
+					//  <back_url>/app/var/config_bak/config_bak.ww</back_url>
+					//   /nv/config_bak.ww
+
+				if(gen == 1) {
+					var pos = back_url.lastIndexOf('/');
+					if(pos > 0) {
+						var dl_url = '/nv' + back_url.substr(pos);
+						do_backup(dl_url + '?dl=1');
+					}
+
+				}
+			},
+			error: function(x, t, m) {
+				if(t === "timeout") {
+
+				}
+			}
+		})
+
+	})
+
+	function do_backup(path) {
+		var iframe;
+
+		iframe = document.getElementById("iframe_backup");
+		iframe.src = path;
+	}
+
+
+
+
+		}
+	}
+
+	
+</script>
+<!-- 	</head> -->
+
+<body style="margin:0;padding:0;border:0;">
+	<table class="table_main" align="left">
+		<tr>
+			<td>
+				<h3 class="main_menu">Firmware Management</h3></td>
+		</tr>
+		<tr>
+			<td class="_td" style="padding-left: 50px;">
+				</br>
+				<h4 id="sub_SW_version" class="small_menu" style="color:#515151; margin:0;">Device Software Version</h4>
+				<table id="T_SW_version" style="width:90%;">
+					<tr id="Device_software_version">
+						<td width="37%" class="head_top">Device Software Version</td>
+						<td width="63%" class="tail_top">
+							<input id="input_SW_version" type="text" value="<% get_software_version(); %>" readonly />
+						</td>
+					</tr>
+				</table>
+				</br>
+				<div>
+					<h4 id="sub_SW_upgrade" class="small_menu" style="color:#515151; margin:0;">Software Upgrade</h4>
+					<!--<form name="form1" id="form1" method="post" enctype="multipart/form-data" action="upload"> -->
+					<table id="T_software_upgrade" style="width:90%;">
+						<tr id="Software_upgrade">
+							<td width="37%" class="head_top">Firmware File</td>
+							<td width="63%" class="tail_top">
+								<!--                             <form name="form1" id="form1" method="post" enctype="multipart/form-data" action="/cgi-bin/upload" style="margin:0;">
+                                <input name="input_software_upgrade" id="input_software_upgrade" type="file" />
+                            </form>   -->
+
+								<div id="upload_file_name1" class="upload_file_style" style="text-indent: 10px;">Choose file</div>
+								<div class="btn-Browse">
+									<div class="btn-Browse-right">
+										<form id="upload_form1" class="btn-Browse-center">
+											<span class="up_btn_name">Browse</span>
+											<input name="path" id="ie_hide_path1" type="hidden" value="firm/" />
+											<input name="upload_file_id" id="upload_file_id1" type="hidden" value="" />
+											<input name="session" id="ie_hide_session1" type="hidden" value="" />
+											<input name="token" id="ie_hide_token1" type="hidden" value="" />
+											<input name="files" id="up_file1" class="upload" type="file" size="1" style="+font-size: 30px;" accept=".bin" />
+										</form>
+									</div>
+								</div>
+
+							</td>
+						</tr>
+						<tr id="upgrade_btn">
+							<td width="37%" class="head_top"></td>
+							<td width="63%" class="tail_top" height="47px">
+								<button type="button" class="btn-Green disabled" id="button_upgrade" disabled="true"><span><em>Apply</em></span></button>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<!--</form>-->
+				</br>
+				<h4 id="sub_Confguration" class="small_menu" style="color:#515151; margin:0;">Configuration Backup</h4>
+				<iframe name="iframe_backup" id="iframe_backup" style="display:none"> </iframe>
+				<!--<form name="form2" id="form2" method="post" enctype="multipart/form-data" action="upload">-->
+				<table id="T_configuration_backup" style="width:90%;">
+					<tr id="Configuration_file">
+						<td width="37%" class="head_top">Configuration File</td>
+						<td width="63%" class="tail_top" height="47px">
+							<button type="button" class="btn-Green" name="button_configbackup_save" id="button_configbackup_save"><span><em>Backup</em></span></button>
+						</td>
+					</tr>
+				</table>
+				</br>
+				<h4 class="small_menu" style="color:#515151; margin:0;">Configuration Restore</h4>
+				<iframe name="iframe_restore" id="iframe_restore" style="display:none">
+                    </iframe>
+				<!--<form name="form2" id="form2" method="post" enctype="multipart/form-data" action="upload">-->
+				<table id="T_configuration_restore" style="width:90%;">
+					<tr id="Configuration_restore_file">
+						<td width="37%" class="head_top">Configuration File Path</td>
+						<td width="63%" class="tail_top">
+							<!-- action=":61726/upload"  -->
+							<!-- <form name="form2" id="form2" method="post" enctype="multipart/form-data" style="margin:0;">
+								<input name="path" id="ie_hide_path" type="hidden" value="nv/"/>
+								<input name="upload_file_id" id="upload_file_id" type="hidden" value=""/>
+                                <input name="input_backup_file" id="input_backup_file" type="file" />
+                            </form> -->
+							<!--<form id="upload_form">
+						    <input name="path" id="ie_hide_path" type="hidden" value="nv/"/>
+						    <input name="upload_file_id" id="upload_file_id" type="hidden" value=""/>
+						    <input name="session" id="ie_hide_session" type="hidden" value=""/>
+						    <input name="token" id="ie_hide_token" type="hidden" value=""/>
+						    <input name="files" id="up_file" class="upload" type="file" accept=".bin" />
+						  </form>-->
+
+							<div id="upload_file_name" class="upload_file_style" style="text-indent: 10px;">Choose file</div>
+							<div class="btn-Browse">
+								<div class="btn-Browse-right">
+									<form id="upload_form" class="btn-Browse-center">
+										<span class="up_btn_name">Browse</span>
+										<input name="path" id="ie_hide_path" type="hidden" value="nv/" />
+										<input name="upload_file_id" id="upload_file_id" type="hidden" value="" />
+										<input name="session" id="ie_hide_session" type="hidden" value="" />
+										<input name="token" id="ie_hide_token" type="hidden" value="" />
+										<input name="files" id="up_file" class="upload" type="file" size=1 style="+font-size: 30px;"  accept=".bin" />
+									</form>
+								</div>
+							</div>
+
+						</td>
+					</tr>
+					<tr id="Configbackup">
+					<td width="37%" class="head_top"></td>
+							<td width="63%" class="tail_top" height="47px">
+							<button class="btn-Green disabled" id="button_configbackup_upload" name="button_configbackup_upload" disabled="true"><span><em>Restore Configuration</em></span></button>
+						</td>
+					</tr>
+				</table>
+				<div id="div_dl_drv" style="display:none;">
+					<h4 class="small_menu" style="color:#515151; margin:0;">Driver Download</h4>
+					<iframe name="iframe_drv" id="iframe_drv" style="display:none"> </iframe>
+					<!--<form name="form2" id="form2" method="post" enctype="multipart/form-data" action="upload">-->
+					<table id="T_drv_dl" style="width:90%;">
+						<tr>
+							<td width="37%" class="head_top">Driver</td>
+							<td width="63%" class="tail_top">
+								<button class="btn-Green" id="btn_dl_drv" name="btn_dl_drv"><span><em>Download</em></span></button>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<!--</form>-->
+				<div id="div_show_text" style="text-align:center;"></div>
+
+			</td>
+		</tr>
+	</table>
+	<div id="dlg_firm_parent">
+	<div id="dlg_upload_file" style="display:none;" title="Upgrade Firmware">
+		<div id="progressbar">
+			<div id="progress_label">Uploading</div>
+		</div>
+	</div>
+	<div id="dlg_effect_firm" style="display:none;" title="Upgrade Firmware">
+		<div>Please do not power off or unplug device during upgrading in any way. The device will reboot when upgrade is done.</div>
+		<div id="progressbar1">
+			<div id="progress_label1"></div>
+		</div>
+	</div>
+	</div>
+	<input id="csrf_token2" type="hidden" value="<% get_csrf_token(); %>">
+</body>
+<!-- </html>
+ -->

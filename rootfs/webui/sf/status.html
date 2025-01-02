@@ -1,0 +1,237 @@
+
+<div class="line navi" >
+  <nav >
+   <div class="top-nav s-12 l-12">
+    <ul>
+    <li class="active"><a class="to_status"><span class="icon">&#235;</span><span class="text">STATUS</span></a></li>
+    <li><a class="to_connect"><span class="icon">&#207;</span><span class="text">CONNECTION</span></a></li>
+    <li><a class="to_sd" style="padding-bottom:0.5em;padding-top:0.8em;margin-bottom:0.1em;"><span class="icon" >&#229;&nbsp;</span><span class="text">WIFI DISK</span></a></li>
+    <li><a class="to_setting"><span class="icon">&#216;</span><span class="text">SETTING</span></a></li>
+    <!--<li><a class="to_smart"><span class="icon">&#201;</span><span class="text">MY SMARTFREN</span></a></li>-->
+    <li><a class="to_about" style="padding-bottom:0.5em;padding-top:0.8em;"><span class="icon">&#231;</span><span class="text">ABOUT</span></a></li>            
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+<div class="line width_100" >
+<!-- ASIDE NAV -->
+<div class="s-12 l-2" id="aside">
+<div class="aside-nav" >
+  <ul>
+  <li class="active-item "><a href="javascript:;">Basic Status</a></li>
+  <li><a class="to_setting">Quick Setting</a></li>
+  </ul>
+</div>
+</div>
+<div class="s-12 l-10" id="main_content">
+<h3 style="">BASIC STATUS</h3>
+<div class="line" style="padding:0em 0.6em;" id="div_tbl">
+<table >
+<thead>
+<tr align=left>
+<th colspan=4>Device Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width=25%>Network Mode</td>
+<td width=75% id="network_mode" colspan=3></td>
+</tr>
+<tr>
+<td width=25%>Network Status</td>
+<td width=75% id="network_status" colspan=3>LTE Connected</td>
+</tr>
+<tr id='tr_wan_ip' style="">
+<td width=25%>Wan IP</td>
+<td width=75% id="wan_ip" colspan=3></td>
+</tr>
+<tr id='tr_wan_dns' style="">
+<td width=25%>DNS</td>
+<td width=75% id="wan_dns" colspan=3>dc20::1 dc20::2</td>
+</tr>
+<tr>
+<td width=25%>Wifi Status</td>
+<td width=75% id="wifi_status" colspan=3>AP Mode</td>
+</tr>
+<tr >
+<td width=25%>User List Number</td>
+<td width=75% id="user_cnt" colspan=3>0</td>
+</tr>
+<tr height=35 align=left class="head"><th colspan=4>User List</th></tr>
+<tr height=35 align="center"><th width=35%>Host Name</th><th width=30%>IP</th><th width=35%>MAC</th></tr>
+<table id="tbl_user">
+
+</table>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<style type="text/css">
+ul.ts{
+list-style:none;
+display:inline-block;
+width:100%;
+border:1px solid #888; border-top:0px; 
+word-wrap:break-word;word-break:break-all;
+cursor:pointer;
+text-align:left;
+height: 1.6em;
+line-height: 1.6em;
+vertical-align: middle;
+background: #ddd;
+color: #222;
+}
+ul li.type{width:26%;float:left;height: 1.55em;border-right:1px solid #888;}
+ul li.cv{width:36%;float:left;height: 1.55em;border-right:1px solid #888;}
+ul li.tv{width:36%;float:left;height: 1.55em;}
+.ts_head{
+list-style:none;
+display:inline-block;
+width:100%;
+background:#34485C;border:1px solid #34485C;
+line-height:  1.6em;;
+text-align:left;
+vertical-align: middle;
+}
+
+.width_100{width:100%;font-size:1em;}
+
+@media screen and (min-width:801px) {
+#aside{height:30em;background:#F0F0F0;}
+#main_content{background:#ccc;color:#444;font-size:0.9em;height:33.4em;}
+#main_content h3{padding:1em;color:#444;}
+}
+
+@media screen and (max-width:800px) {
+
+ul.ts{
+border:1px solid #888;
+}
+
+.width_100{width:100%;font-size: 1em;}
+
+#aside{background:#F0F0F0;}
+#main_content{margin-top:0.8em;background:#ccc;color:#444;font-size:0.8em;}
+#main_content h3{padding:0.4em;color:#444;}
+}
+
+table {
+  border:0;
+  border-collapse:collapse;
+}
+
+th {border-right:1px solid #FFF;border-left: none;}
+th:last-child {border-right:0;}
+td {border-right:1px solid #ccc;border-left: none;}
+td:last-child {border-right:0;}
+thead th,tr.head th{text-align: left;}
+
+</style>
+
+<script type="text/javascript">
+var netstatus;
+var str_netmode=['Static IP','DHCP Client','PPPoE','Mobile Network'];
+var str_opmode=['AUTO','LTE','WCDMA','GSM'];
+var str_netstatus=['static ip disconnected','static ip connected','dhcp client disconnected','dhcp client connected','pppoe disconnected','pppoe connected','modem initializing','modem dialing','modem disconnected','modem connected']
+var str_wifi=['Off','On','Not exist']
+function load_interval(){
+  $.ajax({ 
+    url: "mark_home.w.xml",
+    type: "Get", 
+    timeout: 8000,
+    cache: false,
+    datatype: "xml",
+//    data: { path:curr_path,page:curr_page,filter:'255'  }, 
+    success: function(data, status) {
+    var networkmode = parseInt($(data).find("networkmode").text());
+    var opmode = $(data).find("op_mode").text();
+    netstatus = parseInt($(data).find("netstatus").text());
+
+  if(netstatus==1 || netstatus==3 || netstatus==5 || netstatus==9){
+  var wan_ip = $(data).find("wan").text();
+  if(wan_ip!='-' && wan_ip!='-1') {
+    $('#wan_ip').html(wan_ip);
+    $('#tr_wan_ip').show();
+  }
+  else $('#tr_wan_ip').hide();
+
+  var pri_dns = $(data).find("pri").text();
+  var sec_dns = $(data).find("sec").text();
+  if(pri_dns!='-' || sec_dns!='-') {
+    if(pri_dns=='-') pri_dns="";
+    if(sec_dns=='-') sec_dns="";
+    $('#wan_dns').html(pri_dns+'&nbsp;&nbsp;'+sec_dns);
+    $('#tr_wan_dns').show();
+  }
+  else $('tr_wan_dns').hide();
+  }
+  else {
+  $('#tr_wan_ip').hide();
+  $('#tr_wan_dns').hide();
+  }
+  var wifistatus = parseInt($(data).find("wifistatus").text());
+  $("#wifi_status").html(str_wifi[wifistatus]);
+
+  var user_cnt = parseInt($(data).find("user_cnt").text());
+  $("#user_cnt").html(user_cnt);
+
+  if(networkmode == 3){
+    var modem_mode = parseInt($(data).find("modem_mode").text());
+
+    $("#network_mode").html(str_opmode[modem_mode]);
+  }
+  else $("#network_mode").html(str_netmode[networkmode]);
+  
+  if(networkmode != 3)
+    $("#network_status").html(str_netstatus[netstatus]);
+  else if(opmode == '-') 
+    $("#network_status").html(str_netstatus[netstatus]);
+  else if((opmode!='NO SERVICE')) 
+      $("#network_status").html(opmode +' '+str_netstatus[netstatus]);
+  else
+    $("#network_status").html(opmode);
+  
+  var tbl_content='';
+
+  $(data).find("user").each(function(){
+    var name = $(this).children('name').text();
+    var ip = $(this).children('ip').text();
+    var mac = $(this).children('mac').text().macFormat();
+
+    tbl_content+=('<tr height=35 align=center><td width=35%>'+name+'</td><td width=30%>'+ip+'</td><td width=35%>'+mac+'</td></tr>');
+
+  });
+
+    $('#tbl_user').html(tbl_content);
+
+    var c_height;
+    if($('#div_tbl').height()+100 > 480){
+      c_height = $('#div_tbl').height()+100;
+    }
+    else c_height = 480;
+
+    $('#main_content').height(c_height);
+    if($(document).width()>800) $('#aside').height(c_height);
+    else $('#aside').height($('.aside-nav').height());
+    },
+    error: function(x, t, m){
+      if(t==="timeout"){
+
+      }  
+    }
+    })
+}
+
+
+function load_mark(url){
+  if(interval_timer) clearInterval(interval_timer);
+  if(url=="status.html"){
+    load_interval();
+    interval_timer=setInterval(load_interval,1000);
+  }
+}
+</script>

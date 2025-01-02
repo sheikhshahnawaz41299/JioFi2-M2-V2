@@ -1,0 +1,459 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="telephone=no" name="format-detection" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>MF800 Web Admin</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<script type="text/javascript" charset="UTF-8">
+Date.prototype.Format = function(formatStr){
+var str = formatStr;
+var Week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var Mon = this.getMonth()+1;
+str=str.replace(/yyyy|YYYY/,this.getFullYear());
+str=str.replace(/yy|YY/,(this.getYear() % 100)>9?(this.getYear() % 100).toString():'0' + (this.getYear() % 100));
+str=str.replace(/MM/,Mon>9?Mon.toString():'0' + Mon);
+str=str.replace(/M/g,this.getMonth());
+str=str.replace(/w|W/g,Week[this.getDay()]);
+str=str.replace(/dd|DD/,this.getDate()>9?this.getDate().toString():'0' + this.getDate());
+str=str.replace(/d|D/g,this.getDate());
+str=str.replace(/hh|HH/,this.getHours()>9?this.getHours().toString():'0' + this.getHours());
+str=str.replace(/h|H/g,this.getHours());
+str=str.replace(/mm/,this.getMinutes()>9?this.getMinutes().toString():'0' + this.getMinutes());
+str=str.replace(/m/g,this.getMinutes());
+str=str.replace(/ss|SS/,this.getSeconds()>9?this.getSeconds().toString():'0' + this.getSeconds());
+str=str.replace(/s|S/g,this.getSeconds());
+return str;
+}
+</script>
+<script type="text/javascript">
+if(window==top) location.href="index.htm";
+<!-- 
+document.oncontextmenu=function(e){return false;} 
+// -->
+document.onmousedown=function(e){
+var e=e||window.event;
+if(e.button&2)
+{
+document.oncontextmenu=function(e){return false;}
+return false;
+}	
+}
+
+var xmlpost;
+var xmlHttp;
+function $(id){return document.getElementById(id);}
+function x_v(tag){return xmlpost.responseXML.getElementsByTagName(tag)[0].childNodes[0].nodeValue;}
+function x_h(tag){return xmlHttp.responseXML.getElementsByTagName(tag)[0].childNodes[0].nodeValue;}
+
+
+function createXMLHttpRequest()
+{
+if(window.ActiveXObject)
+{
+xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+else if (window.XMLHttpRequest)
+{
+xmlHttp = new XMLHttpRequest();
+}
+}
+
+function startRequest(xmlurl)
+{
+createXMLHttpRequest();
+xmlHttp.onreadystatechange = handleStateChange;
+xmlHttp.open("GET", xmlurl, true);
+xmlHttp.setRequestHeader("If-Modified-Since","0");
+xmlHttp.send(null);
+}
+
+function handleStateChange()
+{
+if(xmlHttp.readyState == 4)
+{
+if(xmlHttp.status == 200)
+{
+GetHandler();
+}
+}
+}
+
+</script>
+</head>
+<body>
+<div id="container">
+<div id="navi"><li><a class="navi" href="home.html">Home</a></li><li><a class="navi" href="connection.html">Connection</a></li><li><a class="sel">SMS</a></li><li><a class="navi" href="setting.html">Setting</a></li><li><a class="navi" href="statistics.html">Statistics</a></li><li><a class="navi" href="about.html">About</a></li></div>
+<div id="mainContent">
+<div id="sidebar">
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu"><a class="side" href="sms_box.html" >Inbox</a></div>
+<div id="sidemenu"><a class="side" href="sms_box.html?href=1" >Outbox</a></div>
+<div id="sidemenu"><a class="side" href="setting_sms.html" >Setting</a></div>
+<div id="sidemenu_sep"><br></div>
+<div id="sidemenu_df78a">MF800</div>
+</div>
+<div id="content">
+<h2 class="title" id='sms_send_title'></h2>
+<hr size=1 style="color:#C0C0C0">
+<script type="text/javascript">
+function isKeyTrigger(e,keyCode)
+{   
+var argv = isKeyTrigger.arguments;   
+var argc = isKeyTrigger.arguments.length;   
+var bCtrl = false;   
+if(argc > 2)
+{   
+bCtrl = argv[2];   
+}   
+var bAlt = false;   
+if(argc > 3)
+{   
+bAlt = argv[3];   
+}   
+var nav4 = window.Event ? true : false;   
+if(typeof e == 'undefined') 
+{   
+e = event;   
+}   
+if(bCtrl &&   
+ !((typeof e.ctrlKey != 'undefined') ?   
+ e.ctrlKey :   
+ e.modifiers & Event.CONTROL_MASK > 0)) 
+{   
+return false;   
+}   
+if( bAlt &&   
+ !((typeof e.altKey != 'undefined') ?   
+ e.altKey : e.modifiers & Event.ALT_MASK > 0))
+{   
+return false;   
+}   
+var whichCode = 0;   
+if (nav4) whichCode = e.which;   
+else if (e.type == "keypress" || e.type == "keydown") whichCode = e.keyCode;   
+else whichCode = e.button;   
+return (whichCode == keyCode);   
+}   
+  
+function ctrlEnter(e)
+{
+var ie = navigator.appName == "Microsoft Internet Explorer" ? true : false;   
+if(ie)
+{
+if(event.ctrlKey && event.keyCode == 13) 
+{   
+submit();   
+}   
+else 
+{
+if(isKeyTrigger(e,13,true)) submit();   
+}   
+}   
+}
+function capture(event,o)
+{
+var keynum;
+if(window.event)
+{
+keynum=event.keyCode;
+}
+else
+{
+keynum=event.which;
+}
+event = event || window.event;
+if(event.ctrlKey&&(keynum==13||keynum==10))
+{
+submit();
+}
+}
+
+function checkcharwidth(str)
+{
+var cArr = str.match(/[^\x00-\xff]/ig);
+return (cArr == null ? false : true); 
+}
+ 
+
+function getStrLength(str) 
+{ 
+var cArr = str.match(/[^\x00-\xff]/ig);
+return str.length + (cArr == null ? 0 : cArr.length); 
+}
+
+function cutstr(str,len)
+{
+var str_length = 0;
+var str_len = 0;
+str_cut = new String();
+str_len = str.length;
+for(var i = 0;i<str_len;i++)
+{
+a = str.charAt(i);
+str_length++;
+if(escape(a).length > 4)
+{
+//中文字符的长度经编码之后大于4
+str_length++;
+}
+str_cut = str_cut.concat(a);
+if(str_length==len)
+{
+return str_cut;
+}
+if(str_length==len+1)
+{
+return str_cut.substring(0,i);
+}
+}
+if(str_length<len){
+return  str;
+}
+}
+String.prototype.replaceAll = function(reallyDo, replaceWith, ignoreCase) {  
+if (!RegExp.prototype.isPrototypeOf(reallyDo)) {  
+return this.replace(new RegExp(reallyDo, (ignoreCase ? "gi": "g")), replaceWith);  
+} else {  
+return this.replace(reallyDo, replaceWith);  
+}  
+}  
+
+var textarea_maxlen = 
+{
+isMax : function ()
+{
+var sendnumber = $("number");	
+var textarea = $("area");
+var sms_content = textarea.value;
+sms_content=sms_content.replaceAll('\r\n','\n');
+sendnumber.value=sendnumber.value.replace(/\r\n|\n/ig,""); 
+if(checkcharwidth(sendnumber.value))
+{
+if(sendnumber.value.length > 15)  sendnumber.value = sendnumber.value.substr(0,15);	
+}
+else
+{
+if(sendnumber.value.length > 30)  sendnumber.value = sendnumber.value.substr(0,30);		
+}
+
+if(checkcharwidth(textarea.value))
+{
+if(sms_content.length > 70)  
+{
+  sms_content = sms_content.substr(0,70);
+  textarea.value = sms_content.replaceAll('\n','\r\n');
+}
+$("txtHint").innerHTML=sms_content.length+"/70";
+}
+else
+{
+if(textarea.value.length > 160)  
+{
+  sms_content = sms_content.substr(0,160);
+  textarea.value = sms_content.replaceAll('\n','\r\n');
+}
+$("txtHint").innerHTML=sms_content.length+"/160";
+}
+/*
+if(getStrLength(textarea.value) > max_length)
+{
+textarea.value = cutstr(textarea.value,max_length);
+}
+$("txtHint").innerHTML=getStrLength(textarea.value)+"/160";
+*/
+},
+
+disabledRightMouse : function ()
+{
+document.oncontextmenu = 
+function (){ return false; }
+},
+
+enabledRightMouse : function ()
+{
+document.oncontextmenu = null;
+}
+};
+
+var para_str;
+var ref_type;
+var send_type;
+var page_num;
+var sms_row;
+var timer=0;
+var cnt = 0;
+window.onload =function()
+{
+var href=window.location.href;
+var peek=href.indexOf('?');
+
+if(peek>-1) para_str = href.substring(peek);
+else para_str = '';
+
+peek = para_str.search(/type=/i);
+if(peek>-1) send_type = parseInt(para_str.substr(peek+5,1));
+else send_type = 0;
+peek = para_str.search(/href=/i);
+if(peek>-1) ref_type = parseInt(para_str.substr(peek+5,1));
+else ref_type = 0;
+peek = para_str.search(/page=/i);
+if(peek>-1) page_num = parseInt(para_str.substring(peek+5));
+else page_num = 0;
+peek = para_str.search(/no=/i);
+if(peek>-1) sms_row = parseInt(para_str.substring(peek+3));
+else sms_row = 0;
+para_str = '?href='+ref_type+'&page='+page_num+'&no='+sms_row;
+if(send_type)
+{
+//var xmlurl = 'sms_show.xml'+ para_str;
+//startRequest(xmlurl);
+var url = '/wxml/sms_show.xml';
+var data = 'href='+ref_type+'&page='+page_num+'&no='+sms_row; 
+ajax_post(url,data);
+}
+else
+{
+// New Message	
+$('sms_send_title').innerHTML='New Message';
+$('number').focus();
+}
+}
+
+String.prototype.str_repeat = function(max){
+var ret = this;
+for(var i=0; i<max; i++){
+ret += this; 
+}
+return ret;   
+}
+
+function ajax_post(url,form_data)
+{
+//$('error_info').innerHTML="";	
+if (window.XMLHttpRequest){
+xmlpost=new XMLHttpRequest();
+}
+else{
+xmlpost=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlpost.onreadystatechange=function()
+{
+if (xmlpost.readyState==4 && xmlpost.status==200){
+PostHandler(url);
+}
+}
+xmlpost.open("POST",url,true);
+xmlpost.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlpost.send(form_data);
+}
+
+function esc(str){
+str=str.replace(/%/g,'%25');
+str=str.replace(/&/g,'%26');
+str=str.replace(/=/g,'%3D');
+str=str.replace(new RegExp('\\+','g'),'%2B');
+return str;
+}
+function submit() 
+{
+var textarea = $("area").value;
+var num = $("number").value;
+	
+if(num.length>0) 
+{
+  $('submit').className="button_gray";
+  $("submit").disabled=true;
+  var content = $("area").value.replaceAll('\r\n','\n');
+//  $("area").value=$("area").value.replace(/\r\n/g,'\n');
+  var time=new Date().Format("YYMMDDhhmmss");
+  var sms_send = "number="+esc($("number").value)+"&content="+esc(content)+"&time="+time;
+  ajax_post('/wxml/sms_send.xml',sms_send);
+  timer = window.setInterval("startRequest('sms_send_result.w.xml')",1000);
+  return true;
+}
+var errInfo="";
+/*
+if(num.length<=3 && textarea.length==0) errInfo="please check the num and enter sms";
+else if(textarea.length==0) errInfo="sms null";
+else */
+if(num.length==0) errInfo="Please Check The Number";
+$("errHint").innerHTML=errInfo;
+return false;
+}
+function PostHandler(url)
+{
+if(url!='/wxml/sms_show.xml') return; 
+//$('src').innerHTML = x_v('src');
+ if(send_type==1)
+ {
+   $('sms_send_title').innerHTML='Reply Message';
+   $('number').value = x_v('src');
+   $('area').focus();
+ } 
+ else if(send_type==2)
+ {
+   $('sms_send_title').innerHTML='Forward Message';
+   $('area').value = x_v('body');
+   $('number').focus();
+ }
+ textarea_maxlen.isMax(); 
+}
+function GetHandler()
+{
+  var ret = parseInt(x_h('ret'));
+  if(ret==1) 
+  {
+  	cnt=cnt%39+1;
+    $("errHint").innerHTML = 'The Message is Sending'+'.'.str_repeat(cnt);
+  	$('submit').className="button_gray";
+    $("submit").disabled=true;
+  }
+  else
+  {
+   window.clearInterval(timer);	
+   cnt=0;
+   $('submit').className="button";
+   $("submit").disabled=false;
+   if(ret==2) $("errHint").innerHTML = "Send Message Success!";
+   else if(ret==3) $("errHint").innerHTML = "Send Message Failed!";
+   else $("errHint").innerHTML = '';
+  }
+}
+function buttonreturnclick(){
+if(send_type==0) {
+  var url = "sms_box.html?href="+ref_type+'&page='+page_num;
+  window.location = url;
+}
+else if(send_type==1 || send_type==2) {
+	var url="sms_show.html"+para_str;
+	window.location = url;
+}
+else {
+	var ie = navigator.appName == "Microsoft Internet Explorer" ? true : false;
+	if(ie) window.history.go(-2);
+	else window.history.go(-1);
+}
+}
+</script>
+<div style="margin-top:5px;margin-left:15px">
+<button id="btn_return" class="button_return"  onclick="buttonreturnclick()"><span><em>Back</em></span></button>
+</div>
+<div style="margin-top:10;border:1px solid #c0c0c0;width:520px;margin-top:10px;margin-left:25px;font-size:18px;">
+<div style="margin-left:15px;margin-top:10px;">
+<div>Recipient:</div>
+<textarea name="number" id="number" tabindex=1 rows="1" cols="30" onkeyup="textarea_maxlen.isMax()" onfocus="textarea_maxlen.disabledRightMouse()" onkeypress="capture(event,this)" maxLength="30" class="enter" style="height:24px;resize:none;margin-top:5px;"></textarea>
+</div>
+<div style="margin-left:15px;margin-top:15px;">
+<div>Content:<span style="display:inline-block;width:290px;"><!--(Press Ctrl+Enter to send)&nbsp;&nbsp;&nbsp;--></span><span id="txtHint" ></span></div>
+<textarea name="area" id="area" tabindex=2 class="enter" onkeyup="textarea_maxlen.isMax()" onfocus="textarea_maxlen.disabledRightMouse()" onkeypress="capture(event,this)" rows="8" cols="30" style="resize:none;"></textarea>
+</div>
+<div style="margin-left:15px;">
+<button style="margin-left:190px;margin-top:10px;" id="submit" type="submit" class="button" onclick="submit()"><span><em>Send</em></span></button>
+<p id="errHint" style="color:red;text-align:center;"></p>
+</div>
+</div>
+</div></div>
+<div id="footer">Copyright &copy; 2014 We-wins Inc. All Rights Reserved.</div>
+</div></body></html>

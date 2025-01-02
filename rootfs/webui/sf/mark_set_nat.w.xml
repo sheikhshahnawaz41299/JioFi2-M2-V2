@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setting>
+<dsc><% get_version_dsc(); %></dsc>
+<gen_time><% get_nat_generic_timeout(); %></gen_time>
+<icmp_time><% get_nat_icmp_timeout(); %></icmp_time>
+<tcp_time><% get_nat_tcp_timeout_established(); %></tcp_time>
+<udp_time><% get_nat_udp_timeout(); %></udp_time>
+</setting>
