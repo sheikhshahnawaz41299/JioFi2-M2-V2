@@ -18,6 +18,9 @@ unpack ubifs
 ```bash
 sudo ./ubireader_extract_files.py -k -w -o ./rootfs img-1620013534_vol-rootfs.ubifs
 ```
+### Note
+rootfs folder provided in this repo is for checking files only.
+You have to extract img-1620013534_vol-rootfs.ubifs manually for any modifications
 
 ### Repack
 
